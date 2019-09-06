@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent">
+
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
   <ImageView
     android:id="@+id/image_top"
@@ -24,89 +25,48 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
-
-    <TextView
-      android:id="@+id/tv_search"
-      android:layout_width="0dp"
-      android:layout_height="32dp"
-      android:layout_gravity="center_vertical"
-      android:layout_marginStart="16dp"
-      android:layout_marginTop="12dp"
-      android:layout_marginEnd="0dp"
-
-      android:drawablePadding="8dp"
-      android:gravity="center_vertical"
-      android:paddingStart="12dp"
-      android:paddingEnd="0dp"
-      android:text="输入商品名或粘贴宝贝标题搜索"
-      android:textColor="#000000"
-      android:textSize="12sp"
-      app:layout_constraintEnd_toStartOf="@+id/image_message"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-      android:id="@+id/image_message"
-      android:layout_width="wrap_content"
-      android:layout_height="0dp"
-      android:background="?attr/selectableItemBackgroundBorderless"
-      android:paddingStart="12dp"
-      android:paddingEnd="12dp"
-
-      app:layout_constraintBottom_toBottomOf="@+id/tv_search"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toEndOf="@+id/tv_search"
-      app:layout_constraintTop_toTopOf="@+id/tv_search" />
-
-    <View
-      android:id="@+id/view_red_point"
-      android:layout_width="8dp"
-      android:layout_height="8dp"
-      android:layout_marginEnd="8dp"
-
-      android:visibility="gone"
-      app:layout_constraintEnd_toEndOf="@+id/image_message"
-      app:layout_constraintTop_toTopOf="@+id/image_message"
-      tools:visibility="visible" />
-
-
-
-      <androidx.constraintlayout.widget.ConstraintLayout
-
-          android:layout_width="0dp"
-          android:layout_height="0dp"
-          app:layout_constraintBottom_toBottomOf="parent"
+      <LinearLayout
+          android:id="@+id/ll_home"
+          android:orientation="horizontal"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:padding="10dp"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/tv_search"
+          app:layout_constraintTop_toTopOf="parent"
           >
-
-
-
-        <!--<TextView
-            android:id="@+id/tv_super"
+        <TextView
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:gravity="center"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:text="超级分类"
-            android:textColor="#fff"
-            app:layout_constraintBottom_toBottomOf="@+id/tab_layout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tab_layout"/>-->
+            android:layout_height="wrap_content"
+            android:text="首页"
+            android:textSize="20sp"
+            android:textColor="#000000"
+        />
 
-          <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              app:layout_constraintEnd_toEndOf="parent"
-              app:layout_constraintStart_toStartOf="parent"
-              app:layout_constraintBottom_toBottomOf="parent"
-              app:layout_constraintTop_toTopOf="parent"
-              android:text="1"
-              />
+      </LinearLayout>
 
-      </androidx.constraintlayout.widget.ConstraintLayout>
+
+     <com.scwang.smartrefresh.layout.SmartRefreshLayout
+         app:layout_constraintBottom_toBottomOf="@+id/ll_home"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+
+
+
+
+
+ />
+
+
+
+
+
+
+
+
+
+
+
 
 
 
