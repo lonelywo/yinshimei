@@ -9,6 +9,7 @@ public class Base<T> {
     public int code;
     public T data;
     public String msg;
+    public String info;
     @SerializedName("min_id")
     public int minId;
 
