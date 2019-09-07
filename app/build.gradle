@@ -76,5 +76,8 @@ dependencies {
     //https://github.com/GrenderG/Toasty
     implementation 'com.github.GrenderG:Toasty:1.4.2'
 
+    //https://github.com/drakeet/MultiType
+    implementation 'me.drakeet.multitype:multitype:3.5.0'
+
 
 }
