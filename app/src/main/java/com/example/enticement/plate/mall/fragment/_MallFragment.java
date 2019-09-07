@@ -1,4 +1,4 @@
-package com.example.enticement.plate.home.fragment;
+package com.example.enticement.plate.mall.fragment;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -12,9 +12,9 @@ import com.example.enticement.base.BaseFragment;
 /**
  * 首页外层Fragment
  */
-public class _CartFragment extends BaseFragment  {
+public class _MallFragment extends BaseFragment  {
 
-    private static final String TAG = _CartFragment.class.getSimpleName();
+    private static final String TAG = _MallFragment.class.getSimpleName();
 
 
 
@@ -32,7 +32,7 @@ public class _CartFragment extends BaseFragment  {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_cart;
+        return R.layout.fragment_mall;
 
     }
 

@@ -20,12 +20,12 @@ import com.example.enticement.BasicApp;
 import com.example.enticement.bean.Base;
 import com.example.enticement.bean.Status;
 import com.example.enticement.bean.Version;
+import com.example.enticement.plate.cart.fragment._CartFragment;
 import com.example.enticement.plate.common.adapter.MainPagerAdapter;
 import com.example.enticement.plate.common.vm.MainViewModel;
-import com.example.enticement.plate.home.fragment._CartFragment;
 import com.example.enticement.plate.home.fragment._HomeFragment;
-import com.example.enticement.plate.home.fragment._MallFragment;
-import com.example.enticement.plate.home.fragment._MineFragment;
+import com.example.enticement.plate.mall.fragment._MallFragment;
+import com.example.enticement.plate.mine.fragment._MineFragment;
 import com.example.enticement.utils.AppUtils;
 import com.example.enticement.utils.FToast;
 import com.example.enticement.utils.FlymeStatusBarColorUtils;
@@ -186,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
 
         BottomBarView.Tab tab2 = new BottomBarView.Tab(
                 R.drawable.tab_find_selected,
-                R.drawable.tab_find_normal, false, getString(R.string.tab_rank));
+                R.drawable.tab_find_normal, false, getString(R.string.tab_material));
 
 
 

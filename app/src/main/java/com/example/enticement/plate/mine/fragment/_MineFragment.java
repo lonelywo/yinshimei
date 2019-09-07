@@ -1,11 +1,10 @@
-package com.example.enticement.plate.home.fragment;
+package com.example.enticement.plate.mine.fragment;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 
 import com.cuci.enticement.R;
 import com.example.enticement.base.BaseFragment;

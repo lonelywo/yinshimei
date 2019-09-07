@@ -25,52 +25,44 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
-      <LinearLayout
-          android:id="@+id/ll_home"
-          android:orientation="horizontal"
+      <androidx.constraintlayout.widget.ConstraintLayout
+          android:id="@+id/heard_home"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:padding="10dp"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toTopOf="parent"
           >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="首页"
-            android:textSize="20sp"
-            android:textColor="#000000"
-        />
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="首页"
+           android:padding="10dp"
+           android:textSize="20sp"
+           android:textColor="#000000"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toTopOf="parent"
+           />
 
-      </LinearLayout>
+      </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
      <com.scwang.smartrefresh.layout.SmartRefreshLayout
-         app:layout_constraintBottom_toBottomOf="@+id/ll_home"
+         android:id="@+id/refresh_home"
+         app:layout_constraintBottom_toBottomOf="@+id/heard_home"
          android:layout_width="match_parent"
          android:layout_height="match_parent"
          >
          <androidx.recyclerview.widget.RecyclerView
-
+             android:id="@+id/rec_goods"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
 
 
              />
      </com.scwang.smartrefresh.layout.SmartRefreshLayout>
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   </androidx.constraintlayout.widget.ConstraintLayout>

@@ -29,6 +29,7 @@
         />
 
     <TextView
+        android:id="@+id/text_home_money"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="¥3660.00"

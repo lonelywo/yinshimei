@@ -20,7 +20,7 @@ public class ServiceCreator {
     private volatile static ServiceCreator mInstance;
 
 
-    private static final String BASE_URL = "http://api.fudai.fqapps.com";
+    private static final String BASE_URL = "https://yinshimei2.xd.cuci.cc/store/api/";
 
     private final Retrofit mRetrofit;
 
