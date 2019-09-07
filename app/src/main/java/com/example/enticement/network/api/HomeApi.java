@@ -15,7 +15,7 @@ public interface HomeApi {
      * 获取首页轮播图
      */
 
-    @GET("page/slider")
+    @GET("store/api.page/slider")
     Call<BaseList<BannerDataBean>> getBanner();
 
 

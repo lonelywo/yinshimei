@@ -156,12 +156,10 @@ public class _HomeFragment extends BaseFragment  implements ItemBannerViewBinder
                         return;
                     }
                     if (list.code == 1) {
-                        int old = mItems.size();
                         List<BannerDataBean> items = list.data;
-
-                        mItems.addAll(items);
-                        int newC = mItems.size();
-                        mAdapter.notifyItemRangeInserted(old, newC);
+                        ItemBanner itemBanner = new ItemBanner(items);
+                        mItems.add(itemBanner);
+                        mAdapter.notifyDataSetChanged();
                     } else {
                         FToast.error(list.msg);
                     }
