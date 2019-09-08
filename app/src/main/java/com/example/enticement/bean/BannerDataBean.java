@@ -1,8 +1,10 @@
 package com.example.enticement.bean;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class BannerDataBean {
+public class BannerDataBean implements Parcelable {
 
 
     /**
@@ -14,6 +16,24 @@ public class BannerDataBean {
     private String title;
     private String img;
     private String url;
+
+    protected BannerDataBean(Parcel in) {
+        title = in.readString();
+        img = in.readString();
+        url = in.readString();
+    }
+
+    public static final Creator<BannerDataBean> CREATOR = new Creator<BannerDataBean>() {
+        @Override
+        public BannerDataBean createFromParcel(Parcel in) {
+            return new BannerDataBean(in);
+        }
+
+        @Override
+        public BannerDataBean[] newArray(int size) {
+            return new BannerDataBean[size];
+        }
+    };
 
     public String getTitle() {
         return title;
@@ -37,5 +57,17 @@ public class BannerDataBean {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(title);
+        parcel.writeString(img);
+        parcel.writeString(url);
     }
 }

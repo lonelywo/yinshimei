@@ -1,6 +1,6 @@
 package com.example.enticement.plate.home.fragment;
 
-import android.graphics.drawable.Drawable;
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.view.LayoutInflater;
@@ -18,11 +18,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cuci.enticement.R;
 import com.example.enticement.base.BaseFragment;
 import com.example.enticement.bean.BannerDataBean;
+import com.example.enticement.bean.Base;
 import com.example.enticement.bean.BaseList;
 
+import com.example.enticement.bean.GeneralGoods;
+import com.example.enticement.bean.GeneralGoodsItem;
 import com.example.enticement.bean.ItemBanner;
 import com.example.enticement.bean.Status;
+import com.example.enticement.bean.Version;
+import com.example.enticement.plate.home.activity.ProdActivity;
 import com.example.enticement.plate.home.adapter.ItemBannerViewBinder;
+import com.example.enticement.plate.home.adapter.ItemGoodsLongViewBinder;
 import com.example.enticement.plate.home.vm.HomeViewModel;
 import com.example.enticement.utils.FToast;
 import com.example.enticement.widget.CustomRefreshHeader;
@@ -44,14 +50,7 @@ import me.drakeet.multitype.MultiTypeAdapter;
 public class _HomeFragment extends BaseFragment  implements ItemBannerViewBinder.OnBannerClickListener , OnRefreshLoadMoreListener {
 
     private static final String TAG = _HomeFragment.class.getSimpleName();
-
-
-
-
-    //private HomeViewModel mViewModel;
-    private Drawable mOriginalDrawable;
-
-    private boolean mCouldChange = true;
+    private int mMinId = 1;
     private RecyclerView mRecyclerView;
     private SmartRefreshLayout mRefreshLayout;
     private MultiTypeAdapter mAdapter;
@@ -77,35 +76,26 @@ public class _HomeFragment extends BaseFragment  implements ItemBannerViewBinder
 
     @Override
     protected void initViews(LayoutInflater inflater, View view, ViewGroup container, Bundle savedInstanceState) {
-       mViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
-     //   mOriginalDrawable = ContextCompat.getDrawable(mActivity, R.drawable.img_top_bar_small);
+        mViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         mRecyclerView = view.findViewById(R.id.rec_goods);
         mRefreshLayout = view.findViewById(R.id.refresh_home);
-
-//
-//        mLocalBroadcastManager = LocalBroadcastManager.getInstance(mActivity);
-//        IntentFilter filter = new IntentFilter();
-//        filter.addAction(ACTION_NEW_MESSAGE);
-//        mLocalBroadcastManager.registerReceiver(mReceiver, filter);
-
         mAdapter = new MultiTypeAdapter();
         mItems = new Items();
         mAdapter.setItems(mItems);
-
         CustomRefreshHeader header = new CustomRefreshHeader(mActivity);
-        mRefreshLayout.setRefreshHeader(header);
+       // mRefreshLayout.setRefreshHeader(header);
         mRefreshLayout.setEnableFooterFollowWhenNoMoreData(true);
         mRefreshLayout.setOnRefreshLoadMoreListener(this);
         mAdapter.register(ItemBanner.class, new ItemBannerViewBinder(this));
-       // mAdapter.register(GoodsItem.class, new ItemGoodsLongViewBinder());
+        mAdapter.register(GeneralGoodsItem.class, new ItemGoodsLongViewBinder());
 
         mDecoration = new HomeGridItemDecoration(mActivity, 2, 6, true);
-        mDecoration.setHeaderCount(7);
+        mDecoration.setHeaderCount(1);
 
         mRecyclerView.addItemDecoration(mDecoration);
 
         mLayoutManager = new GridLayoutManager(mActivity, 2);
-        mSizeLookup = new HomeListSpanSizeLookup(mLayoutManager, 11);
+        mSizeLookup = new HomeListSpanSizeLookup(mLayoutManager, 1);
         mLayoutManager.setSpanSizeLookup(mSizeLookup);
 
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -122,7 +112,9 @@ public class _HomeFragment extends BaseFragment  implements ItemBannerViewBinder
 
     @Override
     public void onBannerClick(BannerDataBean bannerDataBean) {
-
+        Intent intentProd = new Intent(mActivity, ProdActivity.class);
+        intentProd.putExtra("bannerData", bannerDataBean);
+        mActivity.startActivity(intentProd);
     }
 
     @Override
@@ -132,16 +124,20 @@ public class _HomeFragment extends BaseFragment  implements ItemBannerViewBinder
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-        if (mCanLoadMore) {
+       /* if (mCanLoadMore) {
             mCanLoadMore = false;
-            mViewModel.getBanner().observe(_HomeFragment.this, mObserver);
-        } else {
+            mViewModel.getGeneralGoods( mMinId, Status.LOAD_MORE).observe(this, GoodsmObserver);
+        } else {*/
             mRefreshLayout.finishLoadMore();
-        }
+     //   }
     }
     private void load() {
         mViewModel.getBanner().observe(this, mObserver);
+
     }
+
+
+
     private Observer<Status<BaseList<BannerDataBean>>>  mObserver = new Observer<Status<BaseList<BannerDataBean>>>() {
 
         @Override
@@ -158,8 +154,10 @@ public class _HomeFragment extends BaseFragment  implements ItemBannerViewBinder
                     if (list.code == 1) {
                         List<BannerDataBean> items = list.data;
                         ItemBanner itemBanner = new ItemBanner(items);
+                        mItems.clear();
                         mItems.add(itemBanner);
-                        mAdapter.notifyDataSetChanged();
+
+                        mViewModel.getGeneralGoods( mMinId, Status.LOAD_REFRESH).observe(_HomeFragment.this, GoodsmObserver);
                     } else {
                         FToast.error(list.msg);
                     }
@@ -174,8 +172,66 @@ public class _HomeFragment extends BaseFragment  implements ItemBannerViewBinder
         }
     };
 
+    private Observer<Status<GeneralGoods>> GoodsmObserver = new Observer<Status<GeneralGoods>>() {
+        @Override
+        public void onChanged(Status<GeneralGoods> status) {
+            switch (status.status) {
+
+                case Status.SUCCESS:
+                    GeneralGoods data = status.content;
+                    List<GeneralGoodsItem> list = data.getData().getList();
+                    if (data == null) {
+                        if (status.loadType == Status.LOAD_MORE) {
+                            mRefreshLayout.finishLoadMore();
+                        } else {
+                            mRefreshLayout.finishRefresh();
+                        }
+                        return;
+                    }
+
+                    if (data.getCode() == 1) {
+                        mCanLoadMore = true;
+                        if (status.loadType == Status.LOAD_REFRESH) {
+                            mItems.addAll(list);
+                            mAdapter.notifyDataSetChanged();
+                            mRefreshLayout.finishRefresh();
+                        } else {
+                            int o = mItems.size();
+                            mItems.addAll(list);
+                            int c = mItems.size();
+                            mAdapter.notifyItemRangeInserted(o, c);
+                            mRefreshLayout.finishLoadMore();
+                        }
+                    } else {
+                        if (status.loadType == Status.LOAD_MORE) {
+                            mCanLoadMore = true;
+                            mRefreshLayout.finishLoadMore();
+                        } else {
+                            mRefreshLayout.finishRefresh();
+                        }
+                        FToast.error(data.getInfo());
+                    }
+                    break;
+                case Status.ERROR:
+                    FToast.error(status.message);
+                    if (status.loadType == Status.LOAD_MORE) {
+                        mCanLoadMore = true;
+                        mRefreshLayout.finishLoadMore();
+                    } else {
+                        mRefreshLayout.finishRefresh();
+                    }
+                    break;
+                case Status.LOADING:
+
+                    break;
+            }
+        }
+    };
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+        mCanLoadMore = false;
+        mMinId=1;
+        mViewModel.getBanner().observe(this, mObserver);
 
     }
 /*    private Observer<Status<Splash>> mObserver = splashStatus -> {

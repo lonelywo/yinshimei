@@ -1,14 +1,14 @@
 package com.example.enticement.plate.home.vm;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.enticement.bean.BannerDataBean;
+import com.example.enticement.bean.Base;
 import com.example.enticement.bean.BaseList;
 
 
-import com.example.enticement.bean.ItemBanner;
+import com.example.enticement.bean.GeneralGoods;
 import com.example.enticement.bean.Status;
 import com.example.enticement.network.ServiceCreator;
 import com.example.enticement.network.api.HomeApi;
@@ -45,6 +45,36 @@ public class HomeViewModel extends ViewModel {
                     }
                 });
         return data;
+    }
+    public MutableLiveData<Status<GeneralGoods>> getGeneralGoods(int minId, int loadType) {
+
+        final MutableLiveData<Status<GeneralGoods>> liveData = new MutableLiveData<>();
+
+        mCreator.create(HomeApi.class)
+                .getGeneralGoods()
+                .enqueue(new Callback<GeneralGoods>() {
+
+                    @Override
+                    public void onResponse(Call<GeneralGoods> call, Response<GeneralGoods> response) {
+                        if (loadType == Status.LOAD_REFRESH) {
+                            liveData.setValue(Status.refreshSuccess(response.body()));
+                        } else {
+                            liveData.setValue(Status.moreSuccess(response.body()));
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<GeneralGoods>call, Throwable t) {
+                        if (loadType == Status.LOAD_REFRESH) {
+                            liveData.setValue(Status.refreshError(null, t.getMessage() ==
+                                    null ? "加载失败" : t.getMessage()));
+                        } else {
+                            liveData.setValue(Status.moreError(null, t.getMessage() ==
+                                    null ? "加载失败" : t.getMessage()));
+                        }
+                    }
+                });
+        return liveData;
     }
 
 }

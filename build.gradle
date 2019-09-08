@@ -24,7 +24,11 @@ allprojects {
         google()
         jcenter()
         maven { url 'https://jitpack.io' }
+        //FlycoTabLayout_Lib 支持Androidx
+        maven { url "https://dl.bintray.com/relish-wang/maven/" }
+
     }
+
 }
 
 task clean(type: Delete) {

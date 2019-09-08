@@ -4,50 +4,35 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.view.View;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.enticement.utils.DimensionUtils;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
-/**
- * 为首页定制的分割线
- */
-public class HomeGridItemDecoration extends RecyclerView.ItemDecoration {
-
-    private static final String TAG = HomeGridItemDecoration.class.getSimpleName();
+public class GridItemDecoration extends RecyclerView.ItemDecoration {
 
     private int spanCount;
     private int spacing;
     private boolean includeEdge;
-    Context context;
-    private int headerCount = 5;
 
-    public void setHeaderCount(int headerCount) {
-        this.headerCount = headerCount;
-    }
-
-    public HomeGridItemDecoration(Context context, int spanCount, int spacing, boolean includeEdge) {
+    public GridItemDecoration(Context context, int spanCount, int spacing, boolean includeEdge) {
         this.spanCount = spanCount;
-        this.context=context;
         this.spacing = DimensionUtils.dp2px(context, spacing);
         this.includeEdge = includeEdge;
     }
 
+    public void setSpanCount(int spanCount) {
+        this.spanCount = spanCount;
+    }
+
     @Override
-    public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent,
+    public void getItemOffsets(@NonNull Rect outRect,
+                               @NonNull View view,
+                               @NonNull RecyclerView parent,
                                @NonNull RecyclerView.State state) {
 
-        int p = parent.getChildAdapterPosition(view);
-
-        if (p < headerCount) {
-           // super.getItemOffsets(outRect, view, parent, state);
-            outRect.set(0, 0, 0, DimensionUtils.dp2px(context, 6));
-            return;
-        }
-
-        int position = parent.getChildAdapterPosition(view) + headerCount;
-
+        int position = parent.getChildAdapterPosition(view);
         int column = position % spanCount;
 
         if (includeEdge) {
@@ -65,5 +50,4 @@ public class HomeGridItemDecoration extends RecyclerView.ItemDecoration {
             }
         }
     }
-
 }

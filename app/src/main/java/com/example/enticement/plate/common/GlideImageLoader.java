@@ -12,9 +12,14 @@ public class GlideImageLoader extends ImageLoader {
 
     @Override
     public void displayImage(Context context, Object path, ImageView imageView) {
-        Glide.with(BasicApp.getContext())
-                .load(path)
-                .into(imageView);
+        //if(BasicApp.getContext()!=null){
+            Glide.with(BasicApp.getContext())
+                    .load(path)
+                    .into(imageView);
+
+
+       // }
+
     }
 
 }
