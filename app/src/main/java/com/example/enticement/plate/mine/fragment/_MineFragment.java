@@ -19,11 +19,9 @@ public class _MineFragment extends BaseFragment  {
 
 
 
-    //private HomeViewModel mViewModel;
-    private Drawable mOriginalDrawable;
 
     private boolean mCouldChange = true;
-//    private LocalBroadcastManager mLocalBroadcastManager;
+
 
     @Override
     protected void onLazyLoad() {
@@ -39,14 +37,10 @@ public class _MineFragment extends BaseFragment  {
     @Override
     protected void initViews(LayoutInflater inflater, View view, ViewGroup container, Bundle savedInstanceState) {
    //     mViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
-     //   mOriginalDrawable = ContextCompat.getDrawable(mActivity, R.drawable.img_top_bar_small);
 
 
-//
-//        mLocalBroadcastManager = LocalBroadcastManager.getInstance(mActivity);
-//        IntentFilter filter = new IntentFilter();
-//        filter.addAction(ACTION_NEW_MESSAGE);
-//        mLocalBroadcastManager.registerReceiver(mReceiver, filter);
+
+
     }
 
 
@@ -54,24 +48,7 @@ public class _MineFragment extends BaseFragment  {
       //  mViewModel.getSplash().observe(this, mObserver);
     }
 
-/*    private Observer<Status<Splash>> mObserver = splashStatus -> {
-        switch (splashStatus.status) {
-            case Status.LOADING:
-                mStatusView.showLoading();
-                break;
-            case Status.SUCCESS:
-                mStatusView.showContent();
-                Splash splash = splashStatus.content;
-                if (splash == null) return;
-                SharedPrefUtils.saveUserAgreement(splash.getUserAgreement());
-                initTopTab(splash);
-                saveSplash(splash);
-                break;
-            case Status.ERROR:
-                mStatusView.showError();
-                break;
-        }
-    };*/
+
 
 
 

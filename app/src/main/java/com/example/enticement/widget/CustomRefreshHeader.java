@@ -135,7 +135,7 @@ public class CustomRefreshHeader extends LinearLayout implements RefreshHeader {
         switch (newState) {
             case PullDownToRefresh: //下拉刷新开始。正在下拉还没松手时调用
                 //每次重新下拉时，将图片资源重置为小人的大脑袋
-                mImage.setImageResource(R.drawable.ic_launcher_background);
+                mImage.setImageResource(R.drawable.ic_emoji);
                 break;
             case Refreshing: //正在刷新。只调用一次
                 //状态切换为正在刷新状态时，设置图片资源为小人卖萌的动画并开始执行
