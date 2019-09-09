@@ -4,8 +4,8 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="colorWhite">#ffffff</color>
-    <color name="black">#333333</color>
-    <color name="orange">#E6BD1A</color>
+    <color name="black">#E2E3E3</color>
+    <color name="orange">#BF9964</color>
 
     <!--栏灰色分割线-->
     <color name="line_gray">#C5C5C5</color>

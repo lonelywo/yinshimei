@@ -89,13 +89,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //透明状态栏
-        Window window = getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        //Window window = getWindow();
+        //window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         //小米手机状态栏字体黑色
-        MIUIStatusBarUtils.MIUISetStatusBarLightMode(this, true);
+        //MIUIStatusBarUtils.MIUISetStatusBarLightMode(this, true);
         //魅族手机状态栏字体黑色
         if (Rom.check(Rom.ROM_FLYME)) {
-            FlymeStatusBarColorUtils.setStatusBarDarkIcon(this, true);
+         //   FlymeStatusBarColorUtils.setStatusBarDarkIcon(this, true);
         }
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
