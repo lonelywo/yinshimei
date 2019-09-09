@@ -62,14 +62,14 @@ public class _MallFragment extends BaseFragment {
 
     @Override
     protected void initViews(LayoutInflater inflater, View view, ViewGroup container, Bundle savedInstanceState) {
-             mViewModel = ViewModelProviders.of(this).get(MallViewModel.class);
-            mStatusView.setOnRetryClickListener(v -> {
-                load();
+        mViewModel = ViewModelProviders.of(this).get(MallViewModel.class);
+        mStatusView.setOnRetryClickListener(v -> {
+            load();
         });
     }
 
     private void load() {
-          mViewModel.getSource("产品图","1","20").observe(this, mObserver);
+        mViewModel.getSource("产品图","1","20").observe(this, mObserver);
     }
     private Observer<Status<MallSourceBean>> mObserver = status -> {
         switch (status.status) {

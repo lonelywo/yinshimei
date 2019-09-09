@@ -6,44 +6,7 @@
     android:layout_height="match_parent"
     android:background="#000000"
     tools:context="com.example.enticement.plate.home.activity.ProdActivity">
-  <ImageView
-      android:id="@+id/image_back"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:background="?attr/selectableItemBackground"
-      android:paddingLeft="10dp"
-      android:paddingTop="16dp"
-      android:paddingRight="20dp"
-      android:paddingBottom="16dp"
-      android:src="@drawable/icon_back"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"/>
-  <TextView
-      android:id="@+id/image_top"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="商品详情"
-      android:textColor="#ffffff"
-      android:textSize="17sp"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="@id/image_back"
-      app:layout_constraintBottom_toBottomOf="@id/image_back"
-      />
-<ScrollView
-    android:id="@+id/scroll_details"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/image_back"
-    app:layout_constraintEnd_toEndOf="parent"
-    >
-  <androidx.constraintlayout.widget.ConstraintLayout
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-    >
+
   <com.youth.banner.Banner
       android:id="@+id/banner"
       android:layout_width="0dp"
@@ -58,9 +21,9 @@
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintLeft_toLeftOf="parent"
       app:layout_constraintRight_toRightOf="parent"
-      />
+     />
   <androidx.constraintlayout.widget.ConstraintLayout
-      android:id="@+id/con_info"
+        android:id="@+id/con_info"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       app:layout_constraintTop_toBottomOf="@id/banner"
@@ -77,16 +40,16 @@
         android:textColor="#ffffff"
 
         />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="10dp"
-        android:text="¥3000"
-        android:textSize="20sp"
-        android:textColor="#ffffff"
-        app:layout_constraintTop_toBottomOf="@id/home_detail_goodsname"
-        />
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:layout_constraintLeft_toLeftOf="parent"
+      android:layout_marginTop="10dp"
+      android:text="¥3000"
+      android:textSize="20sp"
+      android:textColor="#ffffff"
+      app:layout_constraintTop_toBottomOf="@id/home_detail_goodsname"
+      />
 
     <ImageView
         android:id="@+id/img_share"
@@ -109,18 +72,14 @@
         />
   </androidx.constraintlayout.widget.ConstraintLayout>
 
-  <com.tencent.smtt.sdk.WebView
-      android:id="@+id/web_details"
-      android:layout_width="0dp"
-      android:layout_height="0dp"
+
+  <WebView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
       app:layout_constraintLeft_toLeftOf="parent"
       app:layout_constraintRight_toRightOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/con_info"
-      app:layout_constraintBottom_toBottomOf="parent"
       />
-  </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
-
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -130,7 +89,6 @@
     app:layout_constraintBottom_toBottomOf="parent"
   >
   <TextView
-      android:id="@+id/text_cart"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_weight="1"
@@ -141,7 +99,6 @@
       android:padding="15dp"
       />
   <TextView
-      android:id="@+id/text_sell"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_weight="1"
@@ -154,7 +111,6 @@
 
 </LinearLayout>
   <ImageView
-      android:id="@+id/text_cart_sell"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       app:layout_constraintRight_toRightOf="parent"

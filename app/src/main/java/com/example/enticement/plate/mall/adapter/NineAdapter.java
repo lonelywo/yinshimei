@@ -25,9 +25,9 @@ public class NineAdapter extends RecyclerView.Adapter<NineAdapter.ViewHolder> {
 
     List<MallSourceBean.DataBean.ListBean> mList;
 
-    private StaggeredGridLayoutManager mLayoutManager;
+    private GridLayoutManager mLayoutManager;
 
-    public NineAdapter(StaggeredGridLayoutManager layoutManager) {
+    public NineAdapter(GridLayoutManager layoutManager) {
         mLayoutManager = layoutManager;
     }
 

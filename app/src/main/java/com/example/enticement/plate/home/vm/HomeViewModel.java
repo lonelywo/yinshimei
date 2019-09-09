@@ -9,6 +9,7 @@ import com.example.enticement.bean.BaseList;
 
 
 import com.example.enticement.bean.GeneralGoods;
+import com.example.enticement.bean.HomeDetailsBean;
 import com.example.enticement.bean.Status;
 import com.example.enticement.network.ServiceCreator;
 import com.example.enticement.network.api.HomeApi;
@@ -75,6 +76,27 @@ public class HomeViewModel extends ViewModel {
                     }
                 });
         return liveData;
+    }
+    public MutableLiveData<Status<HomeDetailsBean>> getHomeDetails(String type) {
+
+        final MutableLiveData<Status<HomeDetailsBean>> data = new MutableLiveData<>();
+
+        mCreator.create(HomeApi.class)
+                .getHomeDetails(type)
+                .enqueue(new Callback<HomeDetailsBean>() {
+
+                    @Override
+                    public void onResponse(Call<HomeDetailsBean> call, Response<HomeDetailsBean> response) {
+                        data.setValue(Status.success(response.body()));
+                    }
+
+                    @Override
+                    public void onFailure(Call<HomeDetailsBean> call, Throwable t) {
+                        data.setValue(Status.error(null, t.getMessage() ==
+                                null ? "加载失败" : t.getMessage()));
+                    }
+                });
+        return data;
     }
 
 }

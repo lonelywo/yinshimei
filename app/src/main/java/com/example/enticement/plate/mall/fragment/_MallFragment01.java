@@ -51,7 +51,7 @@ public class _MallFragment01 extends BaseFragment implements OnRefreshLoadMoreLi
     @BindView(R.id.image_top)
     ImageView mIvTop;
     private GridItemDecoration mDecoration;
-    private StaggeredGridLayoutManager mLayoutManager;
+    private GridLayoutManager mLayoutManager;
 
     public static _MallFragment01 newInstance(String type) {
         Bundle args = new Bundle();
@@ -79,23 +79,24 @@ public class _MallFragment01 extends BaseFragment implements OnRefreshLoadMoreLi
         mtype = bundle.getString("type");
         CustomRefreshHeader header = new CustomRefreshHeader(mActivity);
         header.setBackground(0xFFF3F4F6);
-        mRefreshLayout.setRefreshHeader(header);
+        //mRefreshLayout.setRefreshHeader(header);
         mRefreshLayout.setEnableFooterFollowWhenNoMoreData(true);
         mRefreshLayout.setOnRefreshLoadMoreListener(this);
 
-        mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+       // mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        mLayoutManager = new GridLayoutManager(mActivity, 2);
         mAdapter = new NineAdapter(mLayoutManager);
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mDecoration = new GridItemDecoration(mActivity, 2, 6, true);
+        mDecoration = new GridItemDecoration(mActivity, 2, 12, true);
         mRecyclerView.addItemDecoration(mDecoration);
 
         mRecyclerView.setAdapter(mAdapter);
     }
 
     private void load() {
-        mViewModel.getSource01(mtype,""+page,PAGE_SIZE,Status.LOAD_REFRESH).observe(this, mObserver);
+        mViewModel.getSource01(mtype,"1",PAGE_SIZE,Status.LOAD_REFRESH).observe(this, mObserver);
     }
     private Observer<Status<MallSourceBean>> mObserver = status -> {
         switch (status.status) {
@@ -161,6 +162,11 @@ public class _MallFragment01 extends BaseFragment implements OnRefreshLoadMoreLi
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+        if(mCanLoadMore=true){
+            mCanLoadMore = false;
+            mViewModel.getSource01(mtype, String.valueOf(page),PAGE_SIZE,
+                    Status.LOAD_MORE).observe(this, mObserver);
+        }
 
     }
 
