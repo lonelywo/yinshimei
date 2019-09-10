@@ -4,9 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
   <ImageView
-
       android:layout_width="0dp"
       android:layout_height="0dp"
       app:layout_constraintDimensionRatio="750:500"
@@ -27,7 +25,7 @@
         android:id="@+id/image_top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="素材库"
+        android:text="我的订单"
         android:textColor="#000000"
         android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,13 +38,12 @@
         android:id="@+id/image_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackground"
         android:paddingLeft="12dp"
         android:paddingTop="16dp"
         android:paddingRight="12dp"
         android:paddingBottom="16dp"
-        android:src="@mipmap/ic_launcher"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/icon_back"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <com.classic.common.MultipleStatusView

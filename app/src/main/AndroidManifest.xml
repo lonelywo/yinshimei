@@ -12,6 +12,8 @@
         tools:replace="label,allowBackup"
         tools:targetApi="n">
         <activity android:name="com.example.enticement.plate.home.activity.ProdActivity"></activity>
+        <activity android:name="com.example.enticement.plate.mine.activity.MyOrderActivity"></activity>
+        <activity android:name="com.example.enticement.plate.common.LoginActivity"></activity>
         <activity android:name="com.example.enticement.plate.common.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

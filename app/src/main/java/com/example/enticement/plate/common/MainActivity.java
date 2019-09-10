@@ -94,9 +94,9 @@ public class MainActivity extends AppCompatActivity {
         //小米手机状态栏字体黑色
         //MIUIStatusBarUtils.MIUISetStatusBarLightMode(this, true);
         //魅族手机状态栏字体黑色
-        if (Rom.check(Rom.ROM_FLYME)) {
+       // if (Rom.check(Rom.ROM_FLYME)) {
          //   FlymeStatusBarColorUtils.setStatusBarDarkIcon(this, true);
-        }
+       // }
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 

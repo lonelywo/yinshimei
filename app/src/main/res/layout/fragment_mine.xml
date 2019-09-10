@@ -14,6 +14,19 @@
       app:layout_constraintTop_toTopOf="parent"
       android:src="@drawable/shape_mine_bg1"
       />
+    <ScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        >
+
+   <androidx.constraintlayout.widget.ConstraintLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:descendantFocusability="blocksDescendants"
+      >
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/con_toubu"
         android:layout_width="match_parent"
@@ -44,6 +57,7 @@
             android:src="@drawable/kaiguan"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
     <ImageView
         android:id="@+id/img_shape_huang"
         android:layout_width="match_parent"
@@ -135,6 +149,7 @@
               />
       </LinearLayout>
     <Button
+        android:id="@+id/btn_shengji"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/shape_mine_button_bg"
@@ -162,34 +177,37 @@
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:text="我的订单"
+         android:padding="10dp"
          android:textColor="#000000"
-         android:textSize="25sp"
+         android:textSize="20sp"
          app:layout_constraintLeft_toLeftOf="@+id/img_shape_bai2"
          app:layout_constraintTop_toTopOf="@+id/img_shape_bai2"
          android:layout_marginLeft="5dp"
          />
     <TextView
+        android:id="@+id/text_quanbudingdan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="全部订单"
         android:textColor="#000000"
         android:textSize="15sp"
         app:layout_constraintRight_toRightOf="@+id/img_shape_bai2"
-        app:layout_constraintTop_toTopOf="@+id/img_shape_bai2"
+        app:layout_constraintTop_toTopOf="@+id/text_dingdan"
         android:drawableRight="@drawable/youjiantou"
-        android:layout_marginRight="5dp"
+        android:drawablePadding="6dp"
+        android:layout_marginRight="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/text_dingdan"
 
         />
-      <view
+      <View
           android:id="@+id/view"
           android:layout_width="0dp"
           android:layout_height="0.5dp"
           app:layout_constraintTop_toBottomOf="@+id/text_dingdan"
           app:layout_constraintLeft_toLeftOf="@+id/img_shape_bai2"
           app:layout_constraintRight_toRightOf="@+id/img_shape_bai2"
-          android:layout_marginLeft="5dp"
           android:layout_marginTop="5dp"
+          android:background="@color/orange"
           />
     <LinearLayout
         android:layout_width="match_parent"
@@ -197,14 +215,16 @@
         android:orientation="horizontal"
         app:layout_constraintTop_toTopOf="@+id/view"
         app:layout_constraintBottom_toBottomOf="@+id/img_shape_bai2"
-
+        android:padding="10dp"
         android:layout_weight="1"
         >
         <TextView
+            android:id="@+id/text_daifukuan"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:drawableTop="@drawable/daifukuan"
+            android:drawablePadding="6dp"
             android:text="代付款"
             android:textColor="#646262"
             android:layout_marginTop="5dp"
@@ -212,30 +232,36 @@
 
             />
         <TextView
+            android:id="@+id/text_daifahuo"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:drawableTop="@drawable/daifahuo"
+            android:drawablePadding="6dp"
             android:text="代发货"
             android:textColor="#646262"
             android:layout_marginTop="5dp"
             android:gravity="center_horizontal"
             />
         <TextView
+            android:id="@+id/text_daishouhuo"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:drawableTop="@drawable/daishouhuo"
+            android:drawablePadding="6dp"
             android:text="代收货"
             android:textColor="#646262"
             android:layout_marginTop="5dp"
             android:gravity="center_horizontal"
             />
         <TextView
+            android:id="@+id/text_yiwancheng"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:drawableTop="@drawable/yiwancheng"
+            android:drawablePadding="6dp"
             android:text="已完成"
             android:textColor="#646262"
             android:layout_marginTop="5dp"
@@ -246,7 +272,7 @@
     <ImageView
         android:id="@+id/img_shape_bai3"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="200dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="20dp"
@@ -260,22 +286,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="我的服务"
+        android:padding="10dp"
         android:textColor="#000000"
-        android:textSize="25sp"
+        android:textSize="20sp"
         app:layout_constraintLeft_toLeftOf="@+id/img_shape_bai3"
         app:layout_constraintTop_toTopOf="@+id/img_shape_bai3"
         android:layout_marginLeft="5dp"
         />
 
-    <view
+    <View
         android:id="@+id/view1"
         android:layout_width="0dp"
         android:layout_height="0.5dp"
         app:layout_constraintTop_toBottomOf="@+id/text_fuwu"
         app:layout_constraintLeft_toLeftOf="@+id/img_shape_bai3"
         app:layout_constraintRight_toRightOf="@+id/img_shape_bai3"
-        android:layout_marginLeft="5dp"
         android:layout_marginTop="5dp"
+        android:background="@color/orange"
         />
     <LinearLayout
         android:id="@+id/ll_fuwu"
@@ -283,13 +310,17 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintTop_toTopOf="@+id/view1"
+        app:layout_constraintBottom_toTopOf="@+id/ll_fuwu2"
         android:layout_weight="1"
+        android:padding="10dp"
         >
         <TextView
+            android:id="@+id/text_tuiguangyongjing"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:drawableTop="@drawable/tgyongjing"
+            android:drawablePadding="6dp"
             android:text="推广佣金"
             android:textColor="#646262"
             android:layout_marginTop="5dp"
@@ -297,30 +328,36 @@
 
             />
         <TextView
+            android:id="@+id/text_wodetuandui"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:drawableTop="@drawable/wdtuandui"
+            android:drawablePadding="6dp"
             android:text="我的团队"
             android:textColor="#646262"
             android:layout_marginTop="5dp"
             android:gravity="center_horizontal"
             />
         <TextView
+            android:id="@+id/text_shouhuodizi"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:drawableTop="@drawable/dizi"
+            android:drawablePadding="6dp"
             android:text="收货地址"
             android:textColor="#646262"
             android:layout_marginTop="5dp"
             android:gravity="center_horizontal"
             />
         <TextView
+            android:id="@+id/text_yejiyuefan"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:drawableTop="@drawable/yejiyuefan"
+            android:drawablePadding="6dp"
             android:text="业绩月返"
             android:textColor="#646262"
             android:layout_marginTop="5dp"
@@ -328,17 +365,22 @@
             />
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/ll_fuwu2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@+id/ll_fuwu"
+        app:layout_constraintBottom_toBottomOf="@+id/img_shape_bai3"
         android:layout_weight="1"
+        android:padding="10dp"
         >
         <TextView
+            android:id="@+id/text_wodekefu"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:drawableTop="@drawable/wodekefu"
+            android:drawablePadding="6dp"
             android:text="我的客服"
             android:textColor="#646262"
             android:layout_marginTop="5dp"
@@ -352,6 +394,7 @@
             android:textColor="#646262"
             android:layout_marginTop="5dp"
             android:gravity="center_horizontal"
+            android:drawablePadding="6dp"
 
             />
         <TextView
@@ -361,6 +404,7 @@
             android:textColor="#646262"
             android:layout_marginTop="5dp"
             android:gravity="center_horizontal"
+            android:drawablePadding="6dp"
 
             />
         <TextView
@@ -370,8 +414,11 @@
             android:textColor="#646262"
             android:layout_marginTop="5dp"
             android:gravity="center_horizontal"
+            android:drawablePadding="6dp"
 
             />
     </LinearLayout>
+   </androidx.constraintlayout.widget.ConstraintLayout>
 
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
