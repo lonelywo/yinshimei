@@ -1,32 +1,18 @@
-package com.example.enticement.widget;
+package com.example.enticement.plate.common.popup;
 
 import android.content.Context;
-import android.content.Intent;
-import android.text.TextUtils;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-
 import com.cuci.enticement.R;
-import com.example.enticement.bean.GeneralGoodsItem;
 import com.example.enticement.bean.HomeDetailsBean;
 import com.example.enticement.utils.DimensionUtils;
 import com.lxj.xpopup.core.BottomPopupView;
 
-import java.util.Locale;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class ShareBottom2TopProdPopup extends BottomPopupView {
 
@@ -41,7 +27,6 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
 
    @BindView(R.id.container)
    ConstraintLayout mContainer;
-
     public ShareBottom2TopProdPopup(@NonNull Context context, HomeDetailsBean.DataBean item, int code) {
         super(context);
         mContext = context;

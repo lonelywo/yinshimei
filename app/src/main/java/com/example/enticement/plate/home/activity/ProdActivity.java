@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -20,9 +19,9 @@ import com.example.enticement.bean.HomeDetailsBean;
 import com.example.enticement.bean.Status;
 import com.example.enticement.plate.common.GlideImageLoader;
 
+import com.example.enticement.plate.common.popup.ShareBottom2TopProdPopup;
 import com.example.enticement.plate.home.vm.HomeViewModel;
 import com.example.enticement.utils.FToast;
-import com.example.enticement.widget.ShareBottom2TopProdPopup;
 import com.example.enticement.widget.SmoothScrollview;
 import com.lxj.xpopup.XPopup;
 import com.tencent.smtt.sdk.WebView;
@@ -32,7 +31,6 @@ import com.youth.banner.BannerConfig;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class ProdActivity extends BaseActivity {
