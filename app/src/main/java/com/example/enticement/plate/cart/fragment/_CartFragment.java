@@ -86,7 +86,7 @@ public class _CartFragment extends BaseFragment implements OnRefreshLoadMoreList
 
     private void load() {
 
-        mViewModel.getCartList("","37","", Status.LOAD_REFRESH);
+        mViewModel.getCartList("","37","", Status.LOAD_REFRESH).observe(this, mObserver);
 
     }
 
