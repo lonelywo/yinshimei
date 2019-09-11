@@ -4,7 +4,9 @@
     <!-- 填充的颜色 -->
     <solid android:color="#ffffff" />
 
-
+    <stroke android:width="2dp"
+        android:color="@color/orange"
+        />
     <corners
         android:radius="3dp"
         />

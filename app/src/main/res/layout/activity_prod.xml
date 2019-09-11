@@ -128,7 +128,7 @@
       android:textColor="#ffffff"
       android:text="立即购买"
       android:gravity="center"
-      android:background="#E6BD1A"
+      android:background="@color/orange"
       android:padding="15dp"
       />
 

@@ -102,7 +102,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="+"
-            android:background="@drawable/shape_popup_button_bg3"
+            android:background="@drawable/shape_youbian_hui_bg3"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
             android:paddingLeft="10dp"
@@ -117,7 +117,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="10"
-            android:background="@drawable/shape_popup_button_bg2"
+            android:background="@drawable/shape_sibian_hui_bg2"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
             android:paddingLeft="10dp"
@@ -131,7 +131,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="-"
-            android:background="@drawable/shape_popup_button_bg4"
+            android:background="@drawable/shape_zuobian_hui_bg4"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
             android:paddingLeft="13dp"
@@ -150,7 +150,7 @@
             android:text="确定"
             android:textSize="20sp"
             android:textColor="#ffffff"
-            android:background="@drawable/shape_popup_button_bg1"
+            android:background="@drawable/shape_sibian_huang_bg1"
             />
 
 
