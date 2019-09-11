@@ -3,103 +3,144 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-  <ImageView
-
-      android:layout_width="0dp"
-      android:layout_height="0dp"
-      app:layout_constraintDimensionRatio="750:500"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent" />
-
+    android:layout_height="match_parent"
+    android:background="#ffffff">
   <androidx.constraintlayout.widget.ConstraintLayout
-      android:id="@+id/container"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:fitsSystemWindows="true"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <TextView
+      android:id="@+id/title_tv"
       android:layout_width="0dp"
-      android:layout_height="0dp"
-      android:fitsSystemWindows="true"
-      app:layout_constraintBottom_toBottomOf="parent"
+      android:layout_height="48dp"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent">
-    <TextView
-        android:id="@+id/image_top"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="素材库"
-        android:textColor="#000000"
-        android:textSize="17sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/image_back"
-        app:layout_constraintBottom_toBottomOf="@id/image_back"
-        />
+      app:layout_constraintTop_toTopOf="parent"
+      android:text="购物车"
+      android:textColor="@color/hei"
+      android:textSize="18sp"
+      android:gravity="center"
+      android:background="@color/colorWhite"
+      />
 
-    <ImageView
-        android:id="@+id/image_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackground"
-        android:paddingLeft="12dp"
-        android:paddingTop="16dp"
-        android:paddingRight="12dp"
-        android:paddingBottom="16dp"
-        android:src="@mipmap/ic_launcher"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
 
-    <com.classic.common.MultipleStatusView
-        android:id="@+id/status_view"
+      <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refresh_layout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="10dp"
-        app:emptyView="@layout/custom_empty_view"
-        app:errorView="@layout/custom_error_view"
+        android:focusableInTouchMode="true"
+        app:layout_constraintBottom_toTopOf="@+id/bottom"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_tv">
+
+        <androidx.recyclerview.widget.RecyclerView
+          android:id="@+id/recycler_view"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:background="#F3F4F6"
+          android:overScrollMode="never"
+          />
+
+      </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+      android:id="@+id/bottom"
+      android:layout_width="0dp"
+      android:layout_height="48dp"
+      android:background="@color/hei"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent">
+
+      <CheckBox
+        android:id="@+id/rb_check_all"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:button="@drawable/selector_settings_share_writing_cb"
+        android:paddingStart="6dp"
+        android:paddingEnd="6dp"
+        android:text="全选"
+        android:textColor="@color/colorWhite"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:checked="true"/>
+
+
+
+
+
+
+      <TextView
+        android:id="@+id/tv_commit"
+        android:layout_width="80dp"
+        android:layout_height="0dp"
+        android:text="结算"
+        android:gravity="center"
+        android:textColor="@color/colorWhite"
+        android:background="@color/orange"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image_back"
-        app:loadingView="@layout/custom_loading_view"
-        app:noNetworkView="@layout/custom_no_network_view">
+        app:layout_constraintTop_toTopOf="parent" />
 
 
-      <androidx.constraintlayout.widget.ConstraintLayout
-          android:layout_width="match_parent"
-          android:layout_height="match_parent">
+      <TextView
+        android:id="@+id/tv_total_money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:text="3600"
+        android:textColor="#999999"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv_commit"
+        app:layout_constraintTop_toTopOf="parent"/>
 
-        <com.flyco.tablayout.SlidingTabLayout
-            android:id="@+id/tab_layout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:paddingBottom="6dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tl_indicator_height="0dp"
-            app:tl_tab_padding="8dp"
-            app:tl_tab_space_equal="true"
-            app:tl_textsize="16sp"
-            app:tl_textSelectColor="#000000"
-            app:tl_textUnselectColor="#E6E6E6"
-            />
+      <TextView
+        android:id="@+id/tv1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="2dp"
+        android:text="合计:"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv_total_money"
+        app:layout_constraintTop_toTopOf="parent"/>
 
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/view_pager"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tab_layout"/>
+      <TextView
+        android:id="@+id/tv_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:background="@drawable/shape_popup_button_bg"
+        android:paddingStart="12dp"
+        android:paddingTop="4dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="4dp"
+        android:text="删除"
+        android:textColor="#999999"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv1"
+        app:layout_constraintTop_toTopOf="parent"/>
 
-      </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    </com.classic.common.MultipleStatusView>
 
 
-  </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -162,10 +162,12 @@ public class _MallFragment01 extends BaseFragment implements OnRefreshLoadMoreLi
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-        if(mCanLoadMore=true){
+        if(mCanLoadMore){
             mCanLoadMore = false;
             mViewModel.getSource01(mtype, String.valueOf(page),PAGE_SIZE,
                     Status.LOAD_MORE).observe(this, mObserver);
+        }else {
+            mRefreshLayout.finishLoadMore();
         }
 
     }
