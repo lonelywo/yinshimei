@@ -164,8 +164,9 @@ public class _HomeFragment extends BaseFragment  implements ItemBannerViewBinder
                     mRefreshLayout.finishLoadMore();
                     break;
                 case Status.ERROR:
-                    mRefreshLayout.finishLoadMore();
-                    FToast.error(baseListStatus.message);
+                    mRefreshLayout.finishRefresh();
+
+                    FToast.error("网络请求失败");
                     break;
             }
             mCanLoadMore = true;

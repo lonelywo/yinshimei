@@ -20,8 +20,8 @@ public class ServiceCreator {
     private volatile static ServiceCreator mInstance;
 
 
-    //private static final String BASE_URL = "https://yinshimei2.xd.cuci.cc/";
-      private static final String BASE_URL = "http://192.168.2.152:809/";
+    private static final String BASE_URL = "https://yinshimei2.xd.cuci.cc/";
+    //private static final String BASE_URL = "http://192.168.2.152:809/";
 
     private final Retrofit mRetrofit;
 
