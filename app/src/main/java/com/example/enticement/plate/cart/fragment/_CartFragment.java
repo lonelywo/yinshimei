@@ -21,6 +21,7 @@ import com.example.enticement.base.BaseFragment;
 import com.example.enticement.bean.CartListBean;
 import com.example.enticement.bean.OrderResult;
 import com.example.enticement.bean.Status;
+import com.example.enticement.plate.cart.activity.OrderActivity;
 import com.example.enticement.plate.cart.adapter.ItemCartViewBinder;
 import com.example.enticement.plate.cart.vm.CartViewModel;
 import com.example.enticement.utils.FToast;
