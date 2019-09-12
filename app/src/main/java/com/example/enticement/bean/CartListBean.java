@@ -158,6 +158,15 @@ public class CartListBean {
             private String goods_price_selling;
             private String goods_price_market;
             private int goods_num;
+            private boolean check;
+
+            public boolean isCheck() {
+                return check;
+            }
+
+            public void setCheck(boolean check) {
+                this.check = check;
+            }
 
             public int getCart_id() {
                 return cart_id;

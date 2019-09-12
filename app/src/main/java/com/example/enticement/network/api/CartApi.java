@@ -3,6 +3,7 @@ package com.example.enticement.network.api;
 
 import com.example.enticement.bean.Base;
 import com.example.enticement.bean.CartListBean;
+import com.example.enticement.bean.OrderResult;
 import com.example.enticement.bean.Version;
 
 import retrofit2.Call;
@@ -16,7 +17,7 @@ public interface CartApi {
 
 
     /**
-     * 获取版本更新信息
+     * 获取购物车列表
      */
     @FormUrlEncoded
     @POST("store/api.member.Cart/cartList")
@@ -24,5 +25,39 @@ public interface CartApi {
                                    @Field("mid") String mid,
                                    @Field("page") String page);
 
+
+    /**
+     * 提交购物车订单
+     */
+    @FormUrlEncoded
+    @POST("store/api.member.order/set")
+    Call<OrderResult> commitOrder(@Field("openid") String openId,
+                                  @Field("mid") String mid,
+                                  @Field("rule") String rule,
+                                  @Field("from_mid") String fromMid);
+
+
+
+
+
+    /**
+     * 购物车修改
+     */
+    @FormUrlEncoded
+    @POST("store/api.member.Cart/dealBuy")
+    Call<CartListBean> cartChange(@Field("openid") String openId,
+                                  @Field("mid") String mid,
+                                  @Field("goods_id") String goodsId,
+                                  @Field("goods_spec") String goodsSpec,
+                                  @Field("goods_num") String goodsNum);
+
+    /**
+     * 购物车删除
+     */
+    @FormUrlEncoded
+    @POST("store/api.member.Cart/del")
+    Call<CartListBean> cartDelete(@Field("openid") String openId,
+                                 @Field("mid") String mid,
+                                 @Field("cart_id") String cartId);
 
 }
