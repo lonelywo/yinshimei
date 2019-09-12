@@ -1,12 +1,81 @@
 package com.example.enticement.plate.common;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.cuci.enticement.R;
 import com.example.enticement.base.BaseActivity;
+import com.example.enticement.bean.Base;
+import com.example.enticement.bean.Status;
+import com.example.enticement.plate.common.vm.RegActivityViewModel;
+import com.example.enticement.utils.FLog;
+import com.example.enticement.utils.FToast;
+import com.example.enticement.utils.Re;
+import com.example.enticement.utils.SharedPrefUtils;
+import com.example.enticement.widget.ClearEditText;
+
+import java.lang.ref.WeakReference;
+
+import javax.security.auth.login.LoginException;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class RegisterActivity extends BaseActivity {
 
+
+    @BindView(R.id.image_top)
+    TextView imageTop;
+    @BindView(R.id.image_back)
+    ImageView imageBack;
+    @BindView(R.id.con_title)
+    ConstraintLayout conTitle;
+    @BindView(R.id.text_suosu)
+    TextView textSuosu;
+    @BindView(R.id.text_guojia)
+    TextView textGuojia;
+    @BindView(R.id.img_youjiantou)
+    ImageView imgYoujiantou;
+    @BindView(R.id.viem_line)
+    View viemLine;
+    @BindView(R.id.edt_phone)
+    ClearEditText edtPhone;
+    @BindView(R.id.viem_line1)
+    View viemLine1;
+    @BindView(R.id.text_shoujihao)
+    TextView textShoujihao;
+    @BindView(R.id.text_yanzhengma)
+    TextView textYanzhengma;
+    @BindView(R.id.edt_code)
+    EditText edtCode;
+    @BindView(R.id.tv_code)
+    TextView tvCode;
+    @BindView(R.id.view_line)
+    View viewLine;
+    @BindView(R.id.text_tuijianren)
+    TextView textTuijianren;
+    @BindView(R.id.edt_code_tuijian)
+    EditText edtCodeTuijian;
+    @BindView(R.id.ok)
+    TextView ok;
+    @BindView(R.id.con_zhongjian)
+    ConstraintLayout conZhongjian;
+    private Handler mTimeHandler = new Handler();
+    private RegActivityViewModel mViewModel;
+    private String guojiacode;
 
     @Override
     public int getLayoutId() {
@@ -15,6 +84,138 @@ public class RegisterActivity extends BaseActivity {
 
     @Override
     public void initViews(Bundle savedInstanceState) {
+        mViewModel = ViewModelProviders.of(this).get(RegActivityViewModel.class);
+    }
+
+
+
+    @OnClick({R.id.tv_code, R.id.ok,R.id.image_back})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.tv_code:
+                sendSmsCode();
+                break;
+            case R.id.ok:
+
+                register();
+                break;
+            case R.id.image_back:
+               finish();
+
+                break;
+        }
+    }
+
+    private void register() {
+
+        String phone = edtPhone.getText().toString().trim();
+        String smsCode = edtCode.getText().toString().trim();
+        String inviteCode = edtCodeTuijian.getText().toString().trim();
+
+        if (TextUtils.isEmpty(inviteCode) || TextUtils.isEmpty(phone)
+                || TextUtils.isEmpty(smsCode) ) {
+            FToast.warning("请填写完整");
+            return;
+        }
+        if (TextUtils.isEmpty(inviteCode)) {
+            FToast.warning("请填写正确的推荐人手机号");
+            return;
+        }
+        mViewModel.register(phone,smsCode,inviteCode).observe(this, mObserver);
 
     }
+    private Observer<Status<Base>> mObserver = new Observer<Status<Base>>() {
+        @Override
+        public void onChanged(Status<Base> baseStatus) {
+            switch (baseStatus.status) {
+                case Status.LOADING:
+                    RegisterActivity.this.showLoading();
+                    break;
+                case Status.ERROR:
+                    RegisterActivity.this.dismissLoading();
+                    break;
+                case Status.SUCCESS:
+                    RegisterActivity.this.dismissLoading();
+                    if (baseStatus.content == null) {
+                        FToast.error("请求错误，请稍后再试。");
+                        return;
+                    }
+                    if (baseStatus.content.code == 1) {
+                        FToast.success("注册成功，请登录");
+                      finish();
+                    } else {
+                        FToast.error(baseStatus.content.msg);
+                    }
+                    break;
+            }
+        }
+    };
+
+    private void sendSmsCode() {
+
+        String phone = edtPhone.getText().toString().trim();
+        String guojia = textGuojia.getText().toString();
+        if (TextUtils.isEmpty(phone) || !Re.is11Number(phone)) {
+            FToast.warning("请填写正确的手机号");
+            return;
+        }
+        if(guojia.equals("中国")){
+            guojiacode ="86";
+        }else {
+            guojiacode ="60";
+        }
+
+        mViewModel.getSmsCode(phone, "cuci", "86").observe(this, mSmsCodeObserver);
+
+    }
+    private Observer<Status<Base>> mSmsCodeObserver = new Observer<Status<Base>>() {
+        @Override
+        public void onChanged(Status<Base> baseStatus) {
+            switch (baseStatus.status) {
+                case Status.SUCCESS:
+                    RegisterActivity.this.dismissLoading();
+                    if (baseStatus.content == null) {
+                        FToast.error("请求错误，请稍后再试。");
+                        return;
+                    }
+                    FLog.e("zhuceyanzhengma",baseStatus.content.toString());
+                    if (baseStatus.content.code == 1) {
+                        textYanzhengma.setClickable(false);
+                        textYanzhengma.setTag(60);
+                        textYanzhengma.setBackground(ContextCompat.getDrawable(RegisterActivity.this,
+                                R.drawable.shape_login_get_code_gray));
+                        FToast.success("短信发送成功");
+                        run.run();
+                    } else {
+                        FToast.error(baseStatus.content.msg);
+                    }
+                    break;
+                case Status.LOADING:
+                    RegisterActivity.this.showLoading();
+                    break;
+                case Status.ERROR:
+                    RegisterActivity.this.dismissLoading();
+                    FToast.error("网络错误");
+                    break;
+            }
+        }
+    };
+
+    private Runnable run = new Runnable() {
+        @Override
+        public void run() {
+            int a = (int) textYanzhengma.getTag();
+            textYanzhengma.setTag(a - 1);
+            textYanzhengma.setText("重新获取(" + a + "s)");
+            if (a > 0) {
+                mTimeHandler.postDelayed(run, 1000L);
+            } else {
+                textYanzhengma.setClickable(true);
+                textYanzhengma.setText("获取验证码");
+            }
+        }
+    };
+
+
+
 }

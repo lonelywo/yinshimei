@@ -39,14 +39,14 @@
             app:layout_constraintLeft_toRightOf="@+id/img_tuxiang"
             android:layout_marginLeft="50dp"
             />
-        <ImageView
+       <!-- <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/youjiantou"
+            android:src="@drawable/cha"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:padding="10dp"
-            />
+            />-->
         <TextView
             android:id="@+id/text_fenzu"
             android:layout_width="wrap_content"

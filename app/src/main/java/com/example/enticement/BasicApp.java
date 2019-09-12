@@ -5,6 +5,9 @@ import android.os.Build;
 import android.os.StrictMode;
 
 
+import com.cuci.enticement.BuildConfig;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import org.litepal.LitePal;
 
@@ -17,7 +20,7 @@ public class BasicApp extends Application {
     private static BasicApp mContext;
     private static AppExecutors mAppExecutors;
 
-   // private static IWXAPI mIWXAPI;
+    private static IWXAPI mIWXAPI;
 
     @Override
     public void onCreate() {
@@ -28,7 +31,9 @@ public class BasicApp extends Application {
         LitePal.initialize(this);
 
 
-
+        //注册微信分享，第三个参数为是否检查signature，正式发布改为true
+        mIWXAPI = WXAPIFactory.createWXAPI(this, Constant.WX_APP_ID, !BuildConfig.DEBUG);
+        mIWXAPI.registerApp(Constant.WX_APP_ID);
 
       //严格模式下，会调用 检测FileUriExposure
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -39,7 +44,9 @@ public class BasicApp extends Application {
     }
 
 
-
+    public static IWXAPI getIWXAPI() {
+        return mIWXAPI;
+    }
     public static AppExecutors getAppExecutors() {
         return mAppExecutors;
     }

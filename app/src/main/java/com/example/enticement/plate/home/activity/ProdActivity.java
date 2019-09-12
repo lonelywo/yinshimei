@@ -1,6 +1,7 @@
 package com.example.enticement.plate.home.activity;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -17,8 +18,11 @@ import com.example.enticement.bean.BannerDataBean;
 
 import com.example.enticement.bean.HomeDetailsBean;
 import com.example.enticement.bean.Status;
+import com.example.enticement.bean.UserInfo;
+import com.example.enticement.network.ServiceCreator;
 import com.example.enticement.plate.common.GlideImageLoader;
 
+import com.example.enticement.plate.common.LoginActivity;
 import com.example.enticement.plate.common.popup.ShareBottom2TopProdPopup;
 import com.example.enticement.plate.home.vm.HomeViewModel;
 import com.example.enticement.utils.FToast;
@@ -162,8 +166,28 @@ public class ProdActivity extends BaseActivity {
                         .show();
                 break;
             case R.id.iv_to_top:
-                scrollDetails.smoothScrollTo(0,0);
+               // scrollDetails.smoothScrollTo(0,0);
+                startActivity(new Intent(ProdActivity.this, LoginActivity.class));
                 break;
         }
     }
+    /**
+     * 判断账号是否登录
+     */
+  /*  public boolean isAllowPermission(Context context) {
+        UserInfo userInfo = ServiceCreator.getInstance().getUserInfo();
+        if (userInfo != null) {
+            if ("0".equals(userInfo.getNeedAuth())) {
+                return true;
+            } else {
+                Intent intent = new Intent(context, TBAuthActivity.class);
+                intent.putExtra(TBAuthActivity.AUTH_URL, userInfo.getAuthUrl());
+                context.startActivity(intent);
+                return false;
+            }
+        } else {
+            context.startActivity(new Intent(context, LoginActivity.class));
+            return false;
+        }
+    }*/
 }

@@ -53,7 +53,7 @@ public class ImageLoader {
 
         RequestOptions options = new RequestOptions()
                 .transform(new RoundedCorners(round))
-                .placeholder(R.mipmap.ic_launcher);
+                .placeholder(R.drawable.tuxiang);
 
         Glide.with(BasicApp.getContext())
                 .load(url)
