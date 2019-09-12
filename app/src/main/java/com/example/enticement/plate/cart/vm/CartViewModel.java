@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.enticement.bean.Base;
 import com.example.enticement.bean.CartListBean;
+import com.example.enticement.bean.OrderResult;
 import com.example.enticement.bean.Status;
 import com.example.enticement.bean.Version;
 import com.example.enticement.network.ServiceCreator;
@@ -62,6 +63,76 @@ public class CartViewModel extends ViewModel {
         return data;
     }
 
+
+
+    public MutableLiveData<Status<CartListBean>> cartChange(String openId,String mid,String goodsId,String goodsSpec,String goodsNum) {
+
+        final MutableLiveData<Status<CartListBean>> data = new MutableLiveData<>();
+        data.setValue(Status.loading(null));
+        mCreator.create(CartApi.class)
+                .cartChange(openId,mid,goodsId,goodsSpec,goodsNum)
+                .enqueue(new Callback<CartListBean>() {
+                    @Override
+                    public void onResponse(@NonNull Call<CartListBean> call,
+                                           @NonNull Response<CartListBean> response) {
+                        data.setValue(Status.success(response.body()));
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<CartListBean> call,
+                                          @NonNull Throwable t) {
+                        data.setValue(Status.error(null, t.getMessage() == null ? "获取失败" : t.getMessage()));
+                    }
+                });
+        return data;
+    }
+
+
+    public MutableLiveData<Status<CartListBean>> cartDelete(String openId,String mid,String cartId) {
+
+        final MutableLiveData<Status<CartListBean>> data = new MutableLiveData<>();
+        data.setValue(Status.loading(null));
+        mCreator.create(CartApi.class)
+                .cartDelete(openId,mid,cartId)
+                .enqueue(new Callback<CartListBean>() {
+                    @Override
+                    public void onResponse(@NonNull Call<CartListBean> call,
+                                           @NonNull Response<CartListBean> response) {
+                        data.setValue(Status.success(response.body()));
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<CartListBean> call,
+                                          @NonNull Throwable t) {
+                        data.setValue(Status.error(null, t.getMessage() == null ? "获取失败" : t.getMessage()));
+                    }
+                });
+        return data;
+    }
+
+
+
+    public MutableLiveData<Status<OrderResult>> commitOrder(String openId,String mid,String rule,String fromMid) {
+
+        final MutableLiveData<Status<OrderResult>> data = new MutableLiveData<>();
+        data.setValue(Status.loading(null));
+        mCreator.create(CartApi.class)
+                .commitOrder(openId,mid,rule,fromMid)
+                .enqueue(new Callback<OrderResult>() {
+                    @Override
+                    public void onResponse(@NonNull Call<OrderResult> call,
+                                           @NonNull Response<OrderResult> response) {
+                        data.setValue(Status.success(response.body()));
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<OrderResult> call,
+                                          @NonNull Throwable t) {
+                        data.setValue(Status.error(null, t.getMessage() == null ? "获取失败" : t.getMessage()));
+                    }
+                });
+        return data;
+    }
 
 
 

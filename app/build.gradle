@@ -66,6 +66,7 @@ dependencies {
     implementation 'com.classic.common:multiple-status-view:1.6'
     implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:3.0.0'
     implementation files('libs/tbs_sdk_thirdapp_v4.3.0.1020_43633_sharewithdownload_withoutGame_obfs_20190111_105200.jar')
+    implementation 'com.yanzhenjie.recyclerview:x:1.3.2'
     implementation 'com.github.jdsjlzx:LRecyclerView:1.5.4.3'
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
 }
