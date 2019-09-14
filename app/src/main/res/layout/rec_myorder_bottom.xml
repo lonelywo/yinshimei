@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingBottom="20dp"
+    android:paddingEnd="20dp"
+    android:paddingStart="20dp"
+    >
+
+
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@drawable/shape_login_edit_bottom_line"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="10dp"
+        />
+    <TextView
+        android:id="@+id/text_shuliang"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="共1件商品"
+        android:textColor="@color/hei"
+        app:layout_constraintTop_toBottomOf="@+id/line"
+        app:layout_constraintStart_toStartOf="parent"
+         android:layout_marginTop="10dp"
+        />
+    <TextView
+        android:id="@+id/text_heji"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="合计：3600"
+        android:textColor="@color/hei"
+        app:layout_constraintTop_toBottomOf="@+id/line"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"
+        />
+    <View
+        android:id="@+id/line2"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@drawable/shape_login_edit_bottom_line"
+        app:layout_constraintTop_toBottomOf="@+id/text_heji"
+        android:layout_marginTop="10dp"
+        />
+    <TextView
+        android:id="@+id/text_quxiao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_sibian_bai_bg6"
+        app:layout_constraintEnd_toStartOf="@+id/text_zhifu"
+        app:layout_constraintTop_toBottomOf="@+id/line2"
+        android:text="取消订单"
+        android:padding="5dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        />
+    <TextView
+        android:id="@+id/text_zhifu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="立即支付"
+        android:textColor="@color/colorWhite"
+        android:padding="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/line2"
+        android:background="@drawable/shape_sibian_huang_bg1"
+        android:layout_marginTop="10dp"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+

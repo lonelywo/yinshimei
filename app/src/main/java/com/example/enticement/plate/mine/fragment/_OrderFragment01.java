@@ -11,15 +11,26 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cuci.enticement.R;
 import com.example.enticement.base.BaseFragment;
+import com.example.enticement.bean.CartListBean;
+import com.example.enticement.bean.GeneralGoodsItem;
+import com.example.enticement.bean.ItemOrderBottom;
+import com.example.enticement.bean.ItemOrderTitle;
 import com.example.enticement.bean.MallSourceBean;
+import com.example.enticement.bean.OrderList;
 import com.example.enticement.bean.Status;
+import com.example.enticement.plate.cart.adapter.ItemCartViewBinder;
 import com.example.enticement.plate.mall.adapter.NineAdapter;
 import com.example.enticement.plate.mall.vm.MallViewModel;
+import com.example.enticement.plate.mine.adapter.ItemBottomViewBinder;
+import com.example.enticement.plate.mine.adapter.ItemProdViewBinder;
+import com.example.enticement.plate.mine.adapter.ItemTitleViewBinder;
 import com.example.enticement.utils.FToast;
+import com.example.enticement.widget.CartItemDecoration;
 import com.example.enticement.widget.CustomRefreshHeader;
 import com.example.enticement.widget.GridItemDecoration;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -29,11 +40,14 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import java.util.List;
 
 import butterknife.BindView;
+import me.drakeet.multitype.Items;
+import me.drakeet.multitype.MultiTypeAdapter;
 
 /**
  * 首页外层Fragment
  */
-public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreListener {
+public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreListener, ItemProdViewBinder.OnProdClickListener
+, ItemBottomViewBinder.OnItemClickListener {
 
     private static final String TAG = _OrderFragment01.class.getSimpleName();
 
@@ -42,15 +56,19 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
     private int page=1;
     private String mtype;
     private final String PAGE_SIZE="20";
-    private NineAdapter mAdapter;
+
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @BindView(R.id.refresh_layout)
     SmartRefreshLayout mRefreshLayout;
     @BindView(R.id.image_top)
     ImageView mIvTop;
-    private GridItemDecoration mDecoration;
-    private GridLayoutManager mLayoutManager;
+    private CartItemDecoration mDecoration;
+    private LinearLayoutManager mLayoutManager;
+    private MultiTypeAdapter mAdapter;
+    private Items mItems;
+
+
 
     public static _OrderFragment01 newInstance(String type) {
         Bundle args = new Bundle();
@@ -84,12 +102,19 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
 
        // mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         mLayoutManager = new GridLayoutManager(mActivity, 2);
-        mAdapter = new NineAdapter(mLayoutManager);
-
+        mAdapter = new MultiTypeAdapter();
+        mItems = new Items();
+        mAdapter.setItems(mItems);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mDecoration = new GridItemDecoration(mActivity, 2, 12, true);
+        mAdapter.register(ItemOrderTitle.class, new ItemTitleViewBinder());
+        mAdapter.register(OrderList.DataBean.OrderBean.GoodsBean.class, new ItemProdViewBinder(this));
+        mAdapter.register(ItemOrderBottom.class, new ItemBottomViewBinder(this));
+        CartItemDecoration mDecoration = new CartItemDecoration(mActivity, 4);
+
         mRecyclerView.addItemDecoration(mDecoration);
+        mLayoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false);
+        mRecyclerView.setLayoutManager(mLayoutManager);
 
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -123,11 +148,11 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
 
                     if (status.loadType == Status.LOAD_REFRESH) {
 
-                        mAdapter.setList(items);
+                     //   mAdapter.setList(items);
                         mAdapter.notifyDataSetChanged();
                         mRefreshLayout.finishRefresh();
                     } else {
-                        mAdapter.addList(items);
+                       // mAdapter.addList(items);
                         mRefreshLayout.finishLoadMore();
                     }
 
@@ -172,5 +197,54 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         load();
+    }
+
+
+
+    /**
+     * 查看订单详情
+     */
+    @Override
+    public void onProdClick(OrderList.DataBean.OrderBean.GoodsBean item) {
+
+    }
+
+
+    /**
+     * 取消订单
+     * @param itemOrderBottom
+     */
+    @Override
+    public void onCancel(ItemOrderBottom itemOrderBottom) {
+
+    }
+
+
+    /**
+     * 立即支付
+     * @param itemOrderBottom
+     */
+    @Override
+    public void onPay(ItemOrderBottom itemOrderBottom) {
+
+    }
+
+    /**
+     * 确认收货
+     * @param itemOrderBottom
+     */
+    @Override
+    public void onConfirmGoods(ItemOrderBottom itemOrderBottom) {
+
+    }
+
+
+    /**
+     * 查看物流
+     * @param itemOrderBottom
+     */
+    @Override
+    public void onViewLogistics(ItemOrderBottom itemOrderBottom) {
+
     }
 }

@@ -119,6 +119,7 @@
             android:text="黑金魅惑蕾丝面膜5片/盒*20，温柔高保湿洁面乳(30g)*20，因诗美菁纯赋活原生水*12，贵族美学*1，油纸*10，标贴*10，手提袋*10"
             app:layout_constraintLeft_toLeftOf="@+id/text_biaoti"
             app:layout_constraintTop_toBottomOf="@+id/text_biaoti"
+            app:layout_constraintRight_toRightOf="parent"
             />
         <TextView
             android:id="@+id/text_qian"
