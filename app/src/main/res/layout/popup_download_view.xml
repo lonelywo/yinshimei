@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/shape_popup_bg">
+
+    <TextView
+        android:id="@+id/tv"
+        style="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:paddingTop="24dp"
+        android:text="正在保存..."
+        android:textColor="#FE2D64"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/pb"
+        app:layout_constraintLeft_toLeftOf="@+id/pb"/>
+
+    <ProgressBar
+        android:id="@+id/pb"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:indeterminate="false"
+        android:indeterminateDrawable="@drawable/shape_update_progress_bar"       android:max="100"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="0%"
+        android:textSize="12sp"
+        app:layout_constraintRight_toRightOf="@+id/pb"
+        app:layout_constraintTop_toBottomOf="@+id/pb"/>
+
+
+    <!--<TextView
+        android:id="@+id/tv_background"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/shape_popup_button_bg"
+        android:paddingStart="24dp"
+        android:paddingTop="6dp"
+        android:paddingEnd="24dp"
+        android:paddingBottom="6dp"
+        android:text="后台下载"
+        android:textColor="#FE2D64"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_progress"/>-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

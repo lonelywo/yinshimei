@@ -10,11 +10,13 @@ import com.cuci.enticement.R;
 import com.example.enticement.base.BaseFragment;
 import com.example.enticement.bean.MallSourceBean;
 import com.example.enticement.bean.Status;
+import com.example.enticement.plate.common.popup.ImageViewerPopup;
 import com.example.enticement.plate.mall.adapter.NineAdapter;
 import com.example.enticement.plate.mall.vm.MallViewModel;
 import com.example.enticement.utils.FToast;
 import com.example.enticement.widget.CustomRefreshHeader;
 import com.example.enticement.widget.GridItemDecoration;
+import com.lxj.xpopup.XPopup;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
@@ -34,7 +36,7 @@ import butterknife.BindView;
 /**
  * 首页外层Fragment
  */
-public class _MallFragment01 extends BaseFragment implements OnRefreshLoadMoreListener {
+public class _MallFragment01 extends BaseFragment implements OnRefreshLoadMoreListener, NineAdapter.OnItemClickListener {
 
     private static final String TAG = _MallFragment01.class.getSimpleName();
 
@@ -85,8 +87,8 @@ public class _MallFragment01 extends BaseFragment implements OnRefreshLoadMoreLi
 
        // mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         mLayoutManager = new GridLayoutManager(mActivity, 2);
-        mAdapter = new NineAdapter(mLayoutManager);
-
+        mAdapter = new NineAdapter(mActivity,mLayoutManager);
+        mAdapter.setOnItemClickListener(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mDecoration = new GridItemDecoration(mActivity, 2, 12, true);
@@ -175,5 +177,10 @@ public class _MallFragment01 extends BaseFragment implements OnRefreshLoadMoreLi
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         load();
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+
     }
 }

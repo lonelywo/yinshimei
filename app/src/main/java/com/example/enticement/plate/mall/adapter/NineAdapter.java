@@ -1,13 +1,17 @@
 package com.example.enticement.plate.mall.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import com.cuci.enticement.R;
 import com.example.enticement.bean.MallSourceBean;
+import com.example.enticement.plate.common.popup.ImageViewerPopup;
 import com.example.enticement.utils.ImageLoader;
+import com.lxj.xpopup.XPopup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -26,9 +30,10 @@ public class NineAdapter extends RecyclerView.Adapter<NineAdapter.ViewHolder> {
     List<MallSourceBean.DataBean.ListBean> mList;
 
     private GridLayoutManager mLayoutManager;
-
-    public NineAdapter(GridLayoutManager layoutManager) {
+    private Context mcontext;
+    public NineAdapter(Context context,GridLayoutManager layoutManager) {
         mLayoutManager = layoutManager;
+        mcontext = context;
     }
 
     public void setList(List<MallSourceBean.DataBean.ListBean> list) {
@@ -71,8 +76,20 @@ public class NineAdapter extends RecyclerView.Adapter<NineAdapter.ViewHolder> {
              return;
          }
         MallSourceBean.DataBean.ListBean bean = mList.get(position);
+        List<String>  list=new  ArrayList<String>();
+        for (int i = 0; i <mList.size() ; i++) {
+            list.add(mList.get(i).getImage());
+        }
         ImageLoader.loadPlaceholder(bean.getImage(),holder.img_source);
-
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new XPopup.Builder(mcontext)
+                        .dismissOnTouchOutside(false)
+                        .asCustom(new ImageViewerPopup(mcontext,list,position))
+                        .show();
+            }
+        });
     }
 
     @Override
