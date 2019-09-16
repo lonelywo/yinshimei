@@ -83,7 +83,7 @@ public class HomeViewModel extends ViewModel {
     public MutableLiveData<Status<HomeDetailsBean>> getHomeDetails(String goods_id) {
 
         final MutableLiveData<Status<HomeDetailsBean>> data = new MutableLiveData<>();
-         String  stringA = "goods_id="+goods_id;
+        String  stringA = "goods_id="+goods_id;
         String sign = EncryptUtils.md5Encrypt(stringA+"&key=A8sUd9bqis3sN5GK6aF9JDFl5I9skPkd");
         String signs = sign.toUpperCase();
         mCreator.create(HomeApi.class)
