@@ -2,6 +2,8 @@ package com.example.enticement.plate.home.adapter;
 
 
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +11,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cuci.enticement.R;
+import com.example.enticement.Constant;
 import com.example.enticement.bean.GeneralGoodsItem;
+import com.example.enticement.plate.home.activity.ProdActivity;
 import com.example.enticement.utils.ImageLoader;
 
 
@@ -22,7 +26,11 @@ import me.drakeet.multitype.ItemViewBinder;
 
 public class ItemGoodsLongViewBinder extends ItemViewBinder<GeneralGoodsItem, ItemGoodsLongViewBinder.ViewHolder> {
 
+    private final Context mContext;
 
+        public ItemGoodsLongViewBinder(Context context){
+              mContext=context;
+          }
 
     @NonNull
     @Override
@@ -36,6 +44,14 @@ public class ItemGoodsLongViewBinder extends ItemViewBinder<GeneralGoodsItem, It
         ImageLoader.loadPlaceholder(item.getLogo(),holder.image_home);
         holder.text_home_goodsname.setText(item.getTitle());
         holder.text_home_money.setText("¥" + item.getLists().get(0).get(0).getSelling());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentProd = new Intent(mContext, ProdActivity.class);
+                intentProd.putExtra("bannerData",String.valueOf(item.getId()));
+                mContext.startActivity(intentProd);
+            }
+        });
 
     }
 

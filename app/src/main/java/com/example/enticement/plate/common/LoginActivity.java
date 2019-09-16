@@ -27,6 +27,7 @@ import com.example.enticement.bean.Status;
 import com.example.enticement.bean.UserInfo;
 import com.example.enticement.plate.common.vm.LoginViewModel;
 import com.example.enticement.plate.home.activity.ProdActivity;
+import com.example.enticement.plate.mine.fragment._MineFragment;
 import com.example.enticement.utils.FLog;
 import com.example.enticement.utils.FToast;
 import com.example.enticement.utils.Re;
@@ -66,13 +67,22 @@ public class LoginActivity extends BaseActivity {
     ImageView weixin;
     @BindView(R.id.text_weixindenglu)
     TextView textWeixindenglu;
-    public static final String ACTION_WX_LOGIN_SUCCEED = "com.fqapps.fdsh.plate.user.ACTION_WX_LOGIN_SUCCEED";
+    public static final String ACTION_WX_LOGIN_SUCCEED = "com.example.enticement.plate.user.ACTION_WX_LOGIN_SUCCEED";
     private LocalBroadcastManager mBroadcastManager;
     private static final String TAG = LoginActivity.class.getSimpleName();
     private LoginViewModel mViewModel;
     private String guojiacode;
     private Handler mTimeHandler = new Handler();
+    private boolean mShowContract = false;
+    public interface OnLoginListener {
+        void onLoginSucceed(UserInfo userInfo, boolean showContract);
+    }
 
+    private OnLoginListener mOnLoginListener;
+
+    public void setOnLoginListener(OnLoginListener onLoginListener) {
+        mOnLoginListener = onLoginListener;
+    }
     @Override
     public int getLayoutId() {
         return R.layout.activity_login;
@@ -143,8 +153,17 @@ public class LoginActivity extends BaseActivity {
                         return;
                     }
                     if (baseStatus.content.code == 1) {
+                        UserInfo userInfo =baseStatus.content.data;
                         FToast.success("注册成功，请登录");
                         finish();
+                        Intent intent = new Intent(_MineFragment.ACTION_LOGIN_SUCCEED);
+                        intent.putExtra(_MineFragment.DATA_USER_INFO, userInfo);
+                        LocalBroadcastManager.getInstance(LoginActivity.this).sendBroadcast(intent);
+
+
+                        if (mOnLoginListener != null) {
+                            mOnLoginListener.onLoginSucceed(userInfo, mShowContract);
+                        }
                     } else {
                         FToast.error(baseStatus.content.msg);
                     }
@@ -176,14 +195,14 @@ public class LoginActivity extends BaseActivity {
                     }
                     FLog.e("dengluyanzhengma",baseStatus.content.toString());
                     if (baseStatus.content.code == 1) {
-                        textYanzhengma.setClickable(false);
-                        textYanzhengma.setTag(60);
-                        textYanzhengma.setBackground(ContextCompat.getDrawable(LoginActivity.this,
+                        tvCode.setClickable(false);
+                        tvCode.setTag(60);
+                        tvCode.setBackground(ContextCompat.getDrawable(LoginActivity.this,
                                 R.drawable.shape_login_get_code_gray));
-                        FToast.success("短信发送成功");
+                        FToast.success(baseStatus.content.info);
                         run.run();
                     } else {
-                        FToast.error(baseStatus.content.msg);
+                        FToast.error(baseStatus.content.info);
                     }
                     break;
                 case Status.LOADING:
@@ -256,14 +275,16 @@ public class LoginActivity extends BaseActivity {
     private Runnable run = new Runnable() {
         @Override
         public void run() {
-            int a = (int) textYanzhengma.getTag();
-            textYanzhengma.setTag(a - 1);
-            textYanzhengma.setText("重新获取(" + a + "s)");
+            int a = (int) tvCode.getTag();
+            tvCode.setTag(a - 1);
+            tvCode.setText("重新获取(" + a + "s)");
             if (a > 0) {
                 mTimeHandler.postDelayed(run, 1000L);
             } else {
-                textYanzhengma.setClickable(true);
-                textYanzhengma.setText("获取验证码");
+                tvCode.setClickable(true);
+                tvCode.setText("获取验证码");
+                tvCode.setBackground(ContextCompat.getDrawable(LoginActivity.this,
+                        R.drawable.shape_sibian_bai_bg5));
             }
         }
     };

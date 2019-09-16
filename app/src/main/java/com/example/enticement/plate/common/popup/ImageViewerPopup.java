@@ -4,6 +4,9 @@ import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.viewpager.widget.ViewPager;
+
 
 import com.cuci.enticement.R;
 import com.example.enticement.plate.common.adapter.ImageViewerPagerAdapter;
@@ -12,8 +15,6 @@ import com.lxj.xpopup.impl.FullScreenPopupView;
 
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

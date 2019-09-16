@@ -1,6 +1,9 @@
 package com.example.enticement.plate.mine.fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,14 +15,24 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.cuci.enticement.R;
+import com.example.enticement.Constant;
 import com.example.enticement.base.BaseFragment;
+import com.example.enticement.bean.UserInfo;
+import com.example.enticement.network.ServiceCreator;
+import com.example.enticement.plate.common.LoginActivity;
 import com.example.enticement.plate.home.activity.ProdActivity;
 import com.example.enticement.plate.mine.activity.MyOrderActivity;
+import com.example.enticement.utils.ImageLoader;
+import com.example.enticement.utils.SharedPrefUtils;
+
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * 首页外层Fragment
@@ -36,7 +49,7 @@ public class _MineFragment extends BaseFragment {
     @BindView(R.id.img_shape_bai)
     ImageView imgShapeBai;
     @BindView(R.id.img_tuxiang)
-    ImageView imgTuxiang;
+    CircleImageView imgTuxiang;
     @BindView(R.id.img_jingxiao)
     ImageView imgJingxiao;
     @BindView(R.id.btn_shengji)
@@ -79,10 +92,11 @@ public class _MineFragment extends BaseFragment {
     LinearLayout llFuwu2;
     @BindView(R.id.scroll_view)
     ScrollView scrollView;
-
-
+    public static final String DATA_USER_INFO = "data_user_info_";
+    public static final String ACTION_LOGIN_SUCCEED = "com.example.enticement.plate.mine.fragment.ACTION_LOGIN_SUCCEED";
     private boolean mCouldChange = true;
-
+    private LocalBroadcastManager mBroadcastManager;
+    private UserInfo mUserInfo;
 
     @Override
     protected void onLazyLoad() {
@@ -99,14 +113,60 @@ public class _MineFragment extends BaseFragment {
     protected void initViews(LayoutInflater inflater, View view, ViewGroup container, Bundle savedInstanceState) {
         //     mViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
 
-
+        mBroadcastManager = LocalBroadcastManager.getInstance(mActivity);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(LoginActivity.ACTION_WX_LOGIN_SUCCEED);
+        intentFilter.addAction(ACTION_LOGIN_SUCCEED);
+        mBroadcastManager.registerReceiver(mReceiver, intentFilter);
     }
 
 
     private void load() {
         //  mViewModel.getSplash().observe(this, mObserver);
     }
+    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
 
+            String type = SharedPrefUtils.getWechatAuth();
+
+            if (intent != null) {
+
+                if (LoginActivity.ACTION_WX_LOGIN_SUCCEED.equals(intent.getAction()) && "mine".equals(type)) {
+                    /*if (tenOuter()) {
+                       String code = intent.getStringExtra("code");
+                        mLoginViewModel.getWxToken(Constant.WX_APP_ID, Constant.WX_APP_SECRET_ID,
+                                code, "authorization_code")
+                                .observe(_MineFragment.this, mWxTokenObserver);
+                    } else {
+                        //获取保存的信息
+                        String wxOpenId = SharedPrefUtils.getWxOpenId();
+                        String openId = wxOpenId.split("FDSH")[1];
+                        String token = wxOpenId.split("FDSH")[2];
+                        mLoginViewModel.getWxInfo(token, openId)
+                                .observe(_MineFragment.this, mWxInfoObserver);
+                    }*/
+                } else if (ACTION_LOGIN_SUCCEED.equals(intent.getAction())) {
+                    UserInfo userInfo = (UserInfo) intent.getSerializableExtra(DATA_USER_INFO);
+                    if (userInfo != null) {
+                        mUserInfo = userInfo;
+                        refreshLayout();
+
+                    }
+                }
+
+            }
+        }
+    };
+
+    private void refreshLayout() {
+        if (mUserInfo == null) {
+            ImageLoader.loadNoPlaceholder(R.drawable.tuxiang, imgTuxiang);
+            return;
+        }
+
+
+    }
 
     @OnClick({R.id.img_kaiguan, R.id.btn_shengji, R.id.text_quanbudingdan, R.id.text_daifukuan, R.id.text_daifahuo, R.id.text_daishouhuo, R.id.text_yiwancheng, R.id.text_tuiguangyongjing, R.id.text_wodetuandui, R.id.text_shouhuodizi, R.id.text_yejiyuefan, R.id.text_wodekefu})
     public void onViewClicked(View view) {
@@ -131,6 +191,7 @@ public class _MineFragment extends BaseFragment {
             case R.id.text_yiwancheng:
                 break;
             case R.id.text_tuiguangyongjing:
+                startActivity(new Intent(mActivity, LoginActivity.class));
                 break;
             case R.id.text_wodetuandui:
                 break;
@@ -141,5 +202,30 @@ public class _MineFragment extends BaseFragment {
             case R.id.text_wodekefu:
                 break;
         }
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mBroadcastManager.unregisterReceiver(mReceiver);
+    }
+    //判断是否超过10分钟
+    private boolean tenOuter() {
+
+        String wxOpenId = SharedPrefUtils.getWxOpenId();
+
+        if ("0FDSH0FDSH0".equals(wxOpenId)) {
+            return true;
+        }
+
+        long oldTime = Long.parseLong(wxOpenId.split("FDSH")[0]);
+
+        long now = new Date().getTime();
+        long ten = 10 * 60 * 1000L;
+
+        if (now - oldTime >= ten) {
+            return true;
+        }
+
+        return false;
     }
 }

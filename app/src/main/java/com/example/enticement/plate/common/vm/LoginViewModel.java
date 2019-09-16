@@ -104,9 +104,11 @@ public class LoginViewModel extends ViewModel {
         final MutableLiveData<Status<Base<UserInfo>>> liveData = new MutableLiveData<>();
 
         liveData.setValue(Status.loading(null));
-
+        String  stringA = "code="+code+"&phone="+phone;
+        String sign = EncryptUtils.md5Encrypt(stringA+"&key=A8sUd9bqis3sN5GK6aF9JDFl5I9skPkd");
+        String signs = sign.toUpperCase();
         mCreator.create(UserApi.class)
-                .login(phone, code)
+                .login(phone, code,signs)
                 .enqueue(new Callback<Base<UserInfo>>() {
                     @Override
                     public void onResponse(@NonNull Call<Base<UserInfo>> call,
@@ -123,15 +125,17 @@ public class LoginViewModel extends ViewModel {
         return liveData;
 
     }
-    public MutableLiveData<Status<Base>> getSmsCodelogin(String phone, String secure, String required) {
+    public MutableLiveData<Status<Base>> getSmsCodelogin(String phone, String secure, String region) {
 
         final MutableLiveData<Status<Base>> liveData = new MutableLiveData<>();
 
         liveData.setValue(Status.loading(null));
-        String sign = EncryptUtils.md5Encrypt("fdsh666" + phone + "fdsh168");
+        String  stringA = "phone="+phone+"&region="+region+"&secure="+secure;
+        String sign = EncryptUtils.md5Encrypt(stringA+"&key=A8sUd9bqis3sN5GK6aF9JDFl5I9skPkd");
+        String signs = sign.toUpperCase();
 
         mCreator.create(UserApi.class)
-                .getSmsCodelogin(phone, secure, required)
+                .getSmsCodelogin(phone, secure, region,signs)
                 .enqueue(new Callback<Base>() {
                     @Override
                     public void onResponse(@NonNull Call<Base> call,

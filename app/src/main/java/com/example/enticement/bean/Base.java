@@ -19,6 +19,7 @@ public class Base<T> {
         return "Base{" +
                 "code=" + code +
                 ", data=" + data +
+                ", info=" + info +
                 ", msg='" + msg + '\'' +
                 '}';
     }

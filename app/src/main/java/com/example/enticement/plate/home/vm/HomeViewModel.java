@@ -13,6 +13,7 @@ import com.example.enticement.bean.HomeDetailsBean;
 import com.example.enticement.bean.Status;
 import com.example.enticement.network.ServiceCreator;
 import com.example.enticement.network.api.HomeApi;
+import com.example.enticement.utils.EncryptUtils;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,9 +30,10 @@ public class HomeViewModel extends ViewModel {
     public MutableLiveData<Status<BaseList<BannerDataBean>>> getBanner() {
 
         final MutableLiveData<Status<BaseList<BannerDataBean>>> data = new MutableLiveData<>();
-
+        String sign = EncryptUtils.md5Encrypt("&key=A8sUd9bqis3sN5GK6aF9JDFl5I9skPkd");
+        String signs = sign.toUpperCase();
         mCreator.create(HomeApi.class)
-                .getBanner()
+                .getBanner(signs)
                 .enqueue(new Callback<BaseList<BannerDataBean>>() {
 
                     @Override
@@ -50,9 +52,10 @@ public class HomeViewModel extends ViewModel {
     public MutableLiveData<Status<GeneralGoods>> getGeneralGoods(int minId, int loadType) {
 
         final MutableLiveData<Status<GeneralGoods>> liveData = new MutableLiveData<>();
-
+        String sign = EncryptUtils.md5Encrypt("&key=A8sUd9bqis3sN5GK6aF9JDFl5I9skPkd");
+        String signs = sign.toUpperCase();
         mCreator.create(HomeApi.class)
-                .getGeneralGoods()
+                .getGeneralGoods(signs)
                 .enqueue(new Callback<GeneralGoods>() {
 
                     @Override
@@ -77,12 +80,14 @@ public class HomeViewModel extends ViewModel {
                 });
         return liveData;
     }
-    public MutableLiveData<Status<HomeDetailsBean>> getHomeDetails(String type) {
+    public MutableLiveData<Status<HomeDetailsBean>> getHomeDetails(String goods_id) {
 
         final MutableLiveData<Status<HomeDetailsBean>> data = new MutableLiveData<>();
-
+         String  stringA = "goods_id="+goods_id;
+        String sign = EncryptUtils.md5Encrypt(stringA+"&key=A8sUd9bqis3sN5GK6aF9JDFl5I9skPkd");
+        String signs = sign.toUpperCase();
         mCreator.create(HomeApi.class)
-                .getHomeDetails(type)
+                .getHomeDetails(goods_id,signs)
                 .enqueue(new Callback<HomeDetailsBean>() {
 
                     @Override

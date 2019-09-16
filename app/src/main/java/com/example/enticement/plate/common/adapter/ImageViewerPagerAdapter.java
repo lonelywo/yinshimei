@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.cuci.enticement.R;
-import com.lxj.xpopup.photoview.PhotoView;
+import com.github.chrisbanes.photoview.PhotoView;
 
 
 import java.util.List;

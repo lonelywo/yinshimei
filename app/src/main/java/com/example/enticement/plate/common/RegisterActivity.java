@@ -180,14 +180,14 @@ public class RegisterActivity extends BaseActivity {
                     }
                     FLog.e("zhuceyanzhengma",baseStatus.content.toString());
                     if (baseStatus.content.code == 1) {
-                        textYanzhengma.setClickable(false);
-                        textYanzhengma.setTag(60);
-                        textYanzhengma.setBackground(ContextCompat.getDrawable(RegisterActivity.this,
+                        tvCode.setClickable(false);
+                        tvCode.setTag(60);
+                        tvCode.setBackground(ContextCompat.getDrawable(RegisterActivity.this,
                                 R.drawable.shape_login_get_code_gray));
-                        FToast.success("短信发送成功");
+                        FToast.success(baseStatus.content.info);
                         run.run();
                     } else {
-                        FToast.error(baseStatus.content.msg);
+                        FToast.error(baseStatus.content.info);
                     }
                     break;
                 case Status.LOADING:
@@ -204,14 +204,16 @@ public class RegisterActivity extends BaseActivity {
     private Runnable run = new Runnable() {
         @Override
         public void run() {
-            int a = (int) textYanzhengma.getTag();
-            textYanzhengma.setTag(a - 1);
-            textYanzhengma.setText("重新获取(" + a + "s)");
+            int a = (int) tvCode.getTag();
+            tvCode.setTag(a - 1);
+            tvCode.setText("重新获取(" + a + "s)");
             if (a > 0) {
                 mTimeHandler.postDelayed(run, 1000L);
             } else {
-                textYanzhengma.setClickable(true);
-                textYanzhengma.setText("获取验证码");
+                tvCode.setClickable(true);
+                tvCode.setText("获取验证码");
+                tvCode.setBackground(ContextCompat.getDrawable(RegisterActivity.this,
+                        R.drawable.shape_sibian_bai_bg5));
             }
         }
     };

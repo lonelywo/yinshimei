@@ -95,6 +95,12 @@ public class _MallFragment01 extends BaseFragment implements OnRefreshLoadMoreLi
         mRecyclerView.addItemDecoration(mDecoration);
 
         mRecyclerView.setAdapter(mAdapter);
+        mIvTop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mRecyclerView.smoothScrollToPosition(0);
+            }
+        });
     }
 
     private void load() {

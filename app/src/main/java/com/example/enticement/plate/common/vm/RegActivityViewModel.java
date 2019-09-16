@@ -9,6 +9,10 @@ import com.example.enticement.bean.Status;
 import com.example.enticement.network.ServiceCreator;
 import com.example.enticement.network.api.UserApi;
 import com.example.enticement.utils.EncryptUtils;
+import com.example.enticement.utils.SignUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -28,9 +32,11 @@ public class RegActivityViewModel extends ViewModel {
         final MutableLiveData<Status<Base>> liveData = new MutableLiveData<>();
 
         liveData.setValue(Status.loading(null));
-
+        String  stringA = "agent_phone="+agent_phone+"&code="+code+"&phone="+phone;
+        String sign = EncryptUtils.md5Encrypt(stringA+"&key=A8sUd9bqis3sN5GK6aF9JDFl5I9skPkd");
+        String signs = sign.toUpperCase();
         mCreator.create(UserApi.class)
-                .register(code, phone, agent_phone)
+                .register(code, phone, agent_phone,signs)
                 .enqueue(new Callback<Base>() {
                     @Override
                     public void onResponse(@NonNull Call<Base> call,
@@ -47,15 +53,22 @@ public class RegActivityViewModel extends ViewModel {
         return liveData;
     }
 
-   public MutableLiveData<Status<Base>> getSmsCode(String phone, String secure, String required) {
+   public MutableLiveData<Status<Base>> getSmsCode(String phone, String secure, String region) {
 
         final MutableLiveData<Status<Base>> liveData = new MutableLiveData<>();
 
         liveData.setValue(Status.loading(null));
-        String sign = EncryptUtils.md5Encrypt("fdsh666" + phone + "fdsh168");
+       Map<String, String> params = new HashMap<String, String>();
+       params.put("phone",phone);
+       params.put("secure",secure);
+       params.put("region",region);
+       String signs = SignUtils.signParam(params);
 
-        mCreator.create(UserApi.class)
-                .getSmsCode(phone, secure, required)
+       /* String  stringA = "phone="+phone+"&region="+region+"&secure="+secure;
+        String sign = EncryptUtils.md5Encrypt(stringA+"&key=A8sUd9bqis3sN5GK6aF9JDFl5I9skPkd");
+        String signs = sign.toUpperCase();*/
+       mCreator.create(UserApi.class)
+                .getSmsCode(phone, secure, region,signs)
                 .enqueue(new Callback<Base>() {
                     @Override
                     public void onResponse(@NonNull Call<Base> call,

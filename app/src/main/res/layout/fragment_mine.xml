@@ -81,7 +81,7 @@
         android:src="@drawable/shape_mine_bg3"
         app:layout_constraintTop_toBottomOf="@+id/con_toubu"
         />
-     <ImageView
+     <de.hdodenhof.circleimageview.CircleImageView
          android:id="@+id/img_tuxiang"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"

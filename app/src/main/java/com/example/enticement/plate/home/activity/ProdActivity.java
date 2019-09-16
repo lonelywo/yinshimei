@@ -26,6 +26,7 @@ import com.example.enticement.plate.common.LoginActivity;
 import com.example.enticement.plate.common.popup.ShareBottom2TopProdPopup;
 import com.example.enticement.plate.home.vm.HomeViewModel;
 import com.example.enticement.utils.FToast;
+import com.example.enticement.utils.SharedPrefUtils;
 import com.example.enticement.widget.SmoothScrollview;
 import com.lxj.xpopup.XPopup;
 import com.tencent.smtt.sdk.WebView;
@@ -49,6 +50,8 @@ public class ProdActivity extends BaseActivity {
     Banner banner;
     @BindView(R.id.home_detail_goodsname)
     TextView homeDetailGoodsname;
+    @BindView(R.id.text_jiage)
+    TextView text_jiage;
     @BindView(R.id.img_share)
     ImageView imgShare;
     @BindView(R.id.con_info)
@@ -62,7 +65,7 @@ public class ProdActivity extends BaseActivity {
     @BindView(R.id.text_sell)
     TextView textSell;
 
-    private BannerDataBean mData;
+    private String url;
     private HomeDetailsBean.DataBean mProData;
     private HomeViewModel mHomeViewModel;
 
@@ -79,10 +82,10 @@ public class ProdActivity extends BaseActivity {
             return;
         }
 
-        mData = intent.getParcelableExtra("bannerData");
-         String url = mData.getUrl();
+        url = intent.getStringExtra("bannerData");
 
-        if (mData == null) {
+
+        if (url == null) {
             FToast.error("数据错误");
             return;
         }
@@ -91,7 +94,7 @@ public class ProdActivity extends BaseActivity {
         banner.setImageLoader(new GlideImageLoader());
 
         mHomeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
-        mHomeViewModel.getHomeDetails(mData.getUrl()).observe(this, mObserver);
+        mHomeViewModel.getHomeDetails(url).observe(this, mObserver);
 
 
     }
@@ -125,6 +128,8 @@ public class ProdActivity extends BaseActivity {
                         banner.setImages(images);
                         banner.start();
                         String htmlContent = content.getData().getContent();
+                        homeDetailGoodsname.setText(content.getData().getTitle());
+                        text_jiage.setText(content.getData().getInitial_price_selling());
                         webDetails.loadDataWithBaseURL(null,
                                 getHtmlData(htmlContent), "text/html", "utf-8", null);
 
@@ -166,7 +171,7 @@ public class ProdActivity extends BaseActivity {
                         .show();
                 break;
             case R.id.iv_to_top:
-               // scrollDetails.smoothScrollTo(0,0);
+              //  scrollDetails.smoothScrollTo(0,0);
                 startActivity(new Intent(ProdActivity.this, LoginActivity.class));
                 break;
         }
@@ -174,20 +179,15 @@ public class ProdActivity extends BaseActivity {
     /**
      * 判断账号是否登录
      */
-  /*  public boolean isAllowPermission(Context context) {
-        UserInfo userInfo = ServiceCreator.getInstance().getUserInfo();
+   /* public boolean isAllowPermission(Context context) {
+       UserInfo userInfo = SharedPrefUtils.get(UserInfo.class);
         if (userInfo != null) {
             if ("0".equals(userInfo.getNeedAuth())) {
                 return true;
             } else {
-                Intent intent = new Intent(context, TBAuthActivity.class);
-                intent.putExtra(TBAuthActivity.AUTH_URL, userInfo.getAuthUrl());
-                context.startActivity(intent);
-                return false;
-            }
-        } else {
-            context.startActivity(new Intent(context, LoginActivity.class));
+              context.startActivity(new Intent(context, LoginActivity.class));
             return false;
+            }
         }
     }*/
 }

@@ -19,7 +19,10 @@ public interface MallApi {
     @POST("store/api.media/gets")
     Call<MallSourceBean> getSource(@Field("type") String type,
                                    @Field("page") String page,
-                                   @Field("pagesize") String pagesize);
+                                   @Field("pagesize") String pagesize,
+                                   @Field("sign") String sign
+
+    );
     /**
      * 获取商城素材内容
      */
@@ -27,6 +30,7 @@ public interface MallApi {
     @POST("store/api.media/gets")
     Call<MallSourceBean> getSource01(@Field("type") String type,
                                      @Field("page") String page,
-                                     @Field("pagesize") String pagesize
+                                     @Field("pagesize") String pagesize,
+                                     @Field("sign") String sign
                                     );
 }

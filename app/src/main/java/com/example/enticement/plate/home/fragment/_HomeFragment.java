@@ -87,7 +87,7 @@ public class _HomeFragment extends BaseFragment  implements ItemBannerViewBinder
         mRefreshLayout.setEnableFooterFollowWhenNoMoreData(true);
         mRefreshLayout.setOnRefreshLoadMoreListener(this);
         mAdapter.register(ItemBanner.class, new ItemBannerViewBinder(this));
-        mAdapter.register(GeneralGoodsItem.class, new ItemGoodsLongViewBinder());
+        mAdapter.register(GeneralGoodsItem.class, new ItemGoodsLongViewBinder(mActivity));
 
         mDecoration = new HomeGridItemDecoration(mActivity, 2, 6, true);
         mDecoration.setHeaderCount(1);
@@ -113,7 +113,7 @@ public class _HomeFragment extends BaseFragment  implements ItemBannerViewBinder
     @Override
     public void onBannerClick(BannerDataBean bannerDataBean) {
         Intent intentProd = new Intent(mActivity, ProdActivity.class);
-        intentProd.putExtra("bannerData", bannerDataBean);
+        intentProd.putExtra("bannerData", bannerDataBean.getUrl());
         mActivity.startActivity(intentProd);
     }
 
@@ -159,7 +159,7 @@ public class _HomeFragment extends BaseFragment  implements ItemBannerViewBinder
 
                         mViewModel.getGeneralGoods( mMinId, Status.LOAD_REFRESH).observe(_HomeFragment.this, GoodsmObserver);
                     } else {
-                        FToast.error(list.msg);
+                        FToast.error(list.info);
                     }
                     mRefreshLayout.finishLoadMore();
                     break;
