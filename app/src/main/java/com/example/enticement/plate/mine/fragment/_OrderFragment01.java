@@ -1,5 +1,6 @@
 package com.example.enticement.plate.mine.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,13 +23,16 @@ import com.example.enticement.bean.ItemOrderBottom;
 import com.example.enticement.bean.ItemOrderTitle;
 import com.example.enticement.bean.MallSourceBean;
 import com.example.enticement.bean.OrderList;
+import com.example.enticement.bean.OrderResult;
 import com.example.enticement.bean.Status;
+import com.example.enticement.plate.cart.activity.OrderActivity;
 import com.example.enticement.plate.cart.adapter.ItemCartViewBinder;
 import com.example.enticement.plate.mall.adapter.NineAdapter;
 import com.example.enticement.plate.mall.vm.MallViewModel;
 import com.example.enticement.plate.mine.adapter.ItemBottomViewBinder;
 import com.example.enticement.plate.mine.adapter.ItemProdViewBinder;
 import com.example.enticement.plate.mine.adapter.ItemTitleViewBinder;
+import com.example.enticement.plate.mine.vm.OrderViewModel;
 import com.example.enticement.utils.FToast;
 import com.example.enticement.widget.CartItemDecoration;
 import com.example.enticement.widget.CustomRefreshHeader;
@@ -37,6 +41,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -52,7 +57,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
     private static final String TAG = _OrderFragment01.class.getSimpleName();
 
     private boolean mCanLoadMore = true;
-    private MallViewModel mViewModel;
+    private OrderViewModel mViewModel;
     private int page=1;
     private String mtype;
     private final String PAGE_SIZE="20";
@@ -67,7 +72,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
     private LinearLayoutManager mLayoutManager;
     private MultiTypeAdapter mAdapter;
     private Items mItems;
-
+    private  List<OrderList.DataBean.OrderBean> mDatas=new ArrayList<>();
 
 
     public static _OrderFragment01 newInstance(String type) {
@@ -91,7 +96,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
 
     @Override
     protected void initViews(LayoutInflater inflater, View view, ViewGroup container, Bundle savedInstanceState) {
-        mViewModel = ViewModelProviders.of(this).get(MallViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(OrderViewModel.class);
         Bundle bundle = getArguments();
         mtype = bundle.getString("type");
         CustomRefreshHeader header = new CustomRefreshHeader(mActivity);
@@ -120,18 +125,19 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
     }
 
     private void load() {
-        mViewModel.getSource01(mtype,"1",PAGE_SIZE,Status.LOAD_REFRESH).observe(this, mObserver);
+        mViewModel.getOrderList("","","","","",Status.LOAD_REFRESH).observe(this, mObserver);
     }
-    private Observer<Status<MallSourceBean>> mObserver = status -> {
+    private Observer<Status<OrderList>> mObserver = status -> {
         switch (status.status) {
             case Status.SUCCESS:
 
-                MallSourceBean item = status.content;
+                OrderList bean = status.content;
 
-                if (item.getCode() == 1) {
+                if (bean.getCode() == 1) {
+                    OrderList.DataBean data = bean.getData();
+                    List<OrderList.DataBean.OrderBean> item = data.getList();
 
-                    List<MallSourceBean.DataBean.ListBean> items = item.getData().getList();
-                    if (items == null || items.size() == 0) {
+                    if (item == null || item.size() == 0) {
                         if (status.loadType == Status.LOAD_REFRESH) {
 
                             mRefreshLayout.finishRefresh();
@@ -147,12 +153,19 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                     mCanLoadMore = true;
 
                     if (status.loadType == Status.LOAD_REFRESH) {
+                        mDatas.clear();
+                        mDatas.addAll(item);
 
-                     //   mAdapter.setList(items);
+
+                        mItems.clear();
+                        addOrderItem(item);
                         mAdapter.notifyDataSetChanged();
                         mRefreshLayout.finishRefresh();
                     } else {
-                       // mAdapter.addList(items);
+                        mDatas.addAll(item);
+
+                        addOrderItem(item);
+                        mAdapter.notifyDataSetChanged();
                         mRefreshLayout.finishLoadMore();
                     }
 
@@ -164,7 +177,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
 
                         mRefreshLayout.finishRefresh();
                     }
-                    FToast.error(item.getInfo());
+                    FToast.error(bean.getInfo());
                 }
                 break;
             case Status.LOADING:
@@ -184,12 +197,33 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
         }
     };
 
+
+    /**
+     * 添加订单item
+     * @param item
+     */
+    private void addOrderItem(List<OrderList.DataBean.OrderBean> item) {
+        for (int i = 0; i <item.size() ; i++) {
+            OrderList.DataBean.OrderBean orderBean = item.get(i);
+            ItemOrderTitle itemOrderTitle = new ItemOrderTitle(String.valueOf(orderBean.getOrder_no()), orderBean.getStatus());
+            mItems.add(itemOrderTitle);
+            List<OrderList.DataBean.OrderBean.GoodsBean> goodsBeanList = orderBean.getList();
+            for (int j = 0; j < goodsBeanList.size(); j++) {
+                mItems.add(goodsBeanList.get(j));
+            }
+            ItemOrderBottom itemOrderBottom = new ItemOrderBottom();
+            mItems.add(itemOrderBottom);
+        }
+    }
+
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
         if(mCanLoadMore=true){
             mCanLoadMore = false;
-            mViewModel.getSource01(mtype, String.valueOf(page),PAGE_SIZE,
-                    Status.LOAD_MORE).observe(this, mObserver);
+            mViewModel.getOrderList("","","","","",Status.LOAD_MORE).observe(this, mObserver);
+
+        }else {
+            mRefreshLayout.finishLoadMore();
         }
 
     }
@@ -206,7 +240,18 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
      */
     @Override
     public void onProdClick(OrderList.DataBean.OrderBean.GoodsBean item) {
-
+        Intent intent = new Intent(mActivity, OrderActivity.class);
+        int curOrder=0;
+        for (int i = 0; i < mDatas.size(); i++) {
+            long order_no = mDatas.get(i).getOrder_no();
+            if(order_no==item.getOrder_no()){
+                curOrder=i;
+                break;
+            }
+        }
+        OrderList.DataBean.OrderBean orderBean = mDatas.get(curOrder);
+        intent.putExtra("order",orderBean);
+        startActivity(intent);
     }
 
 
@@ -216,7 +261,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
      */
     @Override
     public void onCancel(ItemOrderBottom itemOrderBottom) {
-
+        mViewModel.orderCancel("","",itemOrderBottom.orderNum).observe(this, mResultObserver);
     }
 
 
@@ -226,7 +271,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
      */
     @Override
     public void onPay(ItemOrderBottom itemOrderBottom) {
-
+        mViewModel.orderConfirm("","",itemOrderBottom.orderNum).observe(this, mResultObserver);
     }
 
     /**
@@ -247,4 +292,37 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
     public void onViewLogistics(ItemOrderBottom itemOrderBottom) {
 
     }
+
+
+
+
+    private Observer<Status<OrderResult>> mResultObserver = status -> {
+        switch (status.status) {
+            case Status.SUCCESS:
+                OrderResult content = status.content;
+                if(content.getCode()==1){
+
+                }
+
+                break;
+            case Status.LOADING:
+
+                break;
+            case Status.ERROR:
+                FToast.error(status.message);
+                if (status.loadType == Status.LOAD_MORE) {
+                    mCanLoadMore = true;
+                    mRefreshLayout.finishLoadMore();
+                } else {
+
+                    mRefreshLayout.finishRefresh();
+
+                }
+                break;
+        }
+    };
+
+
+
+
 }
