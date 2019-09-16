@@ -17,6 +17,24 @@ public class ItemOrderTitle {
 
     public int status;//订单状态
 
+    public ItemOrderTitle(String orderNum, int status) {
+        this.orderNum = orderNum;
+        this.status = status;
+    }
 
+    public String getOrderNum() {
+        return orderNum;
+    }
 
+    public void setOrderNum(String orderNum) {
+        this.orderNum = orderNum;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 }

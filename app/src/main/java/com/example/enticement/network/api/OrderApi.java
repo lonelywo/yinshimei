@@ -27,7 +27,8 @@ public interface OrderApi {
                                  @Field("mid") String mid,
                                  @Field("page") String page,
                                  @Field("status") String status,
-                                 @Field("order_no") String orderNum);
+                                 @Field("order_no") String orderNum,
+                                 @Field("sign") String signs);
 
 
     /**
@@ -37,7 +38,8 @@ public interface OrderApi {
     @POST("store/api.member.order/confirm")
     Call<OrderResult> confirmOrder(@Field("openid") String openId,
                                  @Field("mid") String mid,
-                                 @Field("order_no") String orderNum);
+                                 @Field("order_no") String orderNum,
+                                   @Field("sign") String signs);
 
 
     /**
@@ -47,7 +49,8 @@ public interface OrderApi {
     @POST("store/api.member.order/cancel")
     Call<OrderResult> cancelOrder(@Field("openid") String openId,
                                    @Field("mid") String mid,
-                                   @Field("order_no") String orderNum);
+                                   @Field("order_no") String orderNum,
+                                  @Field("sign") String signs);
 
 
 
@@ -57,7 +60,8 @@ public interface OrderApi {
     @FormUrlEncoded
     @POST("/store/api.member.order/total")
     Call<OrderStatistics> getTotalOrder(@Field("openid") String openId,
-                                      @Field("mid") String mid);
+                                      @Field("mid") String mid,
+                                        @Field("sign") String signs);
 
     /**
      * 快递信息
@@ -66,7 +70,8 @@ public interface OrderApi {
     @FormUrlEncoded
     @POST("/store/api.member.order/total")
     Call<ExpressInfo> getExpressInfo(@Field("express_no") String num,
-                                 @Field("express_code") String code);
+                                 @Field("express_code") String code,
+                                     @Field("sign") String signs);
 
 
 
@@ -79,8 +84,8 @@ public interface OrderApi {
     Call<OrderExpressCost> getExpressCost(@Field("openid") String openId,
                                          @Field("mid") String mid,
                                          @Field("order_no") String orderNum,
-                                         @Field("address_id") String addressId
-                                         );
+                                         @Field("address_id") String addressId,
+                                          @Field("sign") String signs);
 
 
     /**
@@ -91,8 +96,8 @@ public interface OrderApi {
     Call<OrderPay> getOrderPay(@Field("openid") String openId,
                                @Field("mid") String mid,
                                @Field("order_no") String orderNum,
-                               @Field("pay_type") String payType
-                               );
+                               @Field("pay_type") String payType,
+                               @Field("sign") String signs);
 
 
 
@@ -105,8 +110,8 @@ public interface OrderApi {
     Call<OrderPay> udpateAdress(@Field("openid") String openId,
                        @Field("mid") String mid,
                        @Field("order_no") String orderNum,
-                       @Field("address_id") String addressId
-    );
+                       @Field("address_id") String addressId,
+                                @Field("sign") String signs);
 
 
 

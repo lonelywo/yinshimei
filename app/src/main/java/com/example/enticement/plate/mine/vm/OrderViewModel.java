@@ -8,10 +8,16 @@ import com.example.enticement.bean.Status;
 import com.example.enticement.network.ServiceCreator;
 import com.example.enticement.network.api.CartApi;
 import com.example.enticement.network.api.OrderApi;
+import com.example.enticement.utils.EncryptUtils;
+import com.example.enticement.utils.SignUtils;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -31,8 +37,16 @@ public class OrderViewModel extends ViewModel {
 
         final MutableLiveData<Status<OrderList>> data = new MutableLiveData<>();
         data.setValue(Status.loading(null));
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("openid",openId);
+        params.put("mid",mid);
+        params.put("page",page);
+        params.put("status",status);
+        params.put("order_no",orderNum);
+        String sign = SignUtils.signParam(params);
         mCreator.create(OrderApi.class)
-                .getOrderList(openId,mid,page,status,orderNum)
+                .getOrderList(openId,mid,page,status,orderNum,sign)
                 .enqueue(new Callback<OrderList>() {
                     @Override
                     public void onResponse(@NonNull Call<OrderList> call,
@@ -74,8 +88,15 @@ public class OrderViewModel extends ViewModel {
 
         final MutableLiveData<Status<OrderResult>> data = new MutableLiveData<>();
         data.setValue(Status.loading(null));
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("openid",openId);
+        params.put("mid",mid);
+
+        params.put("order_no",orderNum);
+        String sign = SignUtils.signParam(params);
         mCreator.create(OrderApi.class)
-                .confirmOrder(openId,mid,orderNum)
+                .confirmOrder(openId,mid,orderNum,sign)
                 .enqueue(new Callback<OrderResult>() {
                     @Override
                     public void onResponse(@NonNull Call<OrderResult> call,
@@ -104,8 +125,14 @@ public class OrderViewModel extends ViewModel {
 
         final MutableLiveData<Status<OrderResult>> data = new MutableLiveData<>();
         data.setValue(Status.loading(null));
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("openid",openId);
+        params.put("mid",mid);
+
+        params.put("order_no",orderNum);
+        String sign = SignUtils.signParam(params);
         mCreator.create(OrderApi.class)
-                .cancelOrder(openId,mid,orderNum)
+                .cancelOrder(openId,mid,orderNum,sign)
                 .enqueue(new Callback<OrderResult>() {
                     @Override
                     public void onResponse(@NonNull Call<OrderResult> call,
@@ -123,7 +150,14 @@ public class OrderViewModel extends ViewModel {
     }
 
 
-
+    /**
+     * 提交订单
+     * @param openId
+     * @param mid
+     * @param rule
+     * @param fromMid
+     * @return
+     */
     public MutableLiveData<Status<OrderResult>> commitOrder(String openId,String mid,String rule,String fromMid) {
 
         final MutableLiveData<Status<OrderResult>> data = new MutableLiveData<>();
@@ -145,6 +179,10 @@ public class OrderViewModel extends ViewModel {
                 });
         return data;
     }
+
+
+
+
 
 
 

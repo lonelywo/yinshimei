@@ -1,5 +1,8 @@
 package com.example.enticement.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
 public class OrderList {
@@ -110,7 +113,7 @@ public class OrderList {
             }
         }
 
-        public static class OrderBean {
+        public static class OrderBean implements Parcelable {
             /**
              * id : 14
              * mid : 1
@@ -208,6 +211,68 @@ public class OrderList {
             private int is_deleted;
             private String create_at;
             private List<GoodsBean> list;
+
+            public OrderBean(){
+
+            }
+
+
+            protected OrderBean(Parcel in) {
+                id = in.readInt();
+                mid = in.readInt();
+                order_no = in.readLong();
+                agent_id = in.readInt();
+                agent_auth = in.readInt();
+                from_mid = in.readInt();
+                from_agent_id = in.readInt();
+                belong_mid = in.readInt();
+                price_total = in.readString();
+                price_goods = in.readString();
+                price_express = in.readString();
+                price_service = in.readString();
+                pay_state = in.readInt();
+                pay_type = in.readString();
+                pay_price = in.readString();
+                pay_no = in.readString();
+                cancel_state = in.readInt();
+                cancel_desc = in.readString();
+                refund_state = in.readInt();
+                refund_no = in.readString();
+                refund_price = in.readString();
+                refund_desc = in.readString();
+                api_order_no = in.readString();
+                api_tracking_no = in.readString();
+                express_type = in.readInt();
+                express_state = in.readInt();
+                express_company_code = in.readString();
+                express_company_title = in.readString();
+                express_send_no = in.readString();
+                express_address_id = in.readInt();
+                express_name = in.readString();
+                express_phone = in.readString();
+                express_province = in.readString();
+                express_city = in.readString();
+                express_area = in.readString();
+                express_address = in.readString();
+                status = in.readInt();
+                calc_knot_rebate = in.readInt();
+                has_knot_rebate = in.readInt();
+                rebate_remark = in.readString();
+                is_deleted = in.readInt();
+                create_at = in.readString();
+            }
+
+            public static final Creator<OrderBean> CREATOR = new Creator<OrderBean>() {
+                @Override
+                public OrderBean createFromParcel(Parcel in) {
+                    return new OrderBean(in);
+                }
+
+                @Override
+                public OrderBean[] newArray(int size) {
+                    return new OrderBean[size];
+                }
+            };
 
             public int getId() {
                 return id;
@@ -583,6 +648,57 @@ public class OrderList {
 
             public void setList(List<GoodsBean> list) {
                 this.list = list;
+            }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeInt(id);
+                dest.writeInt(mid);
+                dest.writeLong(order_no);
+                dest.writeInt(agent_id);
+                dest.writeInt(agent_auth);
+                dest.writeInt(from_mid);
+                dest.writeInt(from_agent_id);
+                dest.writeInt(belong_mid);
+                dest.writeString(price_total);
+                dest.writeString(price_goods);
+                dest.writeString(price_express);
+                dest.writeString(price_service);
+                dest.writeInt(pay_state);
+                dest.writeString(pay_type);
+                dest.writeString(pay_price);
+                dest.writeString(pay_no);
+                dest.writeInt(cancel_state);
+                dest.writeString(cancel_desc);
+                dest.writeInt(refund_state);
+                dest.writeString(refund_no);
+                dest.writeString(refund_price);
+                dest.writeString(refund_desc);
+                dest.writeString(api_order_no);
+                dest.writeString(api_tracking_no);
+                dest.writeInt(express_type);
+                dest.writeInt(express_state);
+                dest.writeString(express_company_code);
+                dest.writeString(express_company_title);
+                dest.writeString(express_send_no);
+                dest.writeInt(express_address_id);
+                dest.writeString(express_name);
+                dest.writeString(express_phone);
+                dest.writeString(express_province);
+                dest.writeString(express_city);
+                dest.writeString(express_area);
+                dest.writeString(express_address);
+                dest.writeInt(status);
+                dest.writeInt(calc_knot_rebate);
+                dest.writeInt(has_knot_rebate);
+                dest.writeString(rebate_remark);
+                dest.writeInt(is_deleted);
+                dest.writeString(create_at);
             }
 
             public static class GoodsBean {
