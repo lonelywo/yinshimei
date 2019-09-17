@@ -103,9 +103,11 @@ public class BrowserActivity extends BaseActivity {
         mWebSettings.setAllowFileAccess(true);
         mWebSettings.setAppCacheEnabled(true);
 
-        mWebView.addJavascriptInterface(new JavascriptInterface(), "android");
+        JavaScriptMetod m = new JavaScriptMetod(BrowserActivity.this, mWebView);
+
+        mWebView.addJavascriptInterface(m, JavaScriptMetod.JAVAINTERFACE);
         mWebView.setWebViewClient(mWebViewClient);
-        mWebView.loadUrl(mUrl);
+      //  mWebView.loadUrl(mUrl);
 
 
 
@@ -129,8 +131,20 @@ public class BrowserActivity extends BaseActivity {
         sslErrorHandler.proceed();
     }
 };
-    public class JavascriptInterface {
+    public class JavaScriptMetod {
 
+        public static final String JAVAINTERFACE = "javaInterface";
+        private Context mContext;
+
+        private WebView mWebView;
+
+        public JavaScriptMetod(Context context, WebView webView) {
+
+            mContext = context;
+
+            mWebView = webView;
+
+        }
         @android.webkit.JavascriptInterface
         public void functionClick(String code, String name, String string) {
 
