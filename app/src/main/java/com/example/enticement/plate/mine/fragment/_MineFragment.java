@@ -185,7 +185,10 @@ public class _MineFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_kaiguan:
-                //   mViewModel.loginOut(from_type,token,mid).observe(this, mObserver);
+                int mid =mUserInfo.getId();
+                String token= mUserInfo.getToken();
+
+                mViewModel.loginOut("2",token,""+mid).observe(this, mloginoutObserver);
                 break;
             case R.id.btn_shengji:
 
@@ -269,6 +272,33 @@ public class _MineFragment extends BaseFragment {
                      /*   if (mOnLoginListener != null) {
                             mOnLoginListener.onLoginSucceed(userInfo, mShowContract);
                         }*/
+                    } else {
+                        FToast.error("请求错误，请稍后再试。");
+                    }
+                    break;
+            }
+        }
+    };
+
+    private Observer<Status<Base>> mloginoutObserver = new Observer<Status<Base>>() {
+        @Override
+        public void onChanged(Status<Base> baseStatus) {
+            switch (baseStatus.status) {
+                case Status.LOADING:
+                    break;
+                case Status.ERROR:
+                    break;
+                case Status.SUCCESS:
+                    if (baseStatus.content == null) {
+                        FToast.error("请求错误，请稍后再试。");
+                        return;
+                    }
+                    if (baseStatus.content.code == 1) {
+
+                        FToast.success("退出登录");
+                        SharedPrefUtils.exit();
+                        refreshLayout();
+
                     } else {
                         FToast.error("请求错误，请稍后再试。");
                     }

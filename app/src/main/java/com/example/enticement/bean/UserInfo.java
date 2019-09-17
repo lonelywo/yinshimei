@@ -25,7 +25,7 @@ public class UserInfo implements Serializable {
     private int vip_auth;
     private String token;
 
-    public double getId() {
+    public int getId() {
         return id;
     }
 
@@ -57,7 +57,7 @@ public class UserInfo implements Serializable {
         this.headimg = headimg;
     }
 
-    public double getVip_level() {
+    public int getVip_level() {
         return vip_level;
     }
 
@@ -65,7 +65,7 @@ public class UserInfo implements Serializable {
         this.vip_level = vip_level;
     }
 
-    public double getVip_auth() {
+    public int getVip_auth() {
         return vip_auth;
     }
 

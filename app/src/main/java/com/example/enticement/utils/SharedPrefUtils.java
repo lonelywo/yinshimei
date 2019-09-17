@@ -7,6 +7,7 @@ import android.util.Base64;
 
 
 import com.example.enticement.BasicApp;
+import com.example.enticement.bean.UserInfo;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -96,10 +97,10 @@ public class SharedPrefUtils {
      * 退出登录
      */
     public static void exit() {
-    /*    SharedPreferences sp = BasicApp.getContext().getSharedPreferences(NAME_OBJECT, Context.MODE_PRIVATE);
+       SharedPreferences sp = BasicApp.getContext().getSharedPreferences(NAME_OBJECT, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(UserInfo.class.getSimpleName(), "");
-        editor.apply();*/
+        editor.apply();
     }
 
     /**

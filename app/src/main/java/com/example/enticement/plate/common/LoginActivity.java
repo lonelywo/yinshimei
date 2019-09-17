@@ -185,9 +185,7 @@ public class LoginActivity extends BaseActivity {
                         intent.putExtra(_MineFragment.DATA_USER_INFO, userInfo);
                         LocalBroadcastManager.getInstance(LoginActivity.this).sendBroadcast(intent);
                         finish();
-                     /*   if (mOnLoginListener != null) {
-                            mOnLoginListener.onLoginSucceed(userInfo, mShowContract);
-                        }*/
+
                     } else {
                         FToast.error(baseStatus.content.info);
                     }
