@@ -27,6 +27,7 @@ import com.example.enticement.plate.common.LoginActivity;
 import com.example.enticement.plate.common.popup.ShareBottom2TopProdPopup;
 import com.example.enticement.plate.common.vm.LoginViewModel;
 import com.example.enticement.plate.home.vm.HomeViewModel;
+import com.example.enticement.utils.AppUtils;
 import com.example.enticement.utils.FToast;
 import com.example.enticement.utils.SharedPrefUtils;
 import com.example.enticement.widget.SmoothScrollview;
@@ -175,24 +176,13 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                 break;
             case R.id.iv_to_top:
               //  scrollDetails.smoothScrollTo(0,0);
-             if(isAllowPermission(this)){
+             if(AppUtils.isAllowPermission(this)){
                  startActivity(new Intent(this, OrderActivity.class));
              }
                 break;
         }
     }
-    /**
-     * 判断账号是否登录
-     */
-    public boolean isAllowPermission(Context context) {
-        UserInfo userInfo = SharedPrefUtils.get(UserInfo.class);
-        if (userInfo != null) {
-           return true;
-        }else {
-            context.startActivity(new Intent(context, LoginActivity.class));
-            return false;
-        }
-    }
+
 
     @Override
     public void onCommitClick(int id, String spec, int num,int code) {

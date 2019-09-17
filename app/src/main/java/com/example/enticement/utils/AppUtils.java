@@ -3,10 +3,14 @@ package com.example.enticement.utils;
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.view.accessibility.AccessibilityManager;
+
+import com.example.enticement.bean.UserInfo;
+import com.example.enticement.plate.common.LoginActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +20,18 @@ import static android.content.Context.ACTIVITY_SERVICE;
 
 public class AppUtils {
 
+    /**
+     * 判断账号是否登录
+     */
+    public static boolean isAllowPermission(Context context) {
+        UserInfo userInfo = SharedPrefUtils.get(UserInfo.class);
+        if (userInfo != null) {
+            return true;
+        }else {
+            context.startActivity(new Intent(context, LoginActivity.class));
+            return false;
+        }
+    }
     //版本名
     public static String getVersionName(Context context) {
         PackageInfo p = getPackageInfo(context);

@@ -24,9 +24,11 @@ import com.example.enticement.base.BaseFragment;
 import com.example.enticement.bean.Base;
 import com.example.enticement.bean.Status;
 import com.example.enticement.bean.UserInfo;
+import com.example.enticement.plate.cart.activity.OrderActivity;
 import com.example.enticement.plate.common.LoginActivity;
 import com.example.enticement.plate.mine.activity.MyOrderActivity;
 import com.example.enticement.plate.mine.vm.MineViewModel;
+import com.example.enticement.utils.AppUtils;
 import com.example.enticement.utils.FToast;
 import com.example.enticement.utils.ImageLoader;
 import com.example.enticement.utils.SharedPrefUtils;
@@ -37,6 +39,7 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
+
 
 /**
  * 首页外层Fragment
@@ -184,11 +187,14 @@ public class _MineFragment extends BaseFragment {
     @OnClick({R.id.img_kaiguan, R.id.btn_shengji, R.id.text_quanbudingdan, R.id.text_daifukuan, R.id.text_daifahuo, R.id.text_daishouhuo, R.id.text_yiwancheng, R.id.text_tuiguangyongjing, R.id.text_wodetuandui, R.id.text_shouhuodizi, R.id.text_yejiyuefan, R.id.text_wodekefu})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.img_kaiguan:
-                int mid =mUserInfo.getId();
-                String token= mUserInfo.getToken();
 
-                mViewModel.loginOut("2",token,""+mid).observe(this, mloginoutObserver);
+            case R.id.img_kaiguan:
+                if(AppUtils.isAllowPermission(mActivity)){
+                    int mid =mUserInfo.getId();
+                    String token= mUserInfo.getToken();
+                    mViewModel.loginOut("2",token,""+mid).observe(this, mloginoutObserver);
+                }
+
                 break;
             case R.id.btn_shengji:
 
@@ -290,13 +296,14 @@ public class _MineFragment extends BaseFragment {
                     break;
                 case Status.SUCCESS:
                     if (baseStatus.content == null) {
-                        FToast.error("请求错误，请稍后再试。");
+                        FToast.error("退出失败，请重试");
                         return;
                     }
                     if (baseStatus.content.code == 1) {
 
                         FToast.success("退出登录");
                         SharedPrefUtils.exit();
+                        mUserInfo=null;
                         refreshLayout();
 
                     } else {

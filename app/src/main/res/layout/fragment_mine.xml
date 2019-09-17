@@ -83,8 +83,8 @@
         />
      <de.hdodenhof.circleimageview.CircleImageView
          android:id="@+id/img_tuxiang"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
+         android:layout_width="60dp"
+         android:layout_height="60dp"
          app:layout_constraintLeft_toLeftOf="@+id/img_shape_bai"
          app:layout_constraintTop_toTopOf="@+id/img_shape_bai"
          android:src="@drawable/tuxiang"
