@@ -8,12 +8,18 @@ import com.example.enticement.bean.Base;
 import com.example.enticement.bean.BaseList;
 
 
+import com.example.enticement.bean.CartListBean;
 import com.example.enticement.bean.GeneralGoods;
 import com.example.enticement.bean.HomeDetailsBean;
 import com.example.enticement.bean.Status;
 import com.example.enticement.network.ServiceCreator;
+import com.example.enticement.network.api.CartApi;
 import com.example.enticement.network.api.HomeApi;
 import com.example.enticement.utils.EncryptUtils;
+import com.example.enticement.utils.SignUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -103,6 +109,35 @@ public class HomeViewModel extends ViewModel {
                 });
         return data;
     }
+    public MutableLiveData<Status<CartListBean>> getCartChange(String token,String mid,String goods_id,String goods_spec,String goods_num) {
+
+        final MutableLiveData<Status<CartListBean>> data = new MutableLiveData<>();
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("token",token);
+        params.put("mid",mid);
+        params.put("goods_id",goods_id);
+        params.put("goods_spec",goods_spec);
+        params.put("goods_num",goods_num);
+        String signs = SignUtils.signParam(params);
+        mCreator.create(CartApi.class)
+                .cartChange(token,mid,goods_id,goods_spec,goods_num,signs)
+                .enqueue(new Callback<CartListBean>() {
+
+                    @Override
+                    public void onResponse(Call<CartListBean> call, Response<CartListBean> response) {
+                        data.setValue(Status.success(response.body()));
+                    }
+
+                    @Override
+                    public void onFailure(Call<CartListBean> call, Throwable t) {
+                        data.setValue(Status.error(null, t.getMessage() ==
+                                null ? "加载失败" : t.getMessage()));
+                    }
+                });
+        return data;
+    }
+
+
 
 
 

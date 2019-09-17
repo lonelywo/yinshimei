@@ -486,5 +486,16 @@ public class SharedPrefUtils {
         return sp.getBoolean(DY_FIRST_GUIDE, true);
     }
 
+    public static void saveShowquyuCode(int show) {
+        SharedPreferences sp = BasicApp.getContext().getSharedPreferences("quyu", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putInt("showQyCode", show);
+        editor.apply();
+    }
+
+    public static int getShowquyuCode() {
+        SharedPreferences sp = BasicApp.getContext().getSharedPreferences("quyu", Context.MODE_PRIVATE);
+        return sp.getInt("showQyCode", 86);
+    }
 
 }

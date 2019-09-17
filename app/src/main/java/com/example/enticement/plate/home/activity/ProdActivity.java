@@ -20,10 +20,12 @@ import com.example.enticement.bean.HomeDetailsBean;
 import com.example.enticement.bean.Status;
 import com.example.enticement.bean.UserInfo;
 import com.example.enticement.network.ServiceCreator;
+import com.example.enticement.plate.cart.activity.OrderActivity;
 import com.example.enticement.plate.common.GlideImageLoader;
 
 import com.example.enticement.plate.common.LoginActivity;
 import com.example.enticement.plate.common.popup.ShareBottom2TopProdPopup;
+import com.example.enticement.plate.common.vm.LoginViewModel;
 import com.example.enticement.plate.home.vm.HomeViewModel;
 import com.example.enticement.utils.FToast;
 import com.example.enticement.utils.SharedPrefUtils;
@@ -38,7 +40,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class ProdActivity extends BaseActivity {
+public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPopup.OnCommitClickListener {
     private static final String TAG = ProdActivity.class.getSimpleName();
     public static final int PUT_IN_CART=100;
     public static final int QUICK_BUY=101;
@@ -76,6 +78,7 @@ public class ProdActivity extends BaseActivity {
 
     @Override
     public void initViews(Bundle savedInstanceState) {
+
         Intent intent = getIntent();
         if (intent == null) {
             FToast.error("数据错误");
@@ -160,34 +163,47 @@ public class ProdActivity extends BaseActivity {
                 new XPopup.Builder(ProdActivity.this)
                         .dismissOnTouchOutside(true)
                         .dismissOnBackPressed(true)
-                        .asCustom(new ShareBottom2TopProdPopup(ProdActivity.this, mProData,PUT_IN_CART))
+                        .asCustom(new ShareBottom2TopProdPopup(ProdActivity.this, mProData,PUT_IN_CART,this))
                         .show();
                 break;
             case R.id.text_sell:
                 new XPopup.Builder(ProdActivity.this)
                         .dismissOnTouchOutside(true)
                         .dismissOnBackPressed(true)
-                        .asCustom(new ShareBottom2TopProdPopup(ProdActivity.this, mProData,QUICK_BUY))
+                        .asCustom(new ShareBottom2TopProdPopup(ProdActivity.this, mProData,QUICK_BUY,this))
                         .show();
                 break;
             case R.id.iv_to_top:
               //  scrollDetails.smoothScrollTo(0,0);
-                startActivity(new Intent(ProdActivity.this, LoginActivity.class));
+             if(isAllowPermission(this)){
+                 startActivity(new Intent(this, OrderActivity.class));
+             }
                 break;
         }
     }
     /**
      * 判断账号是否登录
      */
-   /* public boolean isAllowPermission(Context context) {
-       UserInfo userInfo = SharedPrefUtils.get(UserInfo.class);
+    public boolean isAllowPermission(Context context) {
+        UserInfo userInfo = SharedPrefUtils.get(UserInfo.class);
         if (userInfo != null) {
-            if ("0".equals(userInfo.getNeedAuth())) {
-                return true;
-            } else {
-              context.startActivity(new Intent(context, LoginActivity.class));
+           return true;
+        }else {
+            context.startActivity(new Intent(context, LoginActivity.class));
             return false;
-            }
         }
-    }*/
+    }
+
+    @Override
+    public void onCommitClick(int id, String spec, int num,int code) {
+          if(code==PUT_IN_CART){
+
+
+          }else if(code==QUICK_BUY){
+
+
+          }
+
+    }
+
 }

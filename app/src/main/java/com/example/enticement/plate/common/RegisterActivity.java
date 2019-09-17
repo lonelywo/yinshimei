@@ -1,5 +1,6 @@
 package com.example.enticement.plate.common;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -76,7 +77,9 @@ public class RegisterActivity extends BaseActivity {
     private Handler mTimeHandler = new Handler();
     private RegActivityViewModel mViewModel;
     private String guojiacode;
+    private int mQrCodeChoice=0;
 
+    private String[] mQrItems = new String[]{"中国", "马来西亚"};
     @Override
     public int getLayoutId() {
         return R.layout.activity_register;
@@ -89,7 +92,7 @@ public class RegisterActivity extends BaseActivity {
 
 
 
-    @OnClick({R.id.tv_code, R.id.ok,R.id.image_back})
+    @OnClick({R.id.tv_code, R.id.ok,R.id.image_back,R.id.img_youjiantou})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_code:
@@ -101,6 +104,10 @@ public class RegisterActivity extends BaseActivity {
                 break;
             case R.id.image_back:
                finish();
+
+                break;
+            case R.id.img_youjiantou:
+                showQrCodeDialog();
 
                 break;
         }
@@ -121,7 +128,7 @@ public class RegisterActivity extends BaseActivity {
             FToast.warning("请填写正确的推荐人手机号");
             return;
         }
-        mViewModel.register(phone,smsCode,inviteCode).observe(this, mObserver);
+        mViewModel.register(smsCode,phone,inviteCode).observe(this, mObserver);
 
     }
     private Observer<Status<Base>> mObserver = new Observer<Status<Base>>() {
@@ -144,7 +151,7 @@ public class RegisterActivity extends BaseActivity {
                         FToast.success("注册成功，请登录");
                       finish();
                     } else {
-                        FToast.error(baseStatus.content.msg);
+                        FToast.error(baseStatus.content.info);
                     }
                     break;
             }
@@ -165,7 +172,7 @@ public class RegisterActivity extends BaseActivity {
             guojiacode ="60";
         }
 
-        mViewModel.getSmsCode(phone, "cuci", "86").observe(this, mSmsCodeObserver);
+        mViewModel.getSmsCode(phone, "cuci", guojiacode).observe(this, mSmsCodeObserver);
 
     }
     private Observer<Status<Base>> mSmsCodeObserver = new Observer<Status<Base>>() {
@@ -217,7 +224,34 @@ public class RegisterActivity extends BaseActivity {
             }
         }
     };
+    private void showQrCodeDialog() {
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
+        builder.setTitle("选择");
+        if (mQrCodeChoice == 0) {
+            mQrCodeChoice = 0;
+        } else if (mQrCodeChoice == 1) {
+            mQrCodeChoice = 1;
+        }
+        builder.setSingleChoiceItems(mQrItems, mQrCodeChoice, (dialog, which) ->
+                mQrCodeChoice = which);
+
+        builder.setPositiveButton("保存", (dialog, which) -> {
+            if (mQrCodeChoice == 0) {
+                SharedPrefUtils.saveShowquyuCode(86);
+                textGuojia.setText("中国");
+            } else if (mQrCodeChoice == 1) {
+                SharedPrefUtils.saveShowquyuCode(60);
+                textGuojia.setText("马来西亚");
+            }
+            FToast.success("保存成功");
+        });
+
+        builder.setNegativeButton("取消", null);
+        builder.create().show();
+
+    }
 
 
 }

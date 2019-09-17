@@ -45,11 +45,14 @@ public interface CartApi {
      */
     @FormUrlEncoded
     @POST("store/api.member.Cart/dealBuy")
-    Call<CartListBean> cartChange(@Field("openid") String openId,
+    Call<CartListBean> cartChange(@Field("token") String token,
                                   @Field("mid") String mid,
                                   @Field("goods_id") String goodsId,
                                   @Field("goods_spec") String goodsSpec,
-                                  @Field("goods_num") String goodsNum);
+                                  @Field("goods_num") String goodsNum,
+                                  @Field("sign") String sign
+
+    );
 
     /**
      * 购物车删除

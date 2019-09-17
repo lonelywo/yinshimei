@@ -15,18 +15,22 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.cuci.enticement.R;
-import com.example.enticement.Constant;
 import com.example.enticement.base.BaseFragment;
+import com.example.enticement.bean.Base;
+import com.example.enticement.bean.Status;
 import com.example.enticement.bean.UserInfo;
-import com.example.enticement.network.ServiceCreator;
 import com.example.enticement.plate.common.LoginActivity;
-import com.example.enticement.plate.home.activity.ProdActivity;
 import com.example.enticement.plate.mine.activity.MyOrderActivity;
+import com.example.enticement.plate.mine.vm.MineViewModel;
+import com.example.enticement.utils.FToast;
 import com.example.enticement.utils.ImageLoader;
 import com.example.enticement.utils.SharedPrefUtils;
+import com.google.gson.Gson;
 
 import java.util.Date;
 
@@ -94,9 +98,14 @@ public class _MineFragment extends BaseFragment {
     ScrollView scrollView;
     public static final String DATA_USER_INFO = "data_user_info_";
     public static final String ACTION_LOGIN_SUCCEED = "com.example.enticement.plate.mine.fragment.ACTION_LOGIN_SUCCEED";
+    @BindView(R.id.text_name)
+    TextView textName;
+    @BindView(R.id.v6)
+    View v6;
     private boolean mCouldChange = true;
     private LocalBroadcastManager mBroadcastManager;
     private UserInfo mUserInfo;
+    private MineViewModel mViewModel;
 
     @Override
     protected void onLazyLoad() {
@@ -111,19 +120,22 @@ public class _MineFragment extends BaseFragment {
 
     @Override
     protected void initViews(LayoutInflater inflater, View view, ViewGroup container, Bundle savedInstanceState) {
-        //     mViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
-
+        mViewModel = ViewModelProviders.of(this).get(MineViewModel.class);
         mBroadcastManager = LocalBroadcastManager.getInstance(mActivity);
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(LoginActivity.ACTION_WX_LOGIN_SUCCEED);
         intentFilter.addAction(ACTION_LOGIN_SUCCEED);
         mBroadcastManager.registerReceiver(mReceiver, intentFilter);
+        mUserInfo = SharedPrefUtils.get(UserInfo.class);
+        refreshLayout();
     }
 
 
     private void load() {
-        //  mViewModel.getSplash().observe(this, mObserver);
+        //   mViewModel.getSplash().observe(this, mObserver);
+
     }
+
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -162,17 +174,18 @@ public class _MineFragment extends BaseFragment {
     private void refreshLayout() {
         if (mUserInfo == null) {
             ImageLoader.loadNoPlaceholder(R.drawable.tuxiang, imgTuxiang);
+            textName.setText("因诗美");
             return;
         }
-
-
+        ImageLoader.loadNoPlaceholder(mUserInfo.getHeadimg(), imgTuxiang);
+        textName.setText(mUserInfo.getNickname());
     }
 
     @OnClick({R.id.img_kaiguan, R.id.btn_shengji, R.id.text_quanbudingdan, R.id.text_daifukuan, R.id.text_daifahuo, R.id.text_daishouhuo, R.id.text_yiwancheng, R.id.text_tuiguangyongjing, R.id.text_wodetuandui, R.id.text_shouhuodizi, R.id.text_yejiyuefan, R.id.text_wodekefu})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_kaiguan:
-
+                //   mViewModel.loginOut(from_type,token,mid).observe(this, mObserver);
                 break;
             case R.id.btn_shengji:
 
@@ -203,11 +216,13 @@ public class _MineFragment extends BaseFragment {
                 break;
         }
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         mBroadcastManager.unregisterReceiver(mReceiver);
     }
+
     //判断是否超过10分钟
     private boolean tenOuter() {
 
@@ -228,4 +243,39 @@ public class _MineFragment extends BaseFragment {
 
         return false;
     }
+
+    private Observer<Status<Base>> mObserver = new Observer<Status<Base>>() {
+        @Override
+        public void onChanged(Status<Base> baseStatus) {
+            switch (baseStatus.status) {
+                case Status.LOADING:
+                    break;
+                case Status.ERROR:
+                    break;
+                case Status.SUCCESS:
+                    if (baseStatus.content == null) {
+                        FToast.error("请求错误，请稍后再试。");
+                        return;
+                    }
+                    if (baseStatus.content.code == 1) {
+                        String s = new Gson().toJson(baseStatus.content.data);
+                        //    UserInfo userInfo =(UserInfo)baseStatus.content.data;
+                        FToast.success("登录成功");
+                     /*   SharedPrefUtils.save(userInfo,UserInfo.class);
+                        Intent intent = new Intent(_MineFragment.ACTION_LOGIN_SUCCEED);
+                       intent.putExtra(_MineFragment.DATA_USER_INFO, userInfo);
+                        LocalBroadcastManager.getInstance(LoginActivity.this).sendBroadcast(intent);
+                        finish();*/
+                     /*   if (mOnLoginListener != null) {
+                            mOnLoginListener.onLoginSucceed(userInfo, mShowContract);
+                        }*/
+                    } else {
+                        FToast.error("请求错误，请稍后再试。");
+                    }
+                    break;
+            }
+        }
+    };
+
+
 }

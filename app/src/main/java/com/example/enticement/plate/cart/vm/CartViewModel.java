@@ -13,6 +13,10 @@ import com.example.enticement.bean.Version;
 import com.example.enticement.network.ServiceCreator;
 import com.example.enticement.network.api.CartApi;
 import com.example.enticement.network.api.CommonApi;
+import com.example.enticement.utils.SignUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -65,12 +69,19 @@ public class CartViewModel extends ViewModel {
 
 
 
-    public MutableLiveData<Status<CartListBean>> cartChange(String openId,String mid,String goodsId,String goodsSpec,String goodsNum) {
+    public MutableLiveData<Status<CartListBean>> cartChange(String token,String mid,String goodsId,String goodsSpec,String goodsNum) {
 
         final MutableLiveData<Status<CartListBean>> data = new MutableLiveData<>();
         data.setValue(Status.loading(null));
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("token",token);
+        params.put("mid",mid);
+        params.put("goods_id",goodsId);
+        params.put("goods_spec",goodsSpec);
+        params.put("goods_num",goodsNum);
+        String signs = SignUtils.signParam(params);
         mCreator.create(CartApi.class)
-                .cartChange(openId,mid,goodsId,goodsSpec,goodsNum)
+                .cartChange(token,mid,goodsId,goodsSpec,goodsNum,signs)
                 .enqueue(new Callback<CartListBean>() {
                     @Override
                     public void onResponse(@NonNull Call<CartListBean> call,

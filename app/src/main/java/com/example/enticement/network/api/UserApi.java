@@ -46,10 +46,22 @@ public interface UserApi {
      */
     @FormUrlEncoded
     @POST("store/api.user/login")
-    Call<Base<UserInfo>> login(@Field("phone") String phone,
-                               @Field("code") String codem,
-                               @Field("sgin") String sign
+    Call<Base<UserInfo>> login(
+                               @Field("data") String data,
+                               @Field("sign") String sign
 
     );
+    /**
+     * 退出登录
+     */
+    @FormUrlEncoded
+    @POST("store/api.member.center/logout")
+    Call<Base> loginOut(@Field("from_type") String from_type,
+                     @Field("token") String token,
+                     @Field("mid") String mid,
+                     @Field("sign") String sign
+
+    );
+
 }
 

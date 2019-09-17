@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -23,18 +24,24 @@ import com.cuci.enticement.R;
 import com.example.enticement.Constant;
 import com.example.enticement.base.BaseActivity;
 import com.example.enticement.bean.Base;
+import com.example.enticement.bean.LoginBean;
 import com.example.enticement.bean.Status;
 import com.example.enticement.bean.UserInfo;
 import com.example.enticement.plate.common.vm.LoginViewModel;
 import com.example.enticement.plate.home.activity.ProdActivity;
 import com.example.enticement.plate.mine.fragment._MineFragment;
+import com.example.enticement.utils.EncryptUtils;
 import com.example.enticement.utils.FLog;
 import com.example.enticement.utils.FToast;
+import com.example.enticement.utils.RSAUtil;
 import com.example.enticement.utils.Re;
 import com.example.enticement.utils.SharedPrefUtils;
 import com.example.enticement.widget.ClearEditText;
+import com.google.gson.Gson;
 
 import java.util.Date;
+
+import javax.crypto.Cipher;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -118,10 +125,21 @@ public class LoginActivity extends BaseActivity {
                 startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
                 break;
             case R.id.weixin:
+                String  stringA = "phone="+"18588564260"+"&region="+"cuci"+"&secure="+"86";
+                String sign = EncryptUtils.md5Encrypt(stringA+"&key=A8sUd9bqis3sN5GK6aF9JDFl5I9skPkd");
+                String signs = sign.toUpperCase();
+                LoginBean loginBean = new LoginBean();
+                loginBean.setPhone("18588564260");
+                loginBean.setCode("1254");
+                String mloginBean = new Gson().toJson(loginBean);
+                String data = RSAUtil.encryptByPublic(this, mloginBean);
+                String stringB ="data="+data;
+                String sign1 = EncryptUtils.md5Encrypt(stringB+"&key=A8sUd9bqis3sN5GK6aF9JDFl5I9skPkd");
+                String signs1 = sign.toUpperCase();
+                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
                 break;
         }
     }
-
 
     private void login() {
 
@@ -132,8 +150,14 @@ public class LoginActivity extends BaseActivity {
             FToast.warning("请填写完整");
             return;
         }
+        LoginBean loginBean = new LoginBean();
+        loginBean.setPhone(phone);
+        loginBean.setCode(smsCode);
+        String mloginBean = new Gson().toJson(loginBean);
+        String data = RSAUtil.encryptByPublic(this, mloginBean);
 
-        mViewModel.login(phone,smsCode).observe(this, mObserver);
+
+        mViewModel.login(data).observe(this, mObserver);
 
     }
     private Observer<Status<Base<UserInfo>>> mObserver = new Observer<Status<Base<UserInfo>>>() {
@@ -153,19 +177,19 @@ public class LoginActivity extends BaseActivity {
                         return;
                     }
                     if (baseStatus.content.code == 1) {
-                        UserInfo userInfo =baseStatus.content.data;
-                        FToast.success("注册成功，请登录");
-                        finish();
+                        String s = new Gson().toJson(baseStatus.content.data);
+                        UserInfo userInfo=baseStatus.content.data;
+                        FToast.success("登录成功");
+                        SharedPrefUtils.save(userInfo,UserInfo.class);
                         Intent intent = new Intent(_MineFragment.ACTION_LOGIN_SUCCEED);
                         intent.putExtra(_MineFragment.DATA_USER_INFO, userInfo);
                         LocalBroadcastManager.getInstance(LoginActivity.this).sendBroadcast(intent);
-
-
-                        if (mOnLoginListener != null) {
+                        finish();
+                     /*   if (mOnLoginListener != null) {
                             mOnLoginListener.onLoginSucceed(userInfo, mShowContract);
-                        }
+                        }*/
                     } else {
-                        FToast.error(baseStatus.content.msg);
+                        FToast.error(baseStatus.content.info);
                     }
                     break;
             }
@@ -181,7 +205,8 @@ public class LoginActivity extends BaseActivity {
             FToast.warning("请填写正确的手机号");
             return;
         }
-        mViewModel.getSmsCodelogin(phone, "cuci", "86").observe(this, mSmsCodeObserver);
+        int showquyuCode = SharedPrefUtils.getShowquyuCode();
+        mViewModel.getSmsCodelogin(phone, "cuci", ""+showquyuCode).observe(this, mSmsCodeObserver);
     }
     private Observer<Status<Base>> mSmsCodeObserver = new Observer<Status<Base>>() {
         @Override
@@ -195,6 +220,7 @@ public class LoginActivity extends BaseActivity {
                     }
                     FLog.e("dengluyanzhengma",baseStatus.content.toString());
                     if (baseStatus.content.code == 1) {
+
                         tvCode.setClickable(false);
                         tvCode.setTag(60);
                         tvCode.setBackground(ContextCompat.getDrawable(LoginActivity.this,

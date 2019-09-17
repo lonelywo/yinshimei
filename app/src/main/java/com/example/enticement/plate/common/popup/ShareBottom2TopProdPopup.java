@@ -63,12 +63,13 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
     private String mSpec;
     private int mID;
 
-    public ShareBottom2TopProdPopup(@NonNull Context context, HomeDetailsBean.DataBean item, int code) {
+    public ShareBottom2TopProdPopup(@NonNull Context context, HomeDetailsBean.DataBean item, int code,OnCommitClickListener OnCommitClickListener) {
         super(context);
         mContext = context;
         mItem = item;
         mScreenWidth = DimensionUtils.getScreenWidth(context);
         mCode = code;
+        mOnCommitClickListener=OnCommitClickListener;
     }
 
 
@@ -159,15 +160,14 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
     @OnClick(R.id.tv_commit)
     public void onViewClicked() {
         if(mOnCommitClickListener!=null){
-            mOnCommitClickListener.onCommitClick(mID,mSpec,num);
+            mOnCommitClickListener.onCommitClick(mID,mSpec,num,mCode);
             dismiss();
         }
     }
 
     public interface OnCommitClickListener {
 
-        void onCommitClick(int id,String spec,int num);
-
+        void onCommitClick(int id,String spec,int num,int code);
 
     }
 

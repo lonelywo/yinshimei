@@ -5,12 +5,18 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.enticement.bean.Base;
+import com.example.enticement.bean.LoginBean;
 import com.example.enticement.bean.Status;
 import com.example.enticement.bean.UserInfo;
 import com.example.enticement.network.ServiceCreator;
 import com.example.enticement.network.api.UserApi;
 import com.example.enticement.utils.EncryptUtils;
+import com.example.enticement.utils.SignUtils;
+import com.google.gson.Gson;
 
+
+import java.util.HashMap;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -99,16 +105,16 @@ public class LoginViewModel extends ViewModel {
         return liveData;
     }*/
 
-    public MutableLiveData<Status<Base<UserInfo>>> login(String phone, String code) {
+    public MutableLiveData<Status<Base<UserInfo>>> login(String data) {
 
         final MutableLiveData<Status<Base<UserInfo>>> liveData = new MutableLiveData<>();
 
         liveData.setValue(Status.loading(null));
-        String  stringA = "code="+code+"&phone="+phone;
+        String stringA ="data="+data;
         String sign = EncryptUtils.md5Encrypt(stringA+"&key=A8sUd9bqis3sN5GK6aF9JDFl5I9skPkd");
         String signs = sign.toUpperCase();
         mCreator.create(UserApi.class)
-                .login(phone, code,signs)
+                .login(data,signs)
                 .enqueue(new Callback<Base<UserInfo>>() {
                     @Override
                     public void onResponse(@NonNull Call<Base<UserInfo>> call,
@@ -125,6 +131,11 @@ public class LoginViewModel extends ViewModel {
         return liveData;
 
     }
+
+
+
+
+
     public MutableLiveData<Status<Base>> getSmsCodelogin(String phone, String secure, String region) {
 
         final MutableLiveData<Status<Base>> liveData = new MutableLiveData<>();

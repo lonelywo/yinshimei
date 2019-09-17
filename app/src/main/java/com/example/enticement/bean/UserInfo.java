@@ -6,11 +6,32 @@ import java.io.Serializable;
 
 public class UserInfo implements Serializable {
 
-    private static final long serialVersionUID = 7932979132841790371L;
+
+    /**
+     * id : 18281.0
+     * phone : 18588564260
+     * nickname : 皮蛋君
+     * headimg : https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83eqalst360wHqrqFJZbTMY4DSjd55iak7kspu6ic1bKKBUO3icQ7dlThwz5b6MlSwD9dfbmS5whwVicfRg/132
+     * vip_level : 0.0
+     * vip_auth : 0.0
+     * token : bd9ef0241d02e98e6709fb249477d999
+     */
+
+    private int id;
     private String phone;
-    private String sellerId;
-    private String inviteCode;
+    private String nickname;
+    private String headimg;
+    private int vip_level;
+    private int vip_auth;
     private String token;
+
+    public double getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getPhone() {
         return phone;
@@ -20,20 +41,36 @@ public class UserInfo implements Serializable {
         this.phone = phone;
     }
 
-    public String getSellerId() {
-        return sellerId;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setSellerId(String sellerId) {
-        this.sellerId = sellerId;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
-    public String getInviteCode() {
-        return inviteCode;
+    public String getHeadimg() {
+        return headimg;
     }
 
-    public void setInviteCode(String inviteCode) {
-        this.inviteCode = inviteCode;
+    public void setHeadimg(String headimg) {
+        this.headimg = headimg;
+    }
+
+    public double getVip_level() {
+        return vip_level;
+    }
+
+    public void setVip_level(int vip_level) {
+        this.vip_level = vip_level;
+    }
+
+    public double getVip_auth() {
+        return vip_auth;
+    }
+
+    public void setVip_auth(int vip_auth) {
+        this.vip_auth = vip_auth;
     }
 
     public String getToken() {
@@ -42,17 +79,5 @@ public class UserInfo implements Serializable {
 
     public void setToken(String token) {
         this.token = token;
-    }
-
-
-
-    @Override
-    public String toString() {
-        return "UserInfo{" +
-                "phone='" + phone + '\'' +
-                ", sellerId='" + sellerId + '\'' +
-                ", inviteCode='" + inviteCode + '\'' +
-                ", token='" + token + '\'' +
-                '}';
     }
 }
