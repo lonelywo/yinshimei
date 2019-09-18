@@ -23,7 +23,7 @@ public interface OrderApi {
      */
     @FormUrlEncoded
     @POST("store/api.member.order/gets")
-    Call<OrderList> getOrderList(@Field("openid") String openId,
+    Call<OrderList> getOrderList(@Field("token") String token,
                                  @Field("mid") String mid,
                                  @Field("page") String page,
                                  @Field("status") String status,
@@ -36,7 +36,7 @@ public interface OrderApi {
      */
     @FormUrlEncoded
     @POST("store/api.member.order/confirm")
-    Call<OrderResult> confirmOrder(@Field("openid") String openId,
+    Call<OrderResult> confirmOrder(@Field("token") String token,
                                  @Field("mid") String mid,
                                  @Field("order_no") String orderNum,
                                    @Field("sign") String signs);
@@ -47,7 +47,7 @@ public interface OrderApi {
      */
     @FormUrlEncoded
     @POST("store/api.member.order/cancel")
-    Call<OrderResult> cancelOrder(@Field("openid") String openId,
+    Call<OrderResult> cancelOrder(@Field("token") String token,
                                    @Field("mid") String mid,
                                    @Field("order_no") String orderNum,
                                   @Field("sign") String signs);
@@ -59,7 +59,7 @@ public interface OrderApi {
      */
     @FormUrlEncoded
     @POST("/store/api.member.order/total")
-    Call<OrderStatistics> getTotalOrder(@Field("openid") String openId,
+    Call<OrderStatistics> getTotalOrder(@Field("token") String token,
                                       @Field("mid") String mid,
                                         @Field("sign") String signs);
 
@@ -81,7 +81,7 @@ public interface OrderApi {
      */
     @FormUrlEncoded
     @POST("/store/api.member.order/express")
-    Call<OrderExpressCost> getExpressCost(@Field("openid") String openId,
+    Call<OrderExpressCost> getExpressCost(@Field("token") String token,
                                          @Field("mid") String mid,
                                          @Field("order_no") String orderNum,
                                          @Field("address_id") String addressId,
@@ -93,7 +93,7 @@ public interface OrderApi {
      */
     @FormUrlEncoded
     @POST("store/api.member.order/pay")
-    Call<OrderPay> getOrderPay(@Field("openid") String openId,
+    Call<OrderPay> getOrderPay(@Field("token") String token,
                                @Field("mid") String mid,
                                @Field("order_no") String orderNum,
                                @Field("pay_type") String payType,
@@ -107,7 +107,7 @@ public interface OrderApi {
      */
     @FormUrlEncoded
     @POST("store/api.member.order/perfect")
-    Call<OrderPay> udpateAdress(@Field("openid") String openId,
+    Call<OrderPay> udpateAdress(@Field("token") String token,
                        @Field("mid") String mid,
                        @Field("order_no") String orderNum,
                        @Field("address_id") String addressId,

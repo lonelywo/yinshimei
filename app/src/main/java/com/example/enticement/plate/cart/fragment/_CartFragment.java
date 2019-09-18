@@ -1,7 +1,10 @@
 package com.example.enticement.plate.cart.fragment;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -47,7 +51,7 @@ import me.drakeet.multitype.MultiTypeAdapter;
 public class _CartFragment extends BaseFragment implements ItemCartViewBinder.OnItemClickListener, OnRefreshLoadMoreListener {
 
     private static final String TAG = _CartFragment.class.getSimpleName();
-
+    public static final String ACTION_REFRESH_DATA = "com.yinshimei.plate.common.ACTION_REFRESH_DATA";
     @BindView(R.id.rb_check_all)
     CheckBox mRbCheckAll;
     @BindView(R.id.recycler_view)
@@ -64,7 +68,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
     private MultiTypeAdapter mAdapter;
     private Items mItems;
     private LinearLayoutManager mLayoutManager;
-
+    private LocalBroadcastManager mLocalBroadcastManager;
     @Override
     protected void onLazyLoad() {
 
@@ -99,7 +103,15 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
         mRecyclerView.setOnItemMoveListener(mItemMoveListener);// 监听拖拽，更新UI。
 
 
+        mLocalBroadcastManager = LocalBroadcastManager.getInstance(mActivity);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ACTION_REFRESH_DATA);
+        mLocalBroadcastManager.registerReceiver(mReceiver, intentFilter);
+
     }
+
+
+
 
     OnItemMoveListener mItemMoveListener = new OnItemMoveListener() {
         @Override
@@ -127,6 +139,28 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
             mAdapter.notifyItemRemoved(position);
         }
     };
+
+
+
+
+
+    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent != null && intent.getAction() != null) {
+                if(intent.getAction().equals(ACTION_REFRESH_DATA)){
+                    mRefreshLayout.autoRefresh();
+                }
+
+            }
+        }
+    };
+
+
+
+
+
+
     private void load() {
 
         mViewModel.getCartList("", "37", "", Status.LOAD_REFRESH).observe(this, mObserver);
@@ -295,9 +329,9 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
     }
 
 
-
-
-
+    /**
+     * 购物车修改结果
+     */
     private Observer<Status<CartListBean>> mChangeObserver = new Observer<Status<CartListBean>>() {
         @Override
         public void onChanged(Status<CartListBean> status) {
@@ -361,10 +395,15 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
                 case Status.SUCCESS:
                     OrderResult content = status.content;
                     if(content.getCode()==1){
+                        //清空视图并跳转
+                        mItems.clear();
+                        mAdapter.notifyDataSetChanged();
+
                         Intent intent = new Intent(mActivity, OrderActivity.class);
+                        intent.putExtra("order",content.getData().getOrder());
                         startActivity(intent);
-                        //刷新视图并跳转
-                        mViewModel.getCartList("", "37", "", Status.LOAD_REFRESH).observe(mActivity, mObserver);
+
+
                     }else {
                         FToast.warning(content.getInfo());
                     }

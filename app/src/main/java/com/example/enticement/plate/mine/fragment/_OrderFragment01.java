@@ -25,6 +25,7 @@ import com.example.enticement.bean.MallSourceBean;
 import com.example.enticement.bean.OrderList;
 import com.example.enticement.bean.OrderResult;
 import com.example.enticement.bean.Status;
+import com.example.enticement.bean.UserInfo;
 import com.example.enticement.plate.cart.activity.OrderActivity;
 import com.example.enticement.plate.cart.adapter.ItemCartViewBinder;
 import com.example.enticement.plate.mall.adapter.NineAdapter;
@@ -34,6 +35,7 @@ import com.example.enticement.plate.mine.adapter.ItemProdViewBinder;
 import com.example.enticement.plate.mine.adapter.ItemTitleViewBinder;
 import com.example.enticement.plate.mine.vm.OrderViewModel;
 import com.example.enticement.utils.FToast;
+import com.example.enticement.utils.SharedPrefUtils;
 import com.example.enticement.widget.CartItemDecoration;
 import com.example.enticement.widget.CustomRefreshHeader;
 import com.example.enticement.widget.GridItemDecoration;
@@ -73,7 +75,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
     private MultiTypeAdapter mAdapter;
     private Items mItems;
     private  List<OrderList.DataBean.OrderBean> mDatas=new ArrayList<>();
-
+    private  UserInfo mUserInfo;
 
     public static _OrderFragment01 newInstance(String type) {
         Bundle args = new Bundle();
@@ -96,9 +98,16 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
 
     @Override
     protected void initViews(LayoutInflater inflater, View view, ViewGroup container, Bundle savedInstanceState) {
-        mViewModel = ViewModelProviders.of(this).get(OrderViewModel.class);
         Bundle bundle = getArguments();
         mtype = bundle.getString("type");
+
+        mUserInfo= SharedPrefUtils.get(UserInfo.class);
+        if(mUserInfo==null){
+            return;
+        }
+
+        mViewModel = ViewModelProviders.of(this).get(OrderViewModel.class);
+
         CustomRefreshHeader header = new CustomRefreshHeader(mActivity);
         header.setBackground(0xFFF3F4F6);
         //mRefreshLayout.setRefreshHeader(header);
@@ -125,8 +134,12 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
     }
 
     private void load() {
-        mViewModel.getOrderList("","","","","",Status.LOAD_REFRESH).observe(this, mObserver);
+        mViewModel.getOrderList(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"",mtype,"",Status.LOAD_REFRESH).observe(this, mObserver);
     }
+
+
+
+
     private Observer<Status<OrderList>> mObserver = status -> {
         switch (status.status) {
             case Status.SUCCESS:

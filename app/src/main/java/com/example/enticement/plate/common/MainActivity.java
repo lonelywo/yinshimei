@@ -66,12 +66,13 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
     public static final String DATA_FUNCTION = "data_function";
 
-    public static final String ACTION_GO_TO_RANK = "com.fqapps.fdsh.plate.common.ACTION_GO_TO_RANK";
-    public static final String ACTION_GO_TO_SCHOOL = "com.fqapps.fdsh.plate.common.ACTION_GO_TO_SCHOOL";
-    public static final String ACTION_GO_TO_FIND = "com.fqapps.fdsh.plate.common.ACTION_GO_TO_FIND";
-    public static final String ACTION_GO_TO_MINE = "com.fqapps.fdsh.plate.common.ACTION_GO_TO_MINE";
+    public static final String ACTION_GO_TO_HOME = "com.yinshimei.plate.common.ACTION_GO_TO_HOME";
+    public static final String ACTION_GO_TO_MATERIAL = "com.yinshimei.plate.common.ACTION_GO_TO_MATERIAL";
+    public static final String ACTION_GO_TO_CART = "com.yinshimei.plate.common.ACTION_GO_TO_CART";
+    public static final String ACTION_GO_TO_MINE = "com.yinshimei.plate.common.ACTION_GO_TO_MINE";
 
-    public static final String ACTION_SHOW_POPUP = "com.fqapps.fdsh.plate.common.ACTION_SHOW_POPUP";
+
+    public static final String ACTION_SHOW_POPUP = "com.yinshimei.plate.common.ACTION_SHOW_POPUP";
 
     @BindView(R.id.view_pager)
     FitSystemWindowViewPager mViewPager;
@@ -133,9 +134,9 @@ public class MainActivity extends AppCompatActivity {
 
         mLocalBroadcastManager = LocalBroadcastManager.getInstance(this);
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(ACTION_GO_TO_RANK);
-        intentFilter.addAction(ACTION_GO_TO_SCHOOL);
-        intentFilter.addAction(ACTION_GO_TO_FIND);
+        intentFilter.addAction(ACTION_GO_TO_HOME);
+        intentFilter.addAction(ACTION_GO_TO_MATERIAL);
+        intentFilter.addAction(ACTION_GO_TO_CART);
         intentFilter.addAction(ACTION_GO_TO_MINE);
         intentFilter.addAction(ACTION_SHOW_POPUP);
         mLocalBroadcastManager.registerReceiver(mReceiver, intentFilter);
@@ -217,17 +218,17 @@ public class MainActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             if (intent != null && intent.getAction() != null) {
                 switch (intent.getAction()) {
-                    case ACTION_GO_TO_RANK:
+                    case ACTION_GO_TO_HOME:
+                        mBottomLayout.setSelected(0);
+                        break;
+                    case ACTION_GO_TO_MATERIAL:
                         mBottomLayout.setSelected(1);
                         break;
-                    case ACTION_GO_TO_SCHOOL:
+                    case ACTION_GO_TO_CART:
                         mBottomLayout.setSelected(2);
                         break;
-                    case ACTION_GO_TO_FIND:
-                        mBottomLayout.setSelected(3);
-                        break;
                     case ACTION_GO_TO_MINE:
-                        mBottomLayout.setSelected(4);
+                        mBottomLayout.setSelected(3);
                         break;
                     case ACTION_SHOW_POPUP:
                         //显示红包弹窗

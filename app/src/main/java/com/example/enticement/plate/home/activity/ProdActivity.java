@@ -11,19 +11,24 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.cuci.enticement.R;
 import com.example.enticement.base.BaseActivity;
 import com.example.enticement.bean.BannerDataBean;
 
+import com.example.enticement.bean.Base;
 import com.example.enticement.bean.HomeDetailsBean;
+import com.example.enticement.bean.OrderResult;
 import com.example.enticement.bean.Status;
 import com.example.enticement.bean.UserInfo;
 import com.example.enticement.network.ServiceCreator;
 import com.example.enticement.plate.cart.activity.OrderActivity;
+import com.example.enticement.plate.cart.vm.CartViewModel;
 import com.example.enticement.plate.common.GlideImageLoader;
 
 import com.example.enticement.plate.common.LoginActivity;
+import com.example.enticement.plate.common.MainActivity;
 import com.example.enticement.plate.common.popup.ShareBottom2TopProdPopup;
 import com.example.enticement.plate.common.vm.LoginViewModel;
 import com.example.enticement.plate.home.vm.HomeViewModel;
@@ -40,6 +45,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+
+import static com.example.enticement.plate.cart.fragment._CartFragment.ACTION_REFRESH_DATA;
+import static com.example.enticement.plate.common.MainActivity.ACTION_GO_TO_CART;
 
 public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPopup.OnCommitClickListener {
     private static final String TAG = ProdActivity.class.getSimpleName();
@@ -187,13 +195,52 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
     @Override
     public void onCommitClick(int id, String spec, int num,int code) {
           if(code==PUT_IN_CART){
-
+              finish();
+              LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
+              broadcastManager.sendBroadcast(new Intent(ACTION_GO_TO_CART));
+              broadcastManager.sendBroadcast(new Intent(ACTION_REFRESH_DATA));
 
           }else if(code==QUICK_BUY){
-
+           CartViewModel   mViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
+           mViewModel.commitOrder("","","","").observe(this,mCommitObserver);
 
           }
 
     }
+
+
+
+
+    private Observer<Status<OrderResult>> mCommitObserver = new Observer<Status<OrderResult>>() {
+
+        @Override
+        public void onChanged(Status<OrderResult> baseStatus) {
+            switch (baseStatus.status) {
+                case Status.LOADING:
+                    break;
+                case Status.SUCCESS:
+                    OrderResult content = baseStatus.content;
+                    if (content == null) {
+                        FToast.error(content.getInfo());
+                        return;
+                    }
+                    if (content.getCode() == 1) {
+                        Intent intent = new Intent(ProdActivity.this, OrderActivity.class);
+                        intent.putExtra("order",content.getData().getOrder());
+                        startActivity(intent);
+
+                    } else {
+                        FToast.error(content.getInfo());
+                    }
+                    break;
+                case Status.ERROR:
+
+                    FToast.error(baseStatus.message);
+                    break;
+            }
+
+        }
+    };
+
 
 }
