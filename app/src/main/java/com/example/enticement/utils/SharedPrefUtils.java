@@ -499,4 +499,41 @@ public class SharedPrefUtils {
         return sp.getInt("showQyCode", 86);
     }
 
+
+
+    /**
+     * 保存默认收货地址
+     */
+    public static void saveDefaultAdress(String s) {
+        SharedPreferences sp = BasicApp.getContext().getSharedPreferences(NAME_STRING, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("default_adress", s);
+        editor.apply();
+    }
+
+    /**
+     * 获取默认收货地址
+     */
+    public static String getDefaultAdress() {
+        SharedPreferences sp = BasicApp.getContext().getSharedPreferences(NAME_STRING, Context.MODE_PRIVATE);
+        return sp.getString("default_adress", "");
+    }
+
+    /**
+     * 保存默认收货地址id
+     */
+    public static void saveDefaultAdressId(String s) {
+        SharedPreferences sp = BasicApp.getContext().getSharedPreferences(NAME_STRING, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("default_adress_id", s);
+        editor.apply();
+    }
+
+    /**
+     * 获取默认收货地址id
+     */
+    public static String getDefaultAdressId() {
+        SharedPreferences sp = BasicApp.getContext().getSharedPreferences(NAME_STRING, Context.MODE_PRIVATE);
+        return sp.getString("default_adress_id", "");
+    }
 }

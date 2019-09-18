@@ -42,7 +42,7 @@ import butterknife.BindView;
 
 import permissions.dispatcher.RuntimePermissions;
 
-@RuntimePermissions
+
 public class BrowserActivity extends BaseActivity {
 
     private static final String TAG = BrowserActivity.class.getSimpleName();

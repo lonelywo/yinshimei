@@ -1,4 +1,4 @@
-package com.example.enticement.plate.cart.adapter;
+package com.example.enticement.plate.mine.adapter;
 
 
 import android.view.LayoutInflater;
@@ -11,31 +11,31 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cuci.enticement.R;
-import com.example.enticement.bean.BannerDataBean;
+import com.example.enticement.bean.AdressBean;
 import com.example.enticement.bean.CartListBean;
-import com.example.enticement.plate.home.adapter.ItemBannerViewBinder;
 import com.example.enticement.utils.ImageLoader;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import me.drakeet.multitype.ItemViewBinder;
 
-public class ItemCartViewBinder extends ItemViewBinder<CartListBean.DataBean.ListBean, ItemCartViewBinder.ViewHolder> {
+public class ItemAdressViewBinder extends ItemViewBinder<AdressBean.DataBean.ListBean, ItemAdressViewBinder.ViewHolder> {
 
     public interface OnItemClickListener {
 
-        void onAddClick(CartListBean.DataBean.ListBean bean);
+        void onEditClick(AdressBean.DataBean.ListBean bean);
+        void onCheckAdress(AdressBean.DataBean.ListBean bean);
 
-        void onMinusClick(CartListBean.DataBean.ListBean bean);
-        void onCheckedChange();
+
     }
 
-    private ItemCartViewBinder.OnItemClickListener mOnItemClickListener;
+    private ItemAdressViewBinder.OnItemClickListener mOnItemClickListener;
 
-    public ItemCartViewBinder(ItemCartViewBinder.OnItemClickListener onItemClickListener) {
+    public ItemAdressViewBinder(ItemAdressViewBinder.OnItemClickListener onItemClickListener) {
         mOnItemClickListener = onItemClickListener;
     }
+
+
 
     @NonNull
     @Override
@@ -45,32 +45,16 @@ public class ItemCartViewBinder extends ItemViewBinder<CartListBean.DataBean.Lis
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull CartListBean.DataBean.ListBean item) {
+    protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull AdressBean.DataBean.ListBean item) {
 
 
-        if (item.isCheck()) {
-            holder.mImageCheck.setImageResource(R.drawable.icon_popup_checked);
-        } else {
-            holder.mImageCheck.setImageResource(R.drawable.icon_popup_normal);
-        }
-
-        holder.mImageCheck.setOnClickListener(v -> {
-            item.setCheck(!item.isCheck());
-            if (item.isCheck()) {
-                holder.mImageCheck.setImageResource(R.drawable.icon_popup_checked);
-            } else {
-                holder.mImageCheck.setImageResource(R.drawable.icon_popup_normal);
-            }
-            if (mOnItemClickListener != null) {
-                mOnItemClickListener.onCheckedChange();
-            }
-        });
 
 
-        holder.textBiaoti.setText(item.getGoods_title());
+
+       /* holder.textBiaoti.setText(item.getGoods_title());
         holder.textNeirong.setText(item.getGoods_spec());
         holder.textJiage.setText(item.getGoods_price_selling());
-        ImageLoader.loadPlaceholder(item.getGoods_logo(),holder.imgTuxiang);
+        ImageLoader.loadPlaceholder(item.getGoods_logo(),holder.imgTuxiang);*/
      /*   holder.textJia.setOnClickListener(v -> {
             if(mOnItemClickListener!=null){
                 mOnItemClickListener.onAddClick(item);
