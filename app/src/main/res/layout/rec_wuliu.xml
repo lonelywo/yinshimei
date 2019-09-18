@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+   <ImageView
+       android:id="@+id/img_wuliutubiao"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       app:layout_constraintTop_toTopOf="@+id/text_qianshouxinxi"
+       app:layout_constraintBottom_toBottomOf="@+id/text_qianshouxinxi"
+       app:layout_constraintStart_toStartOf="parent"
+       android:src="@drawable/wuliutubiao_huang"
+       />
+    <TextView
+        android:id="@+id/text_qianshouxinxi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="已签收"
+        android:textSize="20sp"
+        android:textColor="@color/hei"
+        app:layout_constraintLeft_toRightOf="@+id/img_wuliutubiao"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="10dp"
+        />
+    <TextView
+        android:id="@+id/text_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2019-0-0 13:22:00"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@+id/text_qianshouxinxi"
+        app:layout_constraintStart_toStartOf="@+id/text_qianshouxinxi"
+
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>

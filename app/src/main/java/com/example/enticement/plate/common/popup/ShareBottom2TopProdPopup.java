@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -11,19 +12,17 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.cuci.enticement.R;
-import com.example.enticement.bean.BannerDataBean;
 import com.example.enticement.bean.HomeDetailsBean;
-import com.example.enticement.plate.home.adapter.ItemBannerViewBinder;
 import com.example.enticement.plate.mine.vm.OrderViewModel;
 import com.example.enticement.utils.DimensionUtils;
 import com.lxj.xpopup.core.BottomPopupView;
 
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -47,6 +46,8 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
     TextView stockTv;
     @BindView(R.id.selected_tv)
     TextView selectedTv;
+    @BindView(R.id.img_guanbi)
+    ImageView imgGuanbi;
     private OrderViewModel mViewModel;
     private HomeDetailsBean.DataBean mItem;
 
@@ -63,13 +64,13 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
     private String mSpec;
     private int mID;
 
-    public ShareBottom2TopProdPopup(@NonNull Context context, HomeDetailsBean.DataBean item, int code,OnCommitClickListener OnCommitClickListener) {
+    public ShareBottom2TopProdPopup(@NonNull Context context, HomeDetailsBean.DataBean item, int code, OnCommitClickListener OnCommitClickListener) {
         super(context);
         mContext = context;
         mItem = item;
         mScreenWidth = DimensionUtils.getScreenWidth(context);
         mCode = code;
-        mOnCommitClickListener=OnCommitClickListener;
+        mOnCommitClickListener = OnCommitClickListener;
     }
 
 
@@ -101,15 +102,20 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
                     int id = radioGroup.getChildAt(j).getId();
                     if (id == i) {
                         selectedTv.setText(list.get(j).getName());
-                        mSpec=specsBean.getName()+":"+list.get(j).getName();
-                        mID=id;
+                        mSpec = specsBean.getName() + ":" + list.get(j).getName();
+                        mID = id;
                         break;
                     }
                 }
             }
         });
         // this.setFinishOnTouchOutside(true);
-
+        imgGuanbi.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+            }
+        });
     }
 
     public void addview(RadioGroup radiogroup, List<HomeDetailsBean.DataBean.SpecsBean.ListBean> skuList) {
@@ -159,21 +165,21 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
 
     @OnClick(R.id.tv_commit)
     public void onViewClicked() {
-        if(mOnCommitClickListener!=null){
-            mOnCommitClickListener.onCommitClick(mID,mSpec,num,mCode);
+        if (mOnCommitClickListener != null) {
+            mOnCommitClickListener.onCommitClick(mID, mSpec, num, mCode);
             dismiss();
         }
     }
 
+
+
     public interface OnCommitClickListener {
 
-        void onCommitClick(int id,String spec,int num,int code);
+        void onCommitClick(int id, String spec, int num, int code);
 
     }
 
     private OnCommitClickListener mOnCommitClickListener;
-
-
 
 
 }

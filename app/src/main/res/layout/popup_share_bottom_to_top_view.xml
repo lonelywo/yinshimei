@@ -20,6 +20,15 @@
             android:layout_marginLeft="20dp"
 
             />
+         <ImageView
+             android:id="@+id/img_guanbi"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             app:layout_constraintTop_toTopOf="parent"
+             app:layout_constraintEnd_toEndOf="parent"
+             android:src="@drawable/ic_clean_off"
+             android:padding="5dp"
+             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

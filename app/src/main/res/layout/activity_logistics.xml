@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/con_title"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        android:fitsSystemWindows="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/colorWhite"
+        >
+        <TextView
+            android:id="@+id/image_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="查看物流"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/image_back"
+            app:layout_constraintBottom_toBottomOf="@id/image_back"
+            />
+
+        <ImageView
+            android:id="@+id/image_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="12dp"
+            android:paddingTop="16dp"
+            android:paddingRight="12dp"
+            android:paddingBottom="16dp"
+            android:src="@drawable/icon_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/con_zhongjian"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/con_title"
+        >
+    <TextView
+        android:id="@+id/text_wuliugongsi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="物流公司： 德邦快递"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textColor="@color/hei"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        />
+        <TextView
+            android:id="@+id/text_yundanbianhao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="运单编号： 000000000"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_wuliugongsi"
+            android:textColor="@color/hei"
+            android:textSize="20sp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+     <androidx.recyclerview.widget.RecyclerView
+         android:id="@+id/rec_wuliu"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         app:layout_constraintTop_toBottomOf="@+id/con_zhongjian"
+         android:layout_marginTop="20dp"
+         />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
