@@ -12,9 +12,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
-
 import com.cuci.enticement.R;
 import com.example.enticement.bean.HomeDetailsBean;
 import com.example.enticement.plate.mine.vm.OrderViewModel;
@@ -23,6 +20,8 @@ import com.lxj.xpopup.core.BottomPopupView;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -38,8 +37,7 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
     RadioGroup radioGroup;
     @BindView(R.id.text_shuliang)
     TextView textShuliang;
-    @BindView(R.id.text_jia)
-    TextView textJia;
+
     @BindView(R.id.text_shuzi)
     TextView textShuzi;
     @BindView(R.id.stock_tv)
@@ -130,9 +128,10 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
 
             radiogroup.addView(button);
             button.setChecked(sku.isCheck());
-            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) button
-                    .getLayoutParams();
-            layoutParams.setMargins(0, 0, DimensionUtils.dp2px(getContext(), 10), 0);//4个参数按顺序分别是左上右下
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+            button.setPadding(20,10,20,10);
+            button.setGravity(Gravity.LEFT);
+            layoutParams.setMargins(DimensionUtils.dp2px(getContext(), 10), 0, DimensionUtils.dp2px(getContext(), 10), 0);//4个参数按顺序分别是左上右下
             button.setLayoutParams(layoutParams);
             index++;
         }
@@ -153,7 +152,7 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
         codeBtn.setText(btnContent);
         //codeBtn.setPadding(2, 0, 2, 0);
 
-        codeBtn.setGravity(Gravity.CENTER);
+        codeBtn.setGravity(Gravity.LEFT);
 
         //DensityUtilHelps.Dp2Px(this,40)
         LinearLayout.LayoutParams rlp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, DimensionUtils.dp2px(getContext(), 25));
@@ -171,6 +170,15 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
         }
     }
 
+    @OnClick({R.id.img_jia, R.id.img_jian})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.img_jia:
+                break;
+            case R.id.img_jian:
+                break;
+        }
+    }
 
 
     public interface OnCommitClickListener {

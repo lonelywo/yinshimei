@@ -130,13 +130,13 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-        if (mCanLoadMore) {
+     /*   if (mCanLoadMore) {
             mCanLoadMore = false;
             mViewModel.getAdressList(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),Status.LOAD_MORE).observe(this,mObserver);
 
-        } else {
+        } else {*/
             mRefreshLayout.finishLoadMore();
-        }
+       // }
     }
 
     private Observer<Status<AdressBean>> mObserver = new Observer<Status<AdressBean>>() {

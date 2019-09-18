@@ -78,6 +78,7 @@
             app:layout_constraintTop_toBottomOf="@+id/text_fenzu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             >
          <!--   <RadioButton
                 android:layout_width="match_parent"

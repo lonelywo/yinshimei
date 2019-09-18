@@ -17,6 +17,7 @@
         <activity android:name="com.example.enticement.plate.common.RegisterActivity"></activity>
         <activity android:name="com.example.enticement.plate.cart.activity.OrderActivity"/>
         <activity android:name="com.example.enticement.plate.cart.activity.OrderDetailsActivity"/>
+        <activity android:name="com.example.enticement.plate.mine.activity.ZengAddressActivity"/>
 
 
 

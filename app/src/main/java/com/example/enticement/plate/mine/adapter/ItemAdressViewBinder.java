@@ -40,7 +40,7 @@ public class ItemAdressViewBinder extends ItemViewBinder<AdressBean.DataBean.Lis
     @NonNull
     @Override
     protected ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        View root = inflater.inflate(R.layout.rec_cart, parent, false);
+        View root = inflater.inflate(R.layout.rec_address, parent, false);
         return new ViewHolder(root);
     }
 
@@ -74,21 +74,6 @@ public class ItemAdressViewBinder extends ItemViewBinder<AdressBean.DataBean.Lis
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.img_tuxiang)
-        ImageView imgTuxiang;
-
-        @BindView(R.id.image_check)
-        ImageView mImageCheck;
-        @BindView(R.id.text_biaoti)
-        TextView textBiaoti;
-        @BindView(R.id.text_neirong)
-        TextView textNeirong;
-        @BindView(R.id.text_jiage)
-        TextView textJiage;
-        @BindView(R.id.img_jia)
-        ImageView ivJia;
-        @BindView(R.id.img_jian)
-        ImageView ivJian;
 
 
         ViewHolder(View itemView) {

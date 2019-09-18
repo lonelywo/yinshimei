@@ -32,6 +32,7 @@ import com.example.enticement.plate.mine.activity.KeFuActivity;
 import com.example.enticement.plate.mine.activity.MyOrderActivity;
 import com.example.enticement.plate.mine.activity.MyTeamActivity;
 import com.example.enticement.plate.mine.activity.RecAddressActivity;
+import com.example.enticement.plate.mine.activity.ZengAddressActivity;
 import com.example.enticement.plate.mine.vm.MineViewModel;
 import com.example.enticement.plate.mine.vm.OrderViewModel;
 import com.example.enticement.utils.AppUtils;
@@ -215,6 +216,7 @@ public class _MineFragment extends BaseFragment {
 
                 break;
             case R.id.btn_shengji:
+                startActivity(new Intent(mActivity, ZengAddressActivity.class));
 
                 break;
             case R.id.text_quanbudingdan:
