@@ -22,6 +22,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.cuci.enticement.R;
 import com.example.enticement.base.BaseFragment;
 import com.example.enticement.bean.Base;
+import com.example.enticement.bean.OrderStatistics;
 import com.example.enticement.bean.Status;
 import com.example.enticement.bean.UserInfo;
 import com.example.enticement.plate.common.LoginActivity;
@@ -32,6 +33,7 @@ import com.example.enticement.plate.mine.activity.MyOrderActivity;
 import com.example.enticement.plate.mine.activity.MyTeamActivity;
 import com.example.enticement.plate.mine.activity.RecAddressActivity;
 import com.example.enticement.plate.mine.vm.MineViewModel;
+import com.example.enticement.plate.mine.vm.OrderViewModel;
 import com.example.enticement.utils.AppUtils;
 import com.example.enticement.utils.FToast;
 import com.example.enticement.utils.ImageLoader;
@@ -39,6 +41,7 @@ import com.example.enticement.utils.SharedPrefUtils;
 import com.google.gson.Gson;
 
 import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -109,6 +112,14 @@ public class _MineFragment extends BaseFragment {
     TextView textName;
     @BindView(R.id.v6)
     View v6;
+    @BindView(R.id.dot1_tv)
+    TextView dot1Tv;
+    @BindView(R.id.dot2_tv)
+    TextView dot2Tv;
+    @BindView(R.id.dot3_tv)
+    TextView dot3Tv;
+    @BindView(R.id.dot4_tv)
+    TextView dot4Tv;
     private boolean mCouldChange = true;
     private LocalBroadcastManager mBroadcastManager;
     private UserInfo mUserInfo;
@@ -186,6 +197,9 @@ public class _MineFragment extends BaseFragment {
         }
         ImageLoader.loadNoPlaceholder(mUserInfo.getHeadimg(), imgTuxiang);
         textName.setText(mUserInfo.getNickname());
+
+        OrderViewModel orderViewModel = ViewModelProviders.of(this).get(OrderViewModel.class);
+        orderViewModel.getStatisticsOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId())).observe(mActivity, mTotalOrderObserver);
     }
 
     @OnClick({R.id.img_kaiguan, R.id.btn_shengji, R.id.text_quanbudingdan, R.id.text_daifukuan, R.id.text_daifahuo, R.id.text_daishouhuo, R.id.text_yiwancheng, R.id.text_tuiguangyongjing, R.id.text_wodetuandui, R.id.text_shouhuodizi, R.id.text_yejiyuefan, R.id.text_wodekefu})
@@ -193,10 +207,10 @@ public class _MineFragment extends BaseFragment {
         switch (view.getId()) {
 
             case R.id.img_kaiguan:
-                if(AppUtils.isAllowPermission(mActivity)){
-                    int mid =mUserInfo.getId();
-                    String token= mUserInfo.getToken();
-                    mViewModel.loginOut("2",token,""+mid).observe(this, mloginoutObserver);
+                if (AppUtils.isAllowPermission(mActivity)) {
+                    int mid = mUserInfo.getId();
+                    String token = mUserInfo.getToken();
+                    mViewModel.loginOut("2", token, "" + mid).observe(this, mloginoutObserver);
                 }
 
                 break;
@@ -333,11 +347,60 @@ public class _MineFragment extends BaseFragment {
 
                         FToast.success("退出登录");
                         SharedPrefUtils.exit();
-                        mUserInfo=null;
+                        mUserInfo = null;
                         refreshLayout();
 
                     } else {
                         FToast.error("请求错误，请稍后再试。");
+                    }
+                    break;
+            }
+        }
+    };
+
+
+    private Observer<Status<OrderStatistics>> mTotalOrderObserver = new Observer<Status<OrderStatistics>>() {
+        @Override
+        public void onChanged(Status<OrderStatistics> orderStatus) {
+            switch (orderStatus.status) {
+                case Status.LOADING:
+                    break;
+                case Status.ERROR:
+                    FToast.error("获取订单状态失败");
+                    break;
+                case Status.SUCCESS:
+                    if (orderStatus.content == null) {
+                        FToast.error("获取订单状态失败");
+                        return;
+                    }
+                    if (orderStatus.content.getCode() == 1) {
+                        OrderStatistics content = orderStatus.content;
+                        List<OrderStatistics.DataBean> data = content.getData();
+                        for (int i = 0; i < data.size(); i++) {
+                            OrderStatistics.DataBean dataBean = data.get(i);
+                            int status = dataBean.getStatus();
+                            int count = dataBean.getCount();
+                            // 对订单状态设置数量
+                            switch (status) {
+
+                                case 2:
+                                    dot1Tv.setText(String.valueOf(count));
+                                    break;
+                                case 3:
+                                    dot2Tv.setText(String.valueOf(count));
+                                    break;
+                                case 4:
+                                    dot3Tv.setText(String.valueOf(count));
+                                    break;
+                                case 5:
+                                    dot4Tv.setText(String.valueOf(count));
+                                    break;
+
+                            }
+                        }
+
+                    } else {
+                        FToast.error("获取订单状态失败");
                     }
                     break;
             }

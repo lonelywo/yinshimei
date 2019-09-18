@@ -1,5 +1,8 @@
 package com.example.enticement.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 public class OrderResult {
 
     /**
@@ -51,7 +54,7 @@ public class OrderResult {
             this.order = order;
         }
 
-        public static class OrderBean {
+        public static class OrderBean implements Parcelable {
             /**
              * order_no : 656448749498
              * mid : 37
@@ -71,6 +74,29 @@ public class OrderResult {
             private int price_goods;
             private int price_express;
             private int price_total;
+
+            protected OrderBean(Parcel in) {
+                order_no = in.readString();
+                mid = in.readString();
+                type = in.readString();
+                status = in.readString();
+                from_mid = in.readString();
+                price_goods = in.readInt();
+                price_express = in.readInt();
+                price_total = in.readInt();
+            }
+
+            public static final Creator<OrderBean> CREATOR = new Creator<OrderBean>() {
+                @Override
+                public OrderBean createFromParcel(Parcel in) {
+                    return new OrderBean(in);
+                }
+
+                @Override
+                public OrderBean[] newArray(int size) {
+                    return new OrderBean[size];
+                }
+            };
 
             public String getOrder_no() {
                 return order_no;
@@ -134,6 +160,23 @@ public class OrderResult {
 
             public void setPrice_total(int price_total) {
                 this.price_total = price_total;
+            }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel parcel, int i) {
+                parcel.writeString(order_no);
+                parcel.writeString(mid);
+                parcel.writeString(type);
+                parcel.writeString(status);
+                parcel.writeString(from_mid);
+                parcel.writeInt(price_goods);
+                parcel.writeInt(price_express);
+                parcel.writeInt(price_total);
             }
         }
     }

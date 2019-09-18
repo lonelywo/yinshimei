@@ -244,6 +244,7 @@
               app:layout_constraintBottom_toBottomOf="parent"
               />
           <ImageView
+              android:id="@+id/ali_iv"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:src="@drawable/xuanzhong"
@@ -275,6 +276,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 />
             <ImageView
+                android:id="@+id/wechat_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/noxuanzhong"
@@ -306,6 +308,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 />
             <ImageView
+                android:id="@+id/union_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/noxuanzhong"
