@@ -2,6 +2,7 @@ package com.example.enticement.plate.cart.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -59,7 +60,9 @@ public class OrderActivity extends BaseActivity {
     private OrderResult.DataBean.OrderBean mOrderBean;
     private OrderViewModel mViewModel;
     private UserInfo mUserInfo;
-    private String mAddressId;
+    private String mAddressId="";
+    private int mPayType=1;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_sendorder;
@@ -73,15 +76,28 @@ public class OrderActivity extends BaseActivity {
         }
 
         mOrderBean = intent.getParcelableExtra("order");
-        mUserInfo= SharedPrefUtils.get(UserInfo.class);
-        if(mUserInfo==null){
+        mUserInfo = SharedPrefUtils.get(UserInfo.class);
+        if (mUserInfo == null) {
             return;
         }
-        mViewModel= ViewModelProviders.of(this).get(OrderViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(OrderViewModel.class);
+
+        String defaultAdress = SharedPrefUtils.getDefaultAdress();
+        if (TextUtils.isEmpty(defaultAdress)) {
+            textDizi.setText("请添加收货地址");
+        } else {
+            textDizi.setText(defaultAdress);
+            mAddressId = SharedPrefUtils.getDefaultAdressId();
+        }
+
+        // ImageLoader.loadPlaceholder(mOrderBean.get);
+        //设置商品总价，运费，订单总价
+        textShangpingmoney.setText(mOrderBean.getPrice_goods());
+        textYunfeimoney.setText(mOrderBean.getPrice_express());
+        textShangpingzongjia.setText(mOrderBean.getPrice_total());
 
 
     }
-
 
 
     @OnClick({R.id.text_dizi, R.id.tv_commit})
@@ -89,22 +105,24 @@ public class OrderActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.text_dizi:
                 Intent intent = new Intent(OrderActivity.this, RecAddressActivity.class);
-                startActivityForResult(intent,100);
+                startActivityForResult(intent, 100);
                 break;
             case R.id.tv_commit:
-                mViewModel.orderConfirm(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),mOrderBean.getOrder_no()).observe(OrderActivity.this,mResultObserver);
+
+                mViewModel.getOrderPay(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), mOrderBean.getOrder_no(), String.valueOf(mPayType))
+                        .observe(OrderActivity.this, mPayObserver);
+
 
                 break;
         }
     }
 
 
-
     private Observer<Status<OrderResult>> mResultObserver = status -> {
         switch (status.status) {
             case Status.SUCCESS:
                 OrderResult content = status.content;
-                if(content.getCode()==1){
+                if (content.getCode() == 1) {
 
                 }
 
@@ -114,25 +132,19 @@ public class OrderActivity extends BaseActivity {
                 break;
             case Status.ERROR:
                 FToast.error(status.message);
-                if (status.loadType == Status.LOAD_MORE) {
 
-                } else {
-
-
-
-                }
                 break;
         }
     };
-
 
 
     private Observer<Status<OrderPay>> mPayObserver = status -> {
         switch (status.status) {
             case Status.SUCCESS:
                 OrderPay content = status.content;
-                if(content.getCode()==1){
-
+                if (content.getCode() == 1) {
+                    mViewModel.orderConfirm(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), mOrderBean.getOrder_no())
+                            .observe(OrderActivity.this, mResultObserver);
                 }
 
                 break;
@@ -141,13 +153,7 @@ public class OrderActivity extends BaseActivity {
                 break;
             case Status.ERROR:
                 FToast.error(status.message);
-                if (status.loadType == Status.LOAD_MORE) {
 
-                } else {
-
-
-
-                }
                 break;
         }
     };
@@ -156,14 +162,61 @@ public class OrderActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==100&&resultCode==101){
+        if (requestCode == 100 && resultCode == 101) {
             //返回更新地址
             //todo
-            String adress="";
-
+            String adress = data.getStringExtra("adress");
+            mAddressId = data.getStringExtra("adressId");
             textDizi.setText(adress);
-            mViewModel.udpateAdress(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),mOrderBean.getOrder_no(),mAddressId).observe(OrderActivity.this,mPayObserver);
+            mViewModel.udpateAdress(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), mOrderBean.getOrder_no(), mAddressId).observe(OrderActivity.this, mAdressObserver);
 
+        }
+    }
+
+
+    private Observer<Status<OrderPay>> mAdressObserver = status -> {
+        switch (status.status) {
+            case Status.SUCCESS:
+                OrderPay content = status.content;
+                if (content.getCode() == 1) {
+                    FToast.success("更新地址成功");
+                }
+
+                break;
+            case Status.LOADING:
+
+                break;
+            case Status.ERROR:
+                FToast.error(status.message);
+
+                break;
+        }
+    };
+
+
+
+    @OnClick({R.id.con_fangshi1, R.id.con_fangshi2, R.id.con_fangshi3})
+    public void onPayViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.con_fangshi1:
+                aliIv.setImageResource(R.drawable.xuanzhong);
+                wechatIv.setImageResource(R.drawable.noxuanzhong);
+                unionIv.setImageResource(R.drawable.noxuanzhong);
+                mPayType=1;
+                break;
+            case R.id.con_fangshi2:
+                aliIv.setImageResource(R.drawable.noxuanzhong);
+                wechatIv.setImageResource(R.drawable.xuanzhong);
+                unionIv.setImageResource(R.drawable.noxuanzhong);
+                mPayType=2;
+
+                break;
+            case R.id.con_fangshi3:
+                aliIv.setImageResource(R.drawable.noxuanzhong);
+                wechatIv.setImageResource(R.drawable.noxuanzhong);
+                unionIv.setImageResource(R.drawable.xuanzhong);
+                mPayType=3;
+                break;
         }
     }
 }

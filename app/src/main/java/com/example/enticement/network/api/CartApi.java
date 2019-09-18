@@ -23,7 +23,7 @@ public interface CartApi {
     @POST("store/api.member.Cart/cartList")
     Call<CartListBean> getCartList(@Field("openid") String openId,
                                    @Field("mid") String mid,
-                                   @Field("page") String page);
+                                   @Field("page") String page,  @Field("sign") String sign);
 
 
     /**
@@ -34,7 +34,7 @@ public interface CartApi {
     Call<OrderResult> commitOrder(@Field("openid") String openId,
                                   @Field("mid") String mid,
                                   @Field("rule") String rule,
-                                  @Field("from_mid") String fromMid);
+                                  @Field("from_mid") String fromMid,  @Field("sign") String sign);
 
 
 
@@ -59,8 +59,8 @@ public interface CartApi {
      */
     @FormUrlEncoded
     @POST("store/api.member.Cart/del")
-    Call<CartListBean> cartDelete(@Field("openid") String openId,
+    Call<CartListBean> cartDelete(@Field("token") String openId,
                                  @Field("mid") String mid,
-                                 @Field("cart_id") String cartId);
+                                 @Field("cart_id") String cartId,  @Field("sign") String sign);
 
 }

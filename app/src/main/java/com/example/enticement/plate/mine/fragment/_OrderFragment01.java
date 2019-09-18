@@ -134,7 +134,8 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
     }
 
     private void load() {
-        mViewModel.getOrderList(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"",mtype,"",Status.LOAD_REFRESH).observe(this, mObserver);
+        mViewModel.getOrderList(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"",mtype,"",Status.LOAD_REFRESH)
+                .observe(this, mObserver);
     }
 
 
@@ -233,7 +234,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
         if(mCanLoadMore=true){
             mCanLoadMore = false;
-            mViewModel.getOrderList("","","","","",Status.LOAD_MORE).observe(this, mObserver);
+            mViewModel.getOrderList(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"",mtype,"",Status.LOAD_MORE).observe(this, mObserver);
 
         }else {
             mRefreshLayout.finishLoadMore();

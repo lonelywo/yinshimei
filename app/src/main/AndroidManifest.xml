@@ -15,7 +15,14 @@
         <activity android:name="com.example.enticement.plate.mine.activity.MyOrderActivity"></activity>
         <activity android:name="com.example.enticement.plate.common.LoginActivity"></activity>
         <activity android:name="com.example.enticement.plate.common.RegisterActivity"></activity>
+        <activity android:name="com.example.enticement.plate.cart.activity.OrderActivity"/>
+        <activity android:name="com.example.enticement.plate.cart.activity.OrderDetailsActivity"/>
+
+
+
+
         <activity android:name="com.example.enticement.plate.common.MainActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
@@ -23,6 +30,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
+
     </application>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

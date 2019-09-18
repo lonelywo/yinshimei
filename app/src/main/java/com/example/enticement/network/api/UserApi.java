@@ -1,6 +1,7 @@
 package com.example.enticement.network.api;
 
 
+import com.example.enticement.bean.AdressBean;
 import com.example.enticement.bean.Base;
 import com.example.enticement.bean.UserInfo;
 
@@ -62,6 +63,19 @@ public interface UserApi {
                      @Field("sign") String sign
 
     );
+
+
+
+    /**
+     * 获取收货地址
+     */
+    @FormUrlEncoded
+    @POST("store/api.member.address/gets")
+    Call<AdressBean> getAdressList(@Field("token") String token,
+                                   @Field("mid") String mid,
+                                   @Field("sign") String sign);
+
+
 
 }
 

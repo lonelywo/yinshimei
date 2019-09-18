@@ -33,12 +33,19 @@ public class CartViewModel extends ViewModel {
 
 
 
-    public MutableLiveData<Status<CartListBean>> getCartList(String openId,String mid,String page,int loadType) {
+    public MutableLiveData<Status<CartListBean>> getCartList(String token,String mid,String page,int loadType) {
 
         final MutableLiveData<Status<CartListBean>> data = new MutableLiveData<>();
         data.setValue(Status.loading(null));
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("token",token);
+        params.put("mid",mid);
+        params.put("page",page);
+
+        String signs = SignUtils.signParam(params);
+
         mCreator.create(CartApi.class)
-                .getCartList(openId,mid,page)
+                .getCartList(token,mid,page,signs)
                 .enqueue(new Callback<CartListBean>() {
                     @Override
                     public void onResponse(@NonNull Call<CartListBean> call,
@@ -99,12 +106,18 @@ public class CartViewModel extends ViewModel {
     }
 
 
-    public MutableLiveData<Status<CartListBean>> cartDelete(String openId,String mid,String cartId) {
+    public MutableLiveData<Status<CartListBean>> cartDelete(String token,String mid,String cartId) {
 
         final MutableLiveData<Status<CartListBean>> data = new MutableLiveData<>();
         data.setValue(Status.loading(null));
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("token",token);
+        params.put("mid",mid);
+        params.put("cart_id",cartId);
+
+        String signs = SignUtils.signParam(params);
         mCreator.create(CartApi.class)
-                .cartDelete(openId,mid,cartId)
+                .cartDelete(token,mid,cartId,signs)
                 .enqueue(new Callback<CartListBean>() {
                     @Override
                     public void onResponse(@NonNull Call<CartListBean> call,
@@ -123,12 +136,20 @@ public class CartViewModel extends ViewModel {
 
 
 
-    public MutableLiveData<Status<OrderResult>> commitOrder(String openId,String mid,String rule,String fromMid) {
+    public MutableLiveData<Status<OrderResult>> commitOrder(String token,String mid,String rule,String fromMid) {
 
         final MutableLiveData<Status<OrderResult>> data = new MutableLiveData<>();
         data.setValue(Status.loading(null));
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("token",token);
+        params.put("mid",mid);
+        params.put("rule",rule);
+        params.put("from_mid",fromMid);
+
+        String signs = SignUtils.signParam(params);
+
         mCreator.create(CartApi.class)
-                .commitOrder(openId,mid,rule,fromMid)
+                .commitOrder(token,mid,rule,fromMid,signs)
                 .enqueue(new Callback<OrderResult>() {
                     @Override
                     public void onResponse(@NonNull Call<OrderResult> call,
