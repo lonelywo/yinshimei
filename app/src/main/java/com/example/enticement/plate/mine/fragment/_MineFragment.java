@@ -24,9 +24,13 @@ import com.example.enticement.base.BaseFragment;
 import com.example.enticement.bean.Base;
 import com.example.enticement.bean.Status;
 import com.example.enticement.bean.UserInfo;
-import com.example.enticement.plate.cart.activity.OrderActivity;
 import com.example.enticement.plate.common.LoginActivity;
+import com.example.enticement.plate.mine.activity.AchievementActivity;
+import com.example.enticement.plate.mine.activity.CommissionActivity;
+import com.example.enticement.plate.mine.activity.KeFuActivity;
 import com.example.enticement.plate.mine.activity.MyOrderActivity;
+import com.example.enticement.plate.mine.activity.MyTeamActivity;
+import com.example.enticement.plate.mine.activity.RecAddressActivity;
 import com.example.enticement.plate.mine.vm.MineViewModel;
 import com.example.enticement.utils.AppUtils;
 import com.example.enticement.utils.FToast;
@@ -200,9 +204,11 @@ public class _MineFragment extends BaseFragment {
 
                 break;
             case R.id.text_quanbudingdan:
-                Intent intentProd = new Intent(mActivity, MyOrderActivity.class);
-                intentProd.putExtra("bannerData", "");
-                mActivity.startActivity(intentProd);
+                if(AppUtils.isAllowPermission(mActivity)) {
+                    Intent intentProd = new Intent(mActivity, MyOrderActivity.class);
+                    intentProd.putExtra("Data", "");
+                    mActivity.startActivity(intentProd);
+                }
                 break;
             case R.id.text_daifukuan:
                 break;
@@ -213,15 +219,39 @@ public class _MineFragment extends BaseFragment {
             case R.id.text_yiwancheng:
                 break;
             case R.id.text_tuiguangyongjing:
-                startActivity(new Intent(mActivity, LoginActivity.class));
+                if(AppUtils.isAllowPermission(mActivity)) {
+                    Intent intentProd = new Intent(mActivity, CommissionActivity.class);
+                    intentProd.putExtra("Data", "");
+                    mActivity.startActivity(intentProd);
+                }
                 break;
             case R.id.text_wodetuandui:
+                if(AppUtils.isAllowPermission(mActivity)) {
+                    Intent intentProd = new Intent(mActivity, MyTeamActivity.class);
+                    intentProd.putExtra("Data", "");
+                    mActivity.startActivity(intentProd);
+                }
                 break;
             case R.id.text_shouhuodizi:
+                if(AppUtils.isAllowPermission(mActivity)) {
+                    Intent intentProd = new Intent(mActivity, RecAddressActivity.class);
+                    intentProd.putExtra("Data", "");
+                    mActivity.startActivity(intentProd);
+                }
                 break;
             case R.id.text_yejiyuefan:
+                if(AppUtils.isAllowPermission(mActivity)) {
+                    Intent intentProd = new Intent(mActivity, AchievementActivity.class);
+                    intentProd.putExtra("Data", "");
+                    mActivity.startActivity(intentProd);
+                }
                 break;
             case R.id.text_wodekefu:
+                if(AppUtils.isAllowPermission(mActivity)) {
+                    Intent intentProd = new Intent(mActivity, KeFuActivity.class);
+                    intentProd.putExtra("Data", "");
+                    mActivity.startActivity(intentProd);
+                }
                 break;
         }
     }
