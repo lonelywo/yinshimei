@@ -21,7 +21,7 @@ public interface CartApi {
      */
     @FormUrlEncoded
     @POST("store/api.member.Cart/cartList")
-    Call<CartListBean> getCartList(@Field("openid") String openId,
+    Call<Base> getCartList(@Field("from_type") String fromType,@Field("token") String openId,
                                    @Field("mid") String mid,
                                    @Field("page") String page,  @Field("sign") String sign);
 
@@ -31,7 +31,7 @@ public interface CartApi {
      */
     @FormUrlEncoded
     @POST("store/api.member.order/set")
-    Call<OrderResult> commitOrder(@Field("openid") String openId,
+    Call<OrderResult> commitOrder(@Field("from_type") String fromType,@Field("token") String token,
                                   @Field("mid") String mid,
                                   @Field("rule") String rule,
                                   @Field("from_mid") String fromMid,  @Field("sign") String sign);
@@ -45,7 +45,7 @@ public interface CartApi {
      */
     @FormUrlEncoded
     @POST("store/api.member.Cart/dealBuy")
-    Call<CartListBean> cartChange(@Field("token") String token,
+    Call<Base> cartChange(@Field("from_type") String from_type,@Field("token") String token,
                                   @Field("mid") String mid,
                                   @Field("goods_id") String goodsId,
                                   @Field("goods_spec") String goodsSpec,
@@ -59,7 +59,7 @@ public interface CartApi {
      */
     @FormUrlEncoded
     @POST("store/api.member.Cart/del")
-    Call<CartListBean> cartDelete(@Field("token") String openId,
+    Call<CartListBean> cartDelete(@Field("from_type") String fromType,@Field("token") String token,
                                  @Field("mid") String mid,
                                  @Field("cart_id") String cartId,  @Field("sign") String sign);
 

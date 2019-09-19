@@ -172,10 +172,13 @@ public class OrderViewModel extends ViewModel {
 
         params.put("rule",rule);
         params.put("from_mid",fromMid);
+        params.put("from_type","2");
+
+
         String sign = SignUtils.signParam(params);
 
         mCreator.create(CartApi.class)
-                .commitOrder(token,mid,rule,fromMid,sign)
+                .commitOrder("2",token,mid,rule,fromMid,sign)
                 .enqueue(new Callback<OrderResult>() {
                     @Override
                     public void onResponse(@NonNull Call<OrderResult> call,

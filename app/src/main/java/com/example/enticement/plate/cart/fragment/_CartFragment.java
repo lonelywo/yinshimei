@@ -22,14 +22,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.classic.common.MultipleStatusView;
 import com.cuci.enticement.R;
 import com.example.enticement.base.BaseFragment;
+import com.example.enticement.bean.Base;
 import com.example.enticement.bean.CartListBean;
 import com.example.enticement.bean.OrderResult;
 import com.example.enticement.bean.Status;
+import com.example.enticement.bean.UserInfo;
 import com.example.enticement.plate.cart.activity.OrderActivity;
 import com.example.enticement.plate.cart.adapter.ItemCartViewBinder;
 import com.example.enticement.plate.cart.vm.CartViewModel;
 import com.example.enticement.utils.FToast;
+import com.example.enticement.utils.SharedPrefUtils;
 import com.example.enticement.widget.CartItemDecoration;
+import com.google.gson.Gson;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
@@ -69,6 +73,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
     private Items mItems;
     private LinearLayoutManager mLayoutManager;
     private LocalBroadcastManager mLocalBroadcastManager;
+    private UserInfo mUserInfo;
     @Override
     protected void onLazyLoad() {
 
@@ -83,6 +88,8 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
     @Override
     protected void initViews(LayoutInflater inflater, View view, ViewGroup container, Bundle savedInstanceState) {
+        mUserInfo = SharedPrefUtils.get(UserInfo.class);
+
         mViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
         mAdapter = new MultiTypeAdapter();
         mItems = new Items();
@@ -163,7 +170,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
     private void load() {
 
-        mViewModel.getCartList("", "37", "", Status.LOAD_REFRESH).observe(this, mObserver);
+        mViewModel.getCartList(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "1", Status.LOAD_REFRESH).observe(this, mObserver);
 
     }
 
@@ -186,15 +193,18 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
         load();
     }
 
-    private Observer<Status<CartListBean>> mObserver = new Observer<Status<CartListBean>>() {
+    private Observer<Status<Base>> mObserver = new Observer<Status<Base>>() {
         @Override
-        public void onChanged(Status<CartListBean> status) {
+        public void onChanged(Status<Base> status) {
             switch (status.status) {
 
                 case Status.SUCCESS:
 
-                    CartListBean data = status.content;
-                    List<CartListBean.DataBean.ListBean> list = data.getData().getList();
+
+                    Base content = status.content;
+                    String s = new Gson().toJson(content.data);
+                    CartListBean.DataBean data = (CartListBean.DataBean) status.content.data;
+                    List<CartListBean.DataBean.ListBean> list = data.getList();
                     if (data == null) {
                         mStatusView.showEmpty();
                         if (status.loadType == Status.LOAD_MORE) {
@@ -205,7 +215,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
                         return;
                     }
                     mStatusView.showContent();
-                    if (data.getCode() == 1) {
+                    if (status.content.code == 1) {
                         mCanLoadMore = true;
                         if (status.loadType == Status.LOAD_REFRESH) {
                             mItems.clear();
@@ -226,7 +236,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
                         } else {
                             mRefreshLayout.finishRefresh();
                         }
-                        FToast.error(data.getInfo());
+                        FToast.error(content.info);
                     }
                     break;
                 case Status.ERROR:
@@ -332,14 +342,14 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
     /**
      * 购物车修改结果
      */
-    private Observer<Status<CartListBean>> mChangeObserver = new Observer<Status<CartListBean>>() {
+    private Observer<Status<Base>> mChangeObserver = new Observer<Status<Base>>() {
         @Override
-        public void onChanged(Status<CartListBean> status) {
+        public void onChanged(Status<Base> status) {
             switch (status.status) {
 
                 case Status.SUCCESS:
 
-                    CartListBean data = status.content;
+              /*      CartListBean data = status.content;
                     List<CartListBean.DataBean.ListBean> list = data.getData().getList();
                     if (data == null) {
                         mStatusView.showEmpty();
@@ -364,7 +374,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
                     } else {
                         mCanChange = true;
                         FToast.error(data.getInfo());
-                    }
+                    }*/
                     break;
                 case Status.ERROR:
 
