@@ -2,6 +2,7 @@ package com.example.enticement.network.api;
 
 
 import com.example.enticement.bean.Base;
+import com.example.enticement.bean.CartDataBean;
 import com.example.enticement.bean.CartListBean;
 import com.example.enticement.bean.OrderResult;
 import com.example.enticement.bean.Version;
@@ -21,9 +22,9 @@ public interface CartApi {
      */
     @FormUrlEncoded
     @POST("store/api.member.Cart/cartList")
-    Call<Base> getCartList(@Field("from_type") String fromType,@Field("token") String openId,
-                                   @Field("mid") String mid,
-                                   @Field("page") String page,  @Field("sign") String sign);
+    Call<Base<CartDataBean>> getCartList(@Field("from_type") String fromType, @Field("token") String openId,
+                                         @Field("mid") String mid,
+                                         @Field("page") String page, @Field("sign") String sign);
 
 
     /**

@@ -54,6 +54,7 @@
         android:layout_marginTop="10dp"
         />
  <TextView
+    android:id="@+id/default_tv"
      android:layout_width="wrap_content"
      android:layout_height="wrap_content"
       android:text="默认"
@@ -87,6 +88,7 @@
         android:layout_marginRight="20dp"
         />
     <TextView
+      android:id="@+id/edit_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="编辑"

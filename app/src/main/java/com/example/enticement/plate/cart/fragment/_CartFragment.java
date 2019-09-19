@@ -23,6 +23,7 @@ import com.classic.common.MultipleStatusView;
 import com.cuci.enticement.R;
 import com.example.enticement.base.BaseFragment;
 import com.example.enticement.bean.Base;
+import com.example.enticement.bean.CartDataBean;
 import com.example.enticement.bean.CartListBean;
 import com.example.enticement.bean.OrderResult;
 import com.example.enticement.bean.Status;
@@ -97,13 +98,13 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
         mRefreshLayout.setEnableFooterFollowWhenNoMoreData(true);
         mRefreshLayout.setOnRefreshLoadMoreListener(this);
 
-        mAdapter.register(CartListBean.DataBean.ListBean.class, new ItemCartViewBinder(this));
+        mAdapter.register(CartDataBean.ListBean.class, new ItemCartViewBinder(this));
         CartItemDecoration mDecoration = new CartItemDecoration(mActivity, 4);
 
         mRecyclerView.addItemDecoration(mDecoration);
-        mLayoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false);
+        mLayoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(mLayoutManager);
-
+        mRecyclerView.setAdapter(mAdapter);
         mRbCheckAll.setOnCheckedChangeListener((buttonView, isChecked) -> checkAll(isChecked));
         mRecyclerView.setItemViewSwipeEnabled(true); // 侧滑删除，默认关闭。
 
@@ -193,18 +194,17 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
         load();
     }
 
-    private Observer<Status<Base>> mObserver = new Observer<Status<Base>>() {
+    private Observer<Status<Base<CartDataBean>>> mObserver = new Observer<Status<Base<CartDataBean>>>() {
         @Override
-        public void onChanged(Status<Base> status) {
+        public void onChanged(Status<Base<CartDataBean>> status) {
             switch (status.status) {
 
                 case Status.SUCCESS:
 
+                    mStatusView.showContent();
+                    Base<CartDataBean> content = status.content;
+                    CartDataBean data = content.data;
 
-                    Base content = status.content;
-                    String s = new Gson().toJson(content.data);
-                    CartListBean.DataBean data = (CartListBean.DataBean) status.content.data;
-                    List<CartListBean.DataBean.ListBean> list = data.getList();
                     if (data == null) {
                         mStatusView.showEmpty();
                         if (status.loadType == Status.LOAD_MORE) {
@@ -214,8 +214,9 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
                         }
                         return;
                     }
-                    mStatusView.showContent();
-                    if (status.content.code == 1) {
+
+                    List<CartDataBean.ListBean> list = data.getList();
+                   if (status.content.code == 1) {
                         mCanLoadMore = true;
                         if (status.loadType == Status.LOAD_REFRESH) {
                             mItems.clear();
@@ -261,7 +262,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
             return;
         }
         for (int i = 0; i < mItems.size(); i++) {
-            CartListBean.DataBean.ListBean item = (CartListBean.DataBean.ListBean) mItems.get(i);
+            CartDataBean.ListBean item = (CartDataBean.ListBean) mItems.get(i);
             item.setCheck(checkAll);
         }
         mAdapter.notifyDataSetChanged();
@@ -273,10 +274,10 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
     }
 
 
-    private List<CartListBean.DataBean.ListBean> getCheckeds() {
-        List<CartListBean.DataBean.ListBean> items = new ArrayList<>();
+    private List<CartDataBean.ListBean> getCheckeds() {
+        List<CartDataBean.ListBean> items = new ArrayList<>();
         for (int i = 0; i < mItems.size(); i++) {
-            CartListBean.DataBean.ListBean item = (CartListBean.DataBean.ListBean) mItems.get(i);
+            CartDataBean.ListBean item = (CartDataBean.ListBean) mItems.get(i);
             if (item.isCheck()) {
                 items.add(item);
             }
@@ -285,13 +286,13 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
     }
 
 
-    private float getCheckedsMoeny() {
+    private double getCheckedsMoeny() {
 
-        float totalF = 0;
+        double totalF = 0;
         for (int i = 0; i < mItems.size(); i++) {
-            CartListBean.DataBean.ListBean item = (CartListBean.DataBean.ListBean) mItems.get(i);
+            CartDataBean.ListBean item = (CartDataBean.ListBean) mItems.get(i);
             if (item.isCheck()) {
-                float itemMoeny = Float.parseFloat(item.getGoods_price_selling());
+                double itemMoeny = Double.parseDouble(item.getGoods_price_selling());
                 totalF = totalF + item.getGoods_num() * itemMoeny;
             }
         }
@@ -299,31 +300,35 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
     }
 
     private boolean mCanChange=true;
-    private String mGoodsId;
+    private double mGoodsId;
     @Override
-    public void onAddClick(CartListBean.DataBean.ListBean bean) {
+    public void onAddClick(CartDataBean.ListBean bean) {
         //点击一次加1一次
         if(mCanChange){
-            int goods_num = bean.getGoods_num()+1;
-            String goods_id = bean.getGoods_id();
+            double goods_num = bean.getGoods_num()+1;
+            String goods_id = String.valueOf(bean.getGoods_id());
             String goods_spec = bean.getGoods_spec();
-            mGoodsId=goods_id;
-            mViewModel.cartChange("", "37", goods_id,goods_spec,String.valueOf(goods_num)).observe(this, mChangeObserver);
+            mGoodsId=bean.getGoods_id();
+            mCanChange=false;
+            mViewModel.cartChange(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), goods_id,goods_spec,String.valueOf(goods_num)).observe(this, mChangeObserver);
 
         }
     }
 
     @Override
-    public void onMinusClick(CartListBean.DataBean.ListBean bean) {
+    public void onMinusClick(CartDataBean.ListBean bean) {
         if(mCanChange) {
-            int goods_num = bean.getGoods_num() - 1;
-            String goods_id = bean.getGoods_id();
+            double goods_num = bean.getGoods_num() - 1;
+            String goods_id = String.valueOf(bean.getGoods_id());
             String goods_spec = bean.getGoods_spec();
-            mGoodsId=goods_id;
-            mViewModel.cartChange("", "37", goods_id, goods_spec, String.valueOf(goods_num)).observe(this, mChangeObserver);
+            mGoodsId=bean.getGoods_id();
+            mCanChange=false;
+            mViewModel.cartChange(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), goods_id, goods_spec, String.valueOf(goods_num)).observe(this, mChangeObserver);
         }
 
     }
+
+
 
 
     @Override
@@ -333,6 +338,8 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
         if (checkSize == allSize) {
             mRbCheckAll.setChecked(true);
+        }else {
+            mRbCheckAll.setChecked(false);
         }
 
         mTvTotal.setText(String.format(Locale.CHINA, "%s", getCheckedsMoeny()));
@@ -348,21 +355,22 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
             switch (status.status) {
 
                 case Status.SUCCESS:
+               /*     Base<CartDataBean> content = status.content;
+                    CartDataBean data = status.content.data;
 
-              /*      CartListBean data = status.content;
-                    List<CartListBean.DataBean.ListBean> list = data.getData().getList();
                     if (data == null) {
                         mStatusView.showEmpty();
                         mCanChange = true;
                         return;
                     }
                     mStatusView.showContent();
-                    if (data.getCode() == 1) {
+                    List<CartDataBean.ListBean> list = data.getList();
+                    if (status.content.code == 1) {
 
                         mCanChange = true;
                         int changeIndex=0;
                         for (int i = 0; i < list.size(); i++) {
-                            if(list.get(i).getGoods_id().equals(mGoodsId)){
+                            if(list.get(i).getGoods_id()==mGoodsId){
                                 changeIndex=i;
                                 break;
                             }
@@ -373,7 +381,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
                     } else {
                         mCanChange = true;
-                        FToast.error(data.getInfo());
+                        FToast.error(content.info);
                     }*/
                     break;
                 case Status.ERROR:
@@ -392,7 +400,22 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
     @OnClick(R.id.tv_commit)
     public void onViewClicked() {
-        mViewModel.commitOrder("", "37", "","").observe(this, mCommitObserver);
+        List<CartDataBean.ListBean> items = (List<CartDataBean.ListBean>) mAdapter.getItems();
+
+
+        StringBuilder sb=new StringBuilder();
+        for (int i = 0; i < items.size(); i++) {
+            CartDataBean.ListBean listBean = items.get(i);
+            sb.append(listBean.getGoods_id()).append("@")
+                    .append(listBean.getGoods_spec()).append("@")
+                    .append(listBean.getGoods_num());
+            if(items.size()>1&&i!=items.size()-1){
+                sb.append("||");
+            }
+
+        }
+        String s = sb.toString();
+        mViewModel.commitOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), sb.toString(),"").observe(this, mCommitObserver);
 
     }
 
@@ -404,14 +427,15 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
                 case Status.SUCCESS:
                     OrderResult content = status.content;
+                    String s = new Gson().toJson(content);
                     if(content.getCode()==1){
                         //清空视图并跳转
                         mItems.clear();
                         mAdapter.notifyDataSetChanged();
 
-                        Intent intent = new Intent(mActivity, OrderActivity.class);
+                      /*  Intent intent = new Intent(mActivity, OrderActivity.class);
                         intent.putExtra("order",content.getData().getOrder());
-                        startActivity(intent);
+                        startActivity(intent);*/
 
 
                     }else {

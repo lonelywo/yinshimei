@@ -18,6 +18,7 @@ import com.example.enticement.base.BaseActivity;
 import com.example.enticement.bean.BannerDataBean;
 
 import com.example.enticement.bean.Base;
+import com.example.enticement.bean.CartDataBean;
 import com.example.enticement.bean.CartListBean;
 import com.example.enticement.bean.HomeDetailsBean;
 import com.example.enticement.bean.OrderResult;
@@ -240,9 +241,9 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                         return;
                     }
                     if (content.getCode() == 1) {
-                        Intent intent = new Intent(ProdActivity.this, OrderActivity.class);
+                       /* Intent intent = new Intent(ProdActivity.this, OrderActivity.class);
                         intent.putExtra("order",content.getData().getOrder());
-                        startActivity(intent);
+                        startActivity(intent);*/
 
                     } else {
                         FToast.error(content.getInfo());
@@ -267,8 +268,8 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                     break;
                 case Status.SUCCESS:
                     String s = new Gson().toJson(baseStatus.content);
-                    String s2 = new Gson().toJson(baseStatus.content.data);
-                    String s3 = new Gson().toJson(baseStatus.content.data);
+                 /*   String s2 = new Gson().toJson(baseStatus.content.data);
+                    String s3 = new Gson().toJson(baseStatus.content.data);*/
 
                  /*   CartListBean content = baseStatus.content;
                     if (content == null) {

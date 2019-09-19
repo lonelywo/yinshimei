@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cuci.enticement.R;
 import com.example.enticement.base.BaseFragment;
-import com.example.enticement.bean.CartListBean;
+
 import com.example.enticement.bean.GeneralGoodsItem;
 import com.example.enticement.bean.ItemOrderBottom;
 import com.example.enticement.bean.ItemOrderTitle;

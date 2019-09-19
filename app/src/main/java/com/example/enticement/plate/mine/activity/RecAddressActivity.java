@@ -207,4 +207,9 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
     public void onCheckAdress(AdressBean.DataBean.ListBean bean) {
 
     }
+
+    @Override
+    public void onDelete(AdressBean.DataBean.ListBean bean) {
+
+    }
 }
