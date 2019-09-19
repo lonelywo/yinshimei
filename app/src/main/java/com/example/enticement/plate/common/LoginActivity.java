@@ -21,12 +21,16 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.cuci.enticement.R;
+import com.example.enticement.BasicApp;
 import com.example.enticement.Constant;
 import com.example.enticement.base.BaseActivity;
 import com.example.enticement.bean.Base;
 import com.example.enticement.bean.LoginBean;
 import com.example.enticement.bean.Status;
 import com.example.enticement.bean.UserInfo;
+import com.example.enticement.bean.WxError;
+import com.example.enticement.bean.WxInfo;
+import com.example.enticement.bean.WxToken;
 import com.example.enticement.plate.common.vm.LoginViewModel;
 import com.example.enticement.plate.home.activity.ProdActivity;
 import com.example.enticement.plate.mine.fragment._MineFragment;
@@ -38,7 +42,9 @@ import com.example.enticement.utils.Re;
 import com.example.enticement.utils.SharedPrefUtils;
 import com.example.enticement.widget.ClearEditText;
 import com.google.gson.Gson;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
 
+import java.io.IOException;
 import java.util.Date;
 
 import javax.crypto.Cipher;
@@ -46,6 +52,7 @@ import javax.crypto.Cipher;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.ResponseBody;
 
 public class LoginActivity extends BaseActivity {
     @BindView(R.id.img_shoutu)
@@ -81,6 +88,8 @@ public class LoginActivity extends BaseActivity {
     private String guojiacode;
     private Handler mTimeHandler = new Handler();
     private boolean mShowContract = false;
+    private String mUnionId="";
+
     public interface OnLoginListener {
         void onLoginSucceed(UserInfo userInfo, boolean showContract);
     }
@@ -125,20 +134,25 @@ public class LoginActivity extends BaseActivity {
                 startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
                 break;
             case R.id.weixin:
-                String  stringA = "phone="+"18588564260"+"&region="+"cuci"+"&secure="+"86";
-                String sign = EncryptUtils.md5Encrypt(stringA+"&key=A8sUd9bqis3sN5GK6aF9JDFl5I9skPkd");
-                String signs = sign.toUpperCase();
-                LoginBean loginBean = new LoginBean();
-                loginBean.setPhone("18588564260");
-                loginBean.setCode("1254");
-                String mloginBean = new Gson().toJson(loginBean);
-                String data = RSAUtil.encryptByPublic(this, mloginBean);
-                String stringB ="data="+data;
-                String sign1 = EncryptUtils.md5Encrypt(stringB+"&key=A8sUd9bqis3sN5GK6aF9JDFl5I9skPkd");
-                String signs1 = sign.toUpperCase();
-                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+                SharedPrefUtils.saveWechatAuth("login");
+                startWxLogin();
                 break;
         }
+    }
+
+    private void startWxLogin() {
+
+        if (!BasicApp.getIWXAPI().isWXAppInstalled()) {
+            FToast.error("您还未安装微信客户端");
+            return;
+        }
+
+        SendAuth.Req req = new SendAuth.Req();
+        req.scope = "snsapi_userinfo";
+        req.state = "wechat_login_yinsimei_app";
+        BasicApp.getIWXAPI().sendReq(req);
+
+
     }
 
     private void login() {
@@ -257,9 +271,9 @@ public class LoginActivity extends BaseActivity {
 
                     String code = intent.getStringExtra("code");
                     FLog.e(TAG, "超过10分钟：" + code);
-                 /*   mViewModel.getWxToken(Constant.WX_APP_ID, Constant.WX_APP_SECRET_ID,
+                    mViewModel.getWxToken(Constant.WX_APP_ID, Constant.WX_APP_SECRET_ID,
                             code, "authorization_code")
-                            .observe(LoginActivity.this, mWxTokenObserver);*/
+                            .observe(LoginActivity.this, mWxTokenObserver);
                 } else {
                     //十分钟内
                     //获取保存的信息
@@ -274,6 +288,99 @@ public class LoginActivity extends BaseActivity {
             }
         }
     };
+    private Observer<Status<ResponseBody>> mWxTokenObserver = status -> {
+
+        switch (status.status) {
+            case Status.SUCCESS:
+                ResponseBody body = status.content;
+                operaWxToken(body);
+                break;
+            case Status.ERROR:
+                dismissLoading();
+                FToast.error("网络错误");
+                break;
+            case Status.LOADING:
+                showLoading();
+                break;
+        }
+
+    };
+    private void operaWxToken(ResponseBody body) {
+        try {
+            String b = body.string();
+            if (b.contains("errcode")) {
+                dismissLoading();
+                WxError error = new Gson().fromJson(b, WxError.class);
+                FToast.error(error.getErrMsg() + "->" + error.getErrCode());
+            } else {
+                WxToken token = new Gson().fromJson(b, WxToken.class);
+
+                if (tenOuter()) {
+                    SharedPrefUtils.saveWxOpenId(new Date().getTime() + "FDSH" +
+                            token.getOpenId() + "FDSH" + token.getAccessToken());
+                }
+
+                //获取微信账户信息
+                mViewModel.getWxInfo(token.getAccessToken(), token.getOpenId())
+                        .observe(this, mWxInfoObserver);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            dismissLoading();
+            FToast.error("数据错误");
+        }
+    }
+    private Observer<Status<ResponseBody>> mWxInfoObserver = status -> {
+        switch (status.status) {
+            case Status.SUCCESS:
+                ResponseBody body = status.content;
+                operaWxInfo(body);
+                break;
+            case Status.ERROR:
+                dismissLoading();
+                FToast.error("网络错误");
+                break;
+        }
+    };
+    private void operaWxInfo(ResponseBody body) {
+        try {
+            String b = body.string();
+            if (b.contains("errcode")) {
+                dismissLoading();
+                WxError error = new Gson().fromJson(b, WxError.class);
+                FToast.error(error.getErrMsg() + ":" + error.getErrCode());
+            } else {
+                WxInfo info = new Gson().fromJson(b, WxInfo.class);
+                mUnionId = info.getUnionId();
+               /* mViewModel.checkUserInfo(info.getUnionId(), String.valueOf(info.getSex()),
+                        info.getHeadImgUrl(), info.getNickName())
+                        .observe(this, mCheckWxInfoObserver);*/
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            dismissLoading();
+            FToast.error("数据错误");
+        }
+    }
+    private Observer<Status<Base<UserInfo>>> mCheckWxInfoObserver = baseStatus -> {
+        switch (baseStatus.status) {
+            case Status.SUCCESS:
+                dismissLoading();
+                Base<UserInfo> userInfoBase = baseStatus.content;
+                if (userInfoBase.code == 1) {
+                    UserInfo userInfo = userInfoBase.data;
+                  //  dispatchUserInfo(userInfo);
+                } else {
+                    FToast.error(userInfoBase.msg);
+                }
+                break;
+            case Status.ERROR:
+                dismissLoading();
+                FToast.error("网络错误");
+                break;
+        }
+    };
+
     //判断是否超过10分钟
     private boolean tenOuter() {
 

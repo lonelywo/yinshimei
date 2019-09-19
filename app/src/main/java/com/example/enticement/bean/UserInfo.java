@@ -25,6 +25,25 @@ public class UserInfo implements Serializable {
     private int vip_auth;
     private String token;
 
+    public String getBlack_state() {
+        return black_state;
+    }
+
+    public void setBlack_state(String black_state) {
+        this.black_state = black_state;
+    }
+
+    public String getIs_binding() {
+        return is_binding;
+    }
+
+    public void setIs_binding(String is_binding) {
+        this.is_binding = is_binding;
+    }
+
+    private String black_state;
+    private String is_binding;
+
     public int getId() {
         return id;
     }

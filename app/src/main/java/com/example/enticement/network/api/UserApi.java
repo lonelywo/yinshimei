@@ -5,10 +5,13 @@ import com.example.enticement.bean.AdressBean;
 import com.example.enticement.bean.Base;
 import com.example.enticement.bean.UserInfo;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface UserApi {
 
@@ -76,6 +79,32 @@ public interface UserApi {
                                    @Field("sign") String sign);
 
 
-
+    /**
+     * 微信授权登录
+     */
+    @FormUrlEncoded
+    @POST("store/api.User/wxlogin")
+    Call<Base<UserInfo>> checkUserInfo(
+                                       @Field("unionId") String unionId,
+                                       @Field("openId") String openId,
+                                       @Field("avatarUrl") String avatarUrl,
+                                       @Field("nickname") String nickname,
+                                       @Field("from_type") String from_type,
+                                       @Field("gender") String gender
+    );
+    /**
+     * 获取微信授权token
+     */
+    @GET("https://api.weixin.qq.com/sns/oauth2/access_token")
+    Call<ResponseBody> getWxToken(@Query("appid") String appId,
+                                  @Query("secret") String secret,
+                                  @Query("code") String code,
+                                  @Query("grant_type") String grantType);
+    /**
+     * 获取微信账号信息
+     */
+    @GET("https://api.weixin.qq.com/sns/userinfo")
+    Call<ResponseBody> getWxInfo(@Query("access_token") String accessToken,
+                                 @Query("openid") String openId);
 }
 
