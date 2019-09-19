@@ -62,13 +62,14 @@ public class RegActivityViewModel extends ViewModel {
        params.put("phone",phone);
        params.put("secure",secure);
        params.put("region",region);
+       params.put("type","1");
        String signs = SignUtils.signParam(params);
 
        /* String  stringA = "phone="+phone+"&region="+region+"&secure="+secure;
         String sign = EncryptUtils.md5Encrypt(stringA+"&key=A8sUd9bqis3sN5GK6aF9JDFl5I9skPkd");
         String signs = sign.toUpperCase();*/
        mCreator.create(UserApi.class)
-                .getSmsCode(phone, secure, region,signs)
+                .getSmsCode(phone, secure, region,"1",signs)
                 .enqueue(new Callback<Base>() {
                     @Override
                     public void onResponse(@NonNull Call<Base> call,

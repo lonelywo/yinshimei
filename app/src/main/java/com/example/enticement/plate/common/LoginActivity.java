@@ -1,5 +1,6 @@
 package com.example.enticement.plate.common;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -7,16 +8,15 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -32,9 +32,7 @@ import com.example.enticement.bean.WxError;
 import com.example.enticement.bean.WxInfo;
 import com.example.enticement.bean.WxToken;
 import com.example.enticement.plate.common.vm.LoginViewModel;
-import com.example.enticement.plate.home.activity.ProdActivity;
 import com.example.enticement.plate.mine.fragment._MineFragment;
-import com.example.enticement.utils.EncryptUtils;
 import com.example.enticement.utils.FLog;
 import com.example.enticement.utils.FToast;
 import com.example.enticement.utils.RSAUtil;
@@ -46,8 +44,6 @@ import com.tencent.mm.opensdk.modelmsg.SendAuth;
 
 import java.io.IOException;
 import java.util.Date;
-
-import javax.crypto.Cipher;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -82,6 +78,7 @@ public class LoginActivity extends BaseActivity {
     @BindView(R.id.text_weixindenglu)
     TextView textWeixindenglu;
     public static final String ACTION_WX_LOGIN_SUCCEED = "com.example.enticement.plate.user.ACTION_WX_LOGIN_SUCCEED";
+    public static final String DATA_UNION_ID = "data_union_id";
     private LocalBroadcastManager mBroadcastManager;
     private static final String TAG = LoginActivity.class.getSimpleName();
     private LoginViewModel mViewModel;
@@ -183,6 +180,7 @@ public class LoginActivity extends BaseActivity {
                     break;
                 case Status.ERROR:
                     LoginActivity.this.dismissLoading();
+
                     FToast.error("网络错误");
                     break;
                 case Status.SUCCESS:
@@ -279,11 +277,11 @@ public class LoginActivity extends BaseActivity {
                     //十分钟内
                     //获取保存的信息
                     String wxOpenId = SharedPrefUtils.getWxOpenId();
-                    String openId = wxOpenId.split("FDSH")[1];
-                    String token = wxOpenId.split("FDSH")[2];
+                    String openId = wxOpenId.split("YMS")[1];
+                    String token = wxOpenId.split("YMS")[2];
                     FLog.e(TAG, "十分钟内：" + openId + " " + token);
-                  /*  mViewModel.getWxInfo(token, openId)
-                            .observe(LoginActivity.this, mWxInfoObserver);*/
+                    mViewModel.getWxInfo(token, openId)
+                            .observe(LoginActivity.this, mWxInfoObserver);
                 }
 
             }
@@ -317,8 +315,8 @@ public class LoginActivity extends BaseActivity {
                 WxToken token = new Gson().fromJson(b, WxToken.class);
 
                 if (tenOuter()) {
-                    SharedPrefUtils.saveWxOpenId(new Date().getTime() + "FDSH" +
-                            token.getOpenId() + "FDSH" + token.getAccessToken());
+                    SharedPrefUtils.saveWxOpenId(new Date().getTime() + "YSM" +
+                            token.getOpenId() + "YSM" + token.getAccessToken());
                 }
 
                 //获取微信账户信息
@@ -353,9 +351,8 @@ public class LoginActivity extends BaseActivity {
             } else {
                 WxInfo info = new Gson().fromJson(b, WxInfo.class);
                 mUnionId = info.getUnionId();
-               /* mViewModel.checkUserInfo(info.getUnionId(), String.valueOf(info.getSex()),
-                        info.getHeadImgUrl(), info.getNickName())
-                        .observe(this, mCheckWxInfoObserver);*/
+                mViewModel.checkUserInfo(info.getUnionId(),info.getOpenId(),  info.getHeadImgUrl(),  info.getNickName(),"2",String.valueOf(info.getSex())
+                      ).observe(this, mCheckWxInfoObserver);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -370,7 +367,7 @@ public class LoginActivity extends BaseActivity {
                 Base<UserInfo> userInfoBase = baseStatus.content;
                 if (userInfoBase.code == 1) {
                     UserInfo userInfo = userInfoBase.data;
-                  //  dispatchUserInfo(userInfo);
+                    dispatchUserInfo(userInfo);
                 } else {
                     FToast.error(userInfoBase.msg);
                 }
@@ -381,17 +378,53 @@ public class LoginActivity extends BaseActivity {
                 break;
         }
     };
+    private void dispatchUserInfo(UserInfo userInfo) {
+        if ("0".equals(userInfo.getIs_binding())) {
+            Intent intent = new Intent(this, RegisterActivity.class);
+            intent.putExtra(DATA_UNION_ID, mUnionId);
+            startActivityForResult(intent, 10000);
+        }
+                //登录成功
+                boolean save = SharedPrefUtils.save(userInfo, UserInfo.class);
+                FToast.success("登录成功");
+
+                if (save) {
+                    FLog.e(TAG, "用户信息保存成功");
+                } else {
+                    FLog.e(TAG, "用户信息保存失败");
+                }
+                Intent intent = new Intent(_MineFragment.ACTION_LOGIN_SUCCEED);
+                intent.putExtra(_MineFragment.DATA_USER_INFO, userInfo);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+                finish();
+        }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && data != null) {
+            if ( requestCode == 10000) {
+               /* UserInfo userInfo = (UserInfo) data.getSerializableExtra(_MineFragment.DATA_USER_INFO);
+                Intent intent = new Intent(_MineFragment.ACTION_LOGIN_SUCCEED);
+                intent.putExtra(_MineFragment.DATA_USER_INFO, userInfo);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(intent);*/
+                finish();
+            }
+        }
+    }
+
+
 
     //判断是否超过10分钟
     private boolean tenOuter() {
 
         String wxOpenId = SharedPrefUtils.getWxOpenId();
 
-        if ("0FDSH0FDSH0".equals(wxOpenId)) {
+        if ("0YSM0YSM0".equals(wxOpenId)) {
             return true;
         }
 
-        long oldTime = Long.parseLong(wxOpenId.split("FDSH")[0]);
+        long oldTime = Long.parseLong(wxOpenId.split("YSM")[0]);
 
         long now = new Date().getTime();
         long ten = 10 * 60 * 1000L;

@@ -154,7 +154,7 @@ public class SharedPrefUtils {
      */
     public static String getWxOpenId() {
         SharedPreferences sp = BasicApp.getContext().getSharedPreferences(NAME_STRING, Context.MODE_PRIVATE);
-        return sp.getString(STRING_WX_OPENID, "0FDSH0FDSH0");
+        return sp.getString(STRING_WX_OPENID, "0YSM0YSM0");
     }
 
 

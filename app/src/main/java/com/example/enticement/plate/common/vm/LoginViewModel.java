@@ -5,14 +5,12 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.enticement.bean.Base;
-import com.example.enticement.bean.LoginBean;
 import com.example.enticement.bean.Status;
 import com.example.enticement.bean.UserInfo;
 import com.example.enticement.network.ServiceCreator;
 import com.example.enticement.network.api.UserApi;
 import com.example.enticement.utils.EncryptUtils;
 import com.example.enticement.utils.SignUtils;
-import com.google.gson.Gson;
 
 
 import java.util.HashMap;
@@ -34,7 +32,7 @@ public class LoginViewModel extends ViewModel {
 
 
     public MutableLiveData<Status<Base<UserInfo>>> checkUserInfo(String unionId, String openId,
-                                                                 String avatarUrl, String nickname,String from_type,String gender) {
+                                                                   String avatarUrl, String nickname, String from_type, String gender) {
 
         final MutableLiveData<Status<Base<UserInfo>>> liveData = new MutableLiveData<>();
 
@@ -142,12 +140,15 @@ public class LoginViewModel extends ViewModel {
         final MutableLiveData<Status<Base>> liveData = new MutableLiveData<>();
 
         liveData.setValue(Status.loading(null));
-        String  stringA = "phone="+phone+"&region="+region+"&secure="+secure;
-        String sign = EncryptUtils.md5Encrypt(stringA+"&key=A8sUd9bqis3sN5GK6aF9JDFl5I9skPkd");
-        String signs = sign.toUpperCase();
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("phone",phone);
+        params.put("secure",secure);
+        params.put("region",region);
+        params.put("type","3");
+        String signs = SignUtils.signParam(params);
 
         mCreator.create(UserApi.class)
-                .getSmsCodelogin(phone, secure, region,signs)
+                .getSmsCodelogin(phone, secure, region,"3",signs)
                 .enqueue(new Callback<Base>() {
                     @Override
                     public void onResponse(@NonNull Call<Base> call,

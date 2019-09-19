@@ -29,20 +29,22 @@ public interface UserApi {
      * 获取注册验证码
      */
     @FormUrlEncoded
-    @POST("store/api.user/regsendsms")
+    @POST("/store/api.user/needsms")
     Call<Base> getSmsCode(@Field("phone") String phone,
                         @Field("secure") String secure,
                         @Field("region") String region,
+                        @Field("type") String type,
                         @Field("sign") String sign
     );
     /**
      * 获取登录验证码
      */
     @FormUrlEncoded
-    @POST("store/api.user/setsendsms")
+    @POST("/store/api.user/needsms")
     Call<Base> getSmsCodelogin(@Field("phone") String phone,
                                @Field("secure") String secure,
                                @Field("region") String region,
+                               @Field("type") String type,
                                @Field("sign") String sign
     );
     /**
@@ -80,7 +82,7 @@ public interface UserApi {
 
 
     /**
-     * 微信授权登录
+     * 微信登录
      */
     @FormUrlEncoded
     @POST("store/api.User/wxlogin")
@@ -106,5 +108,17 @@ public interface UserApi {
     @GET("https://api.weixin.qq.com/sns/userinfo")
     Call<ResponseBody> getWxInfo(@Query("access_token") String accessToken,
                                  @Query("openid") String openId);
+
+
+    /**
+     * 微信绑定手机
+     */
+    @FormUrlEncoded
+    @POST("store/api.user/checkphone")
+    Call<Base> wxBindPhone(@Field("phone") String phone,
+                                     @Field("sign") String sign
+                                   );
+
+
 }
 

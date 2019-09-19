@@ -3,8 +3,8 @@ package com.example.enticement;
 public class Constant {
 
 
-    public static final String WX_APP_ID = "wx1be8ec49e5ce6be6";
-    public static final String WX_APP_SECRET_ID = "996adee6795563de67af234506d0a8fc";
+    public static final String WX_APP_ID = "wx54603ace15d79fd3";
+    public static final String WX_APP_SECRET_ID = "9A414f9764b9420B43abdb1a29df749B";
 
     public static final String BUGLY_ID = "ffc4cc99ab";
 

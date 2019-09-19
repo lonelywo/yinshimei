@@ -131,8 +131,8 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
         textFenzu.setText(specsBean.getName());
 
         addview(radioGroup, list);
-        mSpec=list.get(0).getName();
-        selectedTv.setText(mSpec);
+        mSpec=specsBean.getName() + ":" + list.get(0).getName();
+        selectedTv.setText(list.get(0).getName());
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
