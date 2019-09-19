@@ -38,48 +38,49 @@ public class CartListBean {
     public void setData(DataBean data) {
         this.data = data;
     }
-
     public static class DataBean {
+
+
         /**
-         * page : {"limit":12,"total":2,"pages":1,"current":1}
-         * list : [{"cart_id":5,"mid":1,"goods_id":"6548958291","goods_title":"新零售首选礼包","goods_logo":"https://yinshimei2.xd.cuci.cc/upload/679bbc9f6debe6d2/609c598892da27e6.jpg","goods_spec":"默认分组::黑金魅惑蕾丝面膜5片/盒*30；贵族美学*1；黑金T恤L码*1；油纸*10；标贴*10","goods_price_selling":"2100.00","goods_price_market":"3600.00","goods_num":4},{"cart_id":6,"mid":1,"goods_id":"6548958291","goods_title":"新零售首选礼包","goods_logo":"https://yinshimei2.xd.cuci.cc/upload/679bbc9f6debe6d2/609c598892da27e6.jpg","goods_spec":"默认分组::黑金魅惑蕾丝面膜5片/盒*30；贵族美学*1；黑金T恤M码*1；油纸*10；标贴*10","goods_price_selling":"2100.00","goods_price_market":"3600.00","goods_num":2}]
-         * total : {"total_price":"12600.00"}
+         * page : {"limit":12,"total":1,"pages":1,"current":1}
+         * list : [{"cart_id":101,"mid":18281,"goods_id":6.672588222E9,"goods_title":"新零售礼包B方案","goods_logo":"http://qiniu.cdn.enticementchina.com/ce62bb5fa9fdace8/f71348a7db4928df.jpg","goods_spec":"默认分组:黑金魅惑蕾丝面膜5片/盒*40，温柔高保湿洁面乳(30g)*25，贵族美学*1，油纸*10，标贴*10，手提袋*10;T恤:M","goods_price_selling":"3660.00","goods_price_market":"3660.00","goods_num":1,"stock":9950}]
+         * total : {"total_price":"3660.00"}
          */
 
-        private PageBean page;
-     //   private TotalBean total;
-        private List<ListBean> list;
+        private DataBean.PageBean page;
+        private DataBean.TotalBean total;
+        private List<DataBean.ListBean> list;
 
-        public PageBean getPage() {
+        public DataBean.PageBean getPage() {
             return page;
         }
 
-        public void setPage(PageBean page) {
+        public void setPage(DataBean.PageBean page) {
             this.page = page;
         }
 
-     /*   public TotalBean getTotal() {
+        public DataBean.TotalBean getTotal() {
             return total;
         }
 
-        public void setTotal(TotalBean total) {
+        public void setTotal(DataBean.TotalBean total) {
             this.total = total;
-        }*/
+        }
 
-        public List<ListBean> getList() {
+        public List<DataBean.ListBean> getList() {
             return list;
         }
 
-        public void setList(List<ListBean> list) {
+        public void setList(List<DataBean.ListBean> list) {
             this.list = list;
         }
 
         public static class PageBean {
             /**
-             * limit : 12
-             * total : 2
-             * pages : 1
-             * current : 1
+             * limit : 12.0
+             * total : 1.0
+             * pages : 1.0
+             * current : 1.0
              */
 
             private double limit;
@@ -122,7 +123,7 @@ public class CartListBean {
 
         public static class TotalBean {
             /**
-             * total_price : 12600.00
+             * total_price : 3660.00
              */
 
             private String total_price;
@@ -138,26 +139,28 @@ public class CartListBean {
 
         public static class ListBean {
             /**
-             * cart_id : 5
-             * mid : 1
-             * goods_id : 6548958291
-             * goods_title : 新零售首选礼包
-             * goods_logo : https://yinshimei2.xd.cuci.cc/upload/679bbc9f6debe6d2/609c598892da27e6.jpg
-             * goods_spec : 默认分组::黑金魅惑蕾丝面膜5片/盒*30；贵族美学*1；黑金T恤L码*1；油纸*10；标贴*10
-             * goods_price_selling : 2100.00
-             * goods_price_market : 3600.00
-             * goods_num : 4
+             * cart_id : 101.0
+             * mid : 18281.0
+             * goods_id : 6.672588222E9
+             * goods_title : 新零售礼包B方案
+             * goods_logo : http://qiniu.cdn.enticementchina.com/ce62bb5fa9fdace8/f71348a7db4928df.jpg
+             * goods_spec : 默认分组:黑金魅惑蕾丝面膜5片/盒*40，温柔高保湿洁面乳(30g)*25，贵族美学*1，油纸*10，标贴*10，手提袋*10;T恤:M
+             * goods_price_selling : 3660.00
+             * goods_price_market : 3660.00
+             * goods_num : 1.0
+             * stock : 9950.0
              */
 
-            private int cart_id;
-            private int mid;
-            private String goods_id;
+            private double cart_id;
+            private double mid;
+            private double goods_id;
             private String goods_title;
             private String goods_logo;
             private String goods_spec;
             private String goods_price_selling;
             private String goods_price_market;
-            private int goods_num;
+            private double goods_num;
+            private double stock;
             private boolean check;
 
             public boolean isCheck() {
@@ -168,27 +171,27 @@ public class CartListBean {
                 this.check = check;
             }
 
-            public int getCart_id() {
+            public double getCart_id() {
                 return cart_id;
             }
 
-            public void setCart_id(int cart_id) {
+            public void setCart_id(double cart_id) {
                 this.cart_id = cart_id;
             }
 
-            public int getMid() {
+            public double getMid() {
                 return mid;
             }
 
-            public void setMid(int mid) {
+            public void setMid(double mid) {
                 this.mid = mid;
             }
 
-            public String getGoods_id() {
+            public double getGoods_id() {
                 return goods_id;
             }
 
-            public void setGoods_id(String goods_id) {
+            public void setGoods_id(double goods_id) {
                 this.goods_id = goods_id;
             }
 
@@ -232,13 +235,23 @@ public class CartListBean {
                 this.goods_price_market = goods_price_market;
             }
 
-            public int getGoods_num() {
+            public double getGoods_num() {
                 return goods_num;
             }
 
-            public void setGoods_num(int goods_num) {
+            public void setGoods_num(double goods_num) {
                 this.goods_num = goods_num;
+            }
+
+            public double getStock() {
+                return stock;
+            }
+
+            public void setStock(double stock) {
+                this.stock = stock;
             }
         }
     }
+   
+    
 }

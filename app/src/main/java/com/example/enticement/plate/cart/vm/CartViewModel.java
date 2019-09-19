@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.enticement.bean.Base;
+import com.example.enticement.bean.CartDataBean;
 import com.example.enticement.bean.CartListBean;
 import com.example.enticement.bean.OrderResult;
 import com.example.enticement.bean.Status;
@@ -33,9 +34,9 @@ public class CartViewModel extends ViewModel {
 
 
 
-    public MutableLiveData<Status<Base>> getCartList(String token,String mid,String page,int loadType) {
+    public MutableLiveData<Status<Base<CartDataBean>>> getCartList(String token, String mid, String page, int loadType) {
 
-        final MutableLiveData<Status<Base>> data = new MutableLiveData<>();
+        final MutableLiveData<Status<Base<CartDataBean>>> data = new MutableLiveData<>();
         data.setValue(Status.loading(null));
         Map<String, String> params = new HashMap<String, String>();
         params.put("token",token);
@@ -47,10 +48,10 @@ public class CartViewModel extends ViewModel {
 
         mCreator.create(CartApi.class)
                 .getCartList("2",token,mid,page,signs)
-                .enqueue(new Callback<Base>() {
+                .enqueue(new Callback<Base<CartDataBean>>() {
                     @Override
-                    public void onResponse(@NonNull Call<Base> call,
-                                           @NonNull Response<Base> response) {
+                    public void onResponse(@NonNull Call<Base<CartDataBean>> call,
+                                           @NonNull Response<Base<CartDataBean>> response) {
                         if (loadType == Status.LOAD_REFRESH) {
                             data.setValue(Status.refreshSuccess(response.body()));
                         } else {
@@ -61,7 +62,7 @@ public class CartViewModel extends ViewModel {
                     }
 
                     @Override
-                    public void onFailure(@NonNull Call<Base> call,
+                    public void onFailure(@NonNull Call<Base<CartDataBean>> call,
                                           @NonNull Throwable t) {
                         if (loadType == Status.LOAD_REFRESH) {
                             data.setValue(Status.refreshError(null, t.getMessage() ==

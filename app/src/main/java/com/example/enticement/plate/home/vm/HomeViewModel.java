@@ -109,34 +109,6 @@ public class HomeViewModel extends ViewModel {
                 });
         return data;
     }
-    public MutableLiveData<Status<Base>> getCartChange(String token,String mid,String goods_id,String goods_spec,String goods_num) {
-
-        final MutableLiveData<Status<Base>> data = new MutableLiveData<>();
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("token",token);
-        params.put("mid",mid);
-        params.put("goods_id",goods_id);
-        params.put("goods_spec",goods_spec);
-        params.put("goods_num",goods_num);
-        params.put("from_type","2");
-        String signs = SignUtils.signParam(params);
-        mCreator.create(CartApi.class)
-                .cartChange("2",token,mid,goods_id,goods_spec,goods_num,signs)
-                .enqueue(new Callback<Base>() {
-
-                    @Override
-                    public void onResponse(Call<Base> call, Response<Base> response) {
-                        data.setValue(Status.success(response.body()));
-                    }
-
-                    @Override
-                    public void onFailure(Call<Base> call, Throwable t) {
-                        data.setValue(Status.error(null, t.getMessage() ==
-                                null ? "加载失败" : t.getMessage()));
-                    }
-                });
-        return data;
-    }
 
 
 

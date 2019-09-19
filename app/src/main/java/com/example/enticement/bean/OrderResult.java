@@ -3,6 +3,8 @@ package com.example.enticement.bean;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 public class OrderResult {
 
     /**
@@ -13,6 +15,7 @@ public class OrderResult {
 
     private int code;
     private String info;
+    @SerializedName("datatest")
     private DataBean data;
 
     public int getCode() {

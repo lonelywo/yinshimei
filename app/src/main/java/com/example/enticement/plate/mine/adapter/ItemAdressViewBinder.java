@@ -4,7 +4,6 @@ package com.example.enticement.plate.mine.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,8 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cuci.enticement.R;
 import com.example.enticement.bean.AdressBean;
-import com.example.enticement.bean.CartListBean;
-import com.example.enticement.utils.ImageLoader;
+import com.example.enticement.utils.ViewUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,20 +19,24 @@ import me.drakeet.multitype.ItemViewBinder;
 
 public class ItemAdressViewBinder extends ItemViewBinder<AdressBean.DataBean.ListBean, ItemAdressViewBinder.ViewHolder> {
 
+
+
     public interface OnItemClickListener {
 
         void onEditClick(AdressBean.DataBean.ListBean bean);
+
         void onCheckAdress(AdressBean.DataBean.ListBean bean);
 
+        void onDelete(AdressBean.DataBean.ListBean bean);
+
 
     }
 
-    private ItemAdressViewBinder.OnItemClickListener mOnItemClickListener;
+    private OnItemClickListener mOnItemClickListener;
 
-    public ItemAdressViewBinder(ItemAdressViewBinder.OnItemClickListener onItemClickListener) {
+    public ItemAdressViewBinder(OnItemClickListener onItemClickListener) {
         mOnItemClickListener = onItemClickListener;
     }
-
 
 
     @NonNull
@@ -47,7 +49,38 @@ public class ItemAdressViewBinder extends ItemViewBinder<AdressBean.DataBean.Lis
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull AdressBean.DataBean.ListBean item) {
 
+        if(item.getIs_default()==1){
+            ViewUtils.showView(holder.defaultTv);
+        }else {
+            ViewUtils.hideView(holder.defaultTv);
+        }
 
+        holder.textName.setText(item.getName());
+
+        StringBuilder builder=new StringBuilder();
+        builder.append(item.getProvince()).append(" ").append(item.getCity()).append(" ").append(item.getArea())
+                .append(" ").append(item.getAddress());
+        holder.textDizi.setText(builder.toString());
+        holder.textPhone.setText(item.getPhone());
+
+
+        holder.itemView.setOnClickListener(view -> {
+            if(mOnItemClickListener!=null){
+                mOnItemClickListener.onCheckAdress(item);
+            }
+        });
+
+        holder.editTv.setOnClickListener(view -> {
+            if(mOnItemClickListener!=null){
+                mOnItemClickListener.onEditClick(item);
+            }
+        });
+
+        holder.textShanchu.setOnClickListener(view -> {
+            if(mOnItemClickListener!=null){
+                mOnItemClickListener.onDelete(item);
+            }
+        });
 
 
 
@@ -71,11 +104,20 @@ public class ItemAdressViewBinder extends ItemViewBinder<AdressBean.DataBean.Lis
     }
 
 
-
     static class ViewHolder extends RecyclerView.ViewHolder {
 
-
-
+        @BindView(R.id.text_name)
+        TextView textName;
+        @BindView(R.id.text_phone)
+        TextView textPhone;
+        @BindView(R.id.text_dizi)
+        TextView textDizi;
+        @BindView(R.id.default_tv)
+        TextView defaultTv;
+        @BindView(R.id.text_shanchu)
+        TextView textShanchu;
+        @BindView(R.id.edit_tv)
+        TextView editTv;
         ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
