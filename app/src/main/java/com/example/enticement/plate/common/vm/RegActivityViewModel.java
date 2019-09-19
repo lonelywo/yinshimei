@@ -65,9 +65,6 @@ public class RegActivityViewModel extends ViewModel {
        params.put("type","1");
        String signs = SignUtils.signParam(params);
 
-       /* String  stringA = "phone="+phone+"&region="+region+"&secure="+secure;
-        String sign = EncryptUtils.md5Encrypt(stringA+"&key=A8sUd9bqis3sN5GK6aF9JDFl5I9skPkd");
-        String signs = sign.toUpperCase();*/
        mCreator.create(UserApi.class)
                 .getSmsCode(phone, secure, region,"1",signs)
                 .enqueue(new Callback<Base>() {
@@ -85,14 +82,17 @@ public class RegActivityViewModel extends ViewModel {
                 });
         return liveData;
     }
-   /* public MutableLiveData<Status<Base>> bindPhone(String code, String phone) {
+    public MutableLiveData<Status<Base>> wxBindPhone(String phone) {
 
         final MutableLiveData<Status<Base>> liveData = new MutableLiveData<>();
 
         liveData.setValue(Status.loading(null));
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("phone",phone);
+        String signs = SignUtils.signParam(params);
 
         mCreator.create(UserApi.class)
-                .bindPhone(code, phone)
+                .wxBindPhone(phone,signs)
                 .enqueue(new Callback<Base>() {
                     @Override
                     public void onResponse(@NonNull Call<Base> call,
@@ -107,5 +107,5 @@ public class RegActivityViewModel extends ViewModel {
                     }
                 });
         return liveData;
-    }*/
+    }
 }

@@ -115,7 +115,8 @@ public interface UserApi {
      */
     @FormUrlEncoded
     @POST("store/api.user/checkphone")
-    Call<Base> wxBindPhone(@Field("phone") String phone,
+    Call<Base> wxBindPhone(
+                                     @Field("phone") String phone,
                                      @Field("sign") String sign
                                    );
 
