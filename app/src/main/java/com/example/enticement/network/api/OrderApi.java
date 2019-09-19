@@ -59,7 +59,7 @@ public interface OrderApi {
      */
     @FormUrlEncoded
     @POST("/store/api.member.order/total")
-    Call<OrderStatistics> getTotalOrder(@Field("token") String token,
+    Call<OrderStatistics> getTotalOrder(@Field("from_type") String fromType,@Field("token") String token,
                                       @Field("mid") String mid,
                                         @Field("sign") String signs);
 

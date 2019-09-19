@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
+        android:padding="10dp"
         >
 
       <ImageView
@@ -28,13 +29,13 @@
 
     <ImageView
         android:id="@+id/img_tuxiang"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:src="@drawable/ic_launcher"
         app:layout_constraintStart_toEndOf="@+id/image_check"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginLeft="20dp" />
+       />
 
 
     <TextView
@@ -46,7 +47,7 @@
         android:textSize="20sp"
         app:layout_constraintTop_toTopOf="@+id/img_tuxiang"
         app:layout_constraintLeft_toRightOf="@+id/img_tuxiang"
-        android:layout_marginLeft="50dp"
+        android:layout_marginLeft="20dp"
         />
     <TextView
         android:id="@+id/text_neirong"
@@ -55,8 +56,9 @@
         android:text="黑金魅惑蕾丝"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="@+id/img_tuxiang"
+        app:layout_constraintTop_toBottomOf="@+id/text_biaoti"
         app:layout_constraintLeft_toRightOf="@+id/img_tuxiang"
-        android:layout_marginLeft="50dp"
+        android:layout_marginLeft="20dp"
         />
      <TextView
          android:id="@+id/text_jiage"
@@ -110,7 +112,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:text="10"
+                android:text="1"
                 android:gravity="center"
                 />
             <View

@@ -214,10 +214,11 @@ public class OrderViewModel extends ViewModel {
         Map<String, String> params = new HashMap<String, String>();
         params.put("token",token);
         params.put("mid",mid);
+        params.put("from_type","2");
 
         String sign = SignUtils.signParam(params);
         mCreator.create(OrderApi.class)
-                .getTotalOrder(token,mid,sign)
+                .getTotalOrder("2",token,mid,sign)
                 .enqueue(new Callback<OrderStatistics>() {
                     @Override
                     public void onResponse(@NonNull Call<OrderStatistics> call,
