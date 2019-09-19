@@ -24,11 +24,9 @@ import com.cuci.enticement.R;
 import com.example.enticement.base.BaseFragment;
 import com.example.enticement.bean.Base;
 import com.example.enticement.bean.CartDataBean;
-import com.example.enticement.bean.CartListBean;
 import com.example.enticement.bean.OrderResult;
 import com.example.enticement.bean.Status;
 import com.example.enticement.bean.UserInfo;
-import com.example.enticement.plate.cart.activity.OrderActivity;
 import com.example.enticement.plate.cart.adapter.ItemCartViewBinder;
 import com.example.enticement.plate.cart.vm.CartViewModel;
 import com.example.enticement.utils.FToast;
@@ -75,6 +73,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
     private LinearLayoutManager mLayoutManager;
     private LocalBroadcastManager mLocalBroadcastManager;
     private UserInfo mUserInfo;
+    private int mPage=1;
     @Override
     protected void onLazyLoad() {
 
@@ -170,7 +169,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
 
     private void load() {
-
+        mUserInfo = SharedPrefUtils.get(UserInfo.class);
         mViewModel.getCartList(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "1", Status.LOAD_REFRESH).observe(this, mObserver);
 
     }
@@ -182,7 +181,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
         if (mCanLoadMore) {
             mCanLoadMore = false;
-            mViewModel.getCartList("", "37", "",
+            mViewModel.getCartList(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(mPage),
                     Status.LOAD_MORE).observe(this, mObserver);
         } else {
             mRefreshLayout.finishLoadMore();
@@ -202,9 +201,10 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
                 case Status.SUCCESS:
 
                     mStatusView.showContent();
+
                     Base<CartDataBean> content = status.content;
                     CartDataBean data = content.data;
-
+                    String s = new Gson().toJson(data);
                     if (data == null) {
                         mStatusView.showEmpty();
                         if (status.loadType == Status.LOAD_MORE) {
@@ -218,6 +218,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
                     List<CartDataBean.ListBean> list = data.getList();
                    if (status.content.code == 1) {
                         mCanLoadMore = true;
+                        mPage= (int) (data.getPage().getCurrent()+1);
                         if (status.loadType == Status.LOAD_REFRESH) {
                             mItems.clear();
                             mItems.addAll(list);
@@ -300,12 +301,12 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
     }
 
     private boolean mCanChange=true;
-    private double mGoodsId;
+    private long mGoodsId;
     @Override
     public void onAddClick(CartDataBean.ListBean bean) {
         //点击一次加1一次
         if(mCanChange){
-            double goods_num = bean.getGoods_num()+1;
+            int goods_num = bean.getGoods_num()+1;
             String goods_id = String.valueOf(bean.getGoods_id());
             String goods_spec = bean.getGoods_spec();
             mGoodsId=bean.getGoods_id();
@@ -318,7 +319,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
     @Override
     public void onMinusClick(CartDataBean.ListBean bean) {
         if(mCanChange) {
-            double goods_num = bean.getGoods_num() - 1;
+            int goods_num = bean.getGoods_num() - 1;
             String goods_id = String.valueOf(bean.getGoods_id());
             String goods_spec = bean.getGoods_spec();
             mGoodsId=bean.getGoods_id();
@@ -434,12 +435,12 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
                         mAdapter.notifyDataSetChanged();
 
                       /*  Intent intent = new Intent(mActivity, OrderActivity.class);
-                        intent.putExtra("order",content.getData().getOrder());
+                        intent.putExtra("order",co ntent.getData().getOrder());
                         startActivity(intent);*/
 
 
                     }else {
-                        FToast.warning(content.getInfo());
+                        FToast.error(content.getInfo());
                     }
 
                     break;

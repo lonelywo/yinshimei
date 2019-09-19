@@ -4,11 +4,10 @@ import java.util.List;
 
 public class CartDataBean {
 
-
     /**
-     * page : {"limit":12,"total":1,"pages":1,"current":1}
-     * list : [{"cart_id":101,"mid":18281,"goods_id":6.672588222E9,"goods_title":"新零售礼包B方案","goods_logo":"http://qiniu.cdn.enticementchina.com/ce62bb5fa9fdace8/f71348a7db4928df.jpg","goods_spec":"默认分组:黑金魅惑蕾丝面膜5片/盒*40，温柔高保湿洁面乳(30g)*25，贵族美学*1，油纸*10，标贴*10，手提袋*10;T恤:M","goods_price_selling":"3660.00","goods_price_market":"3660.00","goods_num":1,"stock":9950}]
-     * total : {"total_price":"3660.00"}
+     * page : {"limit":12,"total":2,"pages":1,"current":1}
+     * list : [{"cart_id":101,"mid":18281,"goods_id":6672588222,"goods_title":"新零售礼包B方案","goods_logo":"http://qiniu.cdn.enticementchina.com/ce62bb5fa9fdace8/f71348a7db4928df.jpg","goods_spec":"默认分组:黑金魅惑蕾丝面膜5片/盒*40，温柔高保湿洁面乳(30g)*25，贵族美学*1，油纸*10，标贴*10，手提袋*10;T恤:M","goods_price_selling":"3660.00","goods_price_market":"3660.00","goods_num":1,"stock":9928},{"cart_id":102,"mid":18281,"goods_id":6672579002,"goods_title":"新零售礼包A方案","goods_logo":"http://qiniu.cdn.enticementchina.com/4229e1b0bf62661c/913270e1206f32e0.jpg","goods_spec":"默认分组:黑金魅惑蕾丝面膜5片/盒*20，温柔高保湿洁面乳(30g)*20，因诗美菁纯赋活原生水*12，贵族美学*1，油纸*10，标贴*10，手提袋*10;T恤:M","goods_price_selling":"3660.00","goods_price_market":"3660.00","goods_num":1,"stock":9968}]
+     * total : {"total_price":"7320.00"}
      */
 
     private PageBean page;
@@ -41,53 +40,53 @@ public class CartDataBean {
 
     public static class PageBean {
         /**
-         * limit : 12.0
-         * total : 1.0
-         * pages : 1.0
-         * current : 1.0
+         * limit : 12
+         * total : 2
+         * pages : 1
+         * current : 1
          */
 
-        private double limit;
-        private double total;
-        private double pages;
-        private double current;
+        private int limit;
+        private int total;
+        private int pages;
+        private int current;
 
-        public double getLimit() {
+        public int getLimit() {
             return limit;
         }
 
-        public void setLimit(double limit) {
+        public void setLimit(int limit) {
             this.limit = limit;
         }
 
-        public double getTotal() {
+        public int getTotal() {
             return total;
         }
 
-        public void setTotal(double total) {
+        public void setTotal(int total) {
             this.total = total;
         }
 
-        public double getPages() {
+        public int getPages() {
             return pages;
         }
 
-        public void setPages(double pages) {
+        public void setPages(int pages) {
             this.pages = pages;
         }
 
-        public double getCurrent() {
+        public int getCurrent() {
             return current;
         }
 
-        public void setCurrent(double current) {
+        public void setCurrent(int current) {
             this.current = current;
         }
     }
 
     public static class TotalBean {
         /**
-         * total_price : 3660.00
+         * total_price : 7320.00
          */
 
         private String total_price;
@@ -103,29 +102,31 @@ public class CartDataBean {
 
     public static class ListBean {
         /**
-         * cart_id : 101.0
-         * mid : 18281.0
-         * goods_id : 6.672588222E9
+         * cart_id : 101
+         * mid : 18281
+         * goods_id : 6672588222
          * goods_title : 新零售礼包B方案
          * goods_logo : http://qiniu.cdn.enticementchina.com/ce62bb5fa9fdace8/f71348a7db4928df.jpg
          * goods_spec : 默认分组:黑金魅惑蕾丝面膜5片/盒*40，温柔高保湿洁面乳(30g)*25，贵族美学*1，油纸*10，标贴*10，手提袋*10;T恤:M
          * goods_price_selling : 3660.00
          * goods_price_market : 3660.00
-         * goods_num : 1.0
-         * stock : 9950.0
+         * goods_num : 1
+         * stock : 9928
          */
 
-        private double cart_id;
-        private double mid;
-        private double goods_id;
+        private int cart_id;
+        private int mid;
+        private long goods_id;
         private String goods_title;
         private String goods_logo;
         private String goods_spec;
         private String goods_price_selling;
         private String goods_price_market;
-        private double goods_num;
-        private double stock;
+        private int goods_num;
+        private int stock;
+
         private boolean check;
+
 
         public boolean isCheck() {
             return check;
@@ -134,27 +135,28 @@ public class CartDataBean {
         public void setCheck(boolean check) {
             this.check = check;
         }
-        public double getCart_id() {
+
+        public int getCart_id() {
             return cart_id;
         }
 
-        public void setCart_id(double cart_id) {
+        public void setCart_id(int cart_id) {
             this.cart_id = cart_id;
         }
 
-        public double getMid() {
+        public int getMid() {
             return mid;
         }
 
-        public void setMid(double mid) {
+        public void setMid(int mid) {
             this.mid = mid;
         }
 
-        public double getGoods_id() {
+        public long getGoods_id() {
             return goods_id;
         }
 
-        public void setGoods_id(double goods_id) {
+        public void setGoods_id(long goods_id) {
             this.goods_id = goods_id;
         }
 
@@ -198,20 +200,22 @@ public class CartDataBean {
             this.goods_price_market = goods_price_market;
         }
 
-        public double getGoods_num() {
+        public int getGoods_num() {
             return goods_num;
         }
 
-        public void setGoods_num(double goods_num) {
+        public void setGoods_num(int goods_num) {
             this.goods_num = goods_num;
         }
 
-        public double getStock() {
+        public int getStock() {
             return stock;
         }
 
-        public void setStock(double stock) {
+        public void setStock(int stock) {
             this.stock = stock;
         }
     }
+
+
 }

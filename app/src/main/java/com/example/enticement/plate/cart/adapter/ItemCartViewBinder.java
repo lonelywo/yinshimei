@@ -11,15 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cuci.enticement.R;
-import com.example.enticement.bean.BannerDataBean;
 import com.example.enticement.bean.CartDataBean;
-import com.example.enticement.bean.CartListBean;
-import com.example.enticement.plate.home.adapter.ItemBannerViewBinder;
 import com.example.enticement.utils.ImageLoader;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import me.drakeet.multitype.ItemViewBinder;
 
 public class ItemCartViewBinder extends ItemViewBinder<CartDataBean.ListBean, ItemCartViewBinder.ViewHolder> {

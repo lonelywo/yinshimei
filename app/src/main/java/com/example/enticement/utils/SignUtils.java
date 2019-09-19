@@ -20,8 +20,11 @@ public class SignUtils {
 
             strBuilder.append(key).append("=").append(value).append("&");
         }
+        if(keys.length==0){
+            strBuilder.append("&");
+        }
         strBuilder.append("key=A8sUd9bqis3sN5GK6aF9JDFl5I9skPkd");
-        String s = strBuilder.toString();
+
         result = EncryptUtils.md5Encrypt(strBuilder.toString()).toUpperCase();
         return result;
     }

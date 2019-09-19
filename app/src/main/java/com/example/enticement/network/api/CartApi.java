@@ -5,12 +5,10 @@ import com.example.enticement.bean.Base;
 import com.example.enticement.bean.CartDataBean;
 import com.example.enticement.bean.CartListBean;
 import com.example.enticement.bean.OrderResult;
-import com.example.enticement.bean.Version;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 public interface CartApi {

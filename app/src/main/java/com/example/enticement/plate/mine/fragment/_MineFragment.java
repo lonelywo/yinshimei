@@ -39,6 +39,7 @@ import com.example.enticement.utils.AppUtils;
 import com.example.enticement.utils.FToast;
 import com.example.enticement.utils.ImageLoader;
 import com.example.enticement.utils.SharedPrefUtils;
+import com.example.enticement.utils.ViewUtils;
 import com.google.gson.Gson;
 
 import java.util.Date;
@@ -371,10 +372,14 @@ public class _MineFragment extends BaseFragment {
                     FToast.error("获取订单状态失败");
                     break;
                 case Status.SUCCESS:
+
                     if (orderStatus.content == null) {
+
                         FToast.error("获取订单状态失败");
                         return;
                     }
+
+                    String s = new Gson().toJson(orderStatus.content);
                     if (orderStatus.content.getCode() == 1) {
                         OrderStatistics content = orderStatus.content;
                         List<OrderStatistics.DataBean> data = content.getData();
@@ -382,20 +387,45 @@ public class _MineFragment extends BaseFragment {
                             OrderStatistics.DataBean dataBean = data.get(i);
                             int status = dataBean.getStatus();
                             int count = dataBean.getCount();
+
                             // 对订单状态设置数量
                             switch (status) {
 
                                 case 2:
-                                    dot1Tv.setText(String.valueOf(count));
+                                    if(count==0){
+                                        ViewUtils.hideView(dot1Tv);
+                                    }else {
+                                        ViewUtils.showView(dot1Tv);
+                                        dot1Tv.setText(String.valueOf(count));
+                                    }
+
                                     break;
                                 case 3:
-                                    dot2Tv.setText(String.valueOf(count));
+                                    if(count==0){
+                                        ViewUtils.hideView(dot2Tv);
+                                    }else {
+                                        ViewUtils.showView(dot2Tv);
+                                        dot2Tv.setText(String.valueOf(count));
+                                    }
+
                                     break;
                                 case 4:
-                                    dot3Tv.setText(String.valueOf(count));
+                                    if(count==0){
+                                        ViewUtils.hideView(dot3Tv);
+                                    }else {
+                                        ViewUtils.showView(dot3Tv);
+                                        dot3Tv.setText(String.valueOf(count));
+                                    }
+
                                     break;
                                 case 5:
-                                    dot4Tv.setText(String.valueOf(count));
+                                    if(count==0){
+                                        ViewUtils.hideView(dot4Tv);
+                                    }else {
+                                        ViewUtils.showView(dot4Tv);
+                                        dot4Tv.setText(String.valueOf(count));
+                                    }
+
                                     break;
 
                             }

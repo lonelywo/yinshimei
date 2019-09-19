@@ -50,6 +50,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.ResponseBody;
 
+import static com.example.enticement.plate.cart.fragment._CartFragment.ACTION_REFRESH_DATA;
+
 public class LoginActivity extends BaseActivity {
     @BindView(R.id.img_shoutu)
     ImageView imgShoutu;
@@ -171,7 +173,9 @@ public class LoginActivity extends BaseActivity {
         mViewModel.login(data).observe(this, mObserver);
 
     }
+
     private Observer<Status<Base<UserInfo>>> mObserver = new Observer<Status<Base<UserInfo>>>() {
+
         @Override
         public void onChanged(Status<Base<UserInfo>> baseStatus) {
             switch (baseStatus.status) {
@@ -197,6 +201,12 @@ public class LoginActivity extends BaseActivity {
                         Intent intent = new Intent(_MineFragment.ACTION_LOGIN_SUCCEED);
                         intent.putExtra(_MineFragment.DATA_USER_INFO, userInfo);
                         LocalBroadcastManager.getInstance(LoginActivity.this).sendBroadcast(intent);
+
+                        //刷新购物车数据
+                        LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(LoginActivity.this);
+                        broadcastManager.sendBroadcast(new Intent(ACTION_REFRESH_DATA));
+
+
                         finish();
 
                     } else {

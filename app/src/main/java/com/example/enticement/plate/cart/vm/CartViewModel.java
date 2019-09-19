@@ -1,6 +1,8 @@
 package com.example.enticement.plate.cart.vm;
 
 
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -10,10 +12,8 @@ import com.example.enticement.bean.CartDataBean;
 import com.example.enticement.bean.CartListBean;
 import com.example.enticement.bean.OrderResult;
 import com.example.enticement.bean.Status;
-import com.example.enticement.bean.Version;
 import com.example.enticement.network.ServiceCreator;
 import com.example.enticement.network.api.CartApi;
-import com.example.enticement.network.api.CommonApi;
 import com.example.enticement.utils.SignUtils;
 
 import java.util.HashMap;
@@ -147,8 +147,11 @@ public class CartViewModel extends ViewModel {
         params.put("token",token);
         params.put("mid",mid);
         params.put("rule",rule);
-        params.put("from_mid",fromMid);
+
         params.put("from_type","2");
+        if(!TextUtils.isEmpty(fromMid)){
+            params.put("from_mid",fromMid);
+        }
         String signs = SignUtils.signParam(params);
 
         mCreator.create(CartApi.class)

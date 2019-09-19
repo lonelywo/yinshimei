@@ -1,7 +1,6 @@
 package com.example.enticement.plate.home.activity;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,28 +10,20 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.cuci.enticement.R;
 import com.example.enticement.base.BaseActivity;
-import com.example.enticement.bean.BannerDataBean;
 
 import com.example.enticement.bean.Base;
-import com.example.enticement.bean.CartDataBean;
-import com.example.enticement.bean.CartListBean;
 import com.example.enticement.bean.HomeDetailsBean;
 import com.example.enticement.bean.OrderResult;
 import com.example.enticement.bean.Status;
 import com.example.enticement.bean.UserInfo;
-import com.example.enticement.network.ServiceCreator;
 import com.example.enticement.plate.cart.activity.OrderActivity;
 import com.example.enticement.plate.cart.vm.CartViewModel;
 import com.example.enticement.plate.common.GlideImageLoader;
 
-import com.example.enticement.plate.common.LoginActivity;
-import com.example.enticement.plate.common.MainActivity;
 import com.example.enticement.plate.common.popup.ShareBottom2TopProdPopup;
-import com.example.enticement.plate.common.vm.LoginViewModel;
 import com.example.enticement.plate.home.vm.HomeViewModel;
 import com.example.enticement.utils.AppUtils;
 import com.example.enticement.utils.FToast;
@@ -48,9 +39,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-
-import static com.example.enticement.plate.cart.fragment._CartFragment.ACTION_REFRESH_DATA;
-import static com.example.enticement.plate.common.MainActivity.ACTION_GO_TO_CART;
 
 public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPopup.OnCommitClickListener {
     private static final String TAG = ProdActivity.class.getSimpleName();
@@ -217,8 +205,13 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
 
 
           }else if(code==QUICK_BUY){
+             StringBuilder sb=new StringBuilder();
+                 sb.append(mProData.getId()).append("@")
+                         .append(spec).append("@")
+                         .append(num);
 
-             mViewModel.commitOrder(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"","").observe(this,mCommitObserver);
+             String rule = sb.toString();
+             mViewModel.commitOrder(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),rule,"").observe(this,mCommitObserver);
 
           }
 
