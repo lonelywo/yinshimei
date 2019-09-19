@@ -183,6 +183,7 @@ public class LoginActivity extends BaseActivity {
                     break;
                 case Status.ERROR:
                     LoginActivity.this.dismissLoading();
+                    FToast.error("网络错误");
                     break;
                 case Status.SUCCESS:
                     LoginActivity.this.dismissLoading();

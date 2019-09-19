@@ -47,7 +47,7 @@ public class CartListBean {
          */
 
         private PageBean page;
-        private TotalBean total;
+     //   private TotalBean total;
         private List<ListBean> list;
 
         public PageBean getPage() {
@@ -58,13 +58,13 @@ public class CartListBean {
             this.page = page;
         }
 
-        public TotalBean getTotal() {
+     /*   public TotalBean getTotal() {
             return total;
         }
 
         public void setTotal(TotalBean total) {
             this.total = total;
-        }
+        }*/
 
         public List<ListBean> getList() {
             return list;
@@ -82,40 +82,40 @@ public class CartListBean {
              * current : 1
              */
 
-            private int limit;
-            private int total;
-            private int pages;
-            private int current;
+            private double limit;
+            private double total;
+            private double pages;
+            private double current;
 
-            public int getLimit() {
+            public double getLimit() {
                 return limit;
             }
 
-            public void setLimit(int limit) {
+            public void setLimit(double limit) {
                 this.limit = limit;
             }
 
-            public int getTotal() {
+            public double getTotal() {
                 return total;
             }
 
-            public void setTotal(int total) {
+            public void setTotal(double total) {
                 this.total = total;
             }
 
-            public int getPages() {
+            public double getPages() {
                 return pages;
             }
 
-            public void setPages(int pages) {
+            public void setPages(double pages) {
                 this.pages = pages;
             }
 
-            public int getCurrent() {
+            public double getCurrent() {
                 return current;
             }
 
-            public void setCurrent(int current) {
+            public void setCurrent(double current) {
                 this.current = current;
             }
         }

@@ -18,6 +18,7 @@ import com.example.enticement.base.BaseActivity;
 import com.example.enticement.bean.BannerDataBean;
 
 import com.example.enticement.bean.Base;
+import com.example.enticement.bean.CartListBean;
 import com.example.enticement.bean.HomeDetailsBean;
 import com.example.enticement.bean.OrderResult;
 import com.example.enticement.bean.Status;
@@ -36,6 +37,7 @@ import com.example.enticement.utils.AppUtils;
 import com.example.enticement.utils.FToast;
 import com.example.enticement.utils.SharedPrefUtils;
 import com.example.enticement.widget.SmoothScrollview;
+import com.google.gson.Gson;
 import com.lxj.xpopup.XPopup;
 import com.tencent.smtt.sdk.WebView;
 import com.youth.banner.Banner;
@@ -79,12 +81,12 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
     private String url;
     private HomeDetailsBean.DataBean mProData;
     private HomeViewModel mHomeViewModel;
-
+    private int mCode;
     @Override
     public int getLayoutId() {
         return R.layout.activity_prod;
     }
-
+    private UserInfo mUserInfo;
     @Override
     public void initViews(Bundle savedInstanceState) {
 
@@ -93,7 +95,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
             FToast.error("数据错误");
             return;
         }
-
+        mUserInfo=SharedPrefUtils.get(UserInfo.class);
         url = intent.getStringExtra("bannerData");
 
 
@@ -136,6 +138,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                     }
                     if (content.getCode() == 1) {
                         mProData=content.getData();
+                     //   String s = new Gson().toJson(mProData);
                         final List<String> images = content.getData().getImage();
                         banner.setImages(images);
                         banner.start();
@@ -169,18 +172,23 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                 break;
 
             case R.id.text_cart:
-                new XPopup.Builder(ProdActivity.this)
-                        .dismissOnTouchOutside(true)
-                        .dismissOnBackPressed(true)
-                        .asCustom(new ShareBottom2TopProdPopup(ProdActivity.this, mProData,PUT_IN_CART,this))
-                        .show();
+                if(AppUtils.isAllowPermission(ProdActivity.this)){
+                    new XPopup.Builder(ProdActivity.this)
+                            .dismissOnTouchOutside(true)
+                            .dismissOnBackPressed(true)
+                            .asCustom(new ShareBottom2TopProdPopup(ProdActivity.this, mProData,PUT_IN_CART,this))
+                            .show();
+                }
+
                 break;
             case R.id.text_sell:
-                new XPopup.Builder(ProdActivity.this)
-                        .dismissOnTouchOutside(true)
-                        .dismissOnBackPressed(true)
-                        .asCustom(new ShareBottom2TopProdPopup(ProdActivity.this, mProData,QUICK_BUY,this))
-                        .show();
+                if(AppUtils.isAllowPermission(ProdActivity.this)) {
+                    new XPopup.Builder(ProdActivity.this)
+                            .dismissOnTouchOutside(true)
+                            .dismissOnBackPressed(true)
+                            .asCustom(new ShareBottom2TopProdPopup(ProdActivity.this, mProData, QUICK_BUY, this))
+                            .show();
+                }
                 break;
             case R.id.iv_to_top:
               //  scrollDetails.smoothScrollTo(0,0);
@@ -193,16 +201,23 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
 
 
     @Override
-    public void onCommitClick(int id, String spec, int num,int code) {
-          if(code==PUT_IN_CART){
-              finish();
-              LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
-              broadcastManager.sendBroadcast(new Intent(ACTION_GO_TO_CART));
-              broadcastManager.sendBroadcast(new Intent(ACTION_REFRESH_DATA));
+    public void onCommitClick(String spec, int num,int code) {
+        mCode=code;
+        mUserInfo=SharedPrefUtils.get(UserInfo.class);
+        CartViewModel   mViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
+
+
+
+         if(code==PUT_IN_CART){
+             long id = mProData.getId();
+             String s=spec;
+             String numStr=String.valueOf(num);
+             mViewModel.cartChange(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),String.valueOf(id),spec,String.valueOf(num)).observe(this,mIntoCart);
+
 
           }else if(code==QUICK_BUY){
-           CartViewModel   mViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
-           mViewModel.commitOrder("","","","").observe(this,mCommitObserver);
+
+             mViewModel.commitOrder(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"","").observe(this,mCommitObserver);
 
           }
 
@@ -232,6 +247,43 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                     } else {
                         FToast.error(content.getInfo());
                     }
+                    break;
+                case Status.ERROR:
+
+                    FToast.error(baseStatus.message);
+                    break;
+            }
+
+        }
+    };
+
+
+    private Observer<Status<Base>> mIntoCart = new Observer<Status<Base>>() {
+
+        @Override
+        public void onChanged(Status<Base> baseStatus) {
+            switch (baseStatus.status) {
+                case Status.LOADING:
+                    break;
+                case Status.SUCCESS:
+                    String s = new Gson().toJson(baseStatus.content);
+                    String s2 = new Gson().toJson(baseStatus.content.data);
+                    String s3 = new Gson().toJson(baseStatus.content.data);
+
+                 /*   CartListBean content = baseStatus.content;
+                    if (content == null) {
+                        FToast.error(content.getInfo());
+                        return;
+                    }
+                    if (content.getCode() == 1) {
+                        finish();
+                        LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(ProdActivity.this);
+                        broadcastManager.sendBroadcast(new Intent(ACTION_GO_TO_CART));
+                        broadcastManager.sendBroadcast(new Intent(ACTION_REFRESH_DATA));
+
+                    } else {
+                        FToast.error(content.getInfo());
+                    }*/
                     break;
                 case Status.ERROR:
 

@@ -21,7 +21,8 @@ public class SignUtils {
             strBuilder.append(key).append("=").append(value).append("&");
         }
         strBuilder.append("key=A8sUd9bqis3sN5GK6aF9JDFl5I9skPkd");
-         result = EncryptUtils.md5Encrypt(strBuilder.toString()).toUpperCase();
+        String s = strBuilder.toString();
+        result = EncryptUtils.md5Encrypt(strBuilder.toString()).toUpperCase();
         return result;
     }
 }
