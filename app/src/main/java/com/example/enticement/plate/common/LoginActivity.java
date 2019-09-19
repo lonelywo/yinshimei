@@ -383,22 +383,22 @@ public class LoginActivity extends BaseActivity {
             Intent intent = new Intent(this, RegisterActivity.class);
             intent.putExtra(DATA_UNION_ID, mUnionId);
             startActivityForResult(intent, 10000);
-        }
-                //登录成功
-                boolean save = SharedPrefUtils.save(userInfo, UserInfo.class);
-                FToast.success("登录成功");
+        } else {
+            //登录成功
+            boolean save = SharedPrefUtils.save(userInfo, UserInfo.class);
+            FToast.success("登录成功");
 
-                if (save) {
-                    FLog.e(TAG, "用户信息保存成功");
-                } else {
-                    FLog.e(TAG, "用户信息保存失败");
-                }
-                Intent intent = new Intent(_MineFragment.ACTION_LOGIN_SUCCEED);
-                intent.putExtra(_MineFragment.DATA_USER_INFO, userInfo);
-                LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-                finish();
+            if (save) {
+                FLog.e(TAG, "用户信息保存成功");
+            } else {
+                FLog.e(TAG, "用户信息保存失败");
+            }
+            Intent intent = new Intent(_MineFragment.ACTION_LOGIN_SUCCEED);
+            intent.putExtra(_MineFragment.DATA_USER_INFO, userInfo);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+            finish();
         }
-
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

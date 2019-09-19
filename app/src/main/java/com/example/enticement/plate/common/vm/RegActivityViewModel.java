@@ -85,5 +85,27 @@ public class RegActivityViewModel extends ViewModel {
                 });
         return liveData;
     }
+   /* public MutableLiveData<Status<Base>> bindPhone(String code, String phone) {
 
+        final MutableLiveData<Status<Base>> liveData = new MutableLiveData<>();
+
+        liveData.setValue(Status.loading(null));
+
+        mCreator.create(UserApi.class)
+                .bindPhone(code, phone)
+                .enqueue(new Callback<Base>() {
+                    @Override
+                    public void onResponse(@NonNull Call<Base> call,
+                                           @NonNull Response<Base> response) {
+                        liveData.setValue(Status.success(response.body()));
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<Base> call,
+                                          @NonNull Throwable t) {
+                        liveData.setValue(Status.error(null, t.getMessage() == null ? "网络错误" : t.getMessage()));
+                    }
+                });
+        return liveData;
+    }*/
 }
