@@ -58,6 +58,8 @@
 
       </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
+
+
     </com.classic.common.MultipleStatusView>
 
 
@@ -110,7 +112,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="12dp"
-        android:text="3600"
+        android:text="0.00"
         android:textColor="#999999"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/tv_commit"

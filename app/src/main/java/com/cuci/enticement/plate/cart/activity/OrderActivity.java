@@ -37,16 +37,8 @@ public class OrderActivity extends BaseActivity {
 
     @BindView(R.id.text_dizi)
     TextView textDizi;
-    @BindView(R.id.img_tuxiang)
-    ImageView imgTuxiang;
-    @BindView(R.id.text_biaoti)
-    TextView textBiaoti;
-    @BindView(R.id.text_neirong)
-    TextView textNeirong;
-    @BindView(R.id.text_jiage)
-    TextView textJiage;
-    @BindView(R.id.text_jia)
-    TextView textJia;
+
+
     @BindView(R.id.text_shangpingzongjia)
     TextView textShangpingzongjia;
     @BindView(R.id.text_shangpingmoney)
@@ -91,7 +83,7 @@ public class OrderActivity extends BaseActivity {
 
         String  adress = SharedPrefUtils.getDefaultAdress();
         //todo
-        mAdressId="miss 18622406060 广东省 广州市 天河区 体育西路2号街道汇丰银行203 ";
+       // mAdressId="miss 18622406060 广东省 广州市 天河区 体育西路2号街道汇丰银行203 ";
         if (TextUtils.isEmpty(adress)) {
             textDizi.setText("请添加收货地址");
         } else {
@@ -112,7 +104,13 @@ public class OrderActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.text_dizi, R.id.tv_commit})
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    @OnClick({R.id.text_dizi, R.id.tv_commit,R.id.back_iv})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.text_dizi:
@@ -129,9 +127,9 @@ public class OrderActivity extends BaseActivity {
                 mViewModel.udpateAdress(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), mInfo.getOrderNo(), mAdressId)
                         .observe(OrderActivity.this, mAdressObserver);
 
-
-
-
+                break;
+            case R.id.back_iv:
+                finish();
                 break;
         }
     }

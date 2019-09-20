@@ -66,7 +66,7 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
     private Context mContext;
     //code用来区分是购物车还是立即购买
     private int mCode;
-    private int mCount;
+    private int mCount=1;//商品数量默认为1
     @BindView(R.id.container)
     ConstraintLayout mContainer;
 

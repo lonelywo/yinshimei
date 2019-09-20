@@ -218,7 +218,8 @@ public class _MineFragment extends BaseFragment {
                 if (AppUtils.isAllowPermission(mActivity)) {
                     int mid = mUserInfo.getId();
                     String token = mUserInfo.getToken();
-                    mViewModel.loginOut("2", token, "" + mid).observe(this, mloginoutObserver);
+                   // mViewModel.loginOut("2", token, "" + mid).observe(this, mloginoutObserver);
+                    loginout();
                 }
 
                 break;
@@ -346,26 +347,24 @@ public class _MineFragment extends BaseFragment {
                 case Status.LOADING:
                     break;
                 case Status.ERROR:
+                    loginout();
                     break;
                 case Status.SUCCESS:
-                    if (baseStatus.content == null) {
-                        FToast.error("退出失败，请重试");
-                        return;
-                    }
-                    if (baseStatus.content.code == 1) {
 
-                        FToast.success("退出登录");
-                        SharedPrefUtils.exit();
-                        mUserInfo = null;
-                        refreshLayout();
-
-                    } else {
-                        FToast.error(baseStatus.content.info);
-                    }
+                    loginout();
                     break;
             }
         }
     };
+
+
+
+    private void loginout() {
+        FToast.success("退出登录");
+        SharedPrefUtils.exit();
+        mUserInfo = null;
+        refreshLayout();
+    }
 
 
     private Observer<Status<OrderStatistics>> mTotalOrderObserver = new Observer<Status<OrderStatistics>>() {

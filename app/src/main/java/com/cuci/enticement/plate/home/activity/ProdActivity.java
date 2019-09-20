@@ -196,7 +196,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                  finish();
                  LocalBroadcastManager broadcastManager = getInstance(ProdActivity.this);
                  broadcastManager.sendBroadcast(new Intent(ACTION_GO_TO_CART));
-                 broadcastManager.sendBroadcast(new Intent(ACTION_REFRESH_DATA));
+
              }
                 break;
 
@@ -282,6 +282,10 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                         //调用接口改变小车上的数量
                         CartViewModel   viewModel = ViewModelProviders.of(ProdActivity.this).get(CartViewModel.class);
                         viewModel.cartNum(mUserInfo.getToken(),String.valueOf(mUserInfo.getId())).observe(ProdActivity.this,mNumObserver);
+
+                        LocalBroadcastManager broadcastManager = getInstance(ProdActivity.this);
+                        broadcastManager.sendBroadcast(new Intent(ACTION_REFRESH_DATA));
+
 
                     }else {
                         FToast.warning(baseStatus.content.info);

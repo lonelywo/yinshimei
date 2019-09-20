@@ -58,7 +58,7 @@ public interface CartApi {
      */
     @FormUrlEncoded
     @POST("store/api.member.Cart/del")
-    Call<CartListBean> cartDelete(@Field("from_type") String fromType,@Field("token") String token,
+    Call<ResponseBody> cartDelete(@Field("from_type") String fromType,@Field("token") String token,
                                  @Field("mid") String mid,
                                  @Field("cart_id") String cartId,  @Field("sign") String sign);
 
