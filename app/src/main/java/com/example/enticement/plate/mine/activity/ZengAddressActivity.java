@@ -8,6 +8,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnDismissListener;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
@@ -15,19 +18,26 @@ import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.cuci.enticement.R;
 import com.example.enticement.base.BaseActivity;
 import com.example.enticement.bean.JsonBean;
+import com.example.enticement.bean.Status;
+import com.example.enticement.bean.UserInfo;
+import com.example.enticement.plate.common.vm.CommonViewModel;
+import com.example.enticement.plate.mine.adapter.ItemAdressViewBinder;
 import com.example.enticement.utils.FToast;
 import com.example.enticement.utils.GetJsonDataUtil;
+import com.example.enticement.utils.SharedPrefUtils;
 import com.example.enticement.widget.ClearEditText;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.ResponseBody;
 
 public class ZengAddressActivity extends BaseActivity {
     @BindView(R.id.edt_name)
@@ -46,9 +56,11 @@ public class ZengAddressActivity extends BaseActivity {
     EditText edtXiangxi;
     @BindView(R.id.text_morendizi)
     TextView textMorendizi;
-
+    private CommonViewModel mViewModel;
+    private UserInfo mUserInfo;
     private static boolean isLoaded = false;
-    private String cityStr;
+    private String mProvince,mCity,mArea,mAdress;
+    private String mIsDefault="1";
     private List<JsonBean> options1Items = new ArrayList<>();
     private ArrayList<ArrayList<String>> options2Items = new ArrayList<>();
     private ArrayList<ArrayList<ArrayList<String>>> options3Items = new ArrayList<>();
@@ -59,7 +71,16 @@ public class ZengAddressActivity extends BaseActivity {
 
     @Override
     public void initViews(Bundle savedInstanceState) {
+        mUserInfo= SharedPrefUtils.get(UserInfo.class);
+        if(mUserInfo==null){
+            return;
+
+        }
+        mViewModel= ViewModelProviders.of(this).get(CommonViewModel.class);
+
+
         initJsonData();
+
     }
 
 
@@ -77,16 +98,50 @@ public class ZengAddressActivity extends BaseActivity {
                     FToast.error("请填写收货人电话");
                 } else if (TextUtils.isEmpty(edtXiangxi.getText())) {
                     FToast.error("请填写收货人详细地址");
-                } else if (TextUtils.isEmpty(cityStr)) {
+                } else if (TextUtils.isEmpty(mAdress)) {
                     FToast.error("请选择城市");
                 } else {
-                    finish();
+                    String name = edtName.getText().toString().trim();
+                    String phone = edtPhone.getText().toString().trim();
+                    String detailAdress = edtXiangxi.getText().toString().trim();
+
+
+                    mViewModel.addAdress(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),name,phone,mProvince,mCity,mArea,detailAdress,mIsDefault).observe(this,mObserver);
+
+
+
                 }
 
                 break;
         }
     }
 
+
+    private Observer<Status<ResponseBody>> mObserver = status -> {
+        switch (status.status) {
+            case Status.SUCCESS:
+                ResponseBody body = status.content;
+                try {
+                    String result = body.string();
+                    String a="123";
+
+                    finish();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+
+                break;
+            case Status.LOADING:
+
+                break;
+            case Status.ERROR:
+                FToast.error(status.message);
+
+                break;
+        }
+    };
 
 
     @OnClick(R.id.tv_code)
@@ -111,19 +166,24 @@ public class ZengAddressActivity extends BaseActivity {
                 //返回的分别是三个级别的选中位置
                 String opt1tx = options1Items.size() > 0 ?
                         options1Items.get(options1).getPickerViewText() : "";
+                mProvince=opt1tx;
 
                 String opt2tx = options2Items.size() > 0
                         && options2Items.get(options1).size() > 0 ?
                         options2Items.get(options1).get(options2) : "";
+                mCity=opt2tx;
 
                 String opt3tx = options2Items.size() > 0
                         && options3Items.get(options1).size() > 0
                         && options3Items.get(options1).get(options2).size() > 0 ?
                         options3Items.get(options1).get(options2).get(options3) : "";
+                mArea=opt3tx;
 
-               cityStr = opt1tx+" " + opt2tx+" "  + opt3tx;
 
-                tvCode.setText(cityStr);
+                mAdress = opt1tx+" " + opt2tx+" "  + opt3tx;
+
+                tvCode.setText(mAdress);
+
 
             }
         })

@@ -24,9 +24,12 @@ import com.cuci.enticement.R;
 import com.example.enticement.base.BaseFragment;
 import com.example.enticement.bean.Base;
 import com.example.enticement.bean.CartDataBean;
+import com.example.enticement.bean.CartIntentInfo;
+import com.example.enticement.bean.CartListBean;
 import com.example.enticement.bean.OrderResult;
 import com.example.enticement.bean.Status;
 import com.example.enticement.bean.UserInfo;
+import com.example.enticement.plate.cart.activity.OrderActivity;
 import com.example.enticement.plate.cart.adapter.ItemCartViewBinder;
 import com.example.enticement.plate.cart.vm.CartViewModel;
 import com.example.enticement.utils.FToast;
@@ -39,6 +42,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.yanzhenjie.recyclerview.SwipeRecyclerView;
 import com.yanzhenjie.recyclerview.touch.OnItemMoveListener;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -47,6 +51,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
+import okhttp3.ResponseBody;
 
 /**
  * 购物车
@@ -73,10 +78,10 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
     private LinearLayoutManager mLayoutManager;
     private LocalBroadcastManager mLocalBroadcastManager;
     private UserInfo mUserInfo;
-    private int mPage=1;
     @Override
     protected void onLazyLoad() {
         if(mUserInfo==null){
+
             return;
         }
         mRefreshLayout.autoRefresh();
@@ -171,8 +176,11 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
 
     private void load() {
-        mUserInfo = SharedPrefUtils.get(UserInfo.class);
 
+        if(mUserInfo==null){
+
+            return;
+        }
         mViewModel.getCartList(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "1", Status.LOAD_REFRESH).observe(this, mObserver);
 
     }
@@ -182,9 +190,13 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+        if(mUserInfo==null){
+            mRefreshLayout.finishLoadMore();
+            return;
+        }
         if (mCanLoadMore) {
             mCanLoadMore = false;
-            mViewModel.getCartList(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(mPage),
+            mViewModel.getCartList("", "37", "",
                     Status.LOAD_MORE).observe(this, mObserver);
         } else {
             mRefreshLayout.finishLoadMore();
@@ -204,10 +216,9 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
                 case Status.SUCCESS:
 
                     mStatusView.showContent();
-
                     Base<CartDataBean> content = status.content;
                     CartDataBean data = content.data;
-                    String s = new Gson().toJson(data);
+
                     if (data.getList() == null) {
                         mStatusView.showEmpty();
                         if (status.loadType == Status.LOAD_MORE) {
@@ -221,7 +232,6 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
                     List<CartDataBean.ListBean> list = data.getList();
                    if (status.content.code == 1) {
                         mCanLoadMore = true;
-                        mPage= (int) (data.getPage().getCurrent()+1);
                         if (status.loadType == Status.LOAD_REFRESH) {
                             mItems.clear();
                             mItems.addAll(list);
@@ -419,32 +429,48 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
         }
         String s = sb.toString();
-        mViewModel.commitOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), sb.toString(),"").observe(this, mCommitObserver);
+       mViewModel.commitOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), sb.toString(),"").observe(this, mCommitObserver);
+
 
     }
 
 
-    private Observer<Status<OrderResult>> mCommitObserver = new Observer<Status<OrderResult>>() {
+    private Observer<Status<ResponseBody>> mCommitObserver = new Observer<Status<ResponseBody>>() {
         @Override
-        public void onChanged(Status<OrderResult> status) {
+        public void onChanged(Status<ResponseBody> status) {
             switch (status.status) {
 
                 case Status.SUCCESS:
-                    OrderResult content = status.content;
-                    String s = new Gson().toJson(content);
-                    if(content.getCode()==1){
-                        //清空视图并跳转
-                        mItems.clear();
-                        mAdapter.notifyDataSetChanged();
 
-                      /*  Intent intent = new Intent(mActivity, OrderActivity.class);
-                        intent.putExtra("order",co ntent.getData().getOrder());
-                        startActivity(intent);*/
+                    ResponseBody content = status.content;
+                    try {
+                        String result = content.string();
+                        OrderResult orderResult = new Gson().fromJson(result, OrderResult.class);
+                        if(orderResult.getCode()==1){
+                            //跳转
+
+                            List<CartDataBean.ListBean> items = (List<CartDataBean.ListBean>) mAdapter.getItems();
+
+                            CartIntentInfo cartIntentInfo = new CartIntentInfo();
+                            cartIntentInfo.setOrderNo(orderResult.getData().getOrder().getOrder_no());
+                            cartIntentInfo.setItems(items);
+                            cartIntentInfo.setCount(items.size());
+                            cartIntentInfo.setTotalMoney(Double.parseDouble(mTvTotal.getText().toString()));
+                            Intent intent = new Intent(mActivity, OrderActivity.class);
+                            intent.putExtra("intentInfo",cartIntentInfo);
+                            startActivity(intent);
 
 
-                    }else {
-                        FToast.error(content.getInfo());
+                        }else {
+                            FToast.warning(orderResult.getInfo());
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
+
+
+
 
                     break;
                 case Status.ERROR:

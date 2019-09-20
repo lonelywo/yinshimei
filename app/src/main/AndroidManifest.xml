@@ -25,6 +25,7 @@
         <activity android:name="com.example.enticement.plate.mine.activity.KeFuActivity"/>
         <activity android:name="com.example.enticement.plate.mine.activity.CashActivity"/>
         <activity android:name="com.example.enticement.plate.mine.activity.CashMXActivity"/>
+        <activity android:name="com.example.enticement.plate.mine.activity.RecAddressActivity"/>
 
 
 

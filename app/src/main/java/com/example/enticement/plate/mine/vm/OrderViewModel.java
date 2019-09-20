@@ -22,6 +22,7 @@ import androidx.lifecycle.ViewModel;
 import java.util.HashMap;
 import java.util.Map;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -162,9 +163,9 @@ public class OrderViewModel extends ViewModel {
      * @param fromMid
      * @return
      */
-    public MutableLiveData<Status<OrderResult>> commitOrder(String token,String mid,String rule,String fromMid) {
+    public MutableLiveData<Status<ResponseBody>> commitOrder(String token,String mid,String rule,String fromMid) {
 
-        final MutableLiveData<Status<OrderResult>> data = new MutableLiveData<>();
+        final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
         data.setValue(Status.loading(null));
         Map<String, String> params = new HashMap<String, String>();
         params.put("token",token);
@@ -179,15 +180,15 @@ public class OrderViewModel extends ViewModel {
 
         mCreator.create(CartApi.class)
                 .commitOrder("2",token,mid,rule,fromMid,sign)
-                .enqueue(new Callback<OrderResult>() {
+                .enqueue(new Callback<ResponseBody>() {
                     @Override
-                    public void onResponse(@NonNull Call<OrderResult> call,
-                                           @NonNull Response<OrderResult> response) {
+                    public void onResponse(@NonNull Call<ResponseBody> call,
+                                           @NonNull Response<ResponseBody> response) {
                         data.setValue(Status.success(response.body()));
                     }
 
                     @Override
-                    public void onFailure(@NonNull Call<OrderResult> call,
+                    public void onFailure(@NonNull Call<ResponseBody> call,
                                           @NonNull Throwable t) {
                         data.setValue(Status.error(null, t.getMessage() == null ? "获取失败" : t.getMessage()));
                     }
@@ -279,33 +280,35 @@ public class OrderViewModel extends ViewModel {
      * 快递费用
      * @return
      */
-    public MutableLiveData<Status<OrderExpressCost>> getExpressCost(String token,String mid,String orderNo,String adressId) {
+    public MutableLiveData<Status<ResponseBody>> getExpressCost(String token,String mid,String orderNo,String adressId) {
 
-        final MutableLiveData<Status<OrderExpressCost>> data = new MutableLiveData<>();
+        final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
         data.setValue(Status.loading(null));
 
         Map<String, String> params = new HashMap<String, String>();
         params.put("token",token);
         params.put("mid",mid);
-        params.put("orderNo",orderNo);
-        params.put("adressId",adressId);
+        params.put("order_no",orderNo);
+        params.put("address_id",adressId);
+        params.put("from_type","2");
 
         String sign = SignUtils.signParam(params);
         mCreator.create(OrderApi.class)
-                .getExpressCost(token,mid,orderNo,adressId,sign)
-                .enqueue(new Callback<OrderExpressCost>() {
+                .getExpressCost("2",token,mid,orderNo,adressId,sign)
+                .enqueue(new Callback<ResponseBody>() {
                     @Override
-                    public void onResponse(@NonNull Call<OrderExpressCost> call,
-                                           @NonNull Response<OrderExpressCost> response) {
+                    public void onResponse(@NonNull Call<ResponseBody> call,
+                                           @NonNull Response<ResponseBody> response) {
                         data.setValue(Status.success(response.body()));
                     }
 
                     @Override
-                    public void onFailure(@NonNull Call<OrderExpressCost> call,
+                    public void onFailure(@NonNull Call<ResponseBody> call,
                                           @NonNull Throwable t) {
                         data.setValue(Status.error(null, t.getMessage() == null ? "获取失败" : t.getMessage()));
                     }
                 });
+
         return data;
     }
 
@@ -322,7 +325,7 @@ public class OrderViewModel extends ViewModel {
         Map<String, String> params = new HashMap<String, String>();
         params.put("token",token);
         params.put("mid",mid);
-        params.put("orderNo",orderNo);
+        params.put("order_no",orderNo);
         params.put("pay_type",payType);
 
         String sign = SignUtils.signParam(params);
@@ -350,29 +353,30 @@ public class OrderViewModel extends ViewModel {
      * 补全或修改地址确认
      * @return
      */
-    public MutableLiveData<Status<OrderPay>> udpateAdress(String token, String mid, String orderNo, String adressId) {
+    public MutableLiveData<Status<ResponseBody>> udpateAdress(String token, String mid, String orderNo, String adressId) {
 
-        final MutableLiveData<Status<OrderPay>> data = new MutableLiveData<>();
+        final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
         data.setValue(Status.loading(null));
 
         Map<String, String> params = new HashMap<String, String>();
         params.put("token",token);
         params.put("mid",mid);
-        params.put("orderNo",orderNo);
+        params.put("order_no",orderNo);
         params.put("address_id",adressId);
+        params.put("from_type","2");
 
         String sign = SignUtils.signParam(params);
         mCreator.create(OrderApi.class)
-                .udpateAdress(token,mid,orderNo,adressId,sign)
-                .enqueue(new Callback<OrderPay>() {
+                .udpateAdress("2",token,mid,orderNo,adressId,sign)
+                .enqueue(new Callback<ResponseBody>() {
                     @Override
-                    public void onResponse(@NonNull Call<OrderPay> call,
-                                           @NonNull Response<OrderPay> response) {
+                    public void onResponse(@NonNull Call<ResponseBody> call,
+                                           @NonNull Response<ResponseBody> response) {
                         data.setValue(Status.success(response.body()));
                     }
 
                     @Override
-                    public void onFailure(@NonNull Call<OrderPay> call,
+                    public void onFailure(@NonNull Call<ResponseBody> call,
                                           @NonNull Throwable t) {
                         data.setValue(Status.error(null, t.getMessage() == null ? "获取失败" : t.getMessage()));
                     }

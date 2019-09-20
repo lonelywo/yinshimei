@@ -19,6 +19,7 @@ import com.example.enticement.utils.SignUtils;
 import java.util.HashMap;
 import java.util.Map;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -139,9 +140,9 @@ public class CartViewModel extends ViewModel {
 
 
 
-    public MutableLiveData<Status<OrderResult>> commitOrder(String token,String mid,String rule,String fromMid) {
+    public MutableLiveData<Status<ResponseBody>> commitOrder(String token, String mid, String rule, String fromMid) {
 
-        final MutableLiveData<Status<OrderResult>> data = new MutableLiveData<>();
+        final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
         data.setValue(Status.loading(null));
         Map<String, String> params = new HashMap<String, String>();
         params.put("token",token);
@@ -156,15 +157,15 @@ public class CartViewModel extends ViewModel {
 
         mCreator.create(CartApi.class)
                 .commitOrder("2",token,mid,rule,fromMid,signs)
-                .enqueue(new Callback<OrderResult>() {
+                .enqueue(new Callback<ResponseBody>() {
                     @Override
-                    public void onResponse(@NonNull Call<OrderResult> call,
-                                           @NonNull Response<OrderResult> response) {
+                    public void onResponse(@NonNull Call<ResponseBody> call,
+                                           @NonNull Response<ResponseBody> response) {
                         data.setValue(Status.success(response.body()));
                     }
 
                     @Override
-                    public void onFailure(@NonNull Call<OrderResult> call,
+                    public void onFailure(@NonNull Call<ResponseBody> call,
                                           @NonNull Throwable t) {
                         data.setValue(Status.error(null, t.getMessage() == null ? "获取失败" : t.getMessage()));
                     }
@@ -174,4 +175,32 @@ public class CartViewModel extends ViewModel {
 
 
 
+
+
+    public MutableLiveData<Status<ResponseBody>> cartNum(String token,String mid) {
+
+        final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
+        data.setValue(Status.loading(null));
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("token",token);
+        params.put("mid",mid);
+        params.put("from_type","2");
+        String signs = SignUtils.signParam(params);
+        mCreator.create(CartApi.class)
+                .cartNum("2",token,mid,signs)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(@NonNull Call<ResponseBody> call,
+                                           @NonNull Response<ResponseBody> response) {
+                        data.setValue(Status.success(response.body()));
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<ResponseBody> call,
+                                          @NonNull Throwable t) {
+                        data.setValue(Status.error(null, t.getMessage() == null ? "获取失败" : t.getMessage()));
+                    }
+                });
+        return data;
+    }
 }
