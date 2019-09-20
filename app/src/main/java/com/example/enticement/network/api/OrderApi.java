@@ -32,7 +32,7 @@ public interface OrderApi {
 
 
     /**
-     * 立即支付，确认支付
+     * 确认收货
      */
     @FormUrlEncoded
     @POST("store/api.member.order/confirm")
@@ -102,6 +102,7 @@ public interface OrderApi {
 
 
     /**
+     * 点支付后调用这个接口，成功返回后再调取支付参数接口
      * 商城订单补全确认
      * 补全或者修改地址确认
      */

@@ -146,7 +146,13 @@ public class _MineFragment extends BaseFragment {
         intentFilter.addAction(LoginActivity.ACTION_WX_LOGIN_SUCCEED);
         intentFilter.addAction(ACTION_LOGIN_SUCCEED);
         mBroadcastManager.registerReceiver(mReceiver, intentFilter);
+
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
+        //todo  临时存储
+        mUserInfo=new UserInfo();
+        mUserInfo.setToken("9a40c157aff757d335cdaca2fc451b35");
+        mUserInfo.setId(18281);
+        SharedPrefUtils.save(mUserInfo,UserInfo.class);
         refreshLayout();
     }
 

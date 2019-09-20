@@ -2,6 +2,7 @@ package com.example.enticement.plate.cart.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcel;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,6 +14,8 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.cuci.enticement.R;
 import com.example.enticement.base.BaseActivity;
+import com.example.enticement.bean.CartDataBean;
+import com.example.enticement.bean.CartIntentInfo;
 import com.example.enticement.bean.OrderPay;
 import com.example.enticement.bean.OrderResult;
 import com.example.enticement.bean.Status;
@@ -21,6 +24,8 @@ import com.example.enticement.plate.mine.activity.RecAddressActivity;
 import com.example.enticement.plate.mine.vm.OrderViewModel;
 import com.example.enticement.utils.FToast;
 import com.example.enticement.utils.SharedPrefUtils;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,7 +62,8 @@ public class OrderActivity extends BaseActivity {
     ImageView unionIv;
     @BindView(R.id.tv_total_money)
     TextView tvTotalMoney;
-    private OrderResult.DataBean.OrderBean mOrderBean;
+
+
     private OrderViewModel mViewModel;
     private UserInfo mUserInfo;
     private String mAddressId="";
@@ -75,7 +81,9 @@ public class OrderActivity extends BaseActivity {
             return;
         }
 
-        mOrderBean = intent.getParcelableExtra("order");
+        CartIntentInfo   info = intent.getParcelableExtra("intentInfo");
+        List<CartDataBean.ListBean> items = info.getItems();
+
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
         if (mUserInfo == null) {
             return;
@@ -92,9 +100,9 @@ public class OrderActivity extends BaseActivity {
 
         // ImageLoader.loadPlaceholder(mOrderBean.get);
         //设置商品总价，运费，订单总价
-        textShangpingmoney.setText(mOrderBean.getPrice_goods());
-        textYunfeimoney.setText(mOrderBean.getPrice_express());
-        textShangpingzongjia.setText(mOrderBean.getPrice_total());
+        textShangpingmoney.setText(String.valueOf(info.getTotalMoney()));
+       // textYunfeimoney.setText(mOrderBean.getPrice_express());
+       // textShangpingzongjia.setText(mOrderBean.getPrice_total());
 
 
     }
@@ -108,9 +116,11 @@ public class OrderActivity extends BaseActivity {
                 startActivityForResult(intent, 100);
                 break;
             case R.id.tv_commit:
+                //支付生成订单
+                mViewModel.udpateAdress(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "", mAddressId)
+                        .observe(OrderActivity.this, mAdressObserver);
 
-                mViewModel.getOrderPay(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), mOrderBean.getOrder_no(), String.valueOf(mPayType))
-                        .observe(OrderActivity.this, mPayObserver);
+
 
 
                 break;
@@ -143,7 +153,7 @@ public class OrderActivity extends BaseActivity {
             case Status.SUCCESS:
                 OrderPay content = status.content;
                 if (content.getCode() == 1) {
-                    mViewModel.orderConfirm(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), mOrderBean.getOrder_no())
+                    mViewModel.orderConfirm(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "")
                             .observe(OrderActivity.this, mResultObserver);
                 }
 
@@ -168,7 +178,6 @@ public class OrderActivity extends BaseActivity {
             String adress = data.getStringExtra("adress");
             mAddressId = data.getStringExtra("adressId");
             textDizi.setText(adress);
-            mViewModel.udpateAdress(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), mOrderBean.getOrder_no(), mAddressId).observe(OrderActivity.this, mAdressObserver);
 
         }
     }
@@ -179,7 +188,9 @@ public class OrderActivity extends BaseActivity {
             case Status.SUCCESS:
                 OrderPay content = status.content;
                 if (content.getCode() == 1) {
-                    FToast.success("更新地址成功");
+
+                    mViewModel.getOrderPay(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "", String.valueOf(mPayType))
+                            .observe(OrderActivity.this, mPayObserver);
                 }
 
                 break;
