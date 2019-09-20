@@ -240,7 +240,7 @@ public class MineViewModel extends ViewModel {
      * @param mid
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> hqteamtj(String token, String mid, String from_type,String nickname,String page) {
+    public MutableLiveData<Status<ResponseBody>> hqteamtj(String token, String mid, String from_type,String nickname,String page,int loadType) {
 
         final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
         liveData.setValue(Status.loading(null));
@@ -257,13 +257,23 @@ public class MineViewModel extends ViewModel {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,
                                            @NonNull Response<ResponseBody> response) {
-                        liveData.setValue(Status.success(response.body()));
+                        if (loadType == Status.LOAD_REFRESH) {
+                            liveData.setValue(Status.refreshSuccess(response.body()));
+                        } else {
+                            liveData.setValue(Status.moreSuccess(response.body()));
+                        }
                     }
 
                     @Override
                     public void onFailure(@NonNull Call<ResponseBody> call,
                                           @NonNull Throwable t) {
-                        liveData.setValue(Status.error(null, t.getMessage() == null ? "网络错误" : t.getMessage()));
+                        if (loadType == Status.LOAD_REFRESH) {
+                            liveData.setValue(Status.refreshError(null, t.getMessage() ==
+                                    null ? "加载失败" : t.getMessage()));
+                        } else {
+                            liveData.setValue(Status.moreError(null, t.getMessage() ==
+                                    null ? "加载失败" : t.getMessage()));
+                        }
                     }
                 });
         return liveData;
