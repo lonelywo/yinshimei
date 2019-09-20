@@ -118,8 +118,8 @@ public class BindPhoneActivity extends BaseActivity {
             return;
         }
 
+      //  mViewModel.bindPhone(smsCode,phone).observe(this, mObserver);
         mViewModel.wxBindPhone(phone).observe(this, mObserver);
-
     }
     private Observer<Status<Base>> mObserver = new Observer<Status<Base>>() {
         @Override
