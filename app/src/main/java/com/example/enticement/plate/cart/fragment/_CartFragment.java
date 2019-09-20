@@ -76,7 +76,9 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
     private int mPage=1;
     @Override
     protected void onLazyLoad() {
-
+        if(mUserInfo==null){
+            return;
+        }
         mRefreshLayout.autoRefresh();
     }
 
@@ -170,6 +172,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
     private void load() {
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
+
         mViewModel.getCartList(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "1", Status.LOAD_REFRESH).observe(this, mObserver);
 
     }
@@ -205,7 +208,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
                     Base<CartDataBean> content = status.content;
                     CartDataBean data = content.data;
                     String s = new Gson().toJson(data);
-                    if (data == null) {
+                    if (data.getList() == null) {
                         mStatusView.showEmpty();
                         if (status.loadType == Status.LOAD_MORE) {
                             mRefreshLayout.finishLoadMore();
