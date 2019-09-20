@@ -1,12 +1,12 @@
-<resources>
-    <string name="app_name_test">Enticement</string>
-    <string name="action_settings">Settings</string>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name_test" tools:ignore="MissingTranslation">Enticement</string>
+    <string name="action_settings" translatable="false">Settings</string>
 
 
-    <string name="tab_home">首页</string>
-    <string name="tab_material">素材</string>
+    <string name="tab_home" translatable="false">首页</string>
+    <string name="tab_material" translatable="false">素材</string>
 
-    <string name="tab_find">购物车</string>
-    <string name="tab_mine">我的</string>
+    <string name="tab_find" translatable="false">购物车</string>
+    <string name="tab_mine" translatable="false">我的</string>
 
 </resources>

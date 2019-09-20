@@ -4,7 +4,7 @@
   android:layout_height="match_parent"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools">
-  <com.example.enticement.widget.SmoothScrollview
+  <com.cuci.enticement.widget.SmoothScrollview
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -389,6 +389,6 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-  </com.example.enticement.widget.SmoothScrollview>
+  </com.cuci.enticement.widget.SmoothScrollview>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

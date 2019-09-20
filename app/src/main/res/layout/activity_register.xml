@@ -92,7 +92,7 @@
             app:layout_constraintTop_toBottomOf="@+id/img_youjiantou"
             android:layout_marginTop="24dp"
             />
-        <com.example.enticement.widget.ClearEditText
+        <com.cuci.enticement.widget.ClearEditText
             android:id="@+id/edt_phone"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
