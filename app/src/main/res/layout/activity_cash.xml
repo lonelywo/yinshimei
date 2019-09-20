@@ -34,6 +34,7 @@
             />
 
         <TextView
+            android:id="@+id/text_mingxi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="提现明细"
@@ -54,7 +55,7 @@
         android:background="@color/colorWhite"
         >
 
-        <com.example.enticement.widget.ClearEditText
+        <com.cuci.enticement.widget.ClearEditText
             android:id="@+id/edt_phone"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

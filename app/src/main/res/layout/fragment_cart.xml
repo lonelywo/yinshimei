@@ -32,7 +32,7 @@
       android:id="@+id/status_view"
       android:layout_width="0dp"
       android:layout_height="0dp"
-      app:emptyView="@layout/custom_empty_view"
+      app:emptyView="@layout/custom_empty_view_gouwuche"
       app:errorView="@layout/custom_error_view"
       android:focusableInTouchMode="true"
       app:layout_constraintBottom_toTopOf="@+id/bottom"

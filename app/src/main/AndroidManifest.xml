@@ -4,26 +4,33 @@
     package="com.cuci.enticement">
 
     <application
-        android:name="com.example.enticement.BasicApp"
+        android:name=".BasicApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name_test"
         android:theme="@style/AppTheme.NoActionBar"
         tools:replace="label,allowBackup"
         tools:targetApi="n">
-        <activity android:name="com.example.enticement.plate.home.activity.ProdActivity"></activity>
-        <activity android:name="com.example.enticement.plate.mine.activity.MyOrderActivity"></activity>
-        <activity android:name="com.example.enticement.plate.common.LoginActivity"></activity>
-        <activity android:name="com.example.enticement.plate.common.RegisterActivity"></activity>
-        <activity android:name="com.example.enticement.plate.cart.activity.OrderActivity"/>
-        <activity android:name="com.example.enticement.plate.cart.activity.OrderDetailsActivity"/>
-        <activity android:name="com.example.enticement.plate.mine.activity.ZengAddressActivity"/>
-        <activity android:name="com.example.enticement.plate.common.BindPhoneActivity"/>
+        <activity android:name=".plate.home.activity.ProdActivity"></activity>
+        <activity android:name=".plate.mine.activity.MyOrderActivity"></activity>
+        <activity android:name=".plate.common.LoginActivity"></activity>
+        <activity android:name=".plate.common.RegisterActivity"></activity>
+        <activity android:name=".plate.cart.activity.OrderActivity"/>
+        <activity android:name=".plate.cart.activity.OrderDetailsActivity"/>
+        <activity android:name=".plate.mine.activity.ZengAddressActivity"/>
+        <activity android:name=".plate.common.BindPhoneActivity"/>
+        <activity android:name=".plate.mine.activity.CommissionActivity"/>
+        <activity android:name=".plate.mine.activity.MyTeamActivity"/>
+        <activity android:name=".plate.mine.activity.AchievementActivity"/>
+        <activity android:name=".plate.mine.activity.KeFuActivity"/>
+        <activity android:name=".plate.mine.activity.CashActivity"/>
+        <activity android:name=".plate.mine.activity.CashMXActivity"/>
+        <activity android:name=".plate.mine.activity.RecAddressActivity"/>
 
 
 
 
-        <activity android:name="com.example.enticement.plate.common.MainActivity">
+        <activity android:name=".plate.common.MainActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,8 +41,8 @@
         </activity>
         <!-- 微信SDK -->
         <activity
-            android:name="com.example.enticement.wxapi.WXEntryActivity"
-            android:label="@string/app_name"
+            android:name=".wxapi.WXEntryActivity"
+            android:label="@string/app_name_test"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:exported="true"
             android:taskAffinity="net.sourceforge.simcpux"

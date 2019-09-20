@@ -32,23 +32,12 @@
             app:layout_constraintBottom_toBottomOf="parent"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
-  <TextView
-      android:id="@+id/text_yejiyuefan"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      app:layout_constraintTop_toBottomOf="@+id/con_toubu"
-      app:layout_constraintStart_toStartOf="parent"
-      android:text="规则说明："
-      android:textSize="20dp"
-      android:textColor="@color/hei"
-      android:layout_marginLeft="20dp"
-      android:layout_marginTop="20dp"
-      />
+
     <com.tencent.smtt.sdk.WebView
         android:id="@+id/web_guize"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        app:layout_constraintTop_toBottomOf="@+id/text_yejiyuefan"
+        android:layout_height="350dp"
+        app:layout_constraintTop_toBottomOf="@+id/con_toubu"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="20dp"
