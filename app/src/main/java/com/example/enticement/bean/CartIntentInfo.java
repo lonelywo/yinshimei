@@ -6,6 +6,10 @@ import android.os.Parcelable;
 import java.util.List;
 
 public class CartIntentInfo implements Parcelable {
+    private String orderNo;
+
+
+
     private int count;
     private double totalMoney;
 
@@ -14,7 +18,12 @@ public class CartIntentInfo implements Parcelable {
     public CartIntentInfo() {
 
     }
+
+
     protected CartIntentInfo(Parcel in) {
+        orderNo = in.readString();
+        count = in.readInt();
+        totalMoney = in.readDouble();
     }
 
     public static final Creator<CartIntentInfo> CREATOR = new Creator<CartIntentInfo>() {
@@ -28,6 +37,14 @@ public class CartIntentInfo implements Parcelable {
             return new CartIntentInfo[size];
         }
     };
+
+    public String getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(String orderNo) {
+        this.orderNo = orderNo;
+    }
 
     public int getCount() {
         return count;
@@ -53,6 +70,7 @@ public class CartIntentInfo implements Parcelable {
         this.items = items;
     }
 
+
     @Override
     public int describeContents() {
         return 0;
@@ -60,5 +78,8 @@ public class CartIntentInfo implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(orderNo);
+        dest.writeInt(count);
+        dest.writeDouble(totalMoney);
     }
 }

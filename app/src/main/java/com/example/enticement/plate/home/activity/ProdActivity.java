@@ -10,11 +10,13 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.cuci.enticement.R;
 import com.example.enticement.base.BaseActivity;
 
 import com.example.enticement.bean.Base;
+import com.example.enticement.bean.CartNum;
 import com.example.enticement.bean.HomeDetailsBean;
 import com.example.enticement.bean.OrderResult;
 import com.example.enticement.bean.Status;
@@ -35,10 +37,16 @@ import com.tencent.smtt.sdk.WebView;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 
+import java.io.IOException;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.ResponseBody;
+
+import static androidx.localbroadcastmanager.content.LocalBroadcastManager.*;
+import static com.example.enticement.plate.cart.fragment._CartFragment.ACTION_REFRESH_DATA;
+import static com.example.enticement.plate.common.MainActivity.ACTION_GO_TO_CART;
 
 public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPopup.OnCommitClickListener {
     private static final String TAG = ProdActivity.class.getSimpleName();
@@ -66,6 +74,10 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
     TextView textCart;
     @BindView(R.id.text_sell)
     TextView textSell;
+
+    @BindView(R.id.cart_num_tv)
+    TextView cartNumTv;
+
 
     private String url;
     private HomeDetailsBean.DataBean mProData;
@@ -153,7 +165,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
 
 
 
-    @OnClick({R.id.image_back, R.id.text_cart, R.id.text_sell, R.id.iv_to_top})
+    @OnClick({R.id.image_back, R.id.text_cart, R.id.text_sell, R.id.iv_cart})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.image_back:
@@ -179,12 +191,16 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                             .show();
                 }
                 break;
-            case R.id.iv_to_top:
-              //  scrollDetails.smoothScrollTo(0,0);
+            case R.id.iv_cart:
+              //  点击购物车跳转到购物车页面
              if(AppUtils.isAllowPermission(this)){
-                 startActivity(new Intent(this, OrderActivity.class));
+                 finish();
+                 LocalBroadcastManager broadcastManager = getInstance(ProdActivity.this);
+                 broadcastManager.sendBroadcast(new Intent(ACTION_GO_TO_CART));
+                 broadcastManager.sendBroadcast(new Intent(ACTION_REFRESH_DATA));
              }
                 break;
+
         }
     }
 
@@ -211,7 +227,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                          .append(num);
 
              String rule = sb.toString();
-             mViewModel.commitOrder(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),rule,"").observe(this,mCommitObserver);
+            mViewModel.commitOrder(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),rule,"").observe(this,mCommitObserver);
 
           }
 
@@ -220,27 +236,28 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
 
 
 
-    private Observer<Status<OrderResult>> mCommitObserver = new Observer<Status<OrderResult>>() {
+    private Observer<Status<ResponseBody>> mCommitObserver = new Observer<Status<ResponseBody>>() {
 
         @Override
-        public void onChanged(Status<OrderResult> baseStatus) {
+        public void onChanged(Status<ResponseBody> baseStatus) {
             switch (baseStatus.status) {
                 case Status.LOADING:
                     break;
                 case Status.SUCCESS:
-                    OrderResult content = baseStatus.content;
-                    if (content == null) {
-                        FToast.error(content.getInfo());
-                        return;
-                    }
-                    if (content.getCode() == 1) {
-                       /* Intent intent = new Intent(ProdActivity.this, OrderActivity.class);
-                        intent.putExtra("order",content.getData().getOrder());
-                        startActivity(intent);*/
+                    ResponseBody content = baseStatus.content;
 
-                    } else {
-                        FToast.error(content.getInfo());
+                    String result = null;
+                    try {
+                        result = content.string();
+                        OrderResult orderResult = new Gson().fromJson(result, OrderResult.class);
+                        if(orderResult.getCode()==1){
+
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
+
                     break;
                 case Status.ERROR:
 
@@ -261,23 +278,52 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                     break;
                 case Status.SUCCESS:
                     String s = new Gson().toJson(baseStatus.content);
-                 /*   String s2 = new Gson().toJson(baseStatus.content.data);
-                    String s3 = new Gson().toJson(baseStatus.content.data);*/
+                    if(baseStatus.content.code==1){
+                        FToast.success("加入购物车成功");
+                        //调用接口改变小车上的数量
+                        CartViewModel   viewModel = ViewModelProviders.of(ProdActivity.this).get(CartViewModel.class);
+                        viewModel.cartNum(mUserInfo.getToken(),String.valueOf(mUserInfo.getId())).observe(ProdActivity.this,mNumObserver);
 
-                 /*   CartListBean content = baseStatus.content;
-                    if (content == null) {
-                        FToast.error(content.getInfo());
-                        return;
+                    }else {
+                        FToast.warning(baseStatus.content.info);
                     }
-                    if (content.getCode() == 1) {
-                        finish();
-                        LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(ProdActivity.this);
-                        broadcastManager.sendBroadcast(new Intent(ACTION_GO_TO_CART));
-                        broadcastManager.sendBroadcast(new Intent(ACTION_REFRESH_DATA));
 
-                    } else {
-                        FToast.error(content.getInfo());
-                    }*/
+                    break;
+                case Status.ERROR:
+
+                    FToast.error(baseStatus.message);
+                    break;
+            }
+
+        }
+    };
+
+
+    private Observer<Status<ResponseBody>> mNumObserver = new Observer<Status<ResponseBody>>() {
+
+        @Override
+        public void onChanged(Status<ResponseBody> baseStatus) {
+            switch (baseStatus.status) {
+                case Status.LOADING:
+                    break;
+                case Status.SUCCESS:
+                    ResponseBody content = baseStatus.content;
+
+                    String result = null;
+                    try {
+                        result = content.string();
+
+                        CartNum numResult = new Gson().fromJson(result, CartNum.class);
+                        if(numResult.getCode()==1){
+                            cartNumTv.setText(String.valueOf(numResult.getData().getC_num()));
+                        }else {
+                            FToast.warning(numResult.getInfo());
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                     break;
                 case Status.ERROR:
 

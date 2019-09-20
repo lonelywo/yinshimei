@@ -6,6 +6,7 @@ import com.example.enticement.bean.CartDataBean;
 import com.example.enticement.bean.CartListBean;
 import com.example.enticement.bean.OrderResult;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -26,14 +27,14 @@ public interface CartApi {
 
 
     /**
-     * 提交购物车订单
+     * 提交购物车订单  预定单
      */
     @FormUrlEncoded
     @POST("store/api.member.order/set")
-    Call<OrderResult> commitOrder(@Field("from_type") String fromType,@Field("token") String token,
-                                  @Field("mid") String mid,
-                                  @Field("rule") String rule,
-                                  @Field("from_mid") String fromMid,  @Field("sign") String sign);
+    Call<ResponseBody> commitOrder(@Field("from_type") String fromType, @Field("token") String token,
+                                   @Field("mid") String mid,
+                                   @Field("rule") String rule,
+                                   @Field("from_mid") String fromMid, @Field("sign") String sign);
 
 
 
@@ -62,4 +63,12 @@ public interface CartApi {
                                  @Field("mid") String mid,
                                  @Field("cart_id") String cartId,  @Field("sign") String sign);
 
+    //
+    /**
+     * 购物车数量
+     */
+    @FormUrlEncoded
+    @POST("store/api.member.Cart/cartNum")
+    Call<ResponseBody> cartNum(@Field("from_type") String fromType,@Field("token") String token,
+                                  @Field("mid") String mid, @Field("sign") String sign);
 }

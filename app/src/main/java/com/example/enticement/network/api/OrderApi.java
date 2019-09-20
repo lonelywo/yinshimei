@@ -9,6 +9,7 @@ import com.example.enticement.bean.OrderPay;
 import com.example.enticement.bean.OrderResult;
 import com.example.enticement.bean.OrderStatistics;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -80,8 +81,8 @@ public interface OrderApi {
      * 查询订单所需邮费
      */
     @FormUrlEncoded
-    @POST("/store/api.member.order/express")
-    Call<OrderExpressCost> getExpressCost(@Field("token") String token,
+    @POST("store/api.member.order/express")
+    Call<ResponseBody> getExpressCost(@Field("from_type") String fromType,@Field("token") String token,
                                          @Field("mid") String mid,
                                          @Field("order_no") String orderNum,
                                          @Field("address_id") String addressId,
@@ -108,11 +109,11 @@ public interface OrderApi {
      */
     @FormUrlEncoded
     @POST("store/api.member.order/perfect")
-    Call<OrderPay> udpateAdress(@Field("token") String token,
-                       @Field("mid") String mid,
-                       @Field("order_no") String orderNum,
-                       @Field("address_id") String addressId,
-                                @Field("sign") String signs);
+    Call<ResponseBody> udpateAdress(@Field("from_type") String fromType, @Field("token") String token,
+                                    @Field("mid") String mid,
+                                    @Field("order_no") String orderNum,
+                                    @Field("address_id") String addressId,
+                                    @Field("sign") String signs);
 
 
 

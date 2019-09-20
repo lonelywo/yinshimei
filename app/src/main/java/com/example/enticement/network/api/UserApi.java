@@ -81,6 +81,24 @@ public interface UserApi {
                                    @Field("sign") String sign);
 
 
+
+    /**
+     * 添加收货地址
+     */
+    @FormUrlEncoded
+    @POST("store/api.member.address/set")
+    Call<ResponseBody> addAdress(@Field("from_type") String fromType,@Field("token") String token,
+                                   @Field("mid") String mid,
+                                   @Field("name") String name,
+                                   @Field("phone") String phone,
+                                   @Field("province") String province,
+                                   @Field("city") String city,
+                                   @Field("area") String area,
+                                   @Field("adress") String address,
+                                   @Field("is_default") String is_default,
+                                   @Field("sign") String sign);
+
+
     /**
      * 微信登录
      */

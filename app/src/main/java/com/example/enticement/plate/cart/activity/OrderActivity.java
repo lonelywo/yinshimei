@@ -24,12 +24,15 @@ import com.example.enticement.plate.mine.activity.RecAddressActivity;
 import com.example.enticement.plate.mine.vm.OrderViewModel;
 import com.example.enticement.utils.FToast;
 import com.example.enticement.utils.SharedPrefUtils;
+import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.ResponseBody;
 
 /**
  *
@@ -66,9 +69,9 @@ public class OrderActivity extends BaseActivity {
 
     private OrderViewModel mViewModel;
     private UserInfo mUserInfo;
-    private String mAddressId="";
+    private String mAdressId="";
     private int mPayType=1;
-
+    private CartIntentInfo   mInfo;
     @Override
     public int getLayoutId() {
         return R.layout.activity_sendorder;
@@ -81,8 +84,8 @@ public class OrderActivity extends BaseActivity {
             return;
         }
 
-        CartIntentInfo   info = intent.getParcelableExtra("intentInfo");
-        List<CartDataBean.ListBean> items = info.getItems();
+        mInfo = intent.getParcelableExtra("intentInfo");
+        List<CartDataBean.ListBean> items = mInfo.getItems();
 
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
         if (mUserInfo == null) {
@@ -90,20 +93,25 @@ public class OrderActivity extends BaseActivity {
         }
         mViewModel = ViewModelProviders.of(this).get(OrderViewModel.class);
 
-        String defaultAdress = SharedPrefUtils.getDefaultAdress();
-        if (TextUtils.isEmpty(defaultAdress)) {
+        String  adress = SharedPrefUtils.getDefaultAdress();
+        //todo
+        mAdressId="miss 18622406060 广东省 广州市 天河区 体育西路2号街道汇丰银行203 ";
+        if (TextUtils.isEmpty(adress)) {
             textDizi.setText("请添加收货地址");
         } else {
-            textDizi.setText(defaultAdress);
-            mAddressId = SharedPrefUtils.getDefaultAdressId();
+            textDizi.setText(adress);
+            //默认地址id，不去选中就用这个
+           mAdressId = SharedPrefUtils.getDefaultAdressId();
         }
 
         // ImageLoader.loadPlaceholder(mOrderBean.get);
         //设置商品总价，运费，订单总价
-        textShangpingmoney.setText(String.valueOf(info.getTotalMoney()));
-       // textYunfeimoney.setText(mOrderBean.getPrice_express());
-       // textShangpingzongjia.setText(mOrderBean.getPrice_total());
+        textShangpingmoney.setText(String.valueOf(mInfo.getTotalMoney()));
 
+        if(!TextUtils.isEmpty(textDizi.getText())){
+            mViewModel.getExpressCost(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),mInfo.getOrderNo(),mAdressId)
+                    .observe(this,mAdressObserver);
+        }
 
     }
 
@@ -117,7 +125,12 @@ public class OrderActivity extends BaseActivity {
                 break;
             case R.id.tv_commit:
                 //支付生成订单
-                mViewModel.udpateAdress(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "", mAddressId)
+                if(TextUtils.isEmpty(textDizi.getText())){
+                    FToast.warning("请先添加收货地址");
+                    return;
+                }
+
+                mViewModel.udpateAdress(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), mInfo.getOrderNo(), mAdressId)
                         .observe(OrderActivity.this, mAdressObserver);
 
 
@@ -148,15 +161,15 @@ public class OrderActivity extends BaseActivity {
     };
 
 
-    private Observer<Status<OrderPay>> mPayObserver = status -> {
+    private Observer<Status<ResponseBody>> mPayObserver = status -> {
         switch (status.status) {
             case Status.SUCCESS:
-                OrderPay content = status.content;
+              /*  OrderPay content = status.content;
                 if (content.getCode() == 1) {
                     mViewModel.orderConfirm(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "")
                             .observe(OrderActivity.this, mResultObserver);
                 }
-
+*/
                 break;
             case Status.LOADING:
 
@@ -176,22 +189,41 @@ public class OrderActivity extends BaseActivity {
             //返回更新地址
             //todo
             String adress = data.getStringExtra("adress");
-            mAddressId = data.getStringExtra("adressId");
+            mAdressId= data.getStringExtra("adress");
             textDizi.setText(adress);
 
         }
     }
 
 
-    private Observer<Status<OrderPay>> mAdressObserver = status -> {
+    private Observer<Status<ResponseBody>> mAdressObserver = status -> {
         switch (status.status) {
             case Status.SUCCESS:
-                OrderPay content = status.content;
-                if (content.getCode() == 1) {
+                ResponseBody body = status.content;
+                try {
+                    String result = body.string();
+                   String a="123";
 
-                    mViewModel.getOrderPay(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "", String.valueOf(mPayType))
-                            .observe(OrderActivity.this, mPayObserver);
+
+
+                    //   new Gson().fromJson(result,);
+                   /*  textYunfeimoney.setText(mOrderBean.getPrice_express());
+                     textShangpingzongjia.setText(mOrderBean.getPrice_total());*/
+                 /*   if (content.getCode() == 1) {
+
+                        mViewModel.getOrderPay(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "", String.valueOf(mPayType))
+                                .observe(OrderActivity.this, mPayObserver);
+                    }*/
+
+
+
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
+
+
 
                 break;
             case Status.LOADING:

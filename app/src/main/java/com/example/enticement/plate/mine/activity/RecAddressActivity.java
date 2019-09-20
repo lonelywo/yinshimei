@@ -112,11 +112,14 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
             case R.id.img_back:
                 Intent intent = new Intent(RecAddressActivity.this, OrderActivity.class);
                 intent.putExtra("adress",mAdress);
-                intent.putExtra("adressId",mAdressId);
+
                 setResult(101,intent);
                 finish();
                 break;
             case R.id.btn_add_new_adress:
+
+                Intent addIntent = new Intent(RecAddressActivity.this, ZengAddressActivity.class);
+                startActivity(addIntent);
                 break;
         }
     }

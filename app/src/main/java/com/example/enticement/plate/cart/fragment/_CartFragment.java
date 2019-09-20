@@ -42,6 +42,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.yanzhenjie.recyclerview.SwipeRecyclerView;
 import com.yanzhenjie.recyclerview.touch.OnItemMoveListener;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -50,6 +51,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
+import okhttp3.ResponseBody;
 
 /**
  * 购物车
@@ -312,12 +314,12 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
     }
 
     private boolean mCanChange=true;
-    private double mGoodsId;
+    private long mGoodsId;
     @Override
     public void onAddClick(CartDataBean.ListBean bean) {
         //点击一次加1一次
         if(mCanChange){
-            double goods_num = bean.getGoods_num()+1;
+            int goods_num = bean.getGoods_num()+1;
             String goods_id = String.valueOf(bean.getGoods_id());
             String goods_spec = bean.getGoods_spec();
             mGoodsId=bean.getGoods_id();
@@ -330,7 +332,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
     @Override
     public void onMinusClick(CartDataBean.ListBean bean) {
         if(mCanChange) {
-            double goods_num = bean.getGoods_num() - 1;
+            int goods_num = bean.getGoods_num() - 1;
             String goods_id = String.valueOf(bean.getGoods_id());
             String goods_spec = bean.getGoods_spec();
             mGoodsId=bean.getGoods_id();
@@ -427,39 +429,48 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
         }
         String s = sb.toString();
-     //   mViewModel.commitOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), sb.toString(),"").observe(this, mCommitObserver);
+       mViewModel.commitOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), sb.toString(),"").observe(this, mCommitObserver);
 
-        CartIntentInfo cartIntentInfo = new CartIntentInfo();
-        cartIntentInfo.setItems(items);
-        cartIntentInfo.setCount(items.size());
-        cartIntentInfo.setTotalMoney(Double.parseDouble(mTvTotal.getText().toString()));
-        Intent intent = new Intent(mActivity, OrderActivity.class);
-        intent.putExtra("intentInfo",cartIntentInfo);
-        startActivity(intent);
+
     }
 
 
-    private Observer<Status<OrderResult>> mCommitObserver = new Observer<Status<OrderResult>>() {
+    private Observer<Status<ResponseBody>> mCommitObserver = new Observer<Status<ResponseBody>>() {
         @Override
-        public void onChanged(Status<OrderResult> status) {
+        public void onChanged(Status<ResponseBody> status) {
             switch (status.status) {
 
                 case Status.SUCCESS:
-                    OrderResult content = status.content;
-                    String s = new Gson().toJson(content);
-                    if(content.getCode()==1){
-                        //清空视图并跳转
-                        mItems.clear();
-                        mAdapter.notifyDataSetChanged();
 
-                      /*  Intent intent = new Intent(mActivity, OrderActivity.class);
-                        intent.putExtra("order",content.getData().getOrder());
-                        startActivity(intent);*/
+                    ResponseBody content = status.content;
+                    try {
+                        String result = content.string();
+                        OrderResult orderResult = new Gson().fromJson(result, OrderResult.class);
+                        if(orderResult.getCode()==1){
+                            //跳转
+
+                            List<CartDataBean.ListBean> items = (List<CartDataBean.ListBean>) mAdapter.getItems();
+
+                            CartIntentInfo cartIntentInfo = new CartIntentInfo();
+                            cartIntentInfo.setOrderNo(orderResult.getData().getOrder().getOrder_no());
+                            cartIntentInfo.setItems(items);
+                            cartIntentInfo.setCount(items.size());
+                            cartIntentInfo.setTotalMoney(Double.parseDouble(mTvTotal.getText().toString()));
+                            Intent intent = new Intent(mActivity, OrderActivity.class);
+                            intent.putExtra("intentInfo",cartIntentInfo);
+                            startActivity(intent);
 
 
-                    }else {
-                        FToast.warning(content.getInfo());
+                        }else {
+                            FToast.warning(orderResult.getInfo());
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
+
+
+
 
                     break;
                 case Status.ERROR:
