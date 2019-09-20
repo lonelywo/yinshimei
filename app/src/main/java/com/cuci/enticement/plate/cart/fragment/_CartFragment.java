@@ -24,6 +24,7 @@ import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseFragment;
 import com.cuci.enticement.bean.Base;
 import com.cuci.enticement.bean.CartDataBean;
+import com.cuci.enticement.bean.CartDelete;
 import com.cuci.enticement.bean.CartIntentInfo;
 import com.cuci.enticement.bean.OrderResult;
 import com.cuci.enticement.bean.Status;
@@ -77,10 +78,12 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
     private LinearLayoutManager mLayoutManager;
     private LocalBroadcastManager mLocalBroadcastManager;
     private UserInfo mUserInfo;
+    private int mPage=1;
+    private int mPosition;
     @Override
     protected void onLazyLoad() {
         if(mUserInfo==null){
-
+            mStatusView.showEmpty();
             return;
         }
         mRefreshLayout.autoRefresh();
@@ -133,10 +136,10 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
             // 第一个参数是要交换为之的Item，第二个是目标位置的Item。
 
             // 交换数据，并更新adapter。
-            int fromPosition = srcHolder.getAdapterPosition();
+           /* int fromPosition = srcHolder.getAdapterPosition();
             int toPosition = targetHolder.getAdapterPosition();
           //  Collections.swap(mDataList, fromPosition, toPosition);
-            mAdapter.notifyItemMoved(fromPosition, toPosition);
+            mAdapter.notifyItemMoved(fromPosition, toPosition);*/
 
             // 返回true，表示数据交换成功，ItemView可以交换位置。
             return true;
@@ -147,9 +150,16 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
             // 此方法在Item在侧滑删除时被调用。
 
             // 从数据源移除该Item对应的数据，并刷新Adapter。
-            int position = srcHolder.getAdapterPosition();
-          //  mDataList.remove(position);
-            mAdapter.notifyItemRemoved(position);
+             mPosition = srcHolder.getAdapterPosition();
+            if(mCanChange) {
+
+                mCanChange=false;
+                CartDataBean.ListBean bean = (CartDataBean.ListBean) mAdapter.getItems().get(mPosition);
+                int cart_id = bean.getCart_id();
+                mViewModel.cartDelete(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),String.valueOf(cart_id) )
+                        .observe(mActivity, mDeleteObserver);
+            }
+
         }
     };
 
@@ -162,6 +172,11 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
         public void onReceive(Context context, Intent intent) {
             if (intent != null && intent.getAction() != null) {
                 if(intent.getAction().equals(ACTION_REFRESH_DATA)){
+                    mUserInfo = SharedPrefUtils.get(UserInfo.class);
+                    if(mUserInfo==null){
+                        mStatusView.showEmpty();
+                        return;
+                    }
                     mRefreshLayout.autoRefresh();
                 }
 
@@ -176,10 +191,6 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
     private void load() {
 
-        if(mUserInfo==null){
-
-            return;
-        }
         mViewModel.getCartList(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "1", Status.LOAD_REFRESH).observe(this, mObserver);
 
     }
@@ -189,13 +200,16 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+
+        mUserInfo = SharedPrefUtils.get(UserInfo.class);
+
         if(mUserInfo==null){
             mRefreshLayout.finishLoadMore();
             return;
         }
         if (mCanLoadMore) {
             mCanLoadMore = false;
-            mViewModel.getCartList("", "37", "",
+            mViewModel.getCartList(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(mPage),
                     Status.LOAD_MORE).observe(this, mObserver);
         } else {
             mRefreshLayout.finishLoadMore();
@@ -214,12 +228,15 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
                 case Status.SUCCESS:
 
-                    mStatusView.showContent();
+
                     Base<CartDataBean> content = status.content;
                     CartDataBean data = content.data;
-
+                    //  String s = new Gson().toJson(data);
                     if (data.getList() == null) {
-                        mStatusView.showEmpty();
+                        if(mAdapter.getItemCount()==0){
+                            mStatusView.showEmpty();
+                        }
+
                         if (status.loadType == Status.LOAD_MORE) {
                             mRefreshLayout.finishLoadMore();
                         } else {
@@ -228,6 +245,10 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
                         return;
                     }
 
+                    mStatusView.showContent();
+
+
+                    mPage=data.getPage().getCurrent()+1;
                     List<CartDataBean.ListBean> list = data.getList();
                    if (status.content.code == 1) {
                         mCanLoadMore = true;
@@ -357,6 +378,54 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
         mTvTotal.setText(String.format(Locale.CHINA, "%s", getCheckedsMoeny()));
     }
+
+    @Override
+    public void onDelete(CartDataBean.ListBean bean) {
+
+    }
+
+
+    /**
+     * 购物车删除
+     */
+    private Observer<Status<ResponseBody>> mDeleteObserver = new Observer<Status<ResponseBody>>() {
+        @Override
+        public void onChanged(Status<ResponseBody> status) {
+            switch (status.status) {
+
+                case Status.SUCCESS:
+                    ResponseBody content = status.content;
+                    try {
+                        String result = content.string();
+                        CartDelete cartDelete = new Gson().fromJson(result, CartDelete.class);
+                        if(cartDelete.code==1){
+                            mAdapter.notifyItemRemoved(mPosition);
+                            FToast.success(cartDelete.info);
+                            if(mAdapter.getItemCount()==0){
+                                mStatusView.showEmpty();
+                            }
+                        }else {
+                            FToast.warning(cartDelete.info);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case Status.ERROR:
+
+                    FToast.error(status.message);
+                    mCanChange = true;
+                    break;
+                case Status.LOADING:
+
+                    break;
+            }
+        }
+    };
+
+
+
+
 
 
     /**

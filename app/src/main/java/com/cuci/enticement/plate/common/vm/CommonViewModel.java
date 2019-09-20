@@ -37,10 +37,11 @@ public class CommonViewModel extends ViewModel {
         Map<String, String> params = new HashMap<String, String>();
         params.put("token",token);
         params.put("mid",mid);
+        params.put("from_type","2");
         String sign = SignUtils.signParam(params);
 
         mCreator.create(UserApi.class)
-                .getAdressList(token,mid,sign)
+                .getAdressList("2",token,mid,sign)
                 .enqueue(new Callback<AdressBean>() {
                     @Override
                     public void onResponse(@NonNull Call<AdressBean> call,
@@ -68,7 +69,7 @@ public class CommonViewModel extends ViewModel {
     }
 
     public MutableLiveData<Status<ResponseBody>> addAdress(String token, String mid,String name,String phone,String province,String city,
-                                                           String area,String adress,String isDeafult) {
+                                                           String area,String address,String isDeafult) {
 
         final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
 
@@ -82,13 +83,13 @@ public class CommonViewModel extends ViewModel {
         params.put("province",province);
         params.put("city",city);
         params.put("area",area);
-        params.put("adress",adress);
+        params.put("address",address);
         params.put("is_default",isDeafult);
         params.put("from_type","2");
         String sign = SignUtils.signParam(params);
 
         mCreator.create(UserApi.class)
-                .addAdress("2",token,mid,sign,phone,province,city,area,adress,isDeafult,sign)
+                .address("2",token,mid,sign,phone,province,city,area,address,isDeafult,sign)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,

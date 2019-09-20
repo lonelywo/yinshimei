@@ -76,7 +76,7 @@ public interface UserApi {
      */
     @FormUrlEncoded
     @POST("store/api.member.address/gets")
-    Call<AdressBean> getAdressList(@Field("token") String token,
+    Call<AdressBean> getAdressList(@Field("from_type") String fromType,@Field("token") String token,
                                    @Field("mid") String mid,
                                    @Field("sign") String sign);
 
@@ -87,16 +87,16 @@ public interface UserApi {
      */
     @FormUrlEncoded
     @POST("store/api.member.address/set")
-    Call<ResponseBody> addAdress(@Field("from_type") String fromType,@Field("token") String token,
-                                   @Field("mid") String mid,
-                                   @Field("name") String name,
-                                   @Field("phone") String phone,
-                                   @Field("province") String province,
-                                   @Field("city") String city,
-                                   @Field("area") String area,
-                                   @Field("adress") String address,
-                                   @Field("is_default") String is_default,
-                                   @Field("sign") String sign);
+    Call<ResponseBody> address(@Field("from_type") String fromType, @Field("token") String token,
+                               @Field("mid") String mid,
+                               @Field("name") String name,
+                               @Field("phone") String phone,
+                               @Field("province") String province,
+                               @Field("city") String city,
+                               @Field("area") String area,
+                               @Field("address") String address,
+                               @Field("is_default") String is_default,
+                               @Field("sign") String sign);
 
 
     /**

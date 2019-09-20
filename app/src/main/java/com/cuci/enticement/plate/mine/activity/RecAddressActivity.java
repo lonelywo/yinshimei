@@ -30,6 +30,8 @@ import com.yanzhenjie.recyclerview.SwipeRecyclerView;
 
 import java.util.List;
 
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 import butterknife.OnClick;
 import me.drakeet.multitype.Items;
@@ -45,7 +47,7 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
     MultipleStatusView mStatusView;
 
     @BindView(R.id.recycler_view)
-    SwipeRecyclerView mRecyclerView;
+    RecyclerView mRecyclerView;
     @BindView(R.id.refresh_layout)
     SmartRefreshLayout mRefreshLayout;
     private CommonViewModel mViewModel;
@@ -106,10 +108,10 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
-                Intent intent = new Intent(RecAddressActivity.this, OrderActivity.class);
+              /*  Intent intent = new Intent(RecAddressActivity.this, OrderActivity.class);
                 intent.putExtra("adress",mAdress);
 
-                setResult(101,intent);
+                setResult(101,intent);*/
                 finish();
                 break;
             case R.id.btn_add_new_adress:

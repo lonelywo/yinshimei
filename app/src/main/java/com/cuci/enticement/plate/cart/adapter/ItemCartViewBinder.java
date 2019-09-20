@@ -26,6 +26,7 @@ public class ItemCartViewBinder extends ItemViewBinder<CartDataBean.ListBean, It
 
         void onMinusClick(CartDataBean.ListBean bean);
         void onCheckedChange();
+        void onDelete(CartDataBean.ListBean bean);
     }
 
     private ItemCartViewBinder.OnItemClickListener mOnItemClickListener;
@@ -63,7 +64,11 @@ public class ItemCartViewBinder extends ItemViewBinder<CartDataBean.ListBean, It
             }
         });
 
-
+        holder.textBiaoti.setOnClickListener(v -> {
+            if (mOnItemClickListener != null) {
+                mOnItemClickListener.onDelete(item);
+            }
+        });
         holder.textBiaoti.setText(item.getGoods_title());
         holder.textNeirong.setText(item.getGoods_spec());
         holder.textJiage.setText(item.getGoods_price_selling());

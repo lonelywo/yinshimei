@@ -109,9 +109,9 @@ public class CartViewModel extends ViewModel {
     }
 
 
-    public MutableLiveData<Status<CartListBean>> cartDelete(String token,String mid,String cartId) {
+    public MutableLiveData<Status<ResponseBody>> cartDelete(String token,String mid,String cartId) {
 
-        final MutableLiveData<Status<CartListBean>> data = new MutableLiveData<>();
+        final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
         data.setValue(Status.loading(null));
         Map<String, String> params = new HashMap<String, String>();
         params.put("token",token);
@@ -121,15 +121,15 @@ public class CartViewModel extends ViewModel {
         String signs = SignUtils.signParam(params);
         mCreator.create(CartApi.class)
                 .cartDelete("2",token,mid,cartId,signs)
-                .enqueue(new Callback<CartListBean>() {
+                .enqueue(new Callback<ResponseBody>() {
                     @Override
-                    public void onResponse(@NonNull Call<CartListBean> call,
-                                           @NonNull Response<CartListBean> response) {
+                    public void onResponse(@NonNull Call<ResponseBody> call,
+                                           @NonNull Response<ResponseBody> response) {
                         data.setValue(Status.success(response.body()));
                     }
 
                     @Override
-                    public void onFailure(@NonNull Call<CartListBean> call,
+                    public void onFailure(@NonNull Call<ResponseBody> call,
                                           @NonNull Throwable t) {
                         data.setValue(Status.error(null, t.getMessage() == null ? "获取失败" : t.getMessage()));
                     }
