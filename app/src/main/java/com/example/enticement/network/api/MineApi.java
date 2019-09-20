@@ -4,6 +4,7 @@ package com.example.enticement.network.api;
 import com.example.enticement.bean.Base;
 
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -20,17 +21,17 @@ public interface MineApi {
      */
     @FormUrlEncoded
     @POST("store/api.member.order/profit")
-    Call<Base> hqcommissiontj(@Field("token") String token,
-                           @Field("mid") String mid,
-                           @Field("from_type") String from_type,
-                           @Field("sign") String sign
+    Call<ResponseBody> hqcommissiontj(@Field("token") String token,
+                                      @Field("mid") String mid,
+                                      @Field("from_type") String from_type,
+                                      @Field("sign") String sign
     );
     /**
      * 获取会员佣金记录
      */
     @FormUrlEncoded
     @POST("store/api.member.order/profitList")
-    Call<Base> hqcommissionjl(@Field("token") String token,
+    Call<ResponseBody> hqcommissionjl(@Field("token") String token,
                               @Field("mid") String mid,
                               @Field("from_type") String from_type,
                               @Field("date") String date,
@@ -41,7 +42,7 @@ public interface MineApi {
      */
     @FormUrlEncoded
     @POST("store/api.member.order/used")
-    Call<Base> txcommissionsq(@Field("token") String token,
+    Call<ResponseBody> txcommissionsq(@Field("token") String token,
                               @Field("mid") String mid,
                               @Field("from_type") String from_type,
                               @Field("price") String price,
@@ -52,10 +53,9 @@ public interface MineApi {
      */
     @FormUrlEncoded
     @POST("store/api.member.order/usedList")
-    Call<Base> txcommissionjl(@Field("token") String token,
+    Call<ResponseBody> txcommissionjl(@Field("token") String token,
                               @Field("mid") String mid,
                               @Field("from_type") String from_type,
-                              @Field("date") String date,
                               @Field("sign") String sign
     );
 
@@ -64,7 +64,7 @@ public interface MineApi {
      */
     @FormUrlEncoded
     @POST("store/api.member.team/getps")
-    Call<Base> hqteamtj(@Field("token") String token,
+    Call<ResponseBody> hqteamtj(@Field("token") String token,
                               @Field("mid") String mid,
                               @Field("from_type") String from_type,
                               @Field("nickname") String nickname,
@@ -76,7 +76,7 @@ public interface MineApi {
      */
     @FormUrlEncoded
     @POST("store/api.member.team/count")
-    Call<Base> hqteamsl(@Field("token") String token,
+    Call<ResponseBody> hqteamsl(@Field("token") String token,
                               @Field("mid") String mid,
                               @Field("from_type") String from_type,
                               @Field("sign") String sign
@@ -86,7 +86,7 @@ public interface MineApi {
      */
     @FormUrlEncoded
     @POST("store/api.member.month/get")
-    Call<Base> achievement(@Field("token") String token,
+    Call<ResponseBody> achievement(@Field("token") String token,
                         @Field("mid") String mid,
                         @Field("from_type") String from_type,
                         @Field("sign") String sign

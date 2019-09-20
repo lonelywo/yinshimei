@@ -19,6 +19,12 @@
         <activity android:name="com.example.enticement.plate.cart.activity.OrderDetailsActivity"/>
         <activity android:name="com.example.enticement.plate.mine.activity.ZengAddressActivity"/>
         <activity android:name="com.example.enticement.plate.common.BindPhoneActivity"/>
+        <activity android:name="com.example.enticement.plate.mine.activity.CommissionActivity"/>
+        <activity android:name="com.example.enticement.plate.mine.activity.MyTeamActivity"/>
+        <activity android:name="com.example.enticement.plate.mine.activity.AchievementActivity"/>
+        <activity android:name="com.example.enticement.plate.mine.activity.KeFuActivity"/>
+        <activity android:name="com.example.enticement.plate.mine.activity.CashActivity"/>
+        <activity android:name="com.example.enticement.plate.mine.activity.CashMXActivity"/>
 
 
 

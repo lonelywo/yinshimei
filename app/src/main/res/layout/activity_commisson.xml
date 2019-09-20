@@ -80,7 +80,7 @@
           android:id="@+id/text_yongjing"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="24654.88"
+          android:text="0"
           android:textSize="30sp"
           android:textColor="@color/colorWhite"
           app:layout_constraintLeft_toLeftOf="parent"
@@ -104,7 +104,7 @@
           android:id="@+id/text_yitixian"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="24654.88"
+          android:text="0"
           android:textSize="30sp"
           android:textColor="@color/colorWhite"
           app:layout_constraintLeft_toLeftOf="parent"
@@ -137,7 +137,7 @@
           android:id="@+id/text_ketixian"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="24654.88"
+          android:text="0"
           android:textSize="30sp"
           android:textColor="@color/colorWhite"
           app:layout_constraintLeft_toLeftOf="@+id/line"
@@ -173,7 +173,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintTop_toBottomOf="parent"
-        android:text="2019/08"
+        android:text="2019-08"
         />
      <ImageView
          android:id="@+id/img_xiajiantou"
@@ -183,16 +183,6 @@
          app:layout_constraintTop_toTopOf="@id/text_rqi"
          app:layout_constraintBottom_toBottomOf="@+id/text_rqi"
          android:src="@drawable/xiajiantou"
-         android:layout_marginLeft="15dp"
-         />
-     <ImageView
-         android:id="@+id/img_shangjiantou"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         app:layout_constraintLeft_toRightOf="@id/img_xiajiantou"
-         app:layout_constraintTop_toTopOf="@id/text_rqi"
-         app:layout_constraintBottom_toBottomOf="@+id/text_rqi"
-         android:src="@drawable/shangjiantou"
          android:layout_marginLeft="15dp"
          />
 
