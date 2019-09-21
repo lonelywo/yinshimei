@@ -280,6 +280,53 @@ public class MineViewModel extends ViewModel {
 
     }
     /**
+     * 获取团队统计列表
+     * @param from_type
+     * @param token
+     * @param mid
+     * @return
+     */
+    public MutableLiveData<Status<ResponseBody>> hqteamtj2(String token, String mid, String from_type,String pid,String nickname,String page,int loadType) {
+
+        final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
+        liveData.setValue(Status.loading(null));
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("from_type",from_type);
+        params.put("token",token);
+        params.put("mid",mid);
+        params.put("pid",pid);
+        params.put("nickname",nickname);
+        params.put("page",page);
+        String signs = SignUtils.signParam(params);
+        mCreator.create(MineApi.class)
+                .hqteamtj2(token,mid,from_type,pid,nickname,page,signs)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(@NonNull Call<ResponseBody> call,
+                                           @NonNull Response<ResponseBody> response) {
+                        if (loadType == Status.LOAD_REFRESH) {
+                            liveData.setValue(Status.refreshSuccess(response.body()));
+                        } else {
+                            liveData.setValue(Status.moreSuccess(response.body()));
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<ResponseBody> call,
+                                          @NonNull Throwable t) {
+                        if (loadType == Status.LOAD_REFRESH) {
+                            liveData.setValue(Status.refreshError(null, t.getMessage() ==
+                                    null ? "加载失败" : t.getMessage()));
+                        } else {
+                            liveData.setValue(Status.moreError(null, t.getMessage() ==
+                                    null ? "加载失败" : t.getMessage()));
+                        }
+                    }
+                });
+        return liveData;
+
+    }
+    /**
      * 获取团队数量统计
      * @param from_type
      * @param token

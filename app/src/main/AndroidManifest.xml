@@ -26,6 +26,8 @@
         <activity android:name=".plate.mine.activity.CashActivity"/>
         <activity android:name=".plate.mine.activity.CashMXActivity"/>
         <activity android:name=".plate.mine.activity.RecAddressActivity"/>
+        <activity android:name=".plate.mine.activity.MyTeamTwoActivity"/>
+        <activity android:name=".plate.mall.activity.YuLanActivity"/>
 
 
 

@@ -110,6 +110,8 @@ public class AchievementActivity extends BaseActivity {
                 String htmlContent = mYeJiYueFanBean.getData().getExplain();
                 webGuize.loadDataWithBaseURL(null,
                         getHtmlData(htmlContent), "text/html", "utf-8", null);
+
+
             } else {
                 FToast.error(mYeJiYueFanBean.getInfo());
             }

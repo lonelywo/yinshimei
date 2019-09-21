@@ -1,5 +1,6 @@
 package com.cuci.enticement.plate.mall.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,15 +9,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.classic.common.MultipleStatusView;
+import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseFragment;
 import com.cuci.enticement.bean.MallSourceBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.plate.common.adapter.MainPagerAdapter;
+import com.cuci.enticement.plate.mall.activity.YuLanActivity;
 import com.cuci.enticement.plate.mall.vm.MallViewModel;
+import com.cuci.enticement.plate.mine.activity.MyTeamTwoActivity;
 import com.cuci.enticement.utils.FToast;
 import com.flyco.tablayout.SlidingTabLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.lifecycle.Observer;
@@ -62,11 +67,22 @@ public class _MallFragment extends BaseFragment {
         mStatusView.setOnRetryClickListener(v -> {
             load();
         });
+        imageBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intentProd = new Intent(mActivity, YuLanActivity.class);
+                intentProd.putExtra("Data", "");
+                mActivity.startActivity(intentProd);
+            }
+        });
     }
 
     private void load() {
         mViewModel.getSource("产品图","1","20").observe(this, mObserver);
     }
+
+
     private Observer<Status<MallSourceBean>> mObserver = status -> {
         switch (status.status) {
             case Status.SUCCESS:

@@ -1,78 +1,89 @@
 package com.cuci.enticement.plate.mine.adapter;
 
 
+import android.content.Intent;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.cuci.enticement.R;
-import com.cuci.enticement.bean.OrderList.DataBean.OrderBean.GoodsBean;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.cuci.enticement.BasicApp;
+import com.cuci.enticement.R;
+import com.cuci.enticement.bean.MyTeamlbBean;
+import com.cuci.enticement.plate.mine.activity.MyOrderActivity;
+import com.cuci.enticement.plate.mine.activity.MyTeamActivity;
+import com.cuci.enticement.plate.mine.activity.MyTeamTwoActivity;
+import com.cuci.enticement.utils.AppUtils;
+import com.cuci.enticement.utils.ImageLoader;
+import com.cuci.enticement.utils.ImageUtils;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.drakeet.multitype.ItemViewBinder;
 
-public class ItemMyTeamViewBinder extends ItemViewBinder<GoodsBean, ItemMyTeamViewBinder.ViewHolder> {
+public class ItemMyTeamViewBinder extends ItemViewBinder<MyTeamlbBean.DataBean.ListBean, ItemMyTeamViewBinder.ViewHolder> {
 
 
 
 
-   /* public interface OnProdClickListener {
+    public interface OnProdClickListener {
 
-        void onProdClick(GoodsBean item);
+        void onProdClick(MyTeamlbBean.DataBean.ListBean item);
 
 
     }
 
     private OnProdClickListener mOnProdClickListener;
 
-    public ItemCommissionJLViewBinder(OnProdClickListener onProdClickListener) {
+    public ItemMyTeamViewBinder(OnProdClickListener onProdClickListener) {
         mOnProdClickListener = onProdClickListener;
-    }*/
+    }
 
     @NonNull
     @Override
     protected ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        View root = inflater.inflate(R.layout.rec_myorder_prod, parent, false);
+        View root = inflater.inflate(R.layout.rec_team, parent, false);
         return new ViewHolder(root);
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull GoodsBean item) {
+    protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull MyTeamlbBean.DataBean.ListBean item) {
+
+        ImageLoader.loadNoPlaceholder(item.getHeadimg(),holder.imgTuxiang);
+        holder.textTime.setText(item.getCreate_at());
+        holder.textWenzi1.setText(item.getNickname());
+        holder.text_shuliang.setText(item.getTeams());
 
 
-/*
-        holder.textBiaoti.setText(item.getGoods_title());
-        holder.textNeirong.setText(item.getGoods_spec());
-
-        holder.itemView.setOnClickListener(position -> {
-            if (mOnProdClickListener != null) {
-                mOnProdClickListener.onProdClick(item);
-            }
-        });*/
-
-
-
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+              Intent intentProd = new Intent(BasicApp.getContext(), MyTeamTwoActivity.class);
+              intentProd.putExtra("Data", item);
+              BasicApp.getContext().startActivity(intentProd);
+              mOnProdClickListener.onProdClick(item);
+          }
+      });
 
 
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.img_tupian)
-        ImageView imgTupian;
-        @BindView(R.id.text_biaoti)
-        TextView textBiaoti;
-        @BindView(R.id.text_neirong)
-        TextView textNeirong;
-        @BindView(R.id.text_qian)
-        TextView textQian;
-        @BindView(R.id.text_num)
-        TextView textNum;
 
+
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.img_tuxiang)
+        ImageView imgTuxiang;
+        @BindView(R.id.text_wenzi1)
+        TextView textWenzi1;
+        @BindView(R.id.text_time)
+        TextView textTime;
+        @BindView(R.id.text_shuliang)
+        TextView text_shuliang;
         ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -80,4 +91,6 @@ public class ItemMyTeamViewBinder extends ItemViewBinder<GoodsBean, ItemMyTeamVi
 
         }
     }
+
+
 }

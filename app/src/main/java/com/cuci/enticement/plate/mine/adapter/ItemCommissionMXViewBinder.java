@@ -11,24 +11,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cuci.enticement.R;
-import com.cuci.enticement.bean.OrderList.DataBean.OrderBean.GoodsBean;
+import com.cuci.enticement.bean.CommissionmxBean;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.drakeet.multitype.ItemViewBinder;
 
-public class ItemCommissionMXViewBinder extends ItemViewBinder<GoodsBean, ItemCommissionMXViewBinder.ViewHolder> {
-
-
-
+public class ItemCommissionMXViewBinder extends ItemViewBinder<CommissionmxBean.DataBean.ListBean, ItemCommissionMXViewBinder.ViewHolder> {
 
    /* public interface OnProdClickListener {
 
         void onProdClick(GoodsBean item);
 
-
     }
-
     private OnProdClickListener mOnProdClickListener;
 
     public ItemCommissionJLViewBinder(OnProdClickListener onProdClickListener) {
@@ -38,12 +33,21 @@ public class ItemCommissionMXViewBinder extends ItemViewBinder<GoodsBean, ItemCo
     @NonNull
     @Override
     protected ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        View root = inflater.inflate(R.layout.rec_myorder_prod, parent, false);
+        View root = inflater.inflate(R.layout.rec_cashmx, parent, false);
         return new ViewHolder(root);
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull GoodsBean item) {
+    protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull CommissionmxBean.DataBean.ListBean item) {
+        if (item.getStatus() == 0) {
+            holder.textWenzi1.setText("提现失败");
+        } else if (item.getStatus() == 1) {
+            holder.textWenzi1.setText("代付款");
+        } else if (item.getStatus() == 2) {
+            holder.textWenzi1.setText("付款成功");
+        }
+        holder.textTime.setText(item.getCreate_at());
+        holder.textMoney.setText(item.getPay_price());
 
 
 /*
@@ -56,23 +60,16 @@ public class ItemCommissionMXViewBinder extends ItemViewBinder<GoodsBean, ItemCo
             }
         });*/
 
-
-
-
-
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.img_tupian)
-        ImageView imgTupian;
-        @BindView(R.id.text_biaoti)
-        TextView textBiaoti;
-        @BindView(R.id.text_neirong)
-        TextView textNeirong;
-        @BindView(R.id.text_qian)
-        TextView textQian;
-        @BindView(R.id.text_num)
-        TextView textNum;
+        @BindView(R.id.text_wenzi1)
+        TextView textWenzi1;
+        @BindView(R.id.text_time)
+        TextView textTime;
+        @BindView(R.id.text_money)
+        TextView textMoney;
+
 
         ViewHolder(View itemView) {
             super(itemView);

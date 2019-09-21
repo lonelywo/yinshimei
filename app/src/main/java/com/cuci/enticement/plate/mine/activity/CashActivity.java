@@ -87,6 +87,7 @@ public class CashActivity extends BaseActivity {
     }
 
     private void load() {
+
         String meony = edtPhone.getText().toString();
         if (TextUtils.isEmpty(meony)) {
             FToast.warning("请填写金额");

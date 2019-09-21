@@ -10,6 +10,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.cuci.enticement.R;
 import com.cuci.enticement.plate.common.adapter.ImageViewerPagerAdapter;
+import com.cuci.enticement.widget.ViewPagerFixed;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.impl.FullScreenPopupView;
 
@@ -22,7 +23,7 @@ import butterknife.OnClick;
 public class ImageViewerPopup extends FullScreenPopupView {
 
     @BindView(R.id.view_pager)
-    ViewPager mViewPager;
+    ViewPagerFixed mViewPager;
     @BindView(R.id.tv)
     TextView mTv;
     @BindView(R.id.tv_save)

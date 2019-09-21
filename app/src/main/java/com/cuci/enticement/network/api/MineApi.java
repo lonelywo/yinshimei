@@ -62,11 +62,24 @@ public interface MineApi {
     @FormUrlEncoded
     @POST("store/api.member.team/getps")
     Call<ResponseBody> hqteamtj(@Field("token") String token,
-                              @Field("mid") String mid,
-                              @Field("from_type") String from_type,
-                              @Field("nickname") String nickname,
-                              @Field("page") String page,
-                              @Field("sign") String sign
+                                @Field("mid") String mid,
+                                @Field("from_type") String from_type,
+                                @Field("nickname") String nickname,
+                                @Field("page") String page,
+                                @Field("sign") String sign
+    );
+    /**
+     * 获取隔代团队统计列表
+     */
+    @FormUrlEncoded
+    @POST("store/api.member.team/getps")
+    Call<ResponseBody> hqteamtj2(@Field("token") String token,
+                                @Field("mid") String mid,
+                                @Field("from_type") String from_type,
+                                @Field("pid") String pid,
+                                @Field("nickname") String nickname,
+                                @Field("page") String page,
+                                @Field("sign") String sign
     );
     /**
      * 获取团队数量统计

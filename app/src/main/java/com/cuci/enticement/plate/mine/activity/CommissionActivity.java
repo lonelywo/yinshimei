@@ -26,6 +26,7 @@ import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.plate.mine.adapter.ItemCommissionJLViewBinder;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.MathExtend;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.widget.CartItemDecoration;
 import com.cuci.enticement.widget.CustomRefreshHeader;
@@ -115,7 +116,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
         mItems = new Items();
         mAdapter.setItems(mItems);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        mAdapter.register(OrderList.DataBean.OrderBean.GoodsBean.class, new ItemCommissionJLViewBinder());
+        mAdapter.register(CommissionjlBean.DataBean.ListBean.class, new ItemCommissionJLViewBinder());
         CartItemDecoration mDecoration = new CartItemDecoration(this, 4);
         recyclerView.addItemDecoration(mDecoration);
         mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -149,7 +150,10 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
     }
 
     private void load() {
-
+        if(mUserInfo==null){
+            refreshLayout.finishRefresh();
+            return;
+        }
         mViewModel.hqcommissiontj(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"2",format,Status.LOAD_REFRESH)
                 .observe(this, mObserver1);
     }
@@ -252,8 +256,10 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
             String b = body.string();
             CommissiontjBean mCommissiontjBean = new Gson().fromJson(b, CommissiontjBean.class);
             if (mCommissiontjBean.getCode()==1) {
-                textYongjing.setText(""+mCommissiontjBean.getData().getTotal());
-                textYitixian.setText(""+mCommissiontjBean.getData().getUsed());
+                String subtract = MathExtend.subtract(String.valueOf(mCommissiontjBean.getData().getTotal()), String.valueOf(mCommissiontjBean.getData().getUsed()));
+                textYongjing.setText(String.valueOf(mCommissiontjBean.getData().getTotal()));
+                textYitixian.setText(String.valueOf(mCommissiontjBean.getData().getUsed()));
+                textKetixian.setText(subtract);
             }else {
                 FToast.error(mCommissiontjBean.getInfo());
             }

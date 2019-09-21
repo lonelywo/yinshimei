@@ -1,8 +1,9 @@
 package com.cuci.enticement.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class CartDataBean {
+public class CartDataBean implements Serializable {
 
     /**
      * page : {"limit":12,"total":2,"pages":1,"current":1}

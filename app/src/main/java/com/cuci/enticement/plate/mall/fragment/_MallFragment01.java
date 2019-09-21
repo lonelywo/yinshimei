@@ -10,6 +10,9 @@ import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseFragment;
 import com.cuci.enticement.bean.MallSourceBean;
 import com.cuci.enticement.bean.Status;
+
+import com.cuci.enticement.plate.common.eventbus.MessageEvent;
+import com.cuci.enticement.plate.common.eventbus.MessageEvent1;
 import com.cuci.enticement.plate.mall.adapter.NineAdapter;
 import com.cuci.enticement.plate.mall.vm.MallViewModel;
 import com.cuci.enticement.utils.FToast;
@@ -27,6 +30,8 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 
@@ -58,6 +63,7 @@ public class _MallFragment01 extends BaseFragment implements OnRefreshLoadMoreLi
         _MallFragment01 fragment = new _MallFragment01();
         fragment.setArguments(args);
         return fragment;
+
     }
     @Override
     protected void onLazyLoad() {
@@ -76,6 +82,7 @@ public class _MallFragment01 extends BaseFragment implements OnRefreshLoadMoreLi
         mViewModel = ViewModelProviders.of(this).get(MallViewModel.class);
         Bundle bundle = getArguments();
         mtype = bundle.getString("type");
+
         CustomRefreshHeader header = new CustomRefreshHeader(mActivity);
         header.setBackground(0xFFF3F4F6);
         //mRefreshLayout.setRefreshHeader(header);
@@ -98,9 +105,12 @@ public class _MallFragment01 extends BaseFragment implements OnRefreshLoadMoreLi
                 mRecyclerView.smoothScrollToPosition(0);
             }
         });
+
     }
 
     private void load() {
+        //发送事件
+        EventBus.getDefault().postSticky(new MessageEvent1(mtype));
         mViewModel.getSource01(mtype,"1",PAGE_SIZE,Status.LOAD_REFRESH).observe(this, mObserver);
     }
     private Observer<Status<MallSourceBean>> mObserver = status -> {
@@ -128,11 +138,14 @@ public class _MallFragment01 extends BaseFragment implements OnRefreshLoadMoreLi
                     mCanLoadMore = true;
 
                     if (status.loadType == Status.LOAD_REFRESH) {
-
+                        //发送事件
+                       // EventBus.getDefault().postSticky(new MessageEvent(items,0));
                         mAdapter.setList(items);
                         mAdapter.notifyDataSetChanged();
                         mRefreshLayout.finishRefresh();
                     } else {
+                        //发送事件
+                       // EventBus.getDefault().postSticky(new MessageEvent(items,1));
                         mAdapter.addList(items);
                         mRefreshLayout.finishLoadMore();
                     }
@@ -152,7 +165,7 @@ public class _MallFragment01 extends BaseFragment implements OnRefreshLoadMoreLi
 
                 break;
             case Status.ERROR:
-                FToast.error(status.message);
+                FToast.error("网络请求错误");
                 if (status.loadType == Status.LOAD_MORE) {
                     mCanLoadMore = true;
                     mRefreshLayout.finishLoadMore();

@@ -90,6 +90,7 @@ public class NineAdapter extends RecyclerView.Adapter<NineAdapter.ViewHolder> {
                         .show();
             }
         });
+
     }
 
     @Override

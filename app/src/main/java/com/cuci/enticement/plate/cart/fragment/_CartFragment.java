@@ -230,6 +230,15 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
 
                     Base<CartDataBean> content = status.content;
+                    if (content == null) {
+                            mStatusView.showEmpty();
+                        if (status.loadType == Status.LOAD_MORE) {
+                            mRefreshLayout.finishLoadMore();
+                        } else {
+                            mRefreshLayout.finishRefresh();
+                        }
+                        return;
+                    }
                     CartDataBean data = content.data;
                     //  String s = new Gson().toJson(data);
                     if (data.getList() == null) {

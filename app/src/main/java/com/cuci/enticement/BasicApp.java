@@ -31,7 +31,7 @@ public class BasicApp extends Application {
 
 
         //注册微信分享，第三个参数为是否检查signature，正式发布改为true
-        mIWXAPI = WXAPIFactory.createWXAPI(this, Constant.WX_APP_ID, true);
+        mIWXAPI = WXAPIFactory.createWXAPI(this, Constant.WX_APP_ID, !BuildConfig.DEBUG);
         mIWXAPI.registerApp(Constant.WX_APP_ID);
 
       //严格模式下，会调用 检测FileUriExposure

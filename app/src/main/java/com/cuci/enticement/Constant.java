@@ -4,7 +4,7 @@ public class Constant {
 
 
     public static final String WX_APP_ID = "wxb15f89269aa2e2bd";
-    public static final String WX_APP_SECRET_ID = "9A414f9764b9420B43abdb1a29df749B";
+    public static final String WX_APP_SECRET_ID = "b71024dddf6d158deb79def1b54396f7";
 
     public static final String BUGLY_ID = "ffc4cc99ab";
 

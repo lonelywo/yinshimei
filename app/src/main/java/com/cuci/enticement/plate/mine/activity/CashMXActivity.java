@@ -21,6 +21,7 @@ import com.cuci.enticement.bean.OrderList;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.plate.mine.adapter.ItemCommissionJLViewBinder;
+import com.cuci.enticement.plate.mine.adapter.ItemCommissionMXViewBinder;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.SharedPrefUtils;
@@ -77,7 +78,7 @@ public class CashMXActivity extends BaseActivity implements OnRefreshLoadMoreLis
         mItems = new Items();
         mAdapter.setItems(mItems);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        mAdapter.register(OrderList.DataBean.OrderBean.GoodsBean.class, new ItemCommissionJLViewBinder());
+        mAdapter.register(CommissionmxBean.DataBean.ListBean.class, new ItemCommissionMXViewBinder());
         CartItemDecoration mDecoration = new CartItemDecoration(this, 4);
         recyclerView.addItemDecoration(mDecoration);
         mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -93,7 +94,10 @@ public class CashMXActivity extends BaseActivity implements OnRefreshLoadMoreLis
     }
 
     private void load() {
-
+        if(mUserInfo==null){
+            refreshLayout.finishRefresh();
+            return;
+        }
         mViewModel.txcommissionjl(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2",Status.LOAD_REFRESH)
                 .observe(this, mObserver1);
     }

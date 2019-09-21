@@ -38,6 +38,7 @@
         android:layout_marginLeft="10dp"
         />
       <TextView
+          android:id="@+id/text_money"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           app:layout_constraintTop_toTopOf="@id/text_wenzi1"
@@ -48,6 +49,7 @@
           android:textColor="@color/orange"
           />
     <TextView
+        android:id="@+id/text_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="@id/text_wenzi2"
