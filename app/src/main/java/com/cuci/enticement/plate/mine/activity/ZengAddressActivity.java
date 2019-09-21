@@ -103,7 +103,8 @@ public class ZengAddressActivity extends BaseActivity {
                     String detailAdress = edtXiangxi.getText().toString().trim();
 
 
-                    mViewModel.addAdress(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),name,phone,mProvince,mCity,mArea,detailAdress,mIsDefault).observe(this,mObserver);
+                    mViewModel.addAdress(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),name,phone,mProvince,mCity,mArea,detailAdress,mIsDefault)
+                            .observe(this,mObserver);
 
 
 
