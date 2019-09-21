@@ -148,11 +148,11 @@ public class _MineFragment extends BaseFragment {
         mBroadcastManager.registerReceiver(mReceiver, intentFilter);
 
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
-     /*   //todo  临时存储
+      //todo  临时存储
         mUserInfo=new UserInfo();
-        mUserInfo.setToken("9a40c157aff757d335cdaca2fc451b35");
+        mUserInfo.setToken("7ee35ab8215b6992c500a42ae6abe3ec");
         mUserInfo.setId(18281);
-        SharedPrefUtils.save(mUserInfo,UserInfo.class);*/
+        SharedPrefUtils.save(mUserInfo,UserInfo.class);
         refreshLayout();
     }
 

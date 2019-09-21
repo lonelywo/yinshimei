@@ -89,7 +89,7 @@ public class CommonViewModel extends ViewModel {
         String sign = SignUtils.signParam(params);
 
         mCreator.create(UserApi.class)
-                .address("2",token,mid,sign,phone,province,city,area,address,isDeafult,sign)
+                .address("2",token,mid,name,phone,province,city,area,address,isDeafult,sign)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,
