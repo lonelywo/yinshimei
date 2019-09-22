@@ -21,7 +21,7 @@ import com.cuci.enticement.bean.BannerDataBean;
 import com.cuci.enticement.bean.BaseList;
 
 import com.cuci.enticement.bean.GeneralGoods;
-import com.cuci.enticement.bean.GeneralGoodsItem;
+import com.cuci.enticement.bean.GoodsItem;
 import com.cuci.enticement.bean.ItemBanner;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.plate.home.activity.ProdActivity;
@@ -85,7 +85,7 @@ public class _HomeFragment extends BaseFragment  implements ItemBannerViewBinder
         mRefreshLayout.setEnableFooterFollowWhenNoMoreData(true);
         mRefreshLayout.setOnRefreshLoadMoreListener(this);
         mAdapter.register(ItemBanner.class, new ItemBannerViewBinder(this));
-        mAdapter.register(GeneralGoodsItem.class, new ItemGoodsLongViewBinder(mActivity));
+        mAdapter.register(GoodsItem.class, new ItemGoodsLongViewBinder(mActivity));
 
         mDecoration = new HomeGridItemDecoration(mActivity, 2, 6, true);
         mDecoration.setHeaderCount(1);
@@ -178,7 +178,7 @@ public class _HomeFragment extends BaseFragment  implements ItemBannerViewBinder
 
                 case Status.SUCCESS:
                     GeneralGoods data = status.content;
-                    List<GeneralGoodsItem> list = data.getData().getList();
+                    List<GoodsItem> list = data.getData().getList();
                     if (data == null) {
                         if (status.loadType == Status.LOAD_MORE) {
                             mRefreshLayout.finishLoadMore();

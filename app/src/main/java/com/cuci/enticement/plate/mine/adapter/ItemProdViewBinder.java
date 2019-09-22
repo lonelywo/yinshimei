@@ -8,6 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cuci.enticement.R;
+import com.cuci.enticement.bean.AllOrderList;
+import com.cuci.enticement.bean.OrderGoods;
 import com.cuci.enticement.bean.OrderList;
 
 import androidx.annotation.NonNull;
@@ -16,14 +18,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.drakeet.multitype.ItemViewBinder;
 
-public class ItemProdViewBinder extends ItemViewBinder<OrderList.DataBean.OrderBean.GoodsBean, ItemProdViewBinder.ViewHolder> {
+public class ItemProdViewBinder extends ItemViewBinder<OrderGoods, ItemProdViewBinder.ViewHolder> {
 
 
 
 
     public interface OnProdClickListener {
 
-        void onProdClick(OrderList.DataBean.OrderBean.GoodsBean item);
+        void onProdClick(OrderGoods item);
 
 
     }
@@ -42,7 +44,7 @@ public class ItemProdViewBinder extends ItemViewBinder<OrderList.DataBean.OrderB
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull OrderList.DataBean.OrderBean.GoodsBean item) {
+    protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull OrderGoods item) {
 
 
 

@@ -40,13 +40,13 @@ public class GeneralGoods {
     }
 
     public static class DataBean {
-        private List<GeneralGoodsItem> list;
+        private List<GoodsItem> list;
 
-        public List<GeneralGoodsItem> getList() {
+        public List<GoodsItem> getList() {
             return list;
         }
 
-        public void setList(List<GeneralGoodsItem> list) {
+        public void setList(List<GoodsItem> list) {
             this.list = list;
         }
 

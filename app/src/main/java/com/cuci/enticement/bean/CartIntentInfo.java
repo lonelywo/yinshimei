@@ -13,7 +13,7 @@ public class CartIntentInfo implements Parcelable {
     private int count;
     private double totalMoney;
 
-    private List<CartDataBean.ListBean> items;
+    private List<OrderGoods> items;
 
     public CartIntentInfo() {
 
@@ -62,11 +62,11 @@ public class CartIntentInfo implements Parcelable {
         this.totalMoney = totalMoney;
     }
 
-    public List<CartDataBean.ListBean> getItems() {
+    public List<OrderGoods> getItems() {
         return items;
     }
 
-    public void setItems(List<CartDataBean.ListBean> items) {
+    public void setItems(List<OrderGoods> items) {
         this.items = items;
     }
 

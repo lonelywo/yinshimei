@@ -2,13 +2,15 @@ package com.cuci.enticement.bean;
 
 import com.google.gson.annotations.SerializedName;
 
-public class OrderPay {
+import java.io.Serializable;
+
+public class OrderPay implements Serializable {
 
 
     /**
      * code : 1
      * info : 获取订单支付参数成功！
-     * data : {"appId":"wx6bb7b70258da09c6","timeStamp":"1548153280","nonceStr":"elixaugruy8ww4ijo8y1x6epscbefqeh","package":"prepay_id=wx22183440132211464af955411809028561","signType":"MD5","paySign":"5AC755D31D0FE2E0D16B96FBFA70EE6A","timestamp":"1548153280"}
+     * data : {"appid":"wxb15f89269aa2e2bd","partnerid":"1552252891","prepayid":"wx2216321033640925b4e468011342758300","package":"Sign=WXPay","timestamp":"1569141130","noncestr":"kqx0ns83conlfos2pczfo6gyajxlfuy6","sign":"880B1948C3CA01FD984AE92F20D362FE"}
      */
 
     private int code;
@@ -41,46 +43,46 @@ public class OrderPay {
 
     public static class DataBean {
         /**
-         * appId : wx6bb7b70258da09c6
-         * timeStamp : 1548153280
-         * nonceStr : elixaugruy8ww4ijo8y1x6epscbefqeh
-         * package : prepay_id=wx22183440132211464af955411809028561
-         * signType : MD5
-         * paySign : 5AC755D31D0FE2E0D16B96FBFA70EE6A
-         * timestamp : 1548153280
+         * appid : wxb15f89269aa2e2bd
+         * partnerid : 1552252891
+         * prepayid : wx2216321033640925b4e468011342758300
+         * package : Sign=WXPay
+         * timestamp : 1569141130
+         * noncestr : kqx0ns83conlfos2pczfo6gyajxlfuy6
+         * sign : 880B1948C3CA01FD984AE92F20D362FE
          */
 
-        private String appId;
-        private String timeStamp;
-        private String nonceStr;
+        private String appid;
+        private String partnerid;
+        private String prepayid;
         @SerializedName("package")
         private String packageX;
-        private String signType;
-        private String paySign;
         private String timestamp;
+        private String noncestr;
+        private String sign;
 
-        public String getAppId() {
-            return appId;
+        public String getAppid() {
+            return appid;
         }
 
-        public void setAppId(String appId) {
-            this.appId = appId;
+        public void setAppid(String appid) {
+            this.appid = appid;
         }
 
-        public String getTimeStamp() {
-            return timeStamp;
+        public String getPartnerid() {
+            return partnerid;
         }
 
-        public void setTimeStamp(String timeStamp) {
-            this.timeStamp = timeStamp;
+        public void setPartnerid(String partnerid) {
+            this.partnerid = partnerid;
         }
 
-        public String getNonceStr() {
-            return nonceStr;
+        public String getPrepayid() {
+            return prepayid;
         }
 
-        public void setNonceStr(String nonceStr) {
-            this.nonceStr = nonceStr;
+        public void setPrepayid(String prepayid) {
+            this.prepayid = prepayid;
         }
 
         public String getPackageX() {
@@ -91,28 +93,28 @@ public class OrderPay {
             this.packageX = packageX;
         }
 
-        public String getSignType() {
-            return signType;
-        }
-
-        public void setSignType(String signType) {
-            this.signType = signType;
-        }
-
-        public String getPaySign() {
-            return paySign;
-        }
-
-        public void setPaySign(String paySign) {
-            this.paySign = paySign;
-        }
-
         public String getTimestamp() {
             return timestamp;
         }
 
         public void setTimestamp(String timestamp) {
             this.timestamp = timestamp;
+        }
+
+        public String getNoncestr() {
+            return noncestr;
+        }
+
+        public void setNoncestr(String noncestr) {
+            this.noncestr = noncestr;
+        }
+
+        public String getSign() {
+            return sign;
+        }
+
+        public void setSign(String sign) {
+            this.sign = sign;
         }
     }
 }

@@ -2,7 +2,7 @@ package com.cuci.enticement.bean;
 
 import java.util.List;
 
-public class GeneralGoodsItem {
+public class GoodsItem {
 
 
     /**
@@ -36,6 +36,20 @@ public class GeneralGoodsItem {
     private List<SpecsBean> specs;
     private List<List<ListsBean>> lists;
     private List<ListBeanX> list;
+
+    private int cart_id;
+    private int mid;
+    private long goods_id;
+    private String goods_title;
+    private String goods_logo;
+    private String goods_spec;
+    private String goods_price_selling;
+    private String goods_price_market;
+    private int goods_num;
+    private int stock;
+
+
+
 
     public long getId() {
         return id;

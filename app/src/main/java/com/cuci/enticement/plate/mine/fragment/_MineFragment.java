@@ -110,6 +110,7 @@ public class _MineFragment extends BaseFragment {
     ScrollView scrollView;
     public static final String DATA_USER_INFO = "data_user_info_";
     public static final String ACTION_LOGIN_SUCCEED = "com.example.enticement.plate.mine.fragment.ACTION_LOGIN_SUCCEED";
+    public static final String ACTION_REFRESH_STATUS = "com.example.enticement.plate.mine.fragment.ACTION_REFRESH_STATUS";
     @BindView(R.id.text_name)
     TextView textName;
     @BindView(R.id.v6)
@@ -149,10 +150,10 @@ public class _MineFragment extends BaseFragment {
 
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
       //todo  临时存储
-        mUserInfo=new UserInfo();
+      /*  mUserInfo=new UserInfo();
         mUserInfo.setToken("7ee35ab8215b6992c500a42ae6abe3ec");
         mUserInfo.setId(18281);
-        SharedPrefUtils.save(mUserInfo,UserInfo.class);
+        SharedPrefUtils.save(mUserInfo,UserInfo.class);*/
         refreshLayout();
     }
 
@@ -191,6 +192,10 @@ public class _MineFragment extends BaseFragment {
                         refreshLayout();
 
                     }
+                }else if(ACTION_REFRESH_STATUS.equals(intent.getAction())){
+                    OrderViewModel orderViewModel = ViewModelProviders.of(_MineFragment.this).get(OrderViewModel.class);
+                    orderViewModel.getStatisticsOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()))
+                            .observe(mActivity, mTotalOrderObserver);
                 }
 
             }
@@ -207,7 +212,8 @@ public class _MineFragment extends BaseFragment {
         textName.setText(mUserInfo.getNickname());
 
         OrderViewModel orderViewModel = ViewModelProviders.of(this).get(OrderViewModel.class);
-        orderViewModel.getStatisticsOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId())).observe(mActivity, mTotalOrderObserver);
+        orderViewModel.getStatisticsOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()))
+                .observe(mActivity, mTotalOrderObserver);
     }
 
     @OnClick({R.id.img_kaiguan, R.id.btn_shengji, R.id.text_quanbudingdan, R.id.text_daifukuan, R.id.text_daifahuo, R.id.text_daishouhuo, R.id.text_yiwancheng, R.id.text_tuiguangyongjing, R.id.text_wodetuandui, R.id.text_shouhuodizi, R.id.text_yejiyuefan, R.id.text_wodekefu})
@@ -218,8 +224,8 @@ public class _MineFragment extends BaseFragment {
                 if (AppUtils.isAllowPermission(mActivity)) {
                     int mid = mUserInfo.getId();
                     String token = mUserInfo.getToken();
-                   // mViewModel.loginOut("2", token, "" + mid).observe(this, mloginoutObserver);
-                    loginout();
+                   mViewModel.loginOut("2", token, "" + mid).observe(this, mloginoutObserver);
+                    //loginout();
                 }
 
                 break;

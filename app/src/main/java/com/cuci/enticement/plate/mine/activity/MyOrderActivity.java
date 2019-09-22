@@ -4,21 +4,22 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.viewpager.widget.ViewPager;
-
 import com.classic.common.MultipleStatusView;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.plate.common.adapter.MainPagerAdapter;
 import com.cuci.enticement.plate.mall.fragment._MallFragment;
-import com.cuci.enticement.plate.mall.fragment._MallFragment01;
 import com.cuci.enticement.plate.mall.vm.MallViewModel;
+import com.cuci.enticement.plate.mine.fragment._OrderFragment01;
 import com.flyco.tablayout.SlidingTabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MyOrderActivity extends BaseActivity {
     private static final String TAG = _MallFragment.class.getSimpleName();
@@ -36,7 +37,7 @@ public class MyOrderActivity extends BaseActivity {
     private boolean mCouldChange = true;
     private MallViewModel mViewModel;
 
-    String [] titles={"全部","待付款","待发货","待收货","已完成"};
+    String[] titles = {"全部", "待付款", "待发货", "待收货", "已完成"};
     List<String> data = new ArrayList<String>();
 
     @Override
@@ -60,13 +61,23 @@ public class MyOrderActivity extends BaseActivity {
         MainPagerAdapter adapter = new MainPagerAdapter(getSupportFragmentManager());
         String[] titles = new String[data.size()];
         for (int i = 0; i < data.size(); i++) {
-            adapter.addFragment(_MallFragment01.newInstance(data.get(i)));
+
             titles[i] = data.get(i);
         }
+        adapter.addFragment(_OrderFragment01.newInstance(""));
+        adapter.addFragment(_OrderFragment01.newInstance("2"));
+        adapter.addFragment(_OrderFragment01.newInstance("3"));
+        adapter.addFragment(_OrderFragment01.newInstance("4"));
+        adapter.addFragment(_OrderFragment01.newInstance("5"));
         mViewPager.setOffscreenPageLimit(data.size() - 1);
         mViewPager.setAdapter(adapter);
         mTabLayout.setViewPager(mViewPager, titles);
         mStatusView.showContent();
     }
 
+
+    @OnClick(R.id.image_back)
+    public void onViewClicked() {
+        finish();
+    }
 }

@@ -6,6 +6,11 @@ public class ItemOrderBottom {
     public int status;
     public int num ;
     public float totalMoney ;
+    public int bottomcur;
+    public int topCur;
+
+
+
 
 
 }
