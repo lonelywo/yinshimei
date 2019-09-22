@@ -224,7 +224,7 @@ public class _MineFragment extends BaseFragment {
                 if (AppUtils.isAllowPermission(mActivity)) {
                     int mid = mUserInfo.getId();
                     String token = mUserInfo.getToken();
-                    mViewModel.loginOut("2", token, "" + mid).observe(this, mloginoutObserver);
+                   mViewModel.loginOut("2", token, "" + mid).observe(this, mloginoutObserver);
                     //loginout();
                 }
 
