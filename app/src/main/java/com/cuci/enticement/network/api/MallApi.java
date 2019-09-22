@@ -33,4 +33,15 @@ public interface MallApi {
                                      @Field("pagesize") String pagesize,
                                      @Field("sign") String sign
                                     );
+    /**
+     * 获取商城素材内容
+     */
+    @FormUrlEncoded
+    @POST("store/api.media/gets")
+    Call<MallSourceBean> getSource02(
+                               @Field("type") String type,
+                               @Field("page") String page,
+                               @Field("pagesize") String pagesize,
+                               @Field("sign") String sign
+    );
 }

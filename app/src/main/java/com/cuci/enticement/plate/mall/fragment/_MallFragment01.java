@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseFragment;
 import com.cuci.enticement.bean.MallSourceBean;
@@ -16,6 +18,7 @@ import com.cuci.enticement.plate.common.eventbus.MessageEvent1;
 import com.cuci.enticement.plate.mall.adapter.NineAdapter;
 import com.cuci.enticement.plate.mall.vm.MallViewModel;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.ViewUtils;
 import com.cuci.enticement.widget.CustomRefreshHeader;
 import com.cuci.enticement.widget.GridItemDecoration;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -105,12 +108,42 @@ public class _MallFragment01 extends BaseFragment implements OnRefreshLoadMoreLi
                 mRecyclerView.smoothScrollToPosition(0);
             }
         });
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                switch (newState) {
+                    case RecyclerView.SCROLL_STATE_IDLE:
+                        Glide.with(BasicApp.getContext()).resumeRequests();
+                        if (mLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                            ViewUtils.hideView(mIvTop);
+                        }
+                        break;
+                    case RecyclerView.SCROLL_STATE_DRAGGING:
+                        Glide.with(BasicApp.getContext()).pauseRequests();
+                        break;
+                    case RecyclerView.SCROLL_STATE_SETTLING:
+                        Glide.with(BasicApp.getContext()).resumeRequests();
+                        break;
+                }
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy < 0) {
+                    ViewUtils.showView(mIvTop);
+                } else {
+                    ViewUtils.hideView(mIvTop);
+                }
+
+            }
+        });
 
     }
 
     private void load() {
-        //发送事件
-        EventBus.getDefault().postSticky(new MessageEvent1(mtype));
+
         mViewModel.getSource01(mtype,"1",PAGE_SIZE,Status.LOAD_REFRESH).observe(this, mObserver);
     }
     private Observer<Status<MallSourceBean>> mObserver = status -> {

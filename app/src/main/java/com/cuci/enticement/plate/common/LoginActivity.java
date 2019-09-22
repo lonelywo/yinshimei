@@ -277,7 +277,6 @@ public class LoginActivity extends BaseActivity {
                     && "login".equals(type)) {
                 if (tenOuter()) {
                     //超过10分钟
-
                     String code = intent.getStringExtra("code");
                     FLog.e(TAG, "超过10分钟：" + code);
                     mViewModel.getWxToken(Constant.WX_APP_ID, Constant.WX_APP_SECRET_ID,
@@ -287,8 +286,8 @@ public class LoginActivity extends BaseActivity {
                     //十分钟内
                     //获取保存的信息
                     String wxOpenId = SharedPrefUtils.getWxOpenId();
-                    String openId = wxOpenId.split("YMS")[1];
-                    String token = wxOpenId.split("YMS")[2];
+                    String openId = wxOpenId.split("YSM")[1];
+                    String token = wxOpenId.split("YSM")[2];
                     FLog.e(TAG, "十分钟内：" + openId + " " + token);
                     mViewModel.getWxInfo(token, openId)
                             .observe(LoginActivity.this, mWxInfoObserver);

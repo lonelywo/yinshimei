@@ -1,5 +1,6 @@
 package com.cuci.enticement.plate.mall.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,15 +14,20 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.MallSourceBean;
 import com.cuci.enticement.bean.Status;
+import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.plate.common.eventbus.MessageEvent;
 import com.cuci.enticement.plate.common.eventbus.MessageEvent1;
 import com.cuci.enticement.plate.mall.adapter.NineAdapter;
 import com.cuci.enticement.plate.mall.vm.MallViewModel;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.SharedPrefUtils;
+import com.cuci.enticement.utils.ViewUtils;
 import com.cuci.enticement.widget.CustomRefreshHeader;
 import com.cuci.enticement.widget.GridItemDecoration;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -70,7 +76,16 @@ public class YuLanActivity extends BaseActivity implements OnRefreshLoadMoreList
         //注册事件
         EventBus.getDefault().register(this);
         mViewModel = ViewModelProviders.of(this).get(MallViewModel.class);
-
+        Intent intent = getIntent();
+        if (intent == null) {
+            FToast.error("数据错误");
+            return;
+        }
+        type = intent.getStringExtra("Data");
+        if (type == null) {
+            FToast.error("数据错误");
+            return;
+        }
         CustomRefreshHeader header = new CustomRefreshHeader(this);
         header.setBackground(0xFFF3F4F6);
         //mRefreshLayout.setRefreshHeader(header);
@@ -85,11 +100,42 @@ public class YuLanActivity extends BaseActivity implements OnRefreshLoadMoreList
         mDecoration = new GridItemDecoration(this, 3, 12, true);
         mRecyclerView.addItemDecoration(mDecoration);
         mRecyclerView.setAdapter(mAdapter);
-
+        mRefreshLayout.autoRefresh();
         mIvTop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mRecyclerView.smoothScrollToPosition(0);
+            }
+        });
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                switch (newState) {
+                    case RecyclerView.SCROLL_STATE_IDLE:
+                        Glide.with(BasicApp.getContext()).resumeRequests();
+                        if (mLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                            ViewUtils.hideView(mIvTop);
+                        }
+                        break;
+                    case RecyclerView.SCROLL_STATE_DRAGGING:
+                        Glide.with(BasicApp.getContext()).pauseRequests();
+                        break;
+                    case RecyclerView.SCROLL_STATE_SETTLING:
+                        Glide.with(BasicApp.getContext()).resumeRequests();
+                        break;
+                }
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy < 0) {
+                    ViewUtils.showView(mIvTop);
+                } else {
+                    ViewUtils.hideView(mIvTop);
+                }
+
             }
         });
     }
@@ -108,8 +154,8 @@ public class YuLanActivity extends BaseActivity implements OnRefreshLoadMoreList
 
     @Subscribe(threadMode = ThreadMode.POSTING, sticky = true)
     public void onShowStickyEventMessage(MessageEvent1 messageEvent) {
-        type = messageEvent.getMessage();
-        mRefreshLayout.autoRefresh();
+      //  type = messageEvent.getMessage();
+
      /*   //显示粘性事件
         CustomRefreshHeader header = new CustomRefreshHeader(this);
         header.setBackground(0xFFF3F4F6);
@@ -137,7 +183,7 @@ public class YuLanActivity extends BaseActivity implements OnRefreshLoadMoreList
         }*/
     }
     private void load() {
-        mViewModel.getSource01(type,"1",PAGE_SIZE, Status.LOAD_REFRESH).observe(this, mObserver);
+        mViewModel.getSource02(type,"1",PAGE_SIZE, Status.LOAD_REFRESH).observe(this, mObserver);
     }
 
     private Observer<Status<MallSourceBean>> mObserver = status -> {
@@ -212,7 +258,7 @@ public class YuLanActivity extends BaseActivity implements OnRefreshLoadMoreList
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
         if(mCanLoadMore){
             mCanLoadMore = false;
-            mViewModel.getSource01(type, String.valueOf(page),PAGE_SIZE,
+            mViewModel.getSource02(type, String.valueOf(page),PAGE_SIZE,
                     Status.LOAD_MORE).observe(this, mObserver);
         }else {
             mRefreshLayout.finishLoadMore();

@@ -2,6 +2,7 @@ package com.cuci.enticement.plate.mall.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +16,15 @@ import com.cuci.enticement.base.BaseFragment;
 import com.cuci.enticement.bean.MallSourceBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.plate.common.adapter.MainPagerAdapter;
+import com.cuci.enticement.plate.common.eventbus.MessageEvent1;
 import com.cuci.enticement.plate.mall.activity.YuLanActivity;
 import com.cuci.enticement.plate.mall.vm.MallViewModel;
 import com.cuci.enticement.plate.mine.activity.MyTeamTwoActivity;
 import com.cuci.enticement.utils.FToast;
 import com.flyco.tablayout.SlidingTabLayout;
+import com.flyco.tablayout.listener.OnTabSelectListener;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +53,7 @@ public class _MallFragment extends BaseFragment {
 
     private boolean mCouldChange = true;
     private MallViewModel mViewModel;
-
+    private String mtype;
 
     @Override
     protected void onLazyLoad() {
@@ -67,15 +72,7 @@ public class _MallFragment extends BaseFragment {
         mStatusView.setOnRetryClickListener(v -> {
             load();
         });
-        imageBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                Intent intentProd = new Intent(mActivity, YuLanActivity.class);
-                intentProd.putExtra("Data", "");
-                mActivity.startActivity(intentProd);
-            }
-        });
     }
 
     private void load() {
@@ -86,8 +83,20 @@ public class _MallFragment extends BaseFragment {
     private Observer<Status<MallSourceBean>> mObserver = status -> {
         switch (status.status) {
             case Status.SUCCESS:
+                mStatusView.showContent();
                 MallSourceBean bean = status.content;
+                if(bean.getCode()!=1){
+                    FToast.error("数据错误");
+
+                    return;
+                }
                 List<String> data = bean.getData().getTypes();
+                if(data==null||data.size()==0){
+                    FToast.error("数据错误");
+
+                    return;
+                }
+                mtype=data.get(0);
                 MainPagerAdapter adapter = new MainPagerAdapter(getChildFragmentManager());
                 String[] titles = new String[data.size()];
                 for (int i = 0; i < data.size(); i++) {
@@ -97,7 +106,47 @@ public class _MallFragment extends BaseFragment {
                 mViewPager.setOffscreenPageLimit(data.size() - 1);
                 mViewPager.setAdapter(adapter);
                 mTabLayout.setViewPager(mViewPager, titles);
-                mStatusView.showContent();
+                mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                    @Override
+                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                    }
+
+                    @Override
+                    public void onPageSelected(int position) {
+                        mtype=data.get(position);
+                    }
+
+                    @Override
+                    public void onPageScrollStateChanged(int state) {
+
+                    }
+                });
+                mTabLayout.setOnTabSelectListener(new OnTabSelectListener() {
+                    @Override
+                    public void onTabSelect(int position) {
+                        mtype=data.get(position);
+                    }
+
+                    @Override
+                    public void onTabReselect(int position) {
+
+                    }
+                });
+                imageBack.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //发送事件
+                        //    EventBus.getDefault().postSticky(new MessageEvent1(mtype));
+                        if(TextUtils.isEmpty(mtype)){
+                            return;
+                        }
+                        Intent intentProd = new Intent(mActivity, YuLanActivity.class);
+                        intentProd.putExtra("Data", mtype);
+                        mActivity.startActivity(intentProd);
+                    }
+                });
+
                 break;
             case Status.LOADING:
                 mStatusView.showLoading();

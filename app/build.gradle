@@ -37,9 +37,9 @@ android {
     buildTypes {
 
         release {
-            minifyEnabled true
+            minifyEnabled false
             zipAlignEnabled true
-            shrinkResources true
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.prod
         }
@@ -59,6 +59,7 @@ android {
             }
         }
     }
+
 
 
 

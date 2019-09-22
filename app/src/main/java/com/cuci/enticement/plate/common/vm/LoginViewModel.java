@@ -37,9 +37,17 @@ public class LoginViewModel extends ViewModel {
         final MutableLiveData<Status<Base<UserInfo>>> liveData = new MutableLiveData<>();
 
         liveData.setValue(Status.loading(null));
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("unionId",unionId);
+        params.put("openId",openId);
+        params.put("avatarUrl",avatarUrl);
+        params.put("nickname",nickname);
+        params.put("from_type",from_type);
+        params.put("gender",gender);
+        String signs = SignUtils.signParam(params);
 
         mCreator.create(UserApi.class)
-                .checkUserInfo(unionId, openId, avatarUrl, nickname,from_type,gender)
+                .checkUserInfo(unionId, openId, avatarUrl, nickname,from_type,gender,signs)
                 .enqueue(new Callback<Base<UserInfo>>() {
                     @Override
                     public void onResponse(@NonNull Call<Base<UserInfo>> call,

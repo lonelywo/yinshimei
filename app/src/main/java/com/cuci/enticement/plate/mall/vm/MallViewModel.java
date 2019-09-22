@@ -2,10 +2,13 @@ package com.cuci.enticement.plate.mall.vm;
 
 
 
+import android.text.TextUtils;
+
 import com.cuci.enticement.bean.MallSourceBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.network.ServiceCreator;
 import com.cuci.enticement.network.api.MallApi;
+import com.cuci.enticement.utils.EncryptUtils;
 import com.cuci.enticement.utils.SignUtils;
 
 import androidx.annotation.NonNull;
@@ -60,7 +63,9 @@ public class MallViewModel extends ViewModel {
 
         data.setValue(Status.loading(null));
         Map<String, String> params = new HashMap<String, String>();
-        params.put("type",type);
+        if(!TextUtils.isEmpty(type)){
+            params.put("type",type);
+        }
         params.put("page",page);
         params.put("pagesize",pagesize);
         String signs = SignUtils.signParam(params);
@@ -89,5 +94,43 @@ public class MallViewModel extends ViewModel {
                 });
         return data;
     }
+    public MutableLiveData<Status<MallSourceBean>> getSource02(String type,String page,String pagesize, int loadType) {
 
+        final MutableLiveData<Status<MallSourceBean>> data = new MutableLiveData<>();
+
+        data.setValue(Status.loading(null));
+      /*  String sign = EncryptUtils.md5Encrypt("&key=A8sUd9bqis3sN5GK6aF9JDFl5I9skPkd");
+        String signs = sign.toUpperCase();*/
+        Map<String, String> params = new HashMap<String, String>();
+        if(!TextUtils.isEmpty(type)){
+            params.put("type",type);
+        }
+        params.put("page",page);
+        params.put("pagesize",pagesize);
+        String signs = SignUtils.signParam(params);
+        mCreator.create(MallApi.class)
+                .getSource02(type,page,pagesize,signs)
+                .enqueue(new Callback<MallSourceBean>() {
+                    @Override
+                    public void onResponse(@NonNull Call<MallSourceBean> call,
+                                           @NonNull Response<MallSourceBean> response) {
+                        if (loadType == Status.LOAD_REFRESH) {
+                            data.setValue(Status.refreshSuccess(response.body()));
+                        } else {
+                            data.setValue(Status.moreSuccess(response.body()));
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<MallSourceBean> call,
+                                          @NonNull Throwable t) {
+                        if (loadType == Status.LOAD_REFRESH) {
+                            data.setValue(Status.refreshError(null, t.getMessage() == null ? "加载失败" : t.getMessage()));
+                        } else {
+                            data.setValue(Status.moreError(null, t.getMessage() == null ? "加载失败" : t.getMessage()));
+                        }
+                    }
+                });
+        return data;
+    }
 }

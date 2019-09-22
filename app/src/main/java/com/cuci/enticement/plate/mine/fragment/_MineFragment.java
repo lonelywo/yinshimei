@@ -149,10 +149,10 @@ public class _MineFragment extends BaseFragment {
 
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
       //todo  临时存储
-        mUserInfo=new UserInfo();
+      /*  mUserInfo=new UserInfo();
         mUserInfo.setToken("7ee35ab8215b6992c500a42ae6abe3ec");
         mUserInfo.setId(18281);
-        SharedPrefUtils.save(mUserInfo,UserInfo.class);
+        SharedPrefUtils.save(mUserInfo,UserInfo.class);*/
         refreshLayout();
     }
 
@@ -218,8 +218,8 @@ public class _MineFragment extends BaseFragment {
                 if (AppUtils.isAllowPermission(mActivity)) {
                     int mid = mUserInfo.getId();
                     String token = mUserInfo.getToken();
-                   // mViewModel.loginOut("2", token, "" + mid).observe(this, mloginoutObserver);
-                    loginout();
+                    mViewModel.loginOut("2", token, "" + mid).observe(this, mloginoutObserver);
+                    //loginout();
                 }
 
                 break;

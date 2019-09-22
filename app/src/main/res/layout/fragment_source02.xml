@@ -20,6 +20,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginLeft="20dp"
+            android:padding="10dp"
             />
         <TextView
             android:id="@+id/text_biaoti"
@@ -70,7 +71,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="ContentDescription"
-        tools:visibility="visible"/>
+        android:visibility="gone"/>
 
 
 

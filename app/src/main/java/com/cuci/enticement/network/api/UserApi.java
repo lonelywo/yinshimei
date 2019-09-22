@@ -110,7 +110,8 @@ public interface UserApi {
                                        @Field("avatarUrl") String avatarUrl,
                                        @Field("nickname") String nickname,
                                        @Field("from_type") String from_type,
-                                       @Field("gender") String gender
+                                       @Field("gender") String gender,
+                                       @Field("sign") String sign
     );
     /**
      * 获取微信授权token

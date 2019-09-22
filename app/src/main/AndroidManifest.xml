@@ -11,6 +11,10 @@
         android:theme="@style/AppTheme.NoActionBar"
         tools:replace="label,allowBackup"
         tools:targetApi="n">
+
+        <meta-data
+            android:name="com.cuci.enticement.cache.GlideConfiguration"
+            android:value="GlideModule" />
         <activity android:name=".plate.home.activity.ProdActivity"></activity>
         <activity android:name=".plate.mine.activity.MyOrderActivity"></activity>
         <activity android:name=".plate.common.LoginActivity"></activity>
