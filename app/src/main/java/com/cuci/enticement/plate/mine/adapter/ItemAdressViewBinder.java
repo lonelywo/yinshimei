@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cuci.enticement.R;
 import com.cuci.enticement.bean.AdressBean;
+import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.ViewUtils;
 
 import butterknife.BindView;
@@ -51,9 +52,22 @@ public class ItemAdressViewBinder extends ItemViewBinder<AdressBean.DataBean.Lis
 
         if(item.getIs_default()==1){
             ViewUtils.showView(holder.defaultTv);
+            SharedPrefUtils.saveDefaultAdressId(String.valueOf(item.getId()));
+            StringBuilder sb = new StringBuilder();
+            sb.append(item.getName()).append(" ")
+                    .append(item.getPhone()).append(" ")
+                    .append(item.getProvince()).append(" ")
+                    .append(item.getCity()).append(" ")
+                    .append(item.getArea()).append(" ")
+                    .append(item.getAddress());
+            SharedPrefUtils.saveDefaultAdress(sb.toString());
         }else {
             ViewUtils.hideView(holder.defaultTv);
         }
+
+
+
+
 
         holder.textName.setText(item.getName());
 
@@ -62,6 +76,8 @@ public class ItemAdressViewBinder extends ItemViewBinder<AdressBean.DataBean.Lis
                 .append(" ").append(item.getAddress());
         holder.textDizi.setText(builder.toString());
         holder.textPhone.setText(item.getPhone());
+
+
 
 
         holder.itemView.setOnClickListener(view -> {

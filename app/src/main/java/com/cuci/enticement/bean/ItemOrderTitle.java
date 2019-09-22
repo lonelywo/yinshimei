@@ -14,10 +14,11 @@ public class ItemOrderTitle {
     status 5 已确认收货，订单完成*/
 
     public int status;//订单状态
-
-    public ItemOrderTitle(String orderNum, int status) {
+    public int cur;
+    public ItemOrderTitle(String orderNum, int status,int cur) {
         this.orderNum = orderNum;
         this.status = status;
+        this.cur=cur;
     }
 
     public String getOrderNum() {
@@ -34,5 +35,13 @@ public class ItemOrderTitle {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public int getCur() {
+        return cur;
+    }
+
+    public void setCur(int cur) {
+        this.cur = cur;
     }
 }

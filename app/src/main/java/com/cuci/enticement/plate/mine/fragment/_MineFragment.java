@@ -110,6 +110,7 @@ public class _MineFragment extends BaseFragment {
     ScrollView scrollView;
     public static final String DATA_USER_INFO = "data_user_info_";
     public static final String ACTION_LOGIN_SUCCEED = "com.example.enticement.plate.mine.fragment.ACTION_LOGIN_SUCCEED";
+    public static final String ACTION_REFRESH_STATUS = "com.example.enticement.plate.mine.fragment.ACTION_REFRESH_STATUS";
     @BindView(R.id.text_name)
     TextView textName;
     @BindView(R.id.v6)
@@ -191,6 +192,10 @@ public class _MineFragment extends BaseFragment {
                         refreshLayout();
 
                     }
+                }else if(ACTION_REFRESH_STATUS.equals(intent.getAction())){
+                    OrderViewModel orderViewModel = ViewModelProviders.of(_MineFragment.this).get(OrderViewModel.class);
+                    orderViewModel.getStatisticsOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()))
+                            .observe(mActivity, mTotalOrderObserver);
                 }
 
             }
@@ -207,7 +212,8 @@ public class _MineFragment extends BaseFragment {
         textName.setText(mUserInfo.getNickname());
 
         OrderViewModel orderViewModel = ViewModelProviders.of(this).get(OrderViewModel.class);
-        orderViewModel.getStatisticsOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId())).observe(mActivity, mTotalOrderObserver);
+        orderViewModel.getStatisticsOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()))
+                .observe(mActivity, mTotalOrderObserver);
     }
 
     @OnClick({R.id.img_kaiguan, R.id.btn_shengji, R.id.text_quanbudingdan, R.id.text_daifukuan, R.id.text_daifahuo, R.id.text_daishouhuo, R.id.text_yiwancheng, R.id.text_tuiguangyongjing, R.id.text_wodetuandui, R.id.text_shouhuodizi, R.id.text_yejiyuefan, R.id.text_wodekefu})

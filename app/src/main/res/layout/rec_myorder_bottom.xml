@@ -47,11 +47,11 @@
         android:layout_marginTop="10dp"
         />
     <TextView
-        android:id="@+id/text_quxiao"
+        android:id="@+id/text_quxiao_express"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/shape_sibian_bai_bg6"
-        app:layout_constraintEnd_toStartOf="@+id/text_zhifu"
+        app:layout_constraintEnd_toStartOf="@+id/text_zhifu_rebuy_queren"
         app:layout_constraintTop_toBottomOf="@+id/line2"
         android:text="取消订单"
         android:padding="5dp"
@@ -59,12 +59,13 @@
         android:layout_marginTop="10dp"
         />
     <TextView
-        android:id="@+id/text_zhifu"
+        android:id="@+id/text_zhifu_rebuy_queren"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="立即支付"
         android:textColor="@color/colorWhite"
         android:padding="5dp"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/line2"
         android:background="@drawable/shape_sibian_huang_bg1"

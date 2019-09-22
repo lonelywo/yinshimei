@@ -12,21 +12,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cuci.enticement.R;
 import com.cuci.enticement.bean.CartDataBean;
+import com.cuci.enticement.bean.OrderGoods;
 import com.cuci.enticement.utils.ImageLoader;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.drakeet.multitype.ItemViewBinder;
 
-public class ItemCartViewBinder extends ItemViewBinder<CartDataBean.ListBean, ItemCartViewBinder.ViewHolder> {
+public class ItemCartViewBinder extends ItemViewBinder<OrderGoods, ItemCartViewBinder.ViewHolder> {
 
     public interface OnItemClickListener {
 
-        void onAddClick(CartDataBean.ListBean bean);
+        void onAddClick(OrderGoods bean);
 
-        void onMinusClick(CartDataBean.ListBean bean);
+        void onMinusClick(OrderGoods bean);
         void onCheckedChange();
-        void onDelete(CartDataBean.ListBean bean);
+        void onDelete(OrderGoods bean);
     }
 
     private ItemCartViewBinder.OnItemClickListener mOnItemClickListener;
@@ -43,7 +44,7 @@ public class ItemCartViewBinder extends ItemViewBinder<CartDataBean.ListBean, It
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull CartDataBean.ListBean item) {
+    protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull OrderGoods item) {
 
 
         if (item.isCheck()) {

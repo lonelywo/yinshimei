@@ -22,10 +22,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.classic.common.MultipleStatusView;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseFragment;
+import com.cuci.enticement.bean.AllOrderList;
 import com.cuci.enticement.bean.Base;
 import com.cuci.enticement.bean.CartDataBean;
 import com.cuci.enticement.bean.CartDelete;
 import com.cuci.enticement.bean.CartIntentInfo;
+import com.cuci.enticement.bean.OrderGoods;
 import com.cuci.enticement.bean.OrderResult;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
@@ -106,7 +108,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
         mRefreshLayout.setEnableFooterFollowWhenNoMoreData(true);
         mRefreshLayout.setOnRefreshLoadMoreListener(this);
 
-        mAdapter.register(CartDataBean.ListBean.class, new ItemCartViewBinder(this));
+        mAdapter.register(OrderGoods.class, new ItemCartViewBinder(this));
         CartItemDecoration mDecoration = new CartItemDecoration(mActivity, 4);
 
         mRecyclerView.addItemDecoration(mDecoration);
@@ -154,7 +156,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
             if(mCanChange) {
 
                 mCanChange=false;
-                CartDataBean.ListBean bean = (CartDataBean.ListBean) mAdapter.getItems().get(mPosition);
+                OrderGoods bean = (OrderGoods) mAdapter.getItems().get(mPosition);
                 int cart_id = bean.getCart_id();
                 mViewModel.cartDelete(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),String.valueOf(cart_id) )
                         .observe(mActivity, mDeleteObserver);
@@ -172,6 +174,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
         public void onReceive(Context context, Intent intent) {
             if (intent != null && intent.getAction() != null) {
                 if(intent.getAction().equals(ACTION_REFRESH_DATA)){
+                    //刷新购物车列表
                     mUserInfo = SharedPrefUtils.get(UserInfo.class);
                     if(mUserInfo==null){
                         mStatusView.showEmpty();
@@ -258,7 +261,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
 
                     mPage=data.getPage().getCurrent()+1;
-                    List<CartDataBean.ListBean> list = data.getList();
+                    List<OrderGoods> list = data.getList();
                    if (status.content.code == 1) {
                         mCanLoadMore = true;
                         if (status.loadType == Status.LOAD_REFRESH) {
@@ -305,7 +308,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
             return;
         }
         for (int i = 0; i < mItems.size(); i++) {
-            CartDataBean.ListBean item = (CartDataBean.ListBean) mItems.get(i);
+            OrderGoods item = (OrderGoods) mItems.get(i);
             item.setCheck(checkAll);
         }
         mAdapter.notifyDataSetChanged();
@@ -317,10 +320,10 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
     }
 
 
-    private List<CartDataBean.ListBean> getCheckeds() {
-        List<CartDataBean.ListBean> items = new ArrayList<>();
+    private List<OrderGoods> getCheckeds() {
+        List<OrderGoods> items = new ArrayList<>();
         for (int i = 0; i < mItems.size(); i++) {
-            CartDataBean.ListBean item = (CartDataBean.ListBean) mItems.get(i);
+            OrderGoods item = (OrderGoods) mItems.get(i);
             if (item.isCheck()) {
                 items.add(item);
             }
@@ -333,7 +336,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
         double totalF = 0;
         for (int i = 0; i < mItems.size(); i++) {
-            CartDataBean.ListBean item = (CartDataBean.ListBean) mItems.get(i);
+            OrderGoods item = (OrderGoods) mItems.get(i);
             if (item.isCheck()) {
                 double itemMoeny = Double.parseDouble(item.getGoods_price_selling());
                 totalF = totalF + item.getGoods_num() * itemMoeny;
@@ -345,7 +348,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
     private boolean mCanChange=true;
     private long mGoodsId;
     @Override
-    public void onAddClick(CartDataBean.ListBean bean) {
+    public void onAddClick(OrderGoods bean) {
         //点击一次加1一次
         if(mCanChange){
             int goods_num = bean.getGoods_num()+1;
@@ -359,7 +362,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
     }
 
     @Override
-    public void onMinusClick(CartDataBean.ListBean bean) {
+    public void onMinusClick(OrderGoods bean) {
         if(mCanChange) {
             int goods_num = bean.getGoods_num() - 1;
             String goods_id = String.valueOf(bean.getGoods_id());
@@ -389,7 +392,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
     }
 
     @Override
-    public void onDelete(CartDataBean.ListBean bean) {
+    public void onDelete(OrderGoods bean) {
 
     }
 
@@ -455,7 +458,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
                         return;
                     }
                     mStatusView.showContent();
-                    List<CartDataBean.ListBean> list = data.getList();
+                    List<OrderGoods> list = data.getList();
                     if (status.content.code == 1) {
 
                         mCanChange = true;
@@ -491,22 +494,27 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
     @OnClick(R.id.tv_commit)
     public void onViewClicked() {
-        List<CartDataBean.ListBean> items = (List<CartDataBean.ListBean>) mAdapter.getItems();
+        List<OrderGoods> checkeds = getCheckeds();
+      //  List<OrderGoods> items = (List<OrderGoods>) mAdapter.getItems();
 
-
+        if(checkeds.size()==0){
+            FToast.warning("请先选择要结算的商品");
+            return;
+        }
         StringBuilder sb=new StringBuilder();
-        for (int i = 0; i < items.size(); i++) {
-            CartDataBean.ListBean listBean = items.get(i);
+        for (int i = 0; i < checkeds.size(); i++) {
+            OrderGoods listBean = checkeds.get(i);
             sb.append(listBean.getGoods_id()).append("@")
                     .append(listBean.getGoods_spec()).append("@")
                     .append(listBean.getGoods_num());
-            if(items.size()>1&&i!=items.size()-1){
+            if(checkeds.size()>1&&i!=checkeds.size()-1){
                 sb.append("||");
             }
 
         }
         String s = sb.toString();
-       mViewModel.commitOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), sb.toString(),"").observe(this, mCommitObserver);
+       mViewModel.commitOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), sb.toString(),"")
+               .observe(this, mCommitObserver);
 
 
     }
@@ -526,13 +534,13 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
                         if(orderResult.getCode()==1){
                             //跳转
 
-                            List<CartDataBean.ListBean> items = (List<CartDataBean.ListBean>) mAdapter.getItems();
+                            List<OrderGoods> items = (List<OrderGoods>) mAdapter.getItems();
+                            AllOrderList.DataBean.ListBeanX cartIntentInfo=new AllOrderList.DataBean.ListBeanX();
 
-                            CartIntentInfo cartIntentInfo = new CartIntentInfo();
-                            cartIntentInfo.setOrderNo(orderResult.getData().getOrder().getOrder_no());
-                            cartIntentInfo.setItems(items);
-                            cartIntentInfo.setCount(items.size());
-                            cartIntentInfo.setTotalMoney(Double.parseDouble(mTvTotal.getText().toString()));
+                            cartIntentInfo.setOrder_no(Long.parseLong(orderResult.getData().getOrder().getOrder_no()));
+                            cartIntentInfo.setList(items);
+                            cartIntentInfo.setGoods_count(items.size());
+                            cartIntentInfo.setPrice_goods(mTvTotal.getText().toString());
                             Intent intent = new Intent(mActivity, OrderActivity.class);
                             intent.putExtra("intentInfo",cartIntentInfo);
                             startActivity(intent);

@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cuci.enticement.R;
-import com.cuci.enticement.bean.GeneralGoodsItem;
+import com.cuci.enticement.bean.GoodsItem;
 import com.cuci.enticement.plate.home.activity.ProdActivity;
 import com.cuci.enticement.utils.ImageLoader;
 
@@ -23,7 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.drakeet.multitype.ItemViewBinder;
 
-public class ItemGoodsLongViewBinder extends ItemViewBinder<GeneralGoodsItem, ItemGoodsLongViewBinder.ViewHolder> {
+public class ItemGoodsLongViewBinder extends ItemViewBinder<GoodsItem, ItemGoodsLongViewBinder.ViewHolder> {
 
     private final Context mContext;
 
@@ -39,7 +39,7 @@ public class ItemGoodsLongViewBinder extends ItemViewBinder<GeneralGoodsItem, It
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull GeneralGoodsItem item) {
+    protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull GoodsItem item) {
         ImageLoader.loadPlaceholder(item.getLogo(),holder.image_home);
         holder.text_home_goodsname.setText(item.getTitle());
         holder.text_home_money.setText("¥" + item.getLists().get(0).get(0).getSelling());

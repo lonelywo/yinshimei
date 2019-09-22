@@ -22,7 +22,7 @@ public interface OrderApi {
      */
     @FormUrlEncoded
     @POST("store/api.member.order/gets")
-    Call<OrderList> getOrderList(@Field("token") String token,
+    Call<ResponseBody> getOrderList(@Field("from_type") String fromType,@Field("token") String token,
                                  @Field("mid") String mid,
                                  @Field("page") String page,
                                  @Field("status") String status,
@@ -46,7 +46,7 @@ public interface OrderApi {
      */
     @FormUrlEncoded
     @POST("store/api.member.order/cancel")
-    Call<OrderResult> cancelOrder(@Field("token") String token,
+    Call<ResponseBody> cancelOrder(@Field("from_type") String fromType,@Field("token") String token,
                                    @Field("mid") String mid,
                                    @Field("order_no") String orderNum,
                                   @Field("sign") String signs);
@@ -92,7 +92,7 @@ public interface OrderApi {
      */
     @FormUrlEncoded
     @POST("store/api.member.order/pay")
-    Call<OrderPay> getOrderPay(@Field("token") String token,
+    Call<ResponseBody> getOrderPay(@Field("from_type") String fromType,@Field("token") String token,
                                @Field("mid") String mid,
                                @Field("order_no") String orderNum,
                                @Field("pay_type") String payType,

@@ -108,10 +108,7 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
-              /*  Intent intent = new Intent(RecAddressActivity.this, OrderActivity.class);
-                intent.putExtra("adress",mAdress);
 
-                setResult(101,intent);*/
                 finish();
                 break;
             case R.id.btn_add_new_adress:
@@ -206,7 +203,12 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
 
     @Override
     public void onCheckAdress(AdressBean.DataBean.ListBean bean) {
+        Intent intent = new Intent(RecAddressActivity.this, OrderActivity.class);
+        intent.putExtra("adress",bean.getAddress());
+        intent.putExtra("adressId",bean.getId());
 
+        setResult(101,intent);
+        finish();
     }
 
     @Override

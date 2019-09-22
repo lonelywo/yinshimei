@@ -3,7 +3,7 @@ package com.cuci.enticement.bean;
 import java.io.Serializable;
 
 /**
- * 预定单返回
+ * 预定单页面
  */
 public class OrderResult implements Serializable {
 

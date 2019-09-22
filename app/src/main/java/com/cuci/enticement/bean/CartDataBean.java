@@ -13,7 +13,7 @@ public class CartDataBean implements Serializable {
 
     private PageBean page;
     private TotalBean total;
-    private List<ListBean> list;
+    private List<OrderGoods> list;
 
     public PageBean getPage() {
         return page;
@@ -31,11 +31,11 @@ public class CartDataBean implements Serializable {
         this.total = total;
     }
 
-    public List<ListBean> getList() {
+    public List<OrderGoods> getList() {
         return list;
     }
 
-    public void setList(List<ListBean> list) {
+    public void setList(List<OrderGoods> list) {
         this.list = list;
     }
 
@@ -101,8 +101,12 @@ public class CartDataBean implements Serializable {
         }
     }
 
-    public static class ListBean {
-        /**
+
+
+
+
+/*    public static class ListBean {
+        *//**
          * cart_id : 101
          * mid : 18281
          * goods_id : 6672588222
@@ -113,7 +117,7 @@ public class CartDataBean implements Serializable {
          * goods_price_market : 3660.00
          * goods_num : 1
          * stock : 9928
-         */
+         *//*
 
         private int cart_id;
         private int mid;
@@ -216,7 +220,7 @@ public class CartDataBean implements Serializable {
         public void setStock(int stock) {
             this.stock = stock;
         }
-    }
+    }*/
 
 
 }
