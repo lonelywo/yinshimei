@@ -72,6 +72,7 @@
              app:layout_constraintTop_toBottomOf="@+id/text_dizi"
              />
           <TextView
+              android:id="@+id/tv_order_no"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               app:layout_constraintTop_toBottomOf="@+id/line"
@@ -166,7 +167,7 @@
             android:textColor="@color/hei"
             />
         <TextView
-            android:id="@+id/jizhun2"
+            android:id="@+id/tv_goods_money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
@@ -178,35 +179,35 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/jizhun2"
+            app:layout_constraintTop_toBottomOf="@id/tv_goods_money"
             android:text="运费"
             android:textColor="@color/hei"
             />
         <TextView
-            android:id="@+id/jizhun3"
+            android:id="@+id/tv_express"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             android:text="50"
             android:textColor="@color/hei"
-            app:layout_constraintTop_toBottomOf="@id/jizhun2"
+            app:layout_constraintTop_toBottomOf="@id/tv_goods_money"
             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/jizhun3"
+            app:layout_constraintTop_toBottomOf="@id/tv_express"
             android:text="下单时间"
             android:textColor="@color/hei"
             />
         <TextView
-
+            android:id="@+id/tv_create_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             android:text="2019-07-09 12:06:33"
             android:textColor="@color/hei"
-            app:layout_constraintTop_toBottomOf="@id/jizhun3"
+            app:layout_constraintTop_toBottomOf="@id/tv_express"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -228,7 +229,7 @@
         android:textColor="@color/hei"
         />
     <TextView
-
+        android:id="@+id/tv_total_money"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -248,6 +249,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         >
         <TextView
+            android:id="@+id/tv_cancel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -258,6 +260,7 @@
             android:padding="15dp"
             />
         <TextView
+            android:id="@+id/tv_commit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

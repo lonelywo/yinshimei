@@ -322,6 +322,23 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
     @Override
     public void onReBuy(ItemOrderBottom itemOrderBottom) {
 
+        String orderNum = itemOrderBottom.orderNum;
+        int cur=0;
+        for (int i = 0; i < mDatas.size(); i++) {
+            AllOrderList.DataBean.ListBeanX listBeanX = mDatas.get(i);
+            if(orderNum.equals(String.valueOf(listBeanX.getOrder_no()))){
+                        cur=i;
+                break;
+            }
+        }
+        AllOrderList.DataBean.ListBeanX cartIntentInfo = mDatas.get(cur);
+
+        Intent intent = new Intent(mActivity, OrderActivity.class);
+        intent.putExtra("intentInfo",cartIntentInfo);
+        startActivity(intent);
+
+
+
     }
 
     /**

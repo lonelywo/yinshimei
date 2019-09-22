@@ -108,7 +108,7 @@ public class OrderActivity extends BaseActivity {
 
         if(!TextUtils.isEmpty(adress)){
             mViewModel.getExpressCost(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),String.valueOf(mInfo.getOrder_no()),mAdressId)
-                    .observe(this,mAdressObserver);
+                    .observe(this,mExpressCostObserver);
         }
 
     }
@@ -145,26 +145,12 @@ public class OrderActivity extends BaseActivity {
     }
 
 
-    private Observer<Status<OrderResult>> mResultObserver = status -> {
-        switch (status.status) {
-            case Status.SUCCESS:
-                OrderResult content = status.content;
-                if (content.getCode() == 1) {
-
-                }
-
-                break;
-            case Status.LOADING:
-
-                break;
-            case Status.ERROR:
-                FToast.error(status.message);
-
-                break;
-        }
-    };
 
 
+
+    /**
+     * 获取支付参数接口
+     */
     private Observer<Status<ResponseBody>> mPayObserver = status -> {
         switch (status.status) {
             case Status.SUCCESS:
@@ -174,16 +160,26 @@ public class OrderActivity extends BaseActivity {
                 try {
                     String result = body.string();
                     OrderPay orderPay = new Gson().fromJson(result, OrderPay.class);
+                    if(orderPay.getCode()==1){
+                        OrderPay.DataBean data = orderPay.getData();
+                        String appid = data.getAppid();
+                        String prepayid = data.getPrepayid();
+                        String sign = data.getSign();
+                        String timestamp = data.getTimestamp();
+                        String partnerid = data.getPartnerid();
+                        String noncestr = data.getNoncestr();
+
+                    }else {
+                        FToast.warning(orderPay.getInfo());
+                    }
+
+
 
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-              /*  OrderPay content = status.content;
-                if (content.getCode() == 1) {
-                    mViewModel.orderConfirm(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "")
-                            .observe(OrderActivity.this, mResultObserver);
-                }
-*/
+
+
                 break;
             case Status.LOADING:
 
@@ -206,37 +202,30 @@ public class OrderActivity extends BaseActivity {
             mAdressId= data.getStringExtra("adressId");
             textDizi.setText(adress);
             mViewModel.getExpressCost(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),String.valueOf(mInfo.getOrder_no()),mAdressId)
-                    .observe(this,mAdressObserver);
+                    .observe(this,mExpressCostObserver);
         }
     }
 
 
-    private Observer<Status<ResponseBody>> mAdressObserver = status -> {
+    /**
+     * 获取运费接口
+     */
+    private Observer<Status<ResponseBody>> mExpressCostObserver = status -> {
         switch (status.status) {
             case Status.SUCCESS:
                 ResponseBody body = status.content;
                 try {
                     String result = body.string();
                     ExpressCost expressCost = new Gson().fromJson(result, ExpressCost.class);
-                    double express_price = expressCost.getData().getExpress_price();
-                    textYunfeimoney.setText(String.valueOf(express_price));
-                    //计算总价
-                    double totalMoney= Arith.add(Double.parseDouble(mInfo.getPrice_goods()),express_price);
-                    textShangpingzongjia.setText(String.valueOf(totalMoney));
-
-                  //  String a="123";
-
-
-
-                    //   new Gson().fromJson(result,);
-                   /*  textYunfeimoney.setText(mOrderBean.getPrice_express());
-                     textShangpingzongjia.setText(mOrderBean.getPrice_total());*/
-                 /*   if (content.getCode() == 1) {
-
-                        mViewModel.getOrderPay(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "", String.valueOf(mPayType))
-                                .observe(OrderActivity.this, mPayObserver);
-                    }*/
-
+                    if(expressCost.getCode()==1){
+                        double express_price = expressCost.getData().getExpress_price();
+                        textYunfeimoney.setText(String.valueOf(express_price));
+                        //计算总价
+                        double totalMoney= Arith.add(Double.parseDouble(mInfo.getPrice_goods()),express_price);
+                        textShangpingzongjia.setText(String.valueOf(totalMoney));
+                    }else {
+                        FToast.warning(expressCost.getInfo());
+                    }
 
 
 
@@ -259,7 +248,9 @@ public class OrderActivity extends BaseActivity {
     };
 
 
-
+    /**
+     * 提交订单接口   将预订单变成待支付订单  status由1变成2
+     */
     private Observer<Status<ResponseBody>> mCommitObserver = status -> {
         switch (status.status) {
             case Status.SUCCESS:
@@ -285,15 +276,6 @@ public class OrderActivity extends BaseActivity {
                         FToast.warning("提交订单失败");
                     }
 
-
-                    //   new Gson().fromJson(result,);
-                   /*  textYunfeimoney.setText(mOrderBean.getPrice_express());
-                     textShangpingzongjia.setText(mOrderBean.getPrice_total());*/
-                 /*   if (content.getCode() == 1) {
-
-                        mViewModel.getOrderPay(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "", String.valueOf(mPayType))
-                                .observe(OrderActivity.this, mPayObserver);
-                    }*/
 
 
 
