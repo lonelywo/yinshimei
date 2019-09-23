@@ -1,6 +1,8 @@
 package com.cuci.enticement.bean;
 
-public class OrderGoods {
+import java.io.Serializable;
+
+public class OrderGoods implements Serializable {
 
     private int cart_id;
     private int mid;
