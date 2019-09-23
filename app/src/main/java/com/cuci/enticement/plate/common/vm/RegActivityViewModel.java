@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.cuci.enticement.bean.Base;
 import com.cuci.enticement.bean.Status;
+import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.network.ServiceCreator;
 import com.cuci.enticement.network.api.UserApi;
 import com.cuci.enticement.utils.EncryptUtils;
@@ -14,6 +15,7 @@ import com.cuci.enticement.utils.SignUtils;
 import java.util.HashMap;
 import java.util.Map;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -82,26 +84,32 @@ public class RegActivityViewModel extends ViewModel {
                 });
         return liveData;
     }
-    public MutableLiveData<Status<Base>> wxBindPhone(String phone) {
+    public MutableLiveData<Status<Base<UserInfo>>> wxBindPhone(String phone, String unionId, String openId, String avatarUrl, String nickname, String from_type, String gender) {
 
-        final MutableLiveData<Status<Base>> liveData = new MutableLiveData<>();
+        final MutableLiveData<Status<Base<UserInfo>>> liveData = new MutableLiveData<>();
 
         liveData.setValue(Status.loading(null));
         Map<String, String> params = new HashMap<String, String>();
         params.put("phone",phone);
+        params.put("unionId",unionId);
+        params.put("openId",openId);
+        params.put("avatarUrl",avatarUrl);
+        params.put("nickname",nickname);
+        params.put("from_type",from_type);
+        params.put("gender",gender);
         String signs = SignUtils.signParam(params);
 
         mCreator.create(UserApi.class)
-                .wxBindPhone(phone,signs)
-                .enqueue(new Callback<Base>() {
+                .wxBindPhone(phone,unionId,openId,avatarUrl,nickname,from_type,gender,signs)
+                .enqueue(new Callback<Base<UserInfo>>() {
                     @Override
-                    public void onResponse(@NonNull Call<Base> call,
-                                           @NonNull Response<Base> response) {
+                    public void onResponse(@NonNull Call<Base<UserInfo>> call,
+                                           @NonNull Response<Base<UserInfo>> response) {
                         liveData.setValue(Status.success(response.body()));
                     }
 
                     @Override
-                    public void onFailure(@NonNull Call<Base> call,
+                    public void onFailure(@NonNull Call<Base<UserInfo>> call,
                                           @NonNull Throwable t) {
                         liveData.setValue(Status.error(null, t.getMessage() == null ? "网络错误" : t.getMessage()));
                     }

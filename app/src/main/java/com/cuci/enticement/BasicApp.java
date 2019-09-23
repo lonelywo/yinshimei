@@ -5,6 +5,8 @@ import android.os.Build;
 import android.os.StrictMode;
 
 
+import com.cuci.enticement.bean.WxPayBean;
+import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
@@ -53,4 +55,5 @@ public class BasicApp extends Application {
     public static BasicApp getContext() {
         return mContext;
     }
+
 }

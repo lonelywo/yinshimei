@@ -36,6 +36,7 @@
 
 
 
+
         <activity android:name=".plate.common.MainActivity">
 
             <intent-filter>
@@ -54,7 +55,10 @@
             android:taskAffinity="net.sourceforge.simcpux"
             android:launchMode="singleTask">
         </activity>
-
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop"/>
 
     </application>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

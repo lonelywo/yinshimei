@@ -1,6 +1,8 @@
 package com.cuci.enticement.plate.common;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -19,6 +21,7 @@ import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.Base;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.plate.common.vm.RegActivityViewModel;
+import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.cuci.enticement.utils.FLog;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.Re;
@@ -142,7 +145,7 @@ public class RegisterActivity extends BaseActivity {
                     }
                     if (baseStatus.content.code == 1) {
                         FToast.success("注册成功，请登录");
-                      finish();
+                        finish();
                     } else {
                         FToast.error(baseStatus.content.info);
                     }

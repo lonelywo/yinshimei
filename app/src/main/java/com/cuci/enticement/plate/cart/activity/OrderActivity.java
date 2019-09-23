@@ -1,16 +1,24 @@
 package com.cuci.enticement.plate.cart.activity;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.alipay.sdk.app.PayTask;
+import com.cuci.enticement.BasicApp;
+import com.cuci.enticement.Constant;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.AllOrderList;
@@ -23,16 +31,24 @@ import com.cuci.enticement.bean.OrderPay;
 import com.cuci.enticement.bean.OrderResult;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
+import com.cuci.enticement.bean.WxPayBean;
 import com.cuci.enticement.plate.mine.activity.RecAddressActivity;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.cuci.enticement.plate.mine.vm.OrderViewModel;
 import com.cuci.enticement.utils.Arith;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.PayResult;
 import com.cuci.enticement.utils.SharedPrefUtils;
+import com.cuci.enticement.wxapi.WXEntryActivity;
 import com.google.gson.Gson;
+import com.tencent.mm.opensdk.modelpay.PayReq;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.List;
+import java.util.Map;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import butterknife.BindView;
@@ -45,7 +61,8 @@ import static com.cuci.enticement.plate.cart.fragment._CartFragment.ACTION_REFRE
  *
  */
 public class OrderActivity extends BaseActivity {
-
+    private static final int SDK_PAY_FLAG = 1;
+    private static final String TAG = OrderActivity.class.getSimpleName();
     @BindView(R.id.text_dizi)
     TextView textDizi;
 
@@ -71,6 +88,40 @@ public class OrderActivity extends BaseActivity {
     private String mAdressId="";
     private int mPayType=1;
     private AllOrderList.DataBean.ListBeanX   mInfo;
+
+    @SuppressLint("HandlerLeak")
+    private  Handler mHandler = new Handler() {
+        @SuppressWarnings("unused")
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case SDK_PAY_FLAG: {
+                    PayResult payResult = new PayResult((Map<String, String>) msg.obj);
+                    String resultInfo = payResult.getResult();// 同步返回需要验证的信息
+                    String resultStatus = payResult.getResultStatus();
+                    // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
+                    if (TextUtils.equals(resultStatus, "9000")) {
+
+                        Toast.makeText(OrderActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
+                       finish();
+                    } else {
+
+                        if (TextUtils.equals(resultStatus, "6001")) {
+                            Toast.makeText(OrderActivity.this, "支付取消", Toast.LENGTH_SHORT).show();
+                            finish();
+                        } else {
+                            // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
+                            Toast.makeText(OrderActivity.this, "支付失败", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    }
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
+    };
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_sendorder;
@@ -327,4 +378,65 @@ public class OrderActivity extends BaseActivity {
                 break;
         }
     }
+
+    /**
+     * 调支付的方法
+     * <p>
+     * 注意： app支付请求参数字符串，主要包含商户的订单信息，key=value形式，以&连接。
+     *
+     * @param oInfo
+     */
+//支付宝oInfo参数，以后台返回为准
+    private void sendReq2ZFB(String oInfo) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //1、生成订单数据
+                //2、支付
+                PayTask payTask = new PayTask(OrderActivity.this);
+										                /*
+										                参数1：订单信息
+										                参数2：表示在支付钱包显示之前，true会显示一个dialog提示用户表示正在唤起支付宝钱包
+										                返回值：
+										                就是同步返回的支付结果（在实际开发过程中，不应该以此同步结果作为支付成功的依据。以异步结果作为成功支付的依据）
+										                 */
+                Map<String, String> result = payTask.payV2(oInfo, true);
+                Message message = mHandler.obtainMessage();
+                message.what = SDK_PAY_FLAG;
+                message.obj = result;
+                mHandler.sendMessage(message);
+            }
+        }).start();
+    }
+    /**
+     * 调支付的方法
+     * <p>
+     * 注意： 每次调用微信支付的时候都会校验 appid 、包名 和 应用签名的。 这三个必须保持一致才能够成功调起微信
+     *
+     * @param wxPayBean
+     */
+    //这个WxPayBean以后台返回为准,这里是我手动拿接口文档里生成的
+    private  void sendReq2WX(WxPayBean wxPayBean) {
+
+        //这里的appid，替换成自己的即可
+        IWXAPI api = WXAPIFactory.createWXAPI(BasicApp.getContext(), Constant.WX_APP_ID);
+        api.registerApp(Constant.WX_APP_ID);
+
+        //这里的bean，是服务器返回的json生成的bean
+        PayReq payRequest = new PayReq();
+        payRequest.appId = wxPayBean.getAppId();
+        //  payRequest.partnerId = wxPayBean.getPartnerid();//这里参数也需要，目前没有就屏蔽了
+        //  payRequest.prepayId = wxPayBean.getPrepayid();//这里参数也需要，目前没有就屏蔽了
+        payRequest.packageValue = "Sign=WXPay";//固定值
+        payRequest.nonceStr = wxPayBean.getNonceStr();
+        payRequest.timeStamp = wxPayBean.getTimestamp();
+        payRequest.sign = wxPayBean.getPaySign();
+
+        //发起请求，调起微信前去支付
+        api.sendReq(payRequest);
+    }
+
+
+
+
 }

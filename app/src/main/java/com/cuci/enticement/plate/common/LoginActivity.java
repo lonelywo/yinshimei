@@ -25,6 +25,7 @@ import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.Constant;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.Base;
+import com.cuci.enticement.bean.CheckPhoneBean;
 import com.cuci.enticement.bean.LoginBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
@@ -32,6 +33,7 @@ import com.cuci.enticement.bean.WxError;
 import com.cuci.enticement.bean.WxInfo;
 import com.cuci.enticement.bean.WxToken;
 import com.cuci.enticement.plate.common.vm.LoginViewModel;
+import com.cuci.enticement.plate.mall.activity.YuLanActivity;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.cuci.enticement.utils.FLog;
 import com.cuci.enticement.utils.FToast;
@@ -88,6 +90,7 @@ public class LoginActivity extends BaseActivity {
     private Handler mTimeHandler = new Handler();
     private boolean mShowContract = false;
     private String mUnionId="";
+    private WxInfo minfo;
 
     public interface OnLoginListener {
         void onLoginSucceed(UserInfo userInfo, boolean showContract);
@@ -358,9 +361,10 @@ public class LoginActivity extends BaseActivity {
                 WxError error = new Gson().fromJson(b, WxError.class);
                 FToast.error(error.getErrMsg() + ":" + error.getErrCode());
             } else {
-                WxInfo info = new Gson().fromJson(b, WxInfo.class);
-                mUnionId = info.getUnionId();
-                mViewModel.checkUserInfo(info.getUnionId(),info.getOpenId(),  info.getHeadImgUrl(),  info.getNickName(),"2",String.valueOf(info.getSex())
+                 minfo = new Gson().fromJson(b, WxInfo.class);
+                 mUnionId = minfo.getUnionId();
+
+                mViewModel.checkUserInfo(minfo.getUnionId(),minfo.getOpenId(),  minfo.getHeadImgUrl(),  minfo.getNickName(),"2",String.valueOf(minfo.getSex())
                       ).observe(this, mCheckWxInfoObserver);
             }
         } catch (IOException e) {
@@ -369,14 +373,17 @@ public class LoginActivity extends BaseActivity {
             FToast.error("数据错误");
         }
     }
+
+
     private Observer<Status<Base<UserInfo>>> mCheckWxInfoObserver = baseStatus -> {
         switch (baseStatus.status) {
             case Status.SUCCESS:
                 dismissLoading();
                 Base<UserInfo> userInfoBase = baseStatus.content;
                 if (userInfoBase.code == 1) {
-                    UserInfo userInfo = userInfoBase.data;
-                    dispatchUserInfo(userInfo);
+                  UserInfo muserInfoBase = userInfoBase.data;
+
+                    dispatchUserInfo(muserInfoBase);
                 } else {
                     FToast.error(userInfoBase.msg);
                 }
@@ -389,9 +396,8 @@ public class LoginActivity extends BaseActivity {
     };
     private void dispatchUserInfo(UserInfo userInfo) {
         if ("0".equals(userInfo.getIs_binding())) {
-            Intent intent = new Intent(this, RegisterActivity.class);
-            intent.putExtra(DATA_UNION_ID, mUnionId);
-            startActivityForResult(intent, 10000);
+            mViewModel.wxCheckBindPhone(userInfo.getPhone())
+            .observe(this, mObservercheck);
         } else {
             //登录成功
             boolean save = SharedPrefUtils.save(userInfo, UserInfo.class);
@@ -408,17 +414,55 @@ public class LoginActivity extends BaseActivity {
             finish();
         }
     }
+    private Observer<Status<ResponseBody>> mObservercheck = status -> {
+        switch (status.status) {
+            case Status.SUCCESS:
+                ResponseBody body = status.content;
+                operacheck(body);
+                break;
+            case Status.ERROR:
+                dismissLoading();
+                FToast.error("网络错误");
+                break;
+        }
+    };
+
+    private void operacheck(ResponseBody body) {
+        try {
+            String b = body.string();
+            CheckPhoneBean info = new Gson().fromJson(b, CheckPhoneBean.class);
+            if (info.getCode()==1) {
+                if(info.getData().getIs_reg()==1){
+                     FToast.warning("请绑定手机号");
+                     Intent intent = new Intent(this, BindPhoneActivity.class);
+                     intent.putExtra("Data", minfo);
+                     startActivityForResult(intent, 10000);
+                }else {
+                    FToast.warning("请先完成手机注册，重新登录");
+                    Intent intent = new Intent(this, RegisterActivity.class);
+                    intent.putExtra("Data", "");
+                    startActivity(intent);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            dismissLoading();
+            FToast.error("数据错误");
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK && data != null) {
             if ( requestCode == 10000) {
-               /* UserInfo userInfo = (UserInfo) data.getSerializableExtra(_MineFragment.DATA_USER_INFO);
+                UserInfo userInfo = (UserInfo) data.getSerializableExtra(_MineFragment.DATA_USER_INFO);
                 Intent intent = new Intent(_MineFragment.ACTION_LOGIN_SUCCEED);
                 intent.putExtra(_MineFragment.DATA_USER_INFO, userInfo);
-                LocalBroadcastManager.getInstance(this).sendBroadcast(intent);*/
+                LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
                 finish();
             }
+
         }
     }
 

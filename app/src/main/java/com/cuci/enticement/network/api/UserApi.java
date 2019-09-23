@@ -130,15 +130,29 @@ public interface UserApi {
 
 
     /**
-     * 微信绑定手机
+     * 微信绑定手机校验
      */
     @FormUrlEncoded
     @POST("store/api.user/checkphone")
-    Call<Base> wxBindPhone(
+    Call<ResponseBody> wxCheckBindPhone(
                                      @Field("phone") String phone,
                                      @Field("sign") String sign
                                    );
 
-
+    /**
+     * 微信绑定手机
+     */
+    @FormUrlEncoded
+    @POST("store/api.user/wxbinging")
+    Call<Base<UserInfo>> wxBindPhone(
+            @Field("phone") String phone,
+            @Field("unionId") String sunionIdign,
+            @Field("openId") String openId,
+            @Field("avatarUrl") String avatarUrl,
+            @Field("nickname") String nickname,
+            @Field("from_type") String from_type,
+            @Field("gender") String gender,
+                    @Field("sign") String sign
+    );
 }
 
