@@ -384,9 +384,14 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
 
     @Subscribe(threadMode = ThreadMode.POSTING, sticky = true)
     public void onOrderEventMessage(OrderEvent event) {
-        if(mtype.equals("")){
+        if(event.getCode()==OrderEvent.CANCEL_ORDER){
+            if(mtype.equals("")){
+                mRefreshLayout.autoRefresh();
+            }
+        }else if(event.getCode()==OrderEvent.REFRESH_OUTSIDE){
             mRefreshLayout.autoRefresh();
         }
+
 
     }
 
@@ -512,7 +517,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
         }
         AllOrderList.DataBean.ListBeanX orderBean = mDatas.get(curOrder);
 
-        intent.putExtra("order",orderBean);
+        intent.putExtra("intentInfo",orderBean);
         startActivity(intent);
     }
 }

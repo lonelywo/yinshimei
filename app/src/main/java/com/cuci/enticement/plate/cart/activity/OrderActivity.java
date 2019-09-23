@@ -36,6 +36,7 @@ import com.cuci.enticement.plate.mine.activity.RecAddressActivity;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.cuci.enticement.plate.mine.vm.OrderViewModel;
 import com.cuci.enticement.utils.Arith;
+import com.cuci.enticement.utils.FLog;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.PayResult;
 import com.cuci.enticement.utils.SharedPrefUtils;
@@ -102,7 +103,24 @@ public class OrderActivity extends BaseActivity {
                     if (TextUtils.equals(resultStatus, "9000")) {
 
                         Toast.makeText(OrderActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
-                       finish();
+
+                        finish();
+               /*         if (TextUtils.equals(resultStatus, "9000")) {
+                        // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
+                        FToast.success("支付成功：" + payResult.toString());
+                        try {
+                           AliPayResult aliPayResult = new Gson().fromJson(result, AliPayResult.class);
+                           FLog.e(TAG, aliPayResult.toString());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                       }
+                    } else {
+                       // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
+                        FToast.error("失败：" + payResult.toString());
+                    }*/
+
+
+
                     } else {
 
                         if (TextUtils.equals(resultStatus, "6001")) {
@@ -219,6 +237,29 @@ public class OrderActivity extends BaseActivity {
                         String timestamp = data.getTimestamp();
                         String partnerid = data.getPartnerid();
                         String noncestr = data.getNoncestr();
+                        String packageX = data.getPackageX();
+
+                        if(mPayType==1){
+                            StringBuilder sb = new StringBuilder();
+                            sb.append("appid").append("=").append(appid).append("&")
+                                    .append("prepayid").append("=").append(prepayid).append("&")
+                                    .append("sign").append("=").append(sign).append("&")
+                                    .append("timestamp").append("=").append(timestamp).append("&")
+                                    .append("partnerid").append("=").append(partnerid).append("&")
+                                    .append("noncestr").append("=").append(noncestr).append("&")
+                                    .append("package").append("=").append(packageX);
+                            sendReq2ZFB(sb.toString());
+                        }else if(mPayType==2){
+                            WxPayBean wxPayBean = new WxPayBean();
+                            wxPayBean.setAppId(appid);
+                            wxPayBean.setNonceStr(noncestr);
+                            wxPayBean.setPaySign(sign);
+                            wxPayBean.setTimestamp(timestamp);
+                            wxPayBean.setTimeStamp(timestamp);
+                            sendReq2WX(wxPayBean);
+                        }
+
+
 
                     }else {
                         FToast.warning(orderPay.getInfo());
@@ -394,11 +435,10 @@ public class OrderActivity extends BaseActivity {
                 //1、生成订单数据
                 //2、支付
                 PayTask payTask = new PayTask(OrderActivity.this);
-										                /*
-										                参数1：订单信息
-										                参数2：表示在支付钱包显示之前，true会显示一个dialog提示用户表示正在唤起支付宝钱包
-										                返回值：
-										                就是同步返回的支付结果（在实际开发过程中，不应该以此同步结果作为支付成功的依据。以异步结果作为成功支付的依据）
+				  /*参数1：订单信息
+	                参数2：表示在支付钱包显示之前，true会显示一个dialog提示用户表示正在唤起支付宝钱包
+				    返回值：
+					就是同步返回的支付结果（在实际开发过程中，不应该以此同步结果作为支付成功的依据。以异步结果作为成功支付的依据）
 										                 */
                 Map<String, String> result = payTask.payV2(oInfo, true);
                 Message message = mHandler.obtainMessage();

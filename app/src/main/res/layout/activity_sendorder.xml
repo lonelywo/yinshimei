@@ -97,7 +97,7 @@
             app:layout_constraintTop_toBottomOf="@+id/caixian"
             />
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/goods_recycler"
+            android:id="@+id/recycler_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/line1"
@@ -111,7 +111,7 @@
          android:layout_width="match_parent"
          android:layout_height="8dp"
          android:background="@drawable/shape_login_edit_bottom_line"
-         app:layout_constraintTop_toBottomOf="@+id/goods_recycler"
+         app:layout_constraintTop_toBottomOf="@+id/recycler_view"
          app:layout_constraintLeft_toLeftOf="parent"
          />
       <TextView

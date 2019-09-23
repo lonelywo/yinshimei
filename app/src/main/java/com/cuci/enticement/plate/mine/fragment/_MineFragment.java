@@ -14,17 +14,13 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseFragment;
 import com.cuci.enticement.bean.Base;
 import com.cuci.enticement.bean.OrderStatistics;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
+import com.cuci.enticement.plate.cart.activity.OrderActivity;
 import com.cuci.enticement.plate.common.LoginActivity;
 import com.cuci.enticement.plate.mine.activity.AchievementActivity;
 import com.cuci.enticement.plate.mine.activity.CommissionActivity;
@@ -45,6 +41,10 @@ import com.google.gson.Gson;
 import java.util.Date;
 import java.util.List;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import butterknife.BindView;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -149,7 +149,7 @@ public class _MineFragment extends BaseFragment {
         mBroadcastManager.registerReceiver(mReceiver, intentFilter);
 
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
-      //todo  临时存储
+        //todo  临时存储
       /*  mUserInfo=new UserInfo();
         mUserInfo.setToken("7ee35ab8215b6992c500a42ae6abe3ec");
         mUserInfo.setId(18281);
@@ -192,7 +192,7 @@ public class _MineFragment extends BaseFragment {
                         refreshLayout();
 
                     }
-                }else if(ACTION_REFRESH_STATUS.equals(intent.getAction())){
+                } else if (ACTION_REFRESH_STATUS.equals(intent.getAction())) {
                     OrderViewModel orderViewModel = ViewModelProviders.of(_MineFragment.this).get(OrderViewModel.class);
                     orderViewModel.getStatisticsOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()))
                             .observe(mActivity, mTotalOrderObserver);
@@ -216,7 +216,7 @@ public class _MineFragment extends BaseFragment {
                 .observe(mActivity, mTotalOrderObserver);
     }
 
-    @OnClick({R.id.img_kaiguan, R.id.btn_shengji, R.id.text_quanbudingdan, R.id.text_daifukuan, R.id.text_daifahuo, R.id.text_daishouhuo, R.id.text_yiwancheng, R.id.text_tuiguangyongjing, R.id.text_wodetuandui, R.id.text_shouhuodizi, R.id.text_yejiyuefan, R.id.text_wodekefu})
+    @OnClick({R.id.img_kaiguan, R.id.btn_shengji, R.id.text_quanbudingdan, R.id.text_tuiguangyongjing, R.id.text_wodetuandui, R.id.text_shouhuodizi, R.id.text_yejiyuefan, R.id.text_wodekefu})
     public void onViewClicked(View view) {
         switch (view.getId()) {
 
@@ -224,7 +224,7 @@ public class _MineFragment extends BaseFragment {
                 if (AppUtils.isAllowPermission(mActivity)) {
                     int mid = mUserInfo.getId();
                     String token = mUserInfo.getToken();
-                   mViewModel.loginOut("2", token, "" + mid).observe(this, mloginoutObserver);
+                    mViewModel.loginOut("2", token, "" + mid).observe(this, mloginoutObserver);
                     //loginout();
                 }
 
@@ -234,50 +234,42 @@ public class _MineFragment extends BaseFragment {
 
                 break;
             case R.id.text_quanbudingdan:
-                if(AppUtils.isAllowPermission(mActivity)) {
+                if (AppUtils.isAllowPermission(mActivity)) {
                     Intent intentProd = new Intent(mActivity, MyOrderActivity.class);
                     intentProd.putExtra("Data", "");
                     mActivity.startActivity(intentProd);
                 }
                 break;
-            case R.id.text_daifukuan:
-                break;
-            case R.id.text_daifahuo:
-                break;
-            case R.id.text_daishouhuo:
-                break;
-            case R.id.text_yiwancheng:
-                break;
             case R.id.text_tuiguangyongjing:
-                if(AppUtils.isAllowPermission(mActivity)) {
+                if (AppUtils.isAllowPermission(mActivity)) {
                     Intent intentProd = new Intent(mActivity, CommissionActivity.class);
                     intentProd.putExtra("Data", "");
                     mActivity.startActivity(intentProd);
                 }
                 break;
             case R.id.text_wodetuandui:
-                if(AppUtils.isAllowPermission(mActivity)) {
+                if (AppUtils.isAllowPermission(mActivity)) {
                     Intent intentProd = new Intent(mActivity, MyTeamActivity.class);
                     intentProd.putExtra("Data", "");
                     mActivity.startActivity(intentProd);
                 }
                 break;
             case R.id.text_shouhuodizi:
-                if(AppUtils.isAllowPermission(mActivity)) {
+                if (AppUtils.isAllowPermission(mActivity)) {
                     Intent intentProd = new Intent(mActivity, RecAddressActivity.class);
                     intentProd.putExtra("Data", "");
                     mActivity.startActivity(intentProd);
                 }
                 break;
             case R.id.text_yejiyuefan:
-                if(AppUtils.isAllowPermission(mActivity)) {
+                if (AppUtils.isAllowPermission(mActivity)) {
                     Intent intentProd = new Intent(mActivity, AchievementActivity.class);
                     intentProd.putExtra("Data", "");
                     mActivity.startActivity(intentProd);
                 }
                 break;
             case R.id.text_wodekefu:
-                if(AppUtils.isAllowPermission(mActivity)) {
+                if (AppUtils.isAllowPermission(mActivity)) {
                     Intent intentProd = new Intent(mActivity, KeFuActivity.class);
                     intentProd.putExtra("Data", "");
                     mActivity.startActivity(intentProd);
@@ -285,6 +277,36 @@ public class _MineFragment extends BaseFragment {
                 break;
         }
     }
+
+
+
+    @OnClick({R.id.daifukuan_ll, R.id.daifahuo_ll, R.id.daishouhuo_ll, R.id.yiwancheng_ll})
+    public void onOrderClicked(View view) {
+        if (AppUtils.isAllowPermission(mActivity)) {
+
+            Intent intent = new Intent(mActivity, MyOrderActivity.class);
+            switch (view.getId()) {
+                case R.id.daifukuan_ll:
+                    intent.putExtra("cur",1);
+                    break;
+                case R.id.daifahuo_ll:
+                    intent.putExtra("cur",2);
+                    break;
+                case R.id.daishouhuo_ll:
+                    intent.putExtra("cur",3);
+                    break;
+                case R.id.yiwancheng_ll:
+                    intent.putExtra("cur",4);
+                    break;
+            }
+
+            startActivity(intent);
+        }
+
+
+
+    }
+
 
     @Override
     public void onDestroy() {
@@ -364,7 +386,6 @@ public class _MineFragment extends BaseFragment {
     };
 
 
-
     private void loginout() {
         FToast.success("退出登录");
         SharedPrefUtils.exit();
@@ -403,36 +424,36 @@ public class _MineFragment extends BaseFragment {
                             switch (status) {
 
                                 case 2:
-                                    if(count==0){
+                                    if (count == 0) {
                                         ViewUtils.hideView(dot1Tv);
-                                    }else {
+                                    } else {
                                         ViewUtils.showView(dot1Tv);
                                         dot1Tv.setText(String.valueOf(count));
                                     }
 
                                     break;
                                 case 3:
-                                    if(count==0){
+                                    if (count == 0) {
                                         ViewUtils.hideView(dot2Tv);
-                                    }else {
+                                    } else {
                                         ViewUtils.showView(dot2Tv);
                                         dot2Tv.setText(String.valueOf(count));
                                     }
 
                                     break;
                                 case 4:
-                                    if(count==0){
+                                    if (count == 0) {
                                         ViewUtils.hideView(dot3Tv);
-                                    }else {
+                                    } else {
                                         ViewUtils.showView(dot3Tv);
                                         dot3Tv.setText(String.valueOf(count));
                                     }
 
                                     break;
                                 case 5:
-                                    if(count==0){
+                                    if (count == 0) {
                                         ViewUtils.hideView(dot4Tv);
-                                    }else {
+                                    } else {
                                         ViewUtils.showView(dot4Tv);
                                         dot4Tv.setText(String.valueOf(count));
                                     }
@@ -449,6 +470,7 @@ public class _MineFragment extends BaseFragment {
             }
         }
     };
+
 
 
 }
