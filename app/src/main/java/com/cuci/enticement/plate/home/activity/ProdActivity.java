@@ -4,6 +4,8 @@ package com.cuci.enticement.plate.home.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,22 +20,32 @@ import com.cuci.enticement.bean.HomeDetailsBean;
 import com.cuci.enticement.bean.OrderResult;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
+import com.cuci.enticement.network.ServiceCreator;
 import com.cuci.enticement.plate.cart.vm.CartViewModel;
 import com.cuci.enticement.plate.common.GlideImageLoader;
 import com.cuci.enticement.plate.common.popup.ShareBottom2TopProdPopup;
 import com.cuci.enticement.plate.home.vm.HomeViewModel;
 import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.GetByteByNetUrl;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.WxShareUtils;
 import com.cuci.enticement.widget.SmoothScrollview;
 import com.google.gson.Gson;
 import com.lxj.xpopup.XPopup;
+import com.tencent.mm.opensdk.modelbiz.WXLaunchMiniProgram;
+import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.opensdk.modelmsg.WXMiniProgramObject;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.tencent.smtt.sdk.WebView;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -85,12 +97,12 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
     @BindView(R.id.iv_cart)
     ImageView ivCart;
 
-
+    private static final int THUMB_SIZE = 150;
     private String url;
     private HomeDetailsBean.DataBean mProData;
     private HomeViewModel mHomeViewModel;
     private int mCode;
-
+    private long id;
     @Override
     public int getLayoutId() {
         return R.layout.activity_prod;
@@ -124,14 +136,27 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
         imgShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bitmap bitmap = BitmapFactory.decodeResource(BasicApp.getContext().getResources(), R.drawable.tuxiang);
-                WxShareUtils.shareToWX(WxShareUtils.WX_SCENE_SESSION,
-                        "http://www.enticementchina.com/", BasicApp.getContext().getString(R.string.app_name_test),
-                       "因诗美，因你而美",bitmap);
-            }
+                if (mProData != null) {
+                    WXMiniProgramObject miniProgramObj = new WXMiniProgramObject();
+                    miniProgramObj.webpageUrl = "http://www.qq.com"; // 兼容低版本的网页链接
+                    miniProgramObj.miniprogramType = WXMiniProgramObject.MINIPTOGRAM_TYPE_RELEASE;// 正式版:0，测试版:1，体验版:2
+                    miniProgramObj.userName = "gh_f19e5dd49f49";     // 小程序原始id
+                    miniProgramObj.path = "/pages/media";            //小程序页面路径；对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"
+                    WXMediaMessage msg = new WXMediaMessage(miniProgramObj);
+                    msg.title = "小程序消息Title";                    // 小程序消息title
+                    msg.description = "小程序消息Desc";               // 小程序消息desc
+                    msg.thumbData = GetByteByNetUrl.getImageFromNetByUrl(mProData.getLogo());                      // 小程序消息封面图片，小于128k
+
+                    SendMessageToWX.Req req = new SendMessageToWX.Req();
+                    req.transaction =String.valueOf(System.currentTimeMillis());
+                    req.message = msg;
+                    req.scene = SendMessageToWX.Req.WXSceneSession;  // 目前只支持会话
+                    BasicApp.getIWXAPI().sendReq(req);
+
+                }
+        }
         });
     }
-
 
     private String getHtmlData(String bodyHTML) {
         String head = "<head>" +
@@ -157,6 +182,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                     }
                     if (content.getCode() == 1) {
                         mProData = content.getData();
+
                         //   String s = new Gson().toJson(mProData);
                         final List<String> images = content.getData().getImage();
                         banner.setImages(images);
