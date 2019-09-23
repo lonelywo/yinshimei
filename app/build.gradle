@@ -133,5 +133,5 @@ dependencies {
     implementation 'org.greenrobot:eventbus:3.1.1'
     //支付宝
     implementation(name: 'alipaySdk-15.6.5-20190718211159-noUtdid', ext: 'aar')
-    //
+
 }

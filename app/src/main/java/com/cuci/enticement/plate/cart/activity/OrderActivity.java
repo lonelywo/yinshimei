@@ -32,6 +32,7 @@ import com.cuci.enticement.bean.OrderResult;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.bean.WxPayBean;
+import com.cuci.enticement.bean.ZFBBean;
 import com.cuci.enticement.plate.mine.activity.RecAddressActivity;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.cuci.enticement.plate.mine.vm.OrderViewModel;
@@ -87,7 +88,7 @@ public class OrderActivity extends BaseActivity {
     private OrderViewModel mViewModel;
     private UserInfo mUserInfo;
     private String mAdressId="";
-    private int mPayType=1;
+    private int mPayType=2;
     private AllOrderList.DataBean.ListBeanX   mInfo;
 
     @SuppressLint("HandlerLeak")
@@ -182,13 +183,10 @@ public class OrderActivity extends BaseActivity {
 
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
-
     }
-
     @OnClick({R.id.text_dizi, R.id.tv_commit,R.id.back_iv})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -205,7 +203,6 @@ public class OrderActivity extends BaseActivity {
                 //提交订单，成功后，去调用获取支付参数接口
                 mViewModel.udpateAdress(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(mInfo.getOrder_no()), mAdressId)
                         .observe(OrderActivity.this, mCommitObserver);
-
                 break;
             case R.id.back_iv:
                 finish();
@@ -213,56 +210,58 @@ public class OrderActivity extends BaseActivity {
         }
     }
 
-
-
-
-
     /**
      * 获取支付参数接口
      */
     private Observer<Status<ResponseBody>> mPayObserver = status -> {
         switch (status.status) {
             case Status.SUCCESS:
-
                 ResponseBody body = status.content;
-
                 try {
                     String result = body.string();
-                    OrderPay orderPay = new Gson().fromJson(result, OrderPay.class);
-                    if(orderPay.getCode()==1){
-                        OrderPay.DataBean data = orderPay.getData();
-                        String appid = data.getAppid();
-                        String prepayid = data.getPrepayid();
-                        String sign = data.getSign();
-                        String timestamp = data.getTimestamp();
-                        String partnerid = data.getPartnerid();
-                        String noncestr = data.getNoncestr();
-                        String packageX = data.getPackageX();
 
-                        if(mPayType==1){
-                            StringBuilder sb = new StringBuilder();
-                            sb.append("appid").append("=").append(appid).append("&")
-                                    .append("prepayid").append("=").append(prepayid).append("&")
-                                    .append("sign").append("=").append(sign).append("&")
-                                    .append("timestamp").append("=").append(timestamp).append("&")
-                                    .append("partnerid").append("=").append(partnerid).append("&")
-                                    .append("noncestr").append("=").append(noncestr).append("&")
-                                    .append("package").append("=").append(packageX);
-                            sendReq2ZFB(sb.toString());
-                        }else if(mPayType==2){
-                            WxPayBean wxPayBean = new WxPayBean();
-                            wxPayBean.setAppId(appid);
-                            wxPayBean.setNonceStr(noncestr);
-                            wxPayBean.setPaySign(sign);
-                            wxPayBean.setTimestamp(timestamp);
-                            wxPayBean.setTimeStamp(timestamp);
-                            sendReq2WX(wxPayBean);
+                    if(mPayType==2){
+                        ZFBBean orderPay = new Gson().fromJson(result, ZFBBean.class);
+                        if(orderPay.getCode()==1){
+
+                                sendReq2ZFB(orderPay.getData());
+
+                        }else {
+                            FToast.warning(orderPay.getInfo());
+                        }
+
+                    }else if(mPayType==1){
+                        OrderPay orderPay = new Gson().fromJson(result, OrderPay.class);
+                        if(orderPay.getCode()==1){
+                            OrderPay.DataBean data = orderPay.getData();
+                            String appid = data.getAppid();
+                            String prepayid = data.getPrepayid();
+                            String sign = data.getSign();
+                            String timestamp = data.getTimestamp();
+                            String partnerid = data.getPartnerid();
+                            String noncestr = data.getNoncestr();
+                            String packageX = data.getPackageX();
+                            //weixin
+
+                                WxPayBean wxPayBean = new WxPayBean();
+                                wxPayBean.setAppId(appid);
+                                wxPayBean.setPrepayId(prepayid);
+                                wxPayBean.setPartnerId(partnerid);
+                                wxPayBean.setNonceStr(noncestr);
+                                wxPayBean.setPaySign(sign);
+                                wxPayBean.setTimestamp(timestamp);
+                                wxPayBean.setPackageX(packageX);
+                                sendReq2WX(wxPayBean);
+
+                    }else {
+                            FToast.warning("");
                         }
 
 
 
-                    }else {
-                        FToast.warning(orderPay.getInfo());
+
+
+
                     }
 
 
@@ -402,13 +401,13 @@ public class OrderActivity extends BaseActivity {
                 aliIv.setImageResource(R.drawable.xuanzhong);
                 wechatIv.setImageResource(R.drawable.noxuanzhong);
                 unionIv.setImageResource(R.drawable.noxuanzhong);
-                mPayType=1;
+                mPayType=2;
                 break;
             case R.id.con_fangshi2:
                 aliIv.setImageResource(R.drawable.noxuanzhong);
                 wechatIv.setImageResource(R.drawable.xuanzhong);
                 unionIv.setImageResource(R.drawable.noxuanzhong);
-                mPayType=2;
+                mPayType=1;
 
                 break;
             case R.id.con_fangshi3:
@@ -465,8 +464,8 @@ public class OrderActivity extends BaseActivity {
         //这里的bean，是服务器返回的json生成的bean
         PayReq payRequest = new PayReq();
         payRequest.appId = wxPayBean.getAppId();
-        //  payRequest.partnerId = wxPayBean.getPartnerid();//这里参数也需要，目前没有就屏蔽了
-        //  payRequest.prepayId = wxPayBean.getPrepayid();//这里参数也需要，目前没有就屏蔽了
+        payRequest.partnerId = wxPayBean.getPartnerId();//这里参数也需要，目前没有就屏蔽了
+        payRequest.prepayId = wxPayBean.getPrepayId();//这里参数也需要，目前没有就屏蔽了
         payRequest.packageValue = "Sign=WXPay";//固定值
         payRequest.nonceStr = wxPayBean.getNonceStr();
         payRequest.timeStamp = wxPayBean.getTimestamp();

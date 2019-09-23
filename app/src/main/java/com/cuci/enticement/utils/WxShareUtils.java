@@ -324,7 +324,7 @@ public class WxShareUtils {
                 });
     }
 
-    private static byte[] getBitmapBytes(Bitmap bitmap, boolean paramBoolean) {
+    public static byte[] getBitmapBytes(Bitmap bitmap, boolean paramBoolean) {
         Bitmap localBitmap = Bitmap.createBitmap(80, 80, Bitmap.Config.RGB_565);
         Canvas localCanvas = new Canvas(localBitmap);
         int i;
