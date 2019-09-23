@@ -4,13 +4,13 @@ package com.cuci.enticement.plate.home.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Rect;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.util.Util;
 import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
@@ -62,6 +62,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.ResponseBody;
+
 
 import static androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance;
 import static com.cuci.enticement.plate.cart.fragment._CartFragment.ACTION_REFRESH_DATA;
@@ -144,9 +145,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
             public void onClick(View view) {
                 if (mProData != null) {
 
-                    try {
-                        Bitmap bitmap = BitmapFactory.decodeStream(new URL(mProData.getLogo()).openStream());
-                        WXMiniProgramObject miniProgramObj = new WXMiniProgramObject();
+                     /*   WXMiniProgramObject miniProgramObj = new WXMiniProgramObject();
                         miniProgramObj.webpageUrl = "https://test.enticementchina.com/pages/goods/detail?id="+mProData.getId(); // 兼容低版本的网页链接
                         miniProgramObj.miniprogramType = WXMiniProgramObject.MINIPTOGRAM_TYPE_RELEASE;// 正式版:0，测试版:1，体验版:2
                         miniProgramObj.userName = "gh_f19e5dd49f49";     // 小程序原始id
@@ -155,30 +154,16 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                         msg.title = "小程序消息Title";                    // 小程序消息title
                         msg.description = "小程序消息Desc";
                         // 小程序消息desc
-
-                        Bitmap thumbBmp = Bitmap.createScaledBitmap(bitmap, THUMB_SIZE, THUMB_SIZE, true);
-                        bitmap.recycle();
-                        msg.thumbData = WxShareUtils.getBitmapBytes(thumbBmp, true);
-
-                        //    msg.thumbData = GetByteByNetUrl.getImageFromNetByUrl(mProData.getLogo());                      // 小程序消息封面图片，小于128k
-
+                        Bitmap bitmap = BitmapFactory.decodeResource(OrderActivity.this.getResources(),R.drawable.fightk);
+                        Bitmap sendBitmap = Bitmap.createScaledBitmap(bitmap,200,200,true);
+                          bitmap.recycle();
+                        msg.thumbData = Util.bmpToByteArray(sendBitmap,true);
+                                         // 小程序消息封面图片，小于128k
                         SendMessageToWX.Req req = new SendMessageToWX.Req();
                         req.transaction =String.valueOf(System.currentTimeMillis());
                         req.message = msg;
                         req.scene = SendMessageToWX.Req.WXSceneSession;  // 目前只支持会话
-                        BasicApp.getIWXAPI().sendReq(req);
-
-
-
-                    } catch (IOException e) {
-
-
-
-
-                        e.printStackTrace();
-                    }
-
-
+                        BasicApp.getIWXAPI().sendReq(req);*/
                 }
         }
         });
