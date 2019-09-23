@@ -449,6 +449,8 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
             switch (status.status) {
 
                 case Status.SUCCESS:
+
+
                /*     Base<CartDataBean> content = status.content;
                     CartDataBean data = status.content.data;
 

@@ -165,6 +165,7 @@ public class OrderActivity extends BaseActivity {
         }
 
         mInfo = intent.getParcelableExtra("intentInfo");
+
         List<OrderGoods> items = mInfo.getList();
 
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
@@ -196,6 +197,7 @@ public class OrderActivity extends BaseActivity {
 
         mAdapter = new MultiTypeAdapter();
         mItems = new Items();
+//        mItems.addAll(items);
         mAdapter.setItems(mItems);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -210,8 +212,8 @@ public class OrderActivity extends BaseActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         mRecyclerView.setAdapter(mAdapter);
-        mItems.clear();
-        mItems.addAll(items);
+
+
 
     }
 
