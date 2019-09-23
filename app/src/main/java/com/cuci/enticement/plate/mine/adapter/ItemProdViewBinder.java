@@ -32,6 +32,10 @@ public class ItemProdViewBinder extends ItemViewBinder<OrderGoods, ItemProdViewB
 
     private OnProdClickListener mOnProdClickListener;
 
+    public ItemProdViewBinder() {
+
+    }
+
     public ItemProdViewBinder(OnProdClickListener onProdClickListener) {
         mOnProdClickListener = onProdClickListener;
     }

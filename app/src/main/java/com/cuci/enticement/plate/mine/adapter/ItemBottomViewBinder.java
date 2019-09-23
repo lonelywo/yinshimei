@@ -99,7 +99,7 @@ public class ItemBottomViewBinder extends ItemViewBinder<ItemOrderBottom, ItemBo
 
                 if(status==0){
                     //重新购买
-                    mOnItemClickListener.onConfirmGoods(itemOrderBottom);
+                    mOnItemClickListener.onReBuy(itemOrderBottom);
                 }
                 if(status==2){
                     //立即支付

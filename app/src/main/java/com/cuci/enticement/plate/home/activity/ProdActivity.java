@@ -14,20 +14,25 @@ import android.widget.TextView;
 import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
+import com.cuci.enticement.bean.AllOrderList;
 import com.cuci.enticement.bean.Base;
 import com.cuci.enticement.bean.CartNum;
 import com.cuci.enticement.bean.HomeDetailsBean;
+import com.cuci.enticement.bean.OrderGoods;
 import com.cuci.enticement.bean.OrderResult;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.network.ServiceCreator;
+import com.cuci.enticement.plate.cart.activity.OrderActivity;
 import com.cuci.enticement.plate.cart.vm.CartViewModel;
 import com.cuci.enticement.plate.common.GlideImageLoader;
 import com.cuci.enticement.plate.common.popup.ShareBottom2TopProdPopup;
 import com.cuci.enticement.plate.home.vm.HomeViewModel;
 import com.cuci.enticement.utils.AppUtils;
+import com.cuci.enticement.utils.Arith;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.GetByteByNetUrl;
+import com.cuci.enticement.utils.MathExtend;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.WxShareUtils;
 import com.cuci.enticement.widget.SmoothScrollview;
@@ -46,6 +51,7 @@ import com.youth.banner.BannerConfig;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -85,8 +91,8 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
     SmoothScrollview scrollDetails;
     @BindView(R.id.text_cart)
     TextView textCart;
-    @BindView(R.id.text_sell)
-    TextView textSell;
+    @BindView(R.id.text_buy)
+    TextView textBuy;
 
     @BindView(R.id.cart_num_tv)
     TextView cartNumTv;
@@ -227,7 +233,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
     };
 
 
-    @OnClick({R.id.image_back, R.id.text_cart, R.id.text_sell, R.id.iv_cart})
+    @OnClick({R.id.image_back, R.id.text_cart, R.id.text_buy, R.id.iv_cart})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.image_back:
@@ -244,7 +250,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                 }
 
                 break;
-            case R.id.text_sell:
+            case R.id.text_buy:
                 if (AppUtils.isAllowPermission(ProdActivity.this)) {
                     new XPopup.Builder(ProdActivity.this)
                             .dismissOnTouchOutside(true)
@@ -267,6 +273,10 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
     }
 
 
+
+    private double mTotalMoeny;
+    private int mNum;
+    private String mSpec;
     @Override
     public void onCommitClick(String spec, int num, int code) {
         mCode = code;
@@ -282,11 +292,15 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
 
 
         } else if (code == QUICK_BUY) {
+            mNum=num;
+            mSpec=spec;
             StringBuilder sb = new StringBuilder();
             sb.append(mProData.getId()).append("@")
                     .append(spec).append("@")
                     .append(num);
 
+            String price = mProData.getInitial_price_market();
+            mTotalMoeny= MathExtend.multiply(price,String.valueOf(num));
             String rule = sb.toString();
             mViewModel.commitOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), rule, "").observe(this, mCommitObserver);
 
@@ -305,7 +319,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                 case Status.SUCCESS:
                     ResponseBody content = baseStatus.content;
 
-                    String result = null;
+                  /*  String result = null;
                     try {
                         result = content.string();
                         OrderResult orderResult = new Gson().fromJson(result, OrderResult.class);
@@ -315,13 +329,49 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
 
                     } catch (IOException e) {
                         e.printStackTrace();
+                    }*/
+
+
+                    try {
+                        String result = content.string();
+                        OrderResult orderResult = new Gson().fromJson(result, OrderResult.class);
+                        if (orderResult.getCode() == 1) {
+                            //跳转
+
+                            List<OrderGoods> items = new ArrayList<>();
+                            OrderGoods orderGoods = new OrderGoods();
+                            orderGoods.setGoods_logo(mProData.getLogo());
+                            orderGoods.setGoods_title(mProData.getTitle());
+                            orderGoods.setGoods_num(mNum);
+                            orderGoods.setGoods_spec(mSpec);
+                            orderGoods.setGoods_price_selling(mProData.getInitial_price_selling());
+
+                            items.add(orderGoods);
+
+                            AllOrderList.DataBean.ListBeanX cartIntentInfo = new AllOrderList.DataBean.ListBeanX();
+
+                            cartIntentInfo.setOrder_no(Long.parseLong(orderResult.getData().getOrder().getOrder_no()));
+                            cartIntentInfo.setList(items);
+                            cartIntentInfo.setGoods_count(items.size());
+                            cartIntentInfo.setPrice_goods(mProData.getInitial_price_selling());
+                            Intent intent = new Intent(ProdActivity.this, OrderActivity.class);
+                            intent.putExtra("intentInfo", cartIntentInfo);
+                            startActivity(intent);
+
+
+                        } else {
+                            FToast.warning(orderResult.getInfo());
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
 
-                    break;
-                case Status.ERROR:
+                        break;
+                        case Status.ERROR:
 
-                    FToast.error(baseStatus.message);
-                    break;
+                            FToast.error(baseStatus.message);
+                            break;
+
             }
 
         }
@@ -398,10 +448,5 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
     };
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
+
 }

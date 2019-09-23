@@ -17,6 +17,8 @@ import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.AllOrderList;
 import com.cuci.enticement.bean.CommitOrder;
+import com.cuci.enticement.bean.ItemOrderBottom;
+import com.cuci.enticement.bean.ItemOrderTitle;
 import com.cuci.enticement.bean.OrderCancel;
 import com.cuci.enticement.bean.OrderGoods;
 import com.cuci.enticement.bean.OrderPay;
@@ -24,12 +26,16 @@ import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.bean.WxPayBean;
 import com.cuci.enticement.plate.common.eventbus.OrderEvent;
+import com.cuci.enticement.plate.mine.adapter.ItemBottomViewBinder;
+import com.cuci.enticement.plate.mine.adapter.ItemProdViewBinder;
+import com.cuci.enticement.plate.mine.adapter.ItemTitleViewBinder;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.cuci.enticement.plate.mine.vm.OrderViewModel;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.PayResult;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.ViewUtils;
+import com.cuci.enticement.widget.OrderItemDecoration;
 import com.google.gson.Gson;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
@@ -44,10 +50,14 @@ import java.util.Map;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import me.drakeet.multitype.Items;
+import me.drakeet.multitype.MultiTypeAdapter;
 import okhttp3.ResponseBody;
 
 import static com.cuci.enticement.plate.cart.fragment._CartFragment.ACTION_REFRESH_DATA;
@@ -67,7 +77,7 @@ public class OrderDetailsActivity extends BaseActivity {
     @BindView(R.id.tv_order_no)
     TextView tvOrderNo;
     @BindView(R.id.recycler_view)
-    RecyclerView recyclerView;
+    RecyclerView mRecyclerView;
     @BindView(R.id.tv_goods_money)
     TextView tvGoodsMoney;
     @BindView(R.id.tv_express)
@@ -86,7 +96,9 @@ public class OrderDetailsActivity extends BaseActivity {
     private int mPayType = 1;
 
     private AllOrderList.DataBean.ListBeanX mInfo;
-
+    private LinearLayoutManager mLayoutManager;
+    private MultiTypeAdapter mAdapter;
+    private Items mItems;
     @Override
     public int getLayoutId() {
         return R.layout.order_details;
@@ -109,7 +121,24 @@ public class OrderDetailsActivity extends BaseActivity {
 
         initViewStatus();
 
+        mAdapter = new MultiTypeAdapter();
+        mItems = new Items();
+        mAdapter.setItems(mItems);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
+        mAdapter.register(OrderGoods.class, new ItemProdViewBinder());
+
+
+        OrderItemDecoration mDecoration = new OrderItemDecoration(this, 4);
+
+        mRecyclerView.addItemDecoration(mDecoration);
+        mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mRecyclerView.setAdapter(mAdapter);
+        mItems.clear();
+        mItems.addAll(items);
 
 
 

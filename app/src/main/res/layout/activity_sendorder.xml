@@ -114,6 +114,8 @@
          app:layout_constraintTop_toBottomOf="@+id/recycler_view"
          app:layout_constraintLeft_toLeftOf="parent"
          />
+
+
       <TextView
           android:id="@+id/text_shangpingzongjia"
           android:layout_width="wrap_content"
@@ -126,6 +128,7 @@
           android:layout_marginTop="13dp"
           android:textColor="@color/hei"
           />
+
         <TextView
             android:id="@+id/text_shangpingmoney"
             android:layout_width="wrap_content"
@@ -138,6 +141,8 @@
             android:textColor="@color/hei"
             android:textSize="20sp"
             />
+
+
         <View
             android:id="@+id/line3"
             android:layout_width="match_parent"

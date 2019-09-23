@@ -34,6 +34,7 @@ import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.bean.WxPayBean;
 import com.cuci.enticement.bean.ZFBBean;
 import com.cuci.enticement.plate.mine.activity.RecAddressActivity;
+import com.cuci.enticement.plate.mine.adapter.ItemProdViewBinder;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.cuci.enticement.plate.mine.vm.OrderViewModel;
 import com.cuci.enticement.utils.Arith;
@@ -41,6 +42,7 @@ import com.cuci.enticement.utils.FLog;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.PayResult;
 import com.cuci.enticement.utils.SharedPrefUtils;
+import com.cuci.enticement.widget.OrderItemDecoration;
 import com.cuci.enticement.wxapi.WXEntryActivity;
 import com.google.gson.Gson;
 import com.tencent.mm.opensdk.modelpay.PayReq;
@@ -53,8 +55,13 @@ import java.util.List;
 import java.util.Map;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.OnClick;
+import me.drakeet.multitype.Items;
+import me.drakeet.multitype.MultiTypeAdapter;
 import okhttp3.ResponseBody;
 
 import static com.cuci.enticement.plate.cart.fragment._CartFragment.ACTION_REFRESH_DATA;
@@ -83,13 +90,18 @@ public class OrderActivity extends BaseActivity {
     ImageView unionIv;
     @BindView(R.id.tv_total_money)
     TextView tvTotalMoney;
-
+    @BindView(R.id.recycler_view)
+    RecyclerView mRecyclerView;
 
     private OrderViewModel mViewModel;
     private UserInfo mUserInfo;
     private String mAdressId="";
     private int mPayType=2;
     private AllOrderList.DataBean.ListBeanX   mInfo;
+    private LinearLayoutManager mLayoutManager;
+    private MultiTypeAdapter mAdapter;
+    private Items mItems;
+
 
     @SuppressLint("HandlerLeak")
     private  Handler mHandler = new Handler() {
@@ -180,6 +192,27 @@ public class OrderActivity extends BaseActivity {
             mViewModel.getExpressCost(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),String.valueOf(mInfo.getOrder_no()),mAdressId)
                     .observe(this,mExpressCostObserver);
         }
+
+
+
+        mAdapter = new MultiTypeAdapter();
+        mItems = new Items();
+        mAdapter.setItems(mItems);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        mAdapter.register(OrderGoods.class, new ItemProdViewBinder());
+
+
+        OrderItemDecoration mDecoration = new OrderItemDecoration(this, 4);
+
+        mRecyclerView.addItemDecoration(mDecoration);
+        mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mRecyclerView.setAdapter(mAdapter);
+        mItems.clear();
+        mItems.addAll(items);
 
     }
 
