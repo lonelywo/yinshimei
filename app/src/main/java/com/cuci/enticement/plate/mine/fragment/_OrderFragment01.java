@@ -360,7 +360,24 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
      */
     @Override
     public void onPay(ItemOrderBottom itemOrderBottom) {
-        mViewModel.orderConfirm(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),itemOrderBottom.orderNum).observe(this, mPayObserver);
+
+
+        String orderNum = itemOrderBottom.orderNum;
+        int cur=0;
+        for (int i = 0; i < mDatas.size(); i++) {
+            AllOrderList.DataBean.ListBeanX listBeanX = mDatas.get(i);
+            if(orderNum.equals(String.valueOf(listBeanX.getOrder_no()))){
+                cur=i;
+                break;
+            }
+        }
+        AllOrderList.DataBean.ListBeanX cartIntentInfo = mDatas.get(cur);
+
+        Intent intent = new Intent(mActivity, OrderActivity.class);
+        intent.putExtra("intentInfo",cartIntentInfo);
+        startActivity(intent);
+
+
     }
 
     /**
@@ -479,28 +496,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
     };
 
 
-    private Observer<Status<OrderResult>> mPayObserver = status -> {
-        switch (status.status) {
-            case Status.SUCCESS:
 
-
-                break;
-            case Status.LOADING:
-
-                break;
-            case Status.ERROR:
-                FToast.error(status.message);
-                if (status.loadType == Status.LOAD_MORE) {
-                    mCanLoadMore = true;
-                    mRefreshLayout.finishLoadMore();
-                } else {
-
-                    mRefreshLayout.finishRefresh();
-
-                }
-                break;
-        }
-    };
 
 
 

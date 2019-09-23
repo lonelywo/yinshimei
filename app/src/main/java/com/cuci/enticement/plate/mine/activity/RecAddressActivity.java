@@ -203,8 +203,16 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
 
     @Override
     public void onCheckAdress(AdressBean.DataBean.ListBean bean) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(bean.getName()).append(" ")
+                .append(bean.getPhone()).append(" ")
+                .append(bean.getProvince()).append(" ")
+                .append(bean.getCity()).append(" ")
+                .append(bean.getArea()).append(" ")
+                .append(bean.getAddress());
+        String adress=sb.toString();
         Intent intent = new Intent(RecAddressActivity.this, OrderActivity.class);
-        intent.putExtra("adress",bean.getAddress());
+        intent.putExtra("adress",adress);
         intent.putExtra("adressId",bean.getId());
 
         setResult(101,intent);
