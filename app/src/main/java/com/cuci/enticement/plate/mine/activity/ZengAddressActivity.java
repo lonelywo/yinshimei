@@ -1,24 +1,29 @@
 package com.cuci.enticement.plate.mine.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
+import com.cuci.enticement.bean.AddressBean;
+import com.cuci.enticement.bean.DeleteAddress;
 import com.cuci.enticement.bean.JsonBean;
+import com.cuci.enticement.bean.SetDefaultAddress;
 import com.cuci.enticement.bean.Status;
+import com.cuci.enticement.bean.UpdateAddress;
 import com.cuci.enticement.bean.UserInfo;
+import com.cuci.enticement.plate.common.eventbus.AddressEvent;
 import com.cuci.enticement.plate.common.vm.CommonViewModel;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.GetJsonDataUtil;
@@ -26,13 +31,17 @@ import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.widget.ClearEditText;
 import com.google.gson.Gson;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.ResponseBody;
 
@@ -53,14 +62,18 @@ public class ZengAddressActivity extends BaseActivity {
     EditText edtXiangxi;
     @BindView(R.id.text_morendizi)
     TextView textMorendizi;
+    @BindView(R.id.checkbox)
+    CheckBox checkbox;
     private CommonViewModel mViewModel;
     private UserInfo mUserInfo;
     private static boolean isLoaded = false;
-    private String mProvince,mCity,mArea,mAdress;
-    private String mIsDefault="1";
+    private String mProvince, mCity, mArea, mAddress;
+    private String mIsDefault = "1";
     private List<JsonBean> options1Items = new ArrayList<>();
     private ArrayList<ArrayList<String>> options2Items = new ArrayList<>();
     private ArrayList<ArrayList<ArrayList<String>>> options3Items = new ArrayList<>();
+    private String mAddressId;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_address_bianji;
@@ -68,17 +81,98 @@ public class ZengAddressActivity extends BaseActivity {
 
     @Override
     public void initViews(Bundle savedInstanceState) {
-        mUserInfo= SharedPrefUtils.get(UserInfo.class);
-        if(mUserInfo==null){
-            return;
-
+        Intent intent = getIntent();
+        AddressBean.DataBean.ListBean addressBean = intent.getParcelableExtra("addressBean");
+        if (addressBean != null) {
+            edtName.setText(addressBean.getName());
+            edtPhone.setText(addressBean.getPhone());
+            edtXiangxi.setText(addressBean.getAddress());
+            mAddress = addressBean.getProvince() + " " + addressBean.getCity() + " " + addressBean.getArea();
+            tvCode.setText(mAddress);
+            mProvince = addressBean.getProvince();
+            mCity = addressBean.getCity();
+            mArea = addressBean.getArea();
+            mAddressId = String.valueOf(addressBean.getId());
         }
-        mViewModel= ViewModelProviders.of(this).get(CommonViewModel.class);
+
+
+        mUserInfo = SharedPrefUtils.get(UserInfo.class);
+
+
+        mViewModel = ViewModelProviders.of(this).get(CommonViewModel.class);
 
 
         initJsonData();
+        checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (TextUtils.isEmpty(edtName.getText())) {
+                    FToast.warning("请填写收货人姓名");
+                    checkbox.setChecked(false);
+                } else if (TextUtils.isEmpty(edtPhone.getText())) {
+                    FToast.warning("请填写收货人电话");
+                    checkbox.setChecked(false);
+                } else if (TextUtils.isEmpty(edtXiangxi.getText())) {
+                    FToast.warning("请填写收货人详细地址");
+                    checkbox.setChecked(false);
+                } else if (TextUtils.isEmpty(mAddress)) {
+                    FToast.warning("请选择城市");
+                    checkbox.setChecked(false);
+                }else {
+                    String isDefault="0";
+                    if(isChecked){
+                        isDefault="1";
+                    }else {
+                        isDefault="0";
+                    }
+                    mViewModel.setDefaultAddress(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),mAddressId)
+                            .observe(ZengAddressActivity.this,mSetObserver);
+                }
 
+
+
+            }
+        });
     }
+
+
+    private Observer<Status<ResponseBody>> mSetObserver = status -> {
+        switch (status.status) {
+            case Status.SUCCESS:
+                ResponseBody body = status.content;
+                try {
+                    String result = body.string();
+                    SetDefaultAddress bean = new Gson().fromJson(result, SetDefaultAddress.class);
+                    if(bean.getCode()==1){
+
+
+                        FToast.success(bean.getInfo());
+                    }else {
+                        checkbox.setChecked(false);
+                        FToast.error(bean.getInfo());
+                    }
+
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+
+                break;
+            case Status.LOADING:
+
+                break;
+            case Status.ERROR:
+                FToast.error(status.message);
+
+                break;
+        }
+    };
+
+
+
 
 
     @OnClick({R.id.image_back, R.id.ok})
@@ -89,23 +183,23 @@ public class ZengAddressActivity extends BaseActivity {
                 break;
             case R.id.ok:
                 if (TextUtils.isEmpty(edtName.getText())) {
-                    FToast.error("请填写收货人姓名");
+                    FToast.warning("请填写收货人姓名");
 
                 } else if (TextUtils.isEmpty(edtPhone.getText())) {
-                    FToast.error("请填写收货人电话");
+                    FToast.warning("请填写收货人电话");
                 } else if (TextUtils.isEmpty(edtXiangxi.getText())) {
-                    FToast.error("请填写收货人详细地址");
-                } else if (TextUtils.isEmpty(mAdress)) {
-                    FToast.error("请选择城市");
+                    FToast.warning("请填写收货人详细地址");
+                } else if (TextUtils.isEmpty(mAddress)) {
+                    FToast.warning("请选择城市");
                 } else {
                     String name = edtName.getText().toString().trim();
                     String phone = edtPhone.getText().toString().trim();
                     String detailAdress = edtXiangxi.getText().toString().trim();
 
 
-                    mViewModel.addAdress(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),name,phone,mProvince,mCity,mArea,detailAdress,mIsDefault)
-                            .observe(this,mObserver);
-
+                    mViewModel.addAdress(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),
+                            name, phone, mProvince, mCity, mArea, detailAdress, mIsDefault, mAddressId)
+                            .observe(this, mObserver);
 
 
                 }
@@ -121,13 +215,20 @@ public class ZengAddressActivity extends BaseActivity {
                 ResponseBody body = status.content;
                 try {
                     String result = body.string();
-                    String a="123";
+                    UpdateAddress updateAddress = new Gson().fromJson(result, UpdateAddress.class);
+                    if (updateAddress.getCode() == 1) {
+                        EventBus.getDefault().postSticky(new AddressEvent(AddressEvent.REFRESH_ADRESS_LIST));
+                        FToast.success(updateAddress.getInfo());
 
-                    finish();
+                    } else {
+                        FToast.error(updateAddress.getInfo());
+
+                    }
+
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
 
 
                 break;
@@ -148,11 +249,10 @@ public class ZengAddressActivity extends BaseActivity {
         if (isLoaded) {
             showPickerView();
         } else {
-          FToast.warning("城市数据正在解析，请稍等。");
+            FToast.warning("城市数据正在解析，请稍等。");
         }
 
     }
-
 
 
     // 弹出选择器
@@ -164,23 +264,23 @@ public class ZengAddressActivity extends BaseActivity {
                 //返回的分别是三个级别的选中位置
                 String opt1tx = options1Items.size() > 0 ?
                         options1Items.get(options1).getPickerViewText() : "";
-                mProvince=opt1tx;
+                mProvince = opt1tx;
 
                 String opt2tx = options2Items.size() > 0
                         && options2Items.get(options1).size() > 0 ?
                         options2Items.get(options1).get(options2) : "";
-                mCity=opt2tx;
+                mCity = opt2tx;
 
                 String opt3tx = options2Items.size() > 0
                         && options3Items.get(options1).size() > 0
                         && options3Items.get(options1).get(options2).size() > 0 ?
                         options3Items.get(options1).get(options2).get(options3) : "";
-                mArea=opt3tx;
+                mArea = opt3tx;
 
 
-                mAdress = opt1tx+" " + opt2tx+" "  + opt3tx;
+                mAddress = opt1tx + " " + opt2tx + " " + opt3tx;
 
-                tvCode.setText(mAdress);
+                tvCode.setText(mAddress);
 
 
             }
@@ -249,7 +349,7 @@ public class ZengAddressActivity extends BaseActivity {
         }
 
 
-        isLoaded=true;
+        isLoaded = true;
     }
 
     public ArrayList<JsonBean> parseData(String result) {//Gson 解析
@@ -263,8 +363,15 @@ public class ZengAddressActivity extends BaseActivity {
             }
         } catch (Exception e) {
             e.printStackTrace();
-           FToast.error("解析城市数据失败");
+            FToast.error("解析城市数据失败");
         }
         return detail;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

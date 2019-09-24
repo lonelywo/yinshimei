@@ -169,6 +169,7 @@ public class _MineFragment extends BaseFragment {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(LoginActivity.ACTION_WX_LOGIN_SUCCEED);
         intentFilter.addAction(ACTION_LOGIN_SUCCEED);
+        intentFilter.addAction(ACTION_REFRESH_STATUS);
         mBroadcastManager.registerReceiver(mReceiver, intentFilter);
 
         mUserInfo = SharedPrefUtils.get(UserInfo.class);

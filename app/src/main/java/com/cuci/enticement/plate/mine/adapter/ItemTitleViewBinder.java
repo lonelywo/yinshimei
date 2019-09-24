@@ -8,6 +8,9 @@ import android.widget.TextView;
 
 import com.cuci.enticement.R;
 import com.cuci.enticement.bean.ItemOrderTitle;
+import com.cuci.enticement.utils.ImageLoader;
+
+import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,7 +32,7 @@ public class ItemTitleViewBinder extends ItemViewBinder<ItemOrderTitle, ItemTitl
 
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull ItemOrderTitle itemOrderTitle) {
-        holder.textBianhao.setText(itemOrderTitle.orderNum);
+        holder.textBianhao.setText(String.format(Locale.CHINA,"订单号:%s",itemOrderTitle.orderNum));
 
 
        /* status 0 已经取消的订单，包含已经退款的订单

@@ -13,6 +13,7 @@ import com.cuci.enticement.plate.mall.fragment._MallFragment;
 import com.cuci.enticement.plate.mall.vm.MallViewModel;
 import com.cuci.enticement.plate.mine.fragment._OrderFragment01;
 import com.flyco.tablayout.SlidingTabLayout;
+import com.flyco.tablayout.listener.OnTabSelectListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +25,7 @@ import butterknife.OnClick;
 
 public class MyOrderActivity extends BaseActivity {
     private static final String TAG = _MallFragment.class.getSimpleName();
-    @BindView(R.id.image_top)
-    TextView textTop;
+
     @BindView(R.id.image_back)
     ImageView imageBack;
     @BindView(R.id.tab_layout)
@@ -70,6 +70,19 @@ public class MyOrderActivity extends BaseActivity {
         mViewPager.setAdapter(adapter);
         mTabLayout.setViewPager(mViewPager, titles);
         mViewPager.setCurrentItem(cur);
+
+        mTabLayout.setOnTabSelectListener(new OnTabSelectListener() {
+            @Override
+            public void onTabSelect(int position) {
+
+            }
+
+            @Override
+            public void onTabReselect(int position) {
+
+            }
+        });
+
     }
 
 

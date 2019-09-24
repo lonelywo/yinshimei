@@ -78,9 +78,9 @@ public class CartViewModel extends ViewModel {
 
 
 
-    public MutableLiveData<Status<Base>> cartChange(String token,String mid,String goodsId,String goodsSpec,String goodsNum) {
+    public MutableLiveData<Status<ResponseBody>> cartChange(String token,String mid,String goodsId,String goodsSpec,String goodsNum) {
 
-        final MutableLiveData<Status<Base>> data = new MutableLiveData<>();
+        final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
         data.setValue(Status.loading(null));
         Map<String, String> params = new HashMap<String, String>();
         params.put("token",token);
@@ -92,15 +92,15 @@ public class CartViewModel extends ViewModel {
         String signs = SignUtils.signParam(params);
         mCreator.create(CartApi.class)
                 .cartChange("2",token,mid,goodsId,goodsSpec,goodsNum,signs)
-                .enqueue(new Callback<Base>() {
+                .enqueue(new Callback<ResponseBody>() {
                     @Override
-                    public void onResponse(@NonNull Call<Base> call,
-                                           @NonNull Response<Base> response) {
+                    public void onResponse(@NonNull Call<ResponseBody> call,
+                                           @NonNull Response<ResponseBody> response) {
                         data.setValue(Status.success(response.body()));
                     }
 
                     @Override
-                    public void onFailure(@NonNull Call<Base> call,
+                    public void onFailure(@NonNull Call<ResponseBody> call,
                                           @NonNull Throwable t) {
                         data.setValue(Status.error(null, t.getMessage() == null ? "获取失败" : t.getMessage()));
                     }

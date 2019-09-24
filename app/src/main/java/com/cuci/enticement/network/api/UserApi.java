@@ -1,7 +1,7 @@
 package com.cuci.enticement.network.api;
 
 
-import com.cuci.enticement.bean.AdressBean;
+import com.cuci.enticement.bean.AddressBean;
 import com.cuci.enticement.bean.Base;
 import com.cuci.enticement.bean.UserInfo;
 
@@ -76,9 +76,9 @@ public interface UserApi {
      */
     @FormUrlEncoded
     @POST("store/api.member.address/gets")
-    Call<AdressBean> getAdressList(@Field("from_type") String fromType,@Field("token") String token,
-                                   @Field("mid") String mid,
-                                   @Field("sign") String sign);
+    Call<AddressBean> getAdressList(@Field("from_type") String fromType, @Field("token") String token,
+                                    @Field("mid") String mid,
+                                    @Field("sign") String sign);
 
 
 
@@ -96,7 +96,31 @@ public interface UserApi {
                                @Field("area") String area,
                                @Field("address") String address,
                                @Field("is_default") String is_default,
+                               @Field("id") String addressId,
                                @Field("sign") String sign);
+
+
+    /**
+     * 删除收货地址
+     */
+    @FormUrlEncoded
+    @POST("store/api.member.address/del")
+    Call<ResponseBody> deleteAddress(@Field("from_type") String fromType, @Field("token") String token,
+                               @Field("mid") String mid,
+                               @Field("address_id") String addressId,
+                               @Field("sign") String sign);
+
+
+
+    /**
+     * 设置默认收货地址
+     */
+    @FormUrlEncoded
+    @POST("store/api.member.address/setDefault")
+    Call<ResponseBody> setDefaultAddress(@Field("from_type") String fromType, @Field("token") String token,
+                                     @Field("mid") String mid,
+                                     @Field("address_id") String addressId,
+                                     @Field("sign") String sign);
 
 
     /**

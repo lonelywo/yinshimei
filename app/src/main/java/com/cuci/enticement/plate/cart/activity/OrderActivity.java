@@ -95,8 +95,8 @@ public class OrderActivity extends BaseActivity {
 
     private OrderViewModel mViewModel;
     private UserInfo mUserInfo;
-    private String mAdressId="";
-    private int mPayType=2;
+    private String mAddressId="";
+    private int mPayType=1;
     private AllOrderList.DataBean.ListBeanX   mInfo;
     private LinearLayoutManager mLayoutManager;
     private MultiTypeAdapter mAdapter;
@@ -175,22 +175,22 @@ public class OrderActivity extends BaseActivity {
         }
         mViewModel = ViewModelProviders.of(this).get(OrderViewModel.class);
 
-        String  adress = SharedPrefUtils.getDefaultAdress();
+        String  address = SharedPrefUtils.getDefaultAdress();
 
-        if (TextUtils.isEmpty(adress)) {
+        if (TextUtils.isEmpty(address)) {
             textDizi.setText("请添加收货地址");
         } else {
-            textDizi.setText(adress);
+            textDizi.setText(address);
             //默认地址id，不去选中就用这个
-           mAdressId = SharedPrefUtils.getDefaultAdressId();
+           mAddressId = SharedPrefUtils.getDefaultAdressId();
         }
 
         // ImageLoader.loadPlaceholder(mOrderBean.get);
         //设置商品总价，运费，订单总价
         textShangpingmoney.setText(mInfo.getPrice_goods());
 
-        if(!TextUtils.isEmpty(adress)){
-            mViewModel.getExpressCost(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),String.valueOf(mInfo.getOrder_no()),mAdressId)
+        if(!TextUtils.isEmpty(address)){
+            mViewModel.getExpressCost(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),String.valueOf(mInfo.getOrder_no()),mAddressId)
                     .observe(this,mExpressCostObserver);
         }
 
@@ -201,6 +201,7 @@ public class OrderActivity extends BaseActivity {
 //        mItems.addAll(items);
         mAdapter.setItems(mItems);
         mRecyclerView.setLayoutManager(mLayoutManager);
+
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
         mAdapter.register(OrderGoods.class, new ItemProdViewBinder());
@@ -218,15 +219,18 @@ public class OrderActivity extends BaseActivity {
 
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
+
     }
     @OnClick({R.id.text_dizi, R.id.tv_commit,R.id.back_iv})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.text_dizi:
                 Intent intent = new Intent(OrderActivity.this, RecAddressActivity.class);
+                intent.putExtra("code",100);
                 startActivityForResult(intent, 100);
                 break;
             case R.id.tv_commit:
@@ -236,7 +240,7 @@ public class OrderActivity extends BaseActivity {
                     return;
                 }
                 //提交订单，成功后，去调用获取支付参数接口
-                mViewModel.udpateAdress(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(mInfo.getOrder_no()), mAdressId)
+                mViewModel.udpateAdress(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(mInfo.getOrder_no()), mAddressId)
                         .observe(OrderActivity.this, mCommitObserver);
                 break;
             case R.id.back_iv:
@@ -324,10 +328,10 @@ public class OrderActivity extends BaseActivity {
         if (requestCode == 100 && resultCode == 101) {
             //返回更新地址
             //todo
-            String adress = data.getStringExtra("adress");
-            mAdressId= data.getStringExtra("adressId");
+            String adress = data.getStringExtra("address");
+            mAddressId= data.getStringExtra("addressId");
             textDizi.setText(adress);
-            mViewModel.getExpressCost(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),String.valueOf(mInfo.getOrder_no()),mAdressId)
+            mViewModel.getExpressCost(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),String.valueOf(mInfo.getOrder_no()),mAddressId)
                     .observe(this,mExpressCostObserver);
         }
     }

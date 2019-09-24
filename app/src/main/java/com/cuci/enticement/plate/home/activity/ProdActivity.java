@@ -19,9 +19,9 @@ import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.AllOrderList;
-import com.cuci.enticement.bean.Base;
 import com.cuci.enticement.bean.CartNum;
 import com.cuci.enticement.bean.HomeDetailsBean;
+import com.cuci.enticement.bean.CartChange;
 import com.cuci.enticement.bean.OrderGoods;
 import com.cuci.enticement.bean.OrderResult;
 import com.cuci.enticement.bean.Status;
@@ -29,6 +29,8 @@ import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.plate.cart.activity.OrderActivity;
 import com.cuci.enticement.plate.cart.vm.CartViewModel;
 import com.cuci.enticement.plate.common.GlideImageLoader;
+import com.cuci.enticement.plate.common.eventbus.AddressEvent;
+import com.cuci.enticement.plate.common.eventbus.CartEvent;
 import com.cuci.enticement.plate.common.popup.ShareBottom2TopProdPopup;
 import com.cuci.enticement.plate.home.vm.HomeViewModel;
 import com.cuci.enticement.utils.AppUtils;
@@ -46,13 +48,14 @@ import com.tencent.smtt.sdk.WebView;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.ResponseBody;
 
@@ -396,33 +399,43 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
     };
 
 
-    private Observer<Status<Base>> mIntoCart = new Observer<Status<Base>>() {
+    private Observer<Status<ResponseBody>> mIntoCart = new Observer<Status<ResponseBody>>() {
 
         @Override
-        public void onChanged(Status<Base> baseStatus) {
-            switch (baseStatus.status) {
+        public void onChanged(Status<ResponseBody> status) {
+            switch (status.status) {
                 case Status.LOADING:
                     break;
                 case Status.SUCCESS:
-                    String s = new Gson().toJson(baseStatus.content);
-                    if (baseStatus.content.code == 1) {
-                        FToast.success("加入购物车成功");
-                        //调用接口改变小车上的数量
-                        CartViewModel viewModel = ViewModelProviders.of(ProdActivity.this).get(CartViewModel.class);
-                        viewModel.cartNum(mUserInfo.getToken(), String.valueOf(mUserInfo.getId())).observe(ProdActivity.this, mNumObserver);
+                    ResponseBody content = status.content;
+                    try {
+                        String result = content.string();
+                        CartChange bean = new Gson().fromJson(result, CartChange.class);
 
-                        LocalBroadcastManager broadcastManager = getInstance(ProdActivity.this);
-                        broadcastManager.sendBroadcast(new Intent(ACTION_REFRESH_DATA));
+                        if (bean.getCode() == 1) {
+                            FToast.success(bean.getInfo());
+                            //调用接口改变小车上的数量
+                            CartViewModel viewModel = ViewModelProviders.of(ProdActivity.this).get(CartViewModel.class);
+                            viewModel.cartNum(mUserInfo.getToken(), String.valueOf(mUserInfo.getId())).observe(ProdActivity.this, mNumObserver);
+                            EventBus.getDefault().postSticky(new CartEvent(CartEvent.REFRESH_CART_LIST));
+                           /* LocalBroadcastManager broadcastManager = getInstance(ProdActivity.this);
+                            broadcastManager.sendBroadcast(new Intent(ACTION_REFRESH_DATA));*/
 
 
-                    } else {
-                        FToast.warning(baseStatus.content.info);
+                        } else {
+                            FToast.warning(bean.getInfo());
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
+
+
 
                     break;
                 case Status.ERROR:
 
-                    FToast.error(baseStatus.message);
+                    FToast.error(status.message);
                     break;
             }
 

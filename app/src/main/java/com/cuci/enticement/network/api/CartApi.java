@@ -44,7 +44,7 @@ public interface CartApi {
      */
     @FormUrlEncoded
     @POST("store/api.member.Cart/dealBuy")
-    Call<Base> cartChange(@Field("from_type") String from_type,@Field("token") String token,
+    Call<ResponseBody> cartChange(@Field("from_type") String from_type,@Field("token") String token,
                                   @Field("mid") String mid,
                                   @Field("goods_id") String goodsId,
                                   @Field("goods_spec") String goodsSpec,

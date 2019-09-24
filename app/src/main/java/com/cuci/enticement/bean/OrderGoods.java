@@ -3,7 +3,15 @@ package com.cuci.enticement.bean;
 import java.io.Serializable;
 
 public class OrderGoods implements Serializable {
-
+     /*  [{"id":41186,"mid":18281,"type":1,"order_no":669079056302,
+     "goods_id":6672579002,"goods_title":"新零售礼包A方案",
+     "goods_logo":"http://qiniu.cdn.enticementchina.com/4229e1b0bf62661c/913270e1206f32e0.jpg",
+     "goods_spec":"默认分组:黑金魅惑蕾丝面膜5片/盒*20，温柔高保湿洁面乳(30g)*20，因诗美菁纯赋活原生水*12，贵族美学*1，油纸*10，标贴*10，手提袋*10;T恤:M",
+     "price_real":"3660.00","price_selling":"3660.00","price_market":"3660.00",
+     "price_express":"0.00","price_service":"0.00","discount_price":"0.00",
+     "discount_desc":"","number_limit":1,"number_express":1,"vip_mod":1,
+     "vip_month":0,"vip_discount":"0","number":1,"create_at":"2019-09-21 23:17:36"}]
+            */
     private int cart_id;
     private int mid;
     private long goods_id;

@@ -180,19 +180,19 @@ public class OrderDetailsActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.image_back, R.id.tv_cancel, R.id.tv_commit})
+    @OnClick({R.id.image_back, R.id.tv_left, R.id.tv_right})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.image_back:
                 finish();
                 break;
-            case R.id.tv_cancel:
+            case R.id.tv_left:
 
                 mViewModel.orderCancel(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(mInfo.getOrder_no()))
                         .observe(this, mCancelObserver);
 
                 break;
-            case R.id.tv_commit:
+            case R.id.tv_right:
                 //提交订单，成功后，去调用获取支付参数接口
                 mViewModel.udpateAdress(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(mInfo.getOrder_no()),
                         String.valueOf(mInfo.getExpress_address_id()))
