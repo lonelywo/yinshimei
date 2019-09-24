@@ -147,10 +147,10 @@ public class MyTeamTwoActivity extends BaseActivity implements OnRefreshLoadMore
             return;
         }
         if(TextUtils.isEmpty(s)){
-            mViewModel.hqteamtj2(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"2",""+data.getPid(),data.getNickname(),"1", Status.LOAD_REFRESH)
+            mViewModel.hqteamtj2(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"2",""+data.getId(),"","1", Status.LOAD_REFRESH)
                     .observe(this, mObserver1);
         }else {
-            mViewModel.hqteamtj2(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"2",""+data.getPid(),s,"1", Status.LOAD_REFRESH)
+            mViewModel.hqteamtj2(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"2",""+data.getId(),s,"1", Status.LOAD_REFRESH)
                     .observe(this, mObserver1);
         }
 

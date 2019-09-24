@@ -22,8 +22,8 @@ public class FileUtils {
     public static final String FILE_NAME_EMOJI = "emoji.json";
     public static final String FILE_NAME_QQ = "qq.json";
 
-    public static final String FOLDER_NAME_SAVE = "FDSH";
-    public static final String FOLDER_NAME_CACHE = "fdsh_cache";
+    public static final String FOLDER_NAME_SAVE = "YSM";
+    public static final String FOLDER_NAME_CACHE = "ysm_cache";
 
 
     private FileUtils() {

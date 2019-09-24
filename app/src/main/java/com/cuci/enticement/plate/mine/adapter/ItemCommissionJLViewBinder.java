@@ -50,7 +50,7 @@ public class ItemCommissionJLViewBinder extends ItemViewBinder<CommissionjlBean.
         ImageLoader.loadPlaceholder(item.getMember().getHeadimg(), holder.imgTuxiang);
         holder.textWenzi1.setText(item.getMember().getNickname());
         holder.textWenzi2.setText(item.getDesc());
-        holder.textMoney.setText(item.getProfit_price());
+        holder.textMoney.setText("+"+item.getProfit_price());
         holder.textTime.setText(item.getCreate_at());
 
 

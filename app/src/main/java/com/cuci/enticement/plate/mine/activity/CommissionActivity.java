@@ -132,21 +132,26 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
 
         mViewModel.hqcommissiontj(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"2")
                 .observe(this, mObserver);
-        long time = new Date().getTime();
+
+        Date a= new Date();
         d = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
         format = sdf.format(d);
         textRqi.setText(format);
         String nian = format.split("-")[0];
         String yue =  format.split("-")[1];
-
         refreshLayout.autoRefresh();
+        if(d.equals(a)){
+            textXiageyue.setEnabled(false);
+        }else {
+            textXiageyue.setEnabled(true);
+        }
         textShanggeyue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(d);
-                calendar.add(Calendar.MONTH, +1);//当前时间前去一个月，即一个月前的时间
+                calendar.add(Calendar.MONTH, -1);//当前时间前去一个月，即一个月前的时间
                 Date time1 = calendar.getTime();
                 String format2 = sdf.format(time1);
                 textRqi.setText(format2);
@@ -160,7 +165,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
             public void onClick(View view) {
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(d);
-                calendar.add(Calendar.MONTH, -1);//当前时间前去一个月，即一个月前的时间
+                calendar.add(Calendar.MONTH, +1);//当前时间前去一个月，即一个月前的时间
                 Date time2 = calendar.getTime();
                 String format3 = sdf.format(time2);
                 textRqi.setText(format3);

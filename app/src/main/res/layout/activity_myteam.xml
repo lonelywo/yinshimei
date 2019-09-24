@@ -93,7 +93,7 @@
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-   <EditText
+   <com.cuci.enticement.widget.ClearEditText
        android:id="@+id/edt_shousuo"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
@@ -107,6 +107,9 @@
        android:inputType="text"
        android:singleLine="true"
        android:imeOptions="actionSearch"
+       android:drawableLeft="@drawable/fangdajing"
+       android:gravity="center_vertical"
+       android:drawablePadding="5dp"
        />
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

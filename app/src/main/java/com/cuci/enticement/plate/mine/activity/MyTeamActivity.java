@@ -134,7 +134,7 @@ public class MyTeamActivity extends BaseActivity implements OnRefreshLoadMoreLis
             return;
         }
         if(TextUtils.isEmpty(s)){
-            mViewModel.hqteamtj(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"2",mUserInfo.getNickname(),"1", Status.LOAD_REFRESH)
+            mViewModel.hqteamtj(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"2","","1", Status.LOAD_REFRESH)
                     .observe(this, mObserver1);
         }else {
             mViewModel.hqteamtj(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"2",s,"1", Status.LOAD_REFRESH)
