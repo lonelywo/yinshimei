@@ -145,7 +145,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                     WXMediaMessage msg = new WXMediaMessage(miniProgramObj);
                     msg.title = "小程序消息Title";                    // 小程序消息title
                     msg.description = "小程序消息Desc";               // 小程序消息desc
-                    msg.thumbData = GetByteByNetUrl.getImageFromNetByUrl(mProData.getLogo());                      // 小程序消息封面图片，小于128k
+                    msg.thumbData = GetByteByNetUrl.getImageFromNetByUrl(mProData.getImage().get(0));                      // 小程序消息封面图片，小于128k
 
                     SendMessageToWX.Req req = new SendMessageToWX.Req();
                     req.transaction =String.valueOf(System.currentTimeMillis());
