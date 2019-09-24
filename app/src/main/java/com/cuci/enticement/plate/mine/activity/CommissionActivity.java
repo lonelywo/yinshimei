@@ -1,11 +1,13 @@
 package com.cuci.enticement.plate.mine.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -15,6 +17,9 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bigkoo.pickerview.builder.TimePickerBuilder;
+import com.bigkoo.pickerview.listener.OnTimeSelectListener;
+import com.bigkoo.pickerview.view.TimePickerView;
 import com.classic.common.MultipleStatusView;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
@@ -38,6 +43,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -96,6 +102,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
     private  List<CommissionjlBean.DataBean.ListBean> mDatas=new ArrayList<>();
     private boolean mCanLoadMore = true;
     private String format;
+    private Date d;
 
     @Override
     public int getLayoutId() {
@@ -126,13 +133,42 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
         mViewModel.hqcommissiontj(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"2")
                 .observe(this, mObserver);
         long time = new Date().getTime();
-        Date d = new Date(time);
+        d = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
-         format = sdf.format(d);
+        format = sdf.format(d);
         textRqi.setText(format);
+        String nian = format.split("-")[0];
+        String yue =  format.split("-")[1];
 
         refreshLayout.autoRefresh();
-
+        textShanggeyue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(d);
+                calendar.add(Calendar.MONTH, +1);//当前时间前去一个月，即一个月前的时间
+                Date time1 = calendar.getTime();
+                String format2 = sdf.format(time1);
+                textRqi.setText(format2);
+                d=time1;
+                mViewModel.hqcommissiontj(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"2",format2,Status.LOAD_REFRESH)
+                        .observe(CommissionActivity.this, mObserver1);
+            }
+        });
+        textXiageyue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(d);
+                calendar.add(Calendar.MONTH, -1);//当前时间前去一个月，即一个月前的时间
+                Date time2 = calendar.getTime();
+                String format3 = sdf.format(time2);
+                textRqi.setText(format3);
+                d=time2;
+                mViewModel.hqcommissiontj(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"2",format3,Status.LOAD_REFRESH)
+                        .observe(CommissionActivity.this, mObserver1);
+            }
+        });
         buttonTixian.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -147,6 +183,31 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
                 finish();
             }
         });
+        imgXiajiantou.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dianji();
+                FToast.warning("测试1");
+            }
+        });
+
+
+    }
+
+    private void dianji() {
+        //时间选择器
+        TimePickerView pvTime = new TimePickerBuilder(this, new OnTimeSelectListener() {
+            @Override
+            public void onTimeSelect(Date date, View v) {
+                 FToast.warning("测试");
+            }
+        }).build();
+    }
+
+
+    private String getTime(Date date) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd  HH:mm");
+        return format.format(date);
     }
 
     private void load() {
@@ -288,4 +349,8 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
         load();
 
     }
+
+
+
+
 }

@@ -1,5 +1,6 @@
 package com.cuci.enticement.plate.mine.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -37,7 +38,6 @@ public class MyOrderActivity extends BaseActivity {
     private boolean mCouldChange = true;
     private MallViewModel mViewModel;
 
-    String[] titles = {"全部", "待付款", "待发货", "待收货", "已完成"};
     List<String> data = new ArrayList<String>();
 
     @Override
@@ -47,11 +47,8 @@ public class MyOrderActivity extends BaseActivity {
 
     @Override
     public void initViews(Bundle savedInstanceState) {
-        load();
-    }
-
-
-    private void load() {
+        Intent intent = getIntent();
+        int cur = intent.getIntExtra("cur", 0);
         data.add("全部");
         data.add("待付款");
         data.add("待发货");
@@ -72,8 +69,11 @@ public class MyOrderActivity extends BaseActivity {
         mViewPager.setOffscreenPageLimit(data.size() - 1);
         mViewPager.setAdapter(adapter);
         mTabLayout.setViewPager(mViewPager, titles);
-        mStatusView.showContent();
+        mViewPager.setCurrentItem(cur);
     }
+
+
+
 
 
     @OnClick(R.id.image_back)

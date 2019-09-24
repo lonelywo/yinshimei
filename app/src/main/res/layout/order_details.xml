@@ -81,9 +81,16 @@
               android:padding="10dp"
               />
      </androidx.constraintlayout.widget.ConstraintLayout>
-
-     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/con_buju2"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/con_buju1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+ <!--    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/recycler_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/con_buju1"
@@ -131,12 +138,12 @@
             app:layout_constraintTop_toBottomOf="@+id/text_neirong"
             app:layout_constraintStart_toStartOf="@+id/text_biaoti"
             />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/con_buju3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/con_buju2"
+        app:layout_constraintTop_toBottomOf="@id/recycler_view"
         android:padding="10dp"
         android:background="@color/colorWhite"
         android:layout_marginTop="10dp"
@@ -249,7 +256,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         >
         <TextView
-            android:id="@+id/tv_cancel"
+            android:id="@+id/tv_left"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -260,7 +267,7 @@
             android:padding="15dp"
             />
         <TextView
-            android:id="@+id/tv_commit"
+            android:id="@+id/tv_right"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

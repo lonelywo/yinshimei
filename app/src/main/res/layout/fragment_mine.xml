@@ -81,6 +81,15 @@
         android:src="@drawable/shape_mine_bg3"
         app:layout_constraintTop_toBottomOf="@+id/con_toubu"
         />
+     <ImageView
+         android:id="@+id/img_yqhy"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:src="@drawable/yqhy"
+         app:layout_constraintRight_toRightOf="@+id/img_shape_bai"
+         app:layout_constraintTop_toTopOf="@+id/img_shape_bai"
+         />
+
      <de.hdodenhof.circleimageview.CircleImageView
          android:id="@+id/img_tuxiang"
          android:layout_width="60dp"
@@ -105,9 +114,9 @@
           />
      <ImageView
          android:id="@+id/img_jingxiao"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:src="@drawable/ic_index_dashboard"
+         android:layout_width="24dp"
+         android:layout_height="24dp"
+         android:src="@drawable/diamonds"
          app:layout_constraintLeft_toLeftOf="@+id/img_shape_huang"
          app:layout_constraintBottom_toBottomOf="@+id/img_shape_huang"
          android:layout_marginLeft="20sp"
@@ -151,7 +160,7 @@
     <Button
         android:id="@+id/btn_shengji"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:background="@drawable/shape_mine_button_bg"
         android:layout_marginRight="20dp"
         app:layout_constraintRight_toRightOf="@+id/img_shape_huang"
@@ -273,7 +282,7 @@
        android:layout_height="wrap_content"
        android:drawableTop="@drawable/daifahuo"
        android:drawablePadding="6dp"
-       android:text="代发货"
+       android:text="待发货"
        android:textColor="#646262"
        android:gravity="center"
        app:layout_constraintTop_toTopOf="parent"
@@ -313,7 +322,7 @@
     android:layout_height="wrap_content"
     android:drawableTop="@drawable/daishouhuo"
     android:drawablePadding="6dp"
-    android:text="代收货"
+    android:text="待收货"
     android:textColor="#646262"
     android:gravity="center"
     app:layout_constraintTop_toTopOf="parent"

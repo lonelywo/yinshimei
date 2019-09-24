@@ -14,6 +14,8 @@ public class WxPayBean implements Serializable {
      * signType : MD5
      * paySign : 5AC755D31D0FE2E0D16B96FBFA70EE6A
      * timestamp : 1548153280
+     * partnerId
+     * prepayId
      */
 
     private String appId;
@@ -24,6 +26,25 @@ public class WxPayBean implements Serializable {
     private String signType;
     private String paySign;
     private String timestamp;
+
+    public String getPartnerId() {
+        return partnerId;
+    }
+
+    public void setPartnerId(String partnerId) {
+        this.partnerId = partnerId;
+    }
+
+    public String getPrepayId() {
+        return prepayId;
+    }
+
+    public void setPrepayId(String prepayId) {
+        this.prepayId = prepayId;
+    }
+
+    private String partnerId;
+    private String prepayId;
 
     public String getAppId() {
         return appId;

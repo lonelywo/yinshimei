@@ -32,13 +32,17 @@ import com.cuci.enticement.bean.OrderResult;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.bean.WxPayBean;
+import com.cuci.enticement.bean.ZFBBean;
 import com.cuci.enticement.plate.mine.activity.RecAddressActivity;
+import com.cuci.enticement.plate.mine.adapter.ItemProdViewBinder;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.cuci.enticement.plate.mine.vm.OrderViewModel;
 import com.cuci.enticement.utils.Arith;
+import com.cuci.enticement.utils.FLog;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.PayResult;
 import com.cuci.enticement.utils.SharedPrefUtils;
+import com.cuci.enticement.widget.OrderItemDecoration;
 import com.cuci.enticement.wxapi.WXEntryActivity;
 import com.google.gson.Gson;
 import com.tencent.mm.opensdk.modelpay.PayReq;
@@ -51,8 +55,13 @@ import java.util.List;
 import java.util.Map;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.OnClick;
+import me.drakeet.multitype.Items;
+import me.drakeet.multitype.MultiTypeAdapter;
 import okhttp3.ResponseBody;
 
 import static com.cuci.enticement.plate.cart.fragment._CartFragment.ACTION_REFRESH_DATA;
@@ -81,13 +90,18 @@ public class OrderActivity extends BaseActivity {
     ImageView unionIv;
     @BindView(R.id.tv_total_money)
     TextView tvTotalMoney;
-
+    @BindView(R.id.recycler_view)
+    RecyclerView mRecyclerView;
 
     private OrderViewModel mViewModel;
     private UserInfo mUserInfo;
     private String mAdressId="";
-    private int mPayType=1;
+    private int mPayType=2;
     private AllOrderList.DataBean.ListBeanX   mInfo;
+    private LinearLayoutManager mLayoutManager;
+    private MultiTypeAdapter mAdapter;
+    private Items mItems;
+
 
     @SuppressLint("HandlerLeak")
     private  Handler mHandler = new Handler() {
@@ -102,7 +116,24 @@ public class OrderActivity extends BaseActivity {
                     if (TextUtils.equals(resultStatus, "9000")) {
 
                         Toast.makeText(OrderActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
-                       finish();
+
+                        finish();
+               /*         if (TextUtils.equals(resultStatus, "9000")) {
+                        // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
+                        FToast.success("支付成功：" + payResult.toString());
+                        try {
+                           AliPayResult aliPayResult = new Gson().fromJson(result, AliPayResult.class);
+                           FLog.e(TAG, aliPayResult.toString());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                       }
+                    } else {
+                       // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
+                        FToast.error("失败：" + payResult.toString());
+                    }*/
+
+
+
                     } else {
 
                         if (TextUtils.equals(resultStatus, "6001")) {
@@ -135,6 +166,7 @@ public class OrderActivity extends BaseActivity {
         }
 
         mInfo = intent.getParcelableExtra("intentInfo");
+
         List<OrderGoods> items = mInfo.getList();
 
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
@@ -162,15 +194,34 @@ public class OrderActivity extends BaseActivity {
                     .observe(this,mExpressCostObserver);
         }
 
-    }
 
+
+        mAdapter = new MultiTypeAdapter();
+        mItems = new Items();
+//        mItems.addAll(items);
+        mAdapter.setItems(mItems);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        mAdapter.register(OrderGoods.class, new ItemProdViewBinder());
+
+
+        OrderItemDecoration mDecoration = new OrderItemDecoration(this, 4);
+
+        mRecyclerView.addItemDecoration(mDecoration);
+        mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mRecyclerView.setAdapter(mAdapter);
+
+
+
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
-
     }
-
     @OnClick({R.id.text_dizi, R.id.tv_commit,R.id.back_iv})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -187,7 +238,6 @@ public class OrderActivity extends BaseActivity {
                 //提交订单，成功后，去调用获取支付参数接口
                 mViewModel.udpateAdress(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(mInfo.getOrder_no()), mAdressId)
                         .observe(OrderActivity.this, mCommitObserver);
-
                 break;
             case R.id.back_iv:
                 finish();
@@ -195,33 +245,58 @@ public class OrderActivity extends BaseActivity {
         }
     }
 
-
-
-
-
     /**
      * 获取支付参数接口
      */
     private Observer<Status<ResponseBody>> mPayObserver = status -> {
         switch (status.status) {
             case Status.SUCCESS:
-
                 ResponseBody body = status.content;
-
                 try {
                     String result = body.string();
-                    OrderPay orderPay = new Gson().fromJson(result, OrderPay.class);
-                    if(orderPay.getCode()==1){
-                        OrderPay.DataBean data = orderPay.getData();
-                        String appid = data.getAppid();
-                        String prepayid = data.getPrepayid();
-                        String sign = data.getSign();
-                        String timestamp = data.getTimestamp();
-                        String partnerid = data.getPartnerid();
-                        String noncestr = data.getNoncestr();
+
+                    if(mPayType==2){
+                        ZFBBean orderPay = new Gson().fromJson(result, ZFBBean.class);
+                        if(orderPay.getCode()==1){
+
+                                sendReq2ZFB(orderPay.getData());
+
+                        }else {
+                            FToast.warning(orderPay.getInfo());
+                        }
+
+                    }else if(mPayType==1){
+                        OrderPay orderPay = new Gson().fromJson(result, OrderPay.class);
+                        if(orderPay.getCode()==1){
+                            OrderPay.DataBean data = orderPay.getData();
+                            String appid = data.getAppid();
+                            String prepayid = data.getPrepayid();
+                            String sign = data.getSign();
+                            String timestamp = data.getTimestamp();
+                            String partnerid = data.getPartnerid();
+                            String noncestr = data.getNoncestr();
+                            String packageX = data.getPackageX();
+                            //weixin
+
+                                WxPayBean wxPayBean = new WxPayBean();
+                                wxPayBean.setAppId(appid);
+                                wxPayBean.setPrepayId(prepayid);
+                                wxPayBean.setPartnerId(partnerid);
+                                wxPayBean.setNonceStr(noncestr);
+                                wxPayBean.setPaySign(sign);
+                                wxPayBean.setTimestamp(timestamp);
+                                wxPayBean.setPackageX(packageX);
+                                sendReq2WX(wxPayBean);
 
                     }else {
-                        FToast.warning(orderPay.getInfo());
+                            FToast.warning("");
+                        }
+
+
+
+
+
+
                     }
 
 
@@ -361,13 +436,13 @@ public class OrderActivity extends BaseActivity {
                 aliIv.setImageResource(R.drawable.xuanzhong);
                 wechatIv.setImageResource(R.drawable.noxuanzhong);
                 unionIv.setImageResource(R.drawable.noxuanzhong);
-                mPayType=1;
+                mPayType=2;
                 break;
             case R.id.con_fangshi2:
                 aliIv.setImageResource(R.drawable.noxuanzhong);
                 wechatIv.setImageResource(R.drawable.xuanzhong);
                 unionIv.setImageResource(R.drawable.noxuanzhong);
-                mPayType=2;
+                mPayType=1;
 
                 break;
             case R.id.con_fangshi3:
@@ -394,11 +469,10 @@ public class OrderActivity extends BaseActivity {
                 //1、生成订单数据
                 //2、支付
                 PayTask payTask = new PayTask(OrderActivity.this);
-										                /*
-										                参数1：订单信息
-										                参数2：表示在支付钱包显示之前，true会显示一个dialog提示用户表示正在唤起支付宝钱包
-										                返回值：
-										                就是同步返回的支付结果（在实际开发过程中，不应该以此同步结果作为支付成功的依据。以异步结果作为成功支付的依据）
+				  /*参数1：订单信息
+	                参数2：表示在支付钱包显示之前，true会显示一个dialog提示用户表示正在唤起支付宝钱包
+				    返回值：
+					就是同步返回的支付结果（在实际开发过程中，不应该以此同步结果作为支付成功的依据。以异步结果作为成功支付的依据）
 										                 */
                 Map<String, String> result = payTask.payV2(oInfo, true);
                 Message message = mHandler.obtainMessage();
@@ -425,8 +499,8 @@ public class OrderActivity extends BaseActivity {
         //这里的bean，是服务器返回的json生成的bean
         PayReq payRequest = new PayReq();
         payRequest.appId = wxPayBean.getAppId();
-        //  payRequest.partnerId = wxPayBean.getPartnerid();//这里参数也需要，目前没有就屏蔽了
-        //  payRequest.prepayId = wxPayBean.getPrepayid();//这里参数也需要，目前没有就屏蔽了
+        payRequest.partnerId = wxPayBean.getPartnerId();//这里参数也需要，目前没有就屏蔽了
+        payRequest.prepayId = wxPayBean.getPrepayId();//这里参数也需要，目前没有就屏蔽了
         payRequest.packageValue = "Sign=WXPay";//固定值
         payRequest.nonceStr = wxPayBean.getNonceStr();
         payRequest.timeStamp = wxPayBean.getTimestamp();

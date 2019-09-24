@@ -29,11 +29,6 @@ public class MineViewModel extends ViewModel {
         mCreator = ServiceCreator.getInstance();
     }
 
-
-
-
-
-
     /**
      * 开关
      * @param from_type
