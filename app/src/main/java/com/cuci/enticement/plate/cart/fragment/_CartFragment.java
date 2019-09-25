@@ -46,6 +46,11 @@ import com.google.gson.Gson;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+import com.yanzhenjie.recyclerview.OnItemMenuClickListener;
+import com.yanzhenjie.recyclerview.SwipeMenu;
+import com.yanzhenjie.recyclerview.SwipeMenuBridge;
+import com.yanzhenjie.recyclerview.SwipeMenuCreator;
+import com.yanzhenjie.recyclerview.SwipeMenuItem;
 import com.yanzhenjie.recyclerview.SwipeRecyclerView;
 import com.yanzhenjie.recyclerview.touch.OnItemMoveListener;
 
@@ -125,36 +130,82 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
         mRecyclerView.addItemDecoration(mDecoration);
         mLayoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mAdapter);
+
         mRbCheckAll.setOnCheckedChangeListener((buttonView, isChecked) -> checkAll(isChecked));
-        mRecyclerView.setItemViewSwipeEnabled(true); // 侧滑删除，默认关闭。
-
-        mRecyclerView.setOnItemMoveListener(mItemMoveListener);// 监听拖拽，更新UI。
-
 
         mLocalBroadcastManager = LocalBroadcastManager.getInstance(mActivity);
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ACTION_REFRESH_DATA);
         //mLocalBroadcastManager.registerReceiver(mReceiver, intentFilter);
 
+
+        // 侧滑删除，默认关闭。
+        mRecyclerView.setItemViewSwipeEnabled(true);
+        // 监听拖拽，更新UI。
+      //  mRecyclerView.setOnItemMoveListener(mItemMoveListener);
+
+      // 设置监听器。
+        mRecyclerView.setSwipeMenuCreator(mSwipeMenuCreator);
+
+        // 菜单点击监听。
+        mRecyclerView.setOnItemMenuClickListener(mItemMenuClickListener);
+
+
+        mRecyclerView.setAdapter(mAdapter);
+
+
     }
 
 
+    OnItemMenuClickListener mItemMenuClickListener = new OnItemMenuClickListener() {
+        @Override
+        public void onItemClick(SwipeMenuBridge menuBridge, int position) {
+            // 任何操作必须先关闭菜单，否则可能出现Item菜单打开状态错乱。
+            menuBridge.closeMenu();
 
+            // 左侧还是右侧菜单：
+            int direction = menuBridge.getDirection();
+            // 菜单在Item中的Position：
+            mPosition = menuBridge.getPosition();
+          //  mPosition = srcHolder.getAdapterPosition();
+            if(mCanChange) {
+
+                mCanChange=false;
+                OrderGoods bean = (OrderGoods) mAdapter.getItems().get(mPosition);
+                int cart_id = bean.getCart_id();
+                mViewModel.cartDelete(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),String.valueOf(cart_id) )
+                        .observe(mActivity, mDeleteObserver);
+            }
+
+        }
+    };
+
+    // 创建菜单：
+    SwipeMenuCreator mSwipeMenuCreator = new SwipeMenuCreator() {
+        @Override
+        public void onCreateMenu(SwipeMenu leftMenu, SwipeMenu rightMenu, int position) {
+            SwipeMenuItem deleteItem = new SwipeMenuItem(mActivity);
+            deleteItem.setText("删除");
+            deleteItem.setTextColor(getResources().getColor(R.color.colorWhite));
+            deleteItem.setBackground(R.drawable.shape_delete_bg);
+            // 各种文字和图标属性设置。
+            rightMenu.addMenuItem(deleteItem); // 在Item右侧添加一个菜单。
+
+          /*  SwipeMenuItem deleteItem = new SwipeMenuItem(mActivity);
+            // 各种文字和图标属性设置。
+            leftMenu.addMenuItem(deleteItem); // 在Item右侧添加一个菜单。*/
+
+            // 注意：哪边不想要菜单，那么不要添加即可。
+        }
+    };
+
+
+/*
 
     OnItemMoveListener mItemMoveListener = new OnItemMoveListener() {
         @Override
         public boolean onItemMove(RecyclerView.ViewHolder srcHolder, RecyclerView.ViewHolder targetHolder) {
-            // 此方法在Item拖拽交换位置时被调用。
-            // 第一个参数是要交换为之的Item，第二个是目标位置的Item。
 
-            // 交换数据，并更新adapter。
-           /* int fromPosition = srcHolder.getAdapterPosition();
-            int toPosition = targetHolder.getAdapterPosition();
-          //  Collections.swap(mDataList, fromPosition, toPosition);
-            mAdapter.notifyItemMoved(fromPosition, toPosition);*/
-
-            // 返回true，表示数据交换成功，ItemView可以交换位置。
             return true;
         }
 
@@ -175,6 +226,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
         }
     };
+*/
 
 
 
@@ -272,24 +324,26 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
                     mStatusView.showContent();
                     Base<CartDataBean> content = status.content;
                     if (content == null) {
-                            mStatusView.showEmpty();
+
                         if (status.loadType == Status.LOAD_MORE) {
                             mRefreshLayout.finishLoadMore();
                         } else {
+                            mStatusView.showEmpty();
                             mRefreshLayout.finishRefresh();
                         }
                         return;
                     }
                     CartDataBean data = content.data;
                     //  String s = new Gson().toJson(data);
-                    if (data.getList() == null) {
-                        if(mAdapter.getItemCount()==0){
-                            mStatusView.showEmpty();
-                        }
+                    if (data.getList() == null||data.getList().size()==0) {
+
 
                         if (status.loadType == Status.LOAD_MORE) {
                             mRefreshLayout.finishLoadMore();
                         } else {
+
+                                mStatusView.showEmpty();
+
                             mRefreshLayout.finishRefresh();
                         }
                         return;

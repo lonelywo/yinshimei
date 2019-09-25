@@ -165,7 +165,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintTop_toBottomOf="parent"
-        android:text="2019-08"
+        tools:text="2019-08"
         android:drawableRight="@drawable/xiajiantou"
         android:drawablePadding="5dp"
         android:gravity="center"

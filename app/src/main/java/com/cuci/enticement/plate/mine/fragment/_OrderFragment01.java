@@ -150,7 +150,8 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
     }
 
     private void load() {
-
+        String token = mUserInfo.getToken();
+        int id = mUserInfo.getId();
         mViewModel.getOrderList(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"1",mtype,"",Status.LOAD_REFRESH)
                 .observe(this, mObserver);
     }

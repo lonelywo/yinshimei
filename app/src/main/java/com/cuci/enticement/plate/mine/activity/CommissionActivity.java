@@ -1,9 +1,11 @@
 package com.cuci.enticement.plate.mine.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
+import com.bigkoo.pickerview.listener.CustomListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.classic.common.MultipleStatusView;
@@ -95,7 +98,8 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
     private boolean mCanLoadMore = true;
     private String format;
     private Date d;
-
+    private TimePickerView pvTime;
+    private FrameLayout mFrameLayout;
     @Override
     public int getLayoutId() {
         return R.layout.activity_commisson;
@@ -126,8 +130,11 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
                 .observe(this, mObserver);
 
         Date a= new Date();
+
         d = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+
+        String formatStart = sdf.format(a);
         format = sdf.format(d);
         textRqi.setText(format);
         String nian = format.split("-")[0];
@@ -168,7 +175,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
                 String format3 = sdf.format(time2);
                 textRqi.setText(format3);
                 d=time2;
-                if(d.equals(a)){
+                if(format3.equals(formatStart)){
                     textXiageyue.setEnabled(false);
                 }else {
                     textXiageyue.setEnabled(true);
@@ -191,30 +198,89 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
                 finish();
             }
         });
+
+
+
+
+        //初始化时间选择器
+        initTimePicker();
+
         textRqi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dianji();
-                FToast.warning("测试1");
+                pvTime.show(view, false);//弹出时间选择器，传递参数过去，回调的时候则可以绑定此view
             }
         });
 
-
     }
 
-    private void dianji() {
+    private void initTimePicker() {
+        //控制时间范围(如果不设置范围，则使用默认时间1900-2100年，此段代码可注释)
+        //因为系统Calendar的月份是从0-11的,所以如果是调用Calendar的set方法来设置时间,月份的范围也要是从0-11
+        Calendar selectedDate = Calendar.getInstance();
+
+        Calendar startDate = Calendar.getInstance();
+        startDate.set(2013, 0, 23);
+
+        Calendar endDate = Calendar.getInstance();
+        endDate.set(2019, 11, 28);
         //时间选择器
-        TimePickerView pvTime = new TimePickerBuilder(this, new OnTimeSelectListener() {
+        pvTime = new TimePickerBuilder(this, new OnTimeSelectListener() {
             @Override
-            public void onTimeSelect(Date date, View v) {
-                 FToast.warning("测试");
+            public void onTimeSelect(Date date, View v) {//选中事件回调
+                // 这里回调过来的v,就是show()方法里面所添加的 View 参数，如果show的时候没有添加参数，v则为null
+                /*btn_Time.setText(getTime(date));*/
+                d=date;
+                textRqi.setText(getTime(date));
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+                format = sdf.format(d);
+                pvTime.dismiss();
+                mViewModel.hqcommissiontj(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"2",format,Status.LOAD_REFRESH)
+                        .observe(CommissionActivity.this, mObserver1);
+
+
+
             }
-        }).build();
+        })
+                .setLayoutRes(R.layout.pickerview_custom_time, new CustomListener() {
+
+                    @Override
+                    public void customLayout(View v) {
+                        final TextView tvSubmit = (TextView) v.findViewById(R.id.tv_finish);
+                        ImageView ivCancel = (ImageView) v.findViewById(R.id.iv_cancel);
+                        tvSubmit.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                pvTime.returnData();
+
+                            }
+                        });
+                        ivCancel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                pvTime.dismiss();
+                            }
+                        });
+                    }
+                })
+                .setType(new boolean[]{true, true, false, false, false, false})
+                .setLabel("", "", "", "", "", "") //设置空字符串以隐藏单位提示   hide label
+                .setDividerColor(Color.DKGRAY)
+                .setContentTextSize(20)
+                .setDate(selectedDate)
+                .setRangDate(startDate, selectedDate)
+               // .setDecorView(mFrameLayout)//非dialog模式下,设置ViewGroup, pickerView将会添加到这个ViewGroup中
+                .setOutSideColor(0x00000000)
+                .setOutSideCancelable(false)
+                .build();
+
+        pvTime.setKeyBackCancelable(false);//系统返回键监听屏蔽掉
     }
 
 
     private String getTime(Date date) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd  HH:mm");
+        //"yyyy-MM-dd  HH:mm"
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
         return format.format(date);
     }
 

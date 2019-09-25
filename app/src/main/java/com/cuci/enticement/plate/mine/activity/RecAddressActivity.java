@@ -182,11 +182,12 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
 
                     AddressBean data = status.content;
                     List<AddressBean.DataBean.ListBean> list = data.getData().getList();
-                    if (data == null) {
-                        mStatusView.showEmpty();
+                    if (list == null||list.size()==0) {
+
                         if (status.loadType == Status.LOAD_MORE) {
                             mRefreshLayout.finishLoadMore();
                         } else {
+                            mStatusView.showEmpty();
                             mRefreshLayout.finishRefresh();
                         }
                         return;
@@ -276,6 +277,7 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
     private Observer<Status<ResponseBody>> mDeleteObserver = status -> {
         switch (status.status) {
             case Status.SUCCESS:
+                mStatusView.showContent();
                 ResponseBody body = status.content;
                 try {
                     String result = body.string();
@@ -283,7 +285,9 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
                     if(deleteAddress.getCode()==1){
                         mItems.remove(mPosition);
                         mAdapter.notifyItemRemoved(mPosition);
-
+                        if(mItems.size()==0){
+                            mStatusView.showEmpty();
+                        }
 
                         FToast.success(deleteAddress.getInfo());
                     }else {

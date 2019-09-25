@@ -68,7 +68,7 @@ public class ZengAddressActivity extends BaseActivity {
     private UserInfo mUserInfo;
     private static boolean isLoaded = false;
     private String mProvince, mCity, mArea, mAddress;
-    private String mIsDefault = "1";
+    private String mIsDefault = "0";
     private List<JsonBean> options1Items = new ArrayList<>();
     private ArrayList<ArrayList<String>> options2Items = new ArrayList<>();
     private ArrayList<ArrayList<ArrayList<String>>> options3Items = new ArrayList<>();
@@ -93,6 +93,13 @@ public class ZengAddressActivity extends BaseActivity {
             mCity = addressBean.getCity();
             mArea = addressBean.getArea();
             mAddressId = String.valueOf(addressBean.getId());
+            int is_default = addressBean.getIs_default();
+            if(is_default==1){
+                checkbox.setChecked(true);
+            }else {
+                checkbox.setChecked(false);
+            }
+
         }
 
 
@@ -119,14 +126,13 @@ public class ZengAddressActivity extends BaseActivity {
                     FToast.warning("请选择城市");
                     checkbox.setChecked(false);
                 }else {
-                    String isDefault="0";
                     if(isChecked){
-                        isDefault="1";
+                        mIsDefault = "1";
                     }else {
-                        isDefault="0";
+                        mIsDefault = "0";
                     }
-                    mViewModel.setDefaultAddress(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),mAddressId)
-                            .observe(ZengAddressActivity.this,mSetObserver);
+                  /*  mViewModel.setDefaultAddress(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),mAddressId)
+                            .observe(ZengAddressActivity.this,mSetObserver);*/
                 }
 
 
@@ -145,9 +151,10 @@ public class ZengAddressActivity extends BaseActivity {
                     SetDefaultAddress bean = new Gson().fromJson(result, SetDefaultAddress.class);
                     if(bean.getCode()==1){
 
-
+                        mIsDefault = "1";
                         FToast.success(bean.getInfo());
                     }else {
+                        mIsDefault = "0";
                         checkbox.setChecked(false);
                         FToast.error(bean.getInfo());
                     }
@@ -165,6 +172,8 @@ public class ZengAddressActivity extends BaseActivity {
 
                 break;
             case Status.ERROR:
+                mIsDefault = "0";
+                checkbox.setChecked(false);
                 FToast.error(status.message);
 
                 break;
@@ -219,7 +228,7 @@ public class ZengAddressActivity extends BaseActivity {
                     if (updateAddress.getCode() == 1) {
                         EventBus.getDefault().postSticky(new AddressEvent(AddressEvent.REFRESH_ADRESS_LIST));
                         FToast.success(updateAddress.getInfo());
-
+                        finish();
                     } else {
                         FToast.error(updateAddress.getInfo());
 
@@ -368,10 +377,5 @@ public class ZengAddressActivity extends BaseActivity {
         return detail;
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
+
 }
