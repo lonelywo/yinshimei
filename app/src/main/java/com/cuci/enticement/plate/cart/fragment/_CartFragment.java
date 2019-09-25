@@ -13,6 +13,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -24,6 +25,7 @@ import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseFragment;
 import com.cuci.enticement.bean.AllOrderList;
 import com.cuci.enticement.bean.Base;
+import com.cuci.enticement.bean.CartChange;
 import com.cuci.enticement.bean.CartDataBean;
 import com.cuci.enticement.bean.CartDelete;
 import com.cuci.enticement.bean.CartIntentInfo;
@@ -34,6 +36,9 @@ import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.plate.cart.activity.OrderActivity;
 import com.cuci.enticement.plate.cart.adapter.ItemCartViewBinder;
 import com.cuci.enticement.plate.cart.vm.CartViewModel;
+import com.cuci.enticement.plate.common.eventbus.AddressEvent;
+import com.cuci.enticement.plate.common.eventbus.CartEvent;
+import com.cuci.enticement.plate.home.activity.ProdActivity;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.widget.CartItemDecoration;
@@ -41,8 +46,17 @@ import com.google.gson.Gson;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+import com.yanzhenjie.recyclerview.OnItemMenuClickListener;
+import com.yanzhenjie.recyclerview.SwipeMenu;
+import com.yanzhenjie.recyclerview.SwipeMenuBridge;
+import com.yanzhenjie.recyclerview.SwipeMenuCreator;
+import com.yanzhenjie.recyclerview.SwipeMenuItem;
 import com.yanzhenjie.recyclerview.SwipeRecyclerView;
 import com.yanzhenjie.recyclerview.touch.OnItemMoveListener;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -54,6 +68,8 @@ import butterknife.OnClick;
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 import okhttp3.ResponseBody;
+
+import static androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance;
 
 /**
  * 购物车
@@ -114,36 +130,82 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
         mRecyclerView.addItemDecoration(mDecoration);
         mLayoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mAdapter);
+
         mRbCheckAll.setOnCheckedChangeListener((buttonView, isChecked) -> checkAll(isChecked));
-        mRecyclerView.setItemViewSwipeEnabled(true); // 侧滑删除，默认关闭。
-
-        mRecyclerView.setOnItemMoveListener(mItemMoveListener);// 监听拖拽，更新UI。
-
 
         mLocalBroadcastManager = LocalBroadcastManager.getInstance(mActivity);
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ACTION_REFRESH_DATA);
-        mLocalBroadcastManager.registerReceiver(mReceiver, intentFilter);
+        //mLocalBroadcastManager.registerReceiver(mReceiver, intentFilter);
+
+
+        // 侧滑删除，默认关闭。
+        mRecyclerView.setItemViewSwipeEnabled(true);
+        // 监听拖拽，更新UI。
+      //  mRecyclerView.setOnItemMoveListener(mItemMoveListener);
+
+      // 设置监听器。
+        mRecyclerView.setSwipeMenuCreator(mSwipeMenuCreator);
+
+        // 菜单点击监听。
+        mRecyclerView.setOnItemMenuClickListener(mItemMenuClickListener);
+
+
+        mRecyclerView.setAdapter(mAdapter);
+
 
     }
 
 
+    OnItemMenuClickListener mItemMenuClickListener = new OnItemMenuClickListener() {
+        @Override
+        public void onItemClick(SwipeMenuBridge menuBridge, int position) {
+            // 任何操作必须先关闭菜单，否则可能出现Item菜单打开状态错乱。
+            menuBridge.closeMenu();
 
+            // 左侧还是右侧菜单：
+            int direction = menuBridge.getDirection();
+            // 菜单在Item中的Position：
+            mPosition = menuBridge.getPosition();
+          //  mPosition = srcHolder.getAdapterPosition();
+            if(mCanChange) {
+
+                mCanChange=false;
+                OrderGoods bean = (OrderGoods) mAdapter.getItems().get(mPosition);
+                int cart_id = bean.getCart_id();
+                mViewModel.cartDelete(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),String.valueOf(cart_id) )
+                        .observe(mActivity, mDeleteObserver);
+            }
+
+        }
+    };
+
+    // 创建菜单：
+    SwipeMenuCreator mSwipeMenuCreator = new SwipeMenuCreator() {
+        @Override
+        public void onCreateMenu(SwipeMenu leftMenu, SwipeMenu rightMenu, int position) {
+            SwipeMenuItem deleteItem = new SwipeMenuItem(mActivity);
+            deleteItem.setText("删除");
+            deleteItem.setTextColor(getResources().getColor(R.color.colorWhite));
+            deleteItem.setBackground(R.drawable.shape_delete_bg);
+            // 各种文字和图标属性设置。
+            rightMenu.addMenuItem(deleteItem); // 在Item右侧添加一个菜单。
+
+          /*  SwipeMenuItem deleteItem = new SwipeMenuItem(mActivity);
+            // 各种文字和图标属性设置。
+            leftMenu.addMenuItem(deleteItem); // 在Item右侧添加一个菜单。*/
+
+            // 注意：哪边不想要菜单，那么不要添加即可。
+        }
+    };
+
+
+/*
 
     OnItemMoveListener mItemMoveListener = new OnItemMoveListener() {
         @Override
         public boolean onItemMove(RecyclerView.ViewHolder srcHolder, RecyclerView.ViewHolder targetHolder) {
-            // 此方法在Item拖拽交换位置时被调用。
-            // 第一个参数是要交换为之的Item，第二个是目标位置的Item。
 
-            // 交换数据，并更新adapter。
-           /* int fromPosition = srcHolder.getAdapterPosition();
-            int toPosition = targetHolder.getAdapterPosition();
-          //  Collections.swap(mDataList, fromPosition, toPosition);
-            mAdapter.notifyItemMoved(fromPosition, toPosition);*/
-
-            // 返回true，表示数据交换成功，ItemView可以交换位置。
             return true;
         }
 
@@ -164,12 +226,36 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
         }
     };
+*/
 
 
 
 
+    @Subscribe(threadMode = ThreadMode.POSTING, sticky = true)
+    public void onCartEventMessage(CartEvent event) {
+        if(event.getCode()==CartEvent.REFRESH_CART_LIST){
+            mRefreshLayout.autoRefresh();
+        }
 
-    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+
+    }
+
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        EventBus.getDefault().unregister(this);
+    }
+
+
+
+  /*  private BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent != null && intent.getAction() != null) {
@@ -180,12 +266,12 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
                         mStatusView.showEmpty();
                         return;
                     }
-                    mRefreshLayout.autoRefresh();
+                    load();
                 }
 
             }
         }
-    };
+    };*/
 
 
 
@@ -194,7 +280,8 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
     private void load() {
 
-        mViewModel.getCartList(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "1", Status.LOAD_REFRESH).observe(this, mObserver);
+        mViewModel.getCartList(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "1", Status.LOAD_REFRESH)
+                .observe(this, mObserver);
 
     }
 
@@ -219,6 +306,9 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
         }
     }
 
+
+
+
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         load();
@@ -231,27 +321,29 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
                 case Status.SUCCESS:
 
-
+                    mStatusView.showContent();
                     Base<CartDataBean> content = status.content;
                     if (content == null) {
-                            mStatusView.showEmpty();
+
                         if (status.loadType == Status.LOAD_MORE) {
                             mRefreshLayout.finishLoadMore();
                         } else {
+                            mStatusView.showEmpty();
                             mRefreshLayout.finishRefresh();
                         }
                         return;
                     }
                     CartDataBean data = content.data;
                     //  String s = new Gson().toJson(data);
-                    if (data.getList() == null) {
-                        if(mAdapter.getItemCount()==0){
-                            mStatusView.showEmpty();
-                        }
+                    if (data.getList() == null||data.getList().size()==0) {
+
 
                         if (status.loadType == Status.LOAD_MORE) {
                             mRefreshLayout.finishLoadMore();
                         } else {
+
+                                mStatusView.showEmpty();
+
                             mRefreshLayout.finishRefresh();
                         }
                         return;
@@ -347,29 +439,40 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
     private boolean mCanChange=true;
     private long mGoodsId;
+    private int mNum;
     @Override
-    public void onAddClick(OrderGoods bean) {
+    public void onAddClick(OrderGoods bean,int position) {
         //点击一次加1一次
         if(mCanChange){
-            int goods_num = bean.getGoods_num()+1;
+            mPosition=position;
+            mNum= bean.getGoods_num()+1;
             String goods_id = String.valueOf(bean.getGoods_id());
             String goods_spec = bean.getGoods_spec();
             mGoodsId=bean.getGoods_id();
             mCanChange=false;
-            mViewModel.cartChange(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), goods_id,goods_spec,String.valueOf(goods_num)).observe(this, mChangeObserver);
+            mViewModel.cartChange(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),
+                    goods_id,goods_spec,String.valueOf(mNum)).observe(this, mChangeObserver);
 
         }
     }
 
+
     @Override
-    public void onMinusClick(OrderGoods bean) {
+    public void onMinusClick(OrderGoods bean,int position) {
+        if(bean.getGoods_num()==1){
+            FToast.warning("不能再少了");
+            return;
+        }
         if(mCanChange) {
-            int goods_num = bean.getGoods_num() - 1;
+            mPosition=position;
+            mNum = bean.getGoods_num() - 1;
+
             String goods_id = String.valueOf(bean.getGoods_id());
             String goods_spec = bean.getGoods_spec();
             mGoodsId=bean.getGoods_id();
             mCanChange=false;
-            mViewModel.cartChange(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), goods_id, goods_spec, String.valueOf(goods_num)).observe(this, mChangeObserver);
+            mViewModel.cartChange(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), goods_id,
+                    goods_spec, String.valueOf(mNum)).observe(this, mChangeObserver);
         }
 
     }
@@ -406,14 +509,19 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
             switch (status.status) {
 
                 case Status.SUCCESS:
+                    mStatusView.showContent();
+                    mCanChange=true;
+
                     ResponseBody content = status.content;
                     try {
                         String result = content.string();
                         CartDelete cartDelete = new Gson().fromJson(result, CartDelete.class);
                         if(cartDelete.code==1){
+                            mItems.remove(mPosition);
                             mAdapter.notifyItemRemoved(mPosition);
                             FToast.success(cartDelete.info);
                             if(mAdapter.getItemCount()==0){
+
                                 mStatusView.showEmpty();
                             }
                         }else {
@@ -443,42 +551,36 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
     /**
      * 购物车修改结果
      */
-    private Observer<Status<Base>> mChangeObserver = new Observer<Status<Base>>() {
+    private Observer<Status<ResponseBody>> mChangeObserver = new Observer<Status<ResponseBody>>() {
         @Override
-        public void onChanged(Status<Base> status) {
+        public void onChanged(Status<ResponseBody> status) {
             switch (status.status) {
 
                 case Status.SUCCESS:
-
-
-               /*     Base<CartDataBean> content = status.content;
-                    CartDataBean data = status.content.data;
-
-                    if (data == null) {
-                        mStatusView.showEmpty();
-                        mCanChange = true;
-                        return;
-                    }
                     mStatusView.showContent();
-                    List<OrderGoods> list = data.getList();
-                    if (status.content.code == 1) {
+                    mCanChange = true;
+                    ResponseBody content = status.content;
+                    try {
+                        String result = content.string();
+                        CartChange bean = new Gson().fromJson(result, CartChange.class);
 
-                        mCanChange = true;
-                        int changeIndex=0;
-                        for (int i = 0; i < list.size(); i++) {
-                            if(list.get(i).getGoods_id()==mGoodsId){
-                                changeIndex=i;
-                                break;
-                            }
+                        if (bean.getCode() == 1) {
+                            OrderGoods item = (OrderGoods) mItems.get(mPosition);
+                            item.setGoods_num(mNum);
+
+
+                            mAdapter.notifyItemChanged(mPosition,item);
+
+
+
+                        } else {
+                            FToast.warning(bean.getInfo());
                         }
-                        mItems.clear();
-                        mItems.addAll(list);
-                        mAdapter.notifyItemChanged(changeIndex);
 
-                    } else {
-                        mCanChange = true;
-                        FToast.error(content.info);
-                    }*/
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                     break;
                 case Status.ERROR:
 
@@ -528,7 +630,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
             switch (status.status) {
 
                 case Status.SUCCESS:
-
+                    mStatusView.showContent();
                     ResponseBody content = status.content;
                     try {
                         String result = content.string();

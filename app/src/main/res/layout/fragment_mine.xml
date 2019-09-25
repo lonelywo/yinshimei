@@ -18,15 +18,17 @@
        android:descendantFocusability="blocksDescendants"
 
       >
+
        <ImageView
            android:layout_width="match_parent"
-           android:layout_height="300dp"
+           android:layout_height="200dp"
+           android:src="@drawable/shape_mine_bg1"
+           app:layout_constraintHorizontal_bias="0.0"
            app:layout_constraintLeft_toLeftOf="parent"
            app:layout_constraintRight_toRightOf="parent"
-           app:layout_constraintTop_toTopOf="parent"
-           android:src="@drawable/shape_mine_bg1"
-           />
-    <androidx.constraintlayout.widget.ConstraintLayout
+           app:layout_constraintTop_toTopOf="parent" />
+
+       <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/con_toubu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -60,7 +62,7 @@
     <ImageView
         android:id="@+id/img_shape_huang"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="200dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="20dp"
@@ -72,7 +74,7 @@
     <ImageView
         android:id="@+id/img_shape_bai"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="120dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="20dp"
@@ -81,6 +83,15 @@
         android:src="@drawable/shape_mine_bg3"
         app:layout_constraintTop_toBottomOf="@+id/con_toubu"
         />
+     <ImageView
+         android:id="@+id/img_yqhy"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:src="@drawable/yqhy"
+         app:layout_constraintRight_toRightOf="@+id/img_shape_bai"
+         app:layout_constraintTop_toTopOf="@+id/img_shape_bai"
+         />
+
      <de.hdodenhof.circleimageview.CircleImageView
          android:id="@+id/img_tuxiang"
          android:layout_width="60dp"
@@ -98,16 +109,16 @@
           app:layout_constraintLeft_toRightOf="@+id/img_tuxiang"
           app:layout_constraintTop_toTopOf="@+id/img_shape_bai"
           app:layout_constraintBottom_toBottomOf="@+id/img_shape_bai"
-          android:text="因诗美"
+          android:text="请登录"
           android:layout_marginLeft="5dp"
           android:textSize="20sp"
           android:textColor="#000000"
           />
      <ImageView
          android:id="@+id/img_jingxiao"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:src="@drawable/ic_index_dashboard"
+         android:layout_width="24dp"
+         android:layout_height="24dp"
+         android:src="@drawable/diamonds"
          app:layout_constraintLeft_toLeftOf="@+id/img_shape_huang"
          app:layout_constraintBottom_toBottomOf="@+id/img_shape_huang"
          android:layout_marginLeft="20sp"
@@ -136,7 +147,7 @@
          <TextView
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
-             android:text="省级服务商"
+             android:text="升级服务商"
              android:textColor="#ffffff"
              android:textSize="15sp"
              />
@@ -151,7 +162,7 @@
     <Button
         android:id="@+id/btn_shengji"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:background="@drawable/shape_mine_button_bg"
         android:layout_marginRight="20dp"
         app:layout_constraintRight_toRightOf="@+id/img_shape_huang"
@@ -252,7 +263,7 @@
           tools:text="3"
             android:visibility="gone"
           android:gravity="center"
-          android:textSize="11dp"
+          android:textSize="11sp"
           android:textColor="@color/orange"
           app:layout_constraintTop_toTopOf="parent"
           app:layout_constraintEnd_toEndOf="@+id/text_daifukuan"

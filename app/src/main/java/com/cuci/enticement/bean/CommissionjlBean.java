@@ -51,7 +51,7 @@ public class CommissionjlBean implements Serializable {
             this.list = list;
         }
 
-        public static class ListBean {
+        public static class ListBean implements Serializable{
             /**
              * id : 9749
              * type : 1

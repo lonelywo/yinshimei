@@ -5,26 +5,30 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.classic.common.MultipleStatusView;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
-import com.cuci.enticement.bean.CommissionjlBean;
-import com.cuci.enticement.bean.CommissiontjBean;
 import com.cuci.enticement.bean.MyTeamlbBean;
 import com.cuci.enticement.bean.MyTeamslBean;
-import com.cuci.enticement.bean.OrderList;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
-import com.cuci.enticement.plate.mine.adapter.ItemCommissionJLViewBinder;
 import com.cuci.enticement.plate.mine.adapter.ItemMyTeamViewBinder;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.widget.CartItemDecoration;
+import com.cuci.enticement.widget.ClearEditText;
 import com.cuci.enticement.widget.CustomRefreshHeader;
 import com.google.gson.Gson;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -34,20 +38,14 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import java.io.IOException;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 import okhttp3.ResponseBody;
 
-public class MyTeamActivity extends BaseActivity implements OnRefreshLoadMoreListener , ItemMyTeamViewBinder.OnProdClickListener {
+public class MyTeamActivity extends BaseActivity implements OnRefreshLoadMoreListener, ItemMyTeamViewBinder.OnProdClickListener {
+
     @BindView(R.id.img_back)
     ImageView imgBack;
     @BindView(R.id.text_biaoti)
@@ -65,7 +63,7 @@ public class MyTeamActivity extends BaseActivity implements OnRefreshLoadMoreLis
     @BindView(R.id.con_zhongbu)
     ConstraintLayout conZhongbu;
     @BindView(R.id.edt_shousuo)
-    EditText edtShousuo;
+    ClearEditText edtShousuo;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.refresh_layout)
@@ -77,8 +75,8 @@ public class MyTeamActivity extends BaseActivity implements OnRefreshLoadMoreLis
     private MultiTypeAdapter mAdapter;
     private Items mItems;
     private LinearLayoutManager mLayoutManager;
-    private boolean mCanLoadMore=true;
-    private int page=1;
+    private boolean mCanLoadMore = true;
+    private int page = 1;
     private String s;
 
     @Override
@@ -101,25 +99,35 @@ public class MyTeamActivity extends BaseActivity implements OnRefreshLoadMoreLis
         mAdapter.setItems(mItems);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         mAdapter.register(MyTeamlbBean.DataBean.ListBean.class, new ItemMyTeamViewBinder(this));
-        CartItemDecoration mDecoration = new CartItemDecoration(this, 4);
+        CartItemDecoration mDecoration = new CartItemDecoration(this, 10);
         recyclerView.addItemDecoration(mDecoration);
         mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(mAdapter);
-        mViewModel.hqteamsl(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"2")
+        mViewModel.hqteamsl(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2")
                 .observe(this, mObserver);
 
         refreshLayout.autoRefresh();
-        s = edtShousuo.getText().toString();
+
         edtShousuo.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                if(i == EditorInfo.IME_ACTION_SEARCH){
-                //如果actionId是搜索的id，则进行下一步的操作
+
+            public boolean onEditorAction(TextView v, int actionId,                   KeyEvent event)  {
+
+                if (actionId==EditorInfo.IME_ACTION_SEND ||(event!=null&&event.getKeyCode()== KeyEvent.KEYCODE_ENTER))
+
+                {
+
+                    //do something;
+
                     load();
+                    return true;
+
                 }
+
                 return false;
+
             }
+
         });
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,20 +136,17 @@ public class MyTeamActivity extends BaseActivity implements OnRefreshLoadMoreLis
             }
         });
     }
+
     private void load() {
-        if(mUserInfo==null){
+        if (mUserInfo == null) {
             refreshLayout.finishRefresh();
             return;
         }
-        if(TextUtils.isEmpty(s)){
-            mViewModel.hqteamtj(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"2",mUserInfo.getNickname(),"1", Status.LOAD_REFRESH)
+            s = edtShousuo.getText().toString();
+            mViewModel.hqteamtj2(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2",  String.valueOf(mUserInfo.getId()), s,"1", Status.LOAD_REFRESH)
                     .observe(this, mObserver1);
-        }else {
-            mViewModel.hqteamtj(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"2",s,"1", Status.LOAD_REFRESH)
-                    .observe(this, mObserver1);
-        }
-
     }
+
     private Observer<Status<ResponseBody>> mObserver1 = status -> {
 
         switch (status.status) {
@@ -149,7 +154,7 @@ public class MyTeamActivity extends BaseActivity implements OnRefreshLoadMoreLis
                 statusView.showContent();
 
                 ResponseBody body = status.content;
-                opera1(body,status);
+                opera1(body, status);
                 break;
             case Status.ERROR:
 
@@ -167,24 +172,26 @@ public class MyTeamActivity extends BaseActivity implements OnRefreshLoadMoreLis
         }
 
     };
-    private void opera1(ResponseBody body,Status status) {
+
+    private void opera1(ResponseBody body, Status status) {
         try {
             String b = body.string();
             MyTeamlbBean mMyTeamlbBean = new Gson().fromJson(b, MyTeamlbBean.class);
             List<MyTeamlbBean.DataBean.ListBean> item = mMyTeamlbBean.getData().getList();
             if (item == null || item.size() == 0) {
-                statusView.showEmpty();
-                if (status.loadType == Status.LOAD_REFRESH) {
 
+                if (status.loadType == Status.LOAD_REFRESH) {
                     refreshLayout.finishRefresh();
+                    statusView.showEmpty();
                 } else {
 
                     refreshLayout.finishLoadMore();
                 }
                 return;
             }
-            if (mMyTeamlbBean.getCode()==1) {
-                page = mMyTeamlbBean.getData().getPage().getPages()+1;
+            if (mMyTeamlbBean.getCode() == 1) {
+
+                page = mMyTeamlbBean.getData().getPage().getCurrent() + 1;
                 mCanLoadMore = true;
                 if (status.loadType == Status.LOAD_REFRESH) {
                     mItems.clear();
@@ -196,7 +203,7 @@ public class MyTeamActivity extends BaseActivity implements OnRefreshLoadMoreLis
                     mAdapter.notifyDataSetChanged();
                     refreshLayout.finishLoadMore();
                 }
-            }else {
+            } else {
                 if (status.loadType == Status.LOAD_MORE) {
                     mCanLoadMore = true;
                     refreshLayout.finishLoadMore();
@@ -205,12 +212,14 @@ public class MyTeamActivity extends BaseActivity implements OnRefreshLoadMoreLis
                     refreshLayout.finishRefresh();
                 }
                 FToast.error(mMyTeamlbBean.getInfo());
+
             }
         } catch (IOException e) {
             e.printStackTrace();
             FToast.error("数据错误");
         }
     }
+
     private Observer<Status<ResponseBody>> mObserver = status -> {
 
         switch (status.status) {
@@ -229,14 +238,15 @@ public class MyTeamActivity extends BaseActivity implements OnRefreshLoadMoreLis
         }
 
     };
+
     private void opera(ResponseBody body) {
         try {
             String b = body.string();
             MyTeamslBean mMyTeamslBean = new Gson().fromJson(b, MyTeamslBean.class);
-            if (mMyTeamslBean.getCode()==1) {
-                textZhongrenshu.setText(""+mMyTeamslBean.getData().getTotal_all());
-                textXinzengrenshu.setText(""+mMyTeamslBean.getData().getTotal_mon());
-            }else {
+            if (mMyTeamslBean.getCode() == 1) {
+                textZhongrenshu.setText("" + mMyTeamslBean.getData().getTotal_all());
+                textXinzengrenshu.setText("" + mMyTeamslBean.getData().getTotal_mon());
+            } else {
                 FToast.error(mMyTeamslBean.getInfo());
             }
         } catch (IOException e) {
@@ -248,12 +258,12 @@ public class MyTeamActivity extends BaseActivity implements OnRefreshLoadMoreLis
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-           if(mCanLoadMore){
+        if (mCanLoadMore) {
             mCanLoadMore = false;
-               mViewModel.hqteamtj(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"2",mUserInfo.getNickname(),""+page, Status.LOAD_MORE)
-                       .observe(this, mObserver1);
-           }else {
-               refreshLayout.finishLoadMore();
+                mViewModel.hqteamtj2(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2",String.valueOf(mUserInfo.getId()) ,s, "" + page, Status.LOAD_MORE)
+                        .observe(this, mObserver1);
+        } else {
+            refreshLayout.finishLoadMore();
         }
 
     }
@@ -268,4 +278,6 @@ public class MyTeamActivity extends BaseActivity implements OnRefreshLoadMoreLis
     public void onProdClick(MyTeamlbBean.DataBean.ListBean item) {
 
     }
+
+
 }

@@ -14,11 +14,21 @@ public class ImageLoader {
     private ImageLoader() {
 
     }
+    //加载图像
+    public static void loadPlaceholder1(String url, ImageView imageView) {
 
+        RequestOptions options = new RequestOptions()
+                .placeholder(R.drawable.tuxiang);
+
+        Glide.with(BasicApp.getContext())
+                .load(url)
+                .apply(options)
+                .into(imageView);
+    }
     public static void loadPlaceholder(String url, ImageView imageView) {
 
         RequestOptions options = new RequestOptions()
-                .placeholder(R.mipmap.ic_launcher);
+                .placeholder(R.drawable.img_placeholder);
 
         Glide.with(BasicApp.getContext())
                 .load(url)

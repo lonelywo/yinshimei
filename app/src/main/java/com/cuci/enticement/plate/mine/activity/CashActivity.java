@@ -16,11 +16,13 @@ import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.CommissiontxBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
+import com.cuci.enticement.plate.common.popup.TipsPopup;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.widget.ClearEditText;
 import com.google.gson.Gson;
+import com.lxj.xpopup.XPopup;
 
 import java.io.IOException;
 
@@ -66,7 +68,15 @@ public class CashActivity extends BaseActivity {
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                load();
+                new XPopup.Builder(CashActivity.this)
+                        .dismissOnBackPressed(false)
+                        .dismissOnTouchOutside(false)
+                        .asCustom(new TipsPopup(CashActivity.this,
+                                "亲，确定要提现吗？","取消","确定" ,() -> {
+                            load();
+                        }))
+                        .show();
+
             }
         });
         textMingxi.setOnClickListener(new View.OnClickListener() {
@@ -120,7 +130,7 @@ public class CashActivity extends BaseActivity {
             if (mCommissiontxBean.getCode() == 1) {
 
             } else {
-                FToast.error(mCommissiontxBean.getInfo());
+                FToast.warning(mCommissiontxBean.getInfo());
             }
         } catch (IOException e) {
             e.printStackTrace();

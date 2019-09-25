@@ -45,10 +45,10 @@ public class CommissiontjBean implements Serializable {
          * total : 0
          */
 
-        private int used;
-        private int total;
+        private double used;
+        private double total;
 
-        public int getUsed() {
+        public double getUsed() {
             return used;
         }
 
@@ -56,7 +56,7 @@ public class CommissiontjBean implements Serializable {
             this.used = used;
         }
 
-        public int getTotal() {
+        public double getTotal() {
             return total;
         }
 

@@ -26,7 +26,7 @@
             android:id="@+id/text_biaoti"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="预览图片"
+            android:text="预览更多"
             android:textColor="@color/hei"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"

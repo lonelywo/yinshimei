@@ -4,6 +4,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,14 +16,21 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseFragment;
 import com.cuci.enticement.bean.Base;
 import com.cuci.enticement.bean.OrderStatistics;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
-import com.cuci.enticement.plate.cart.activity.OrderActivity;
 import com.cuci.enticement.plate.common.LoginActivity;
+import com.cuci.enticement.plate.common.popup.TipsPopup;
+import com.cuci.enticement.plate.home.activity.ProdActivity;
 import com.cuci.enticement.plate.mine.activity.AchievementActivity;
 import com.cuci.enticement.plate.mine.activity.CommissionActivity;
 import com.cuci.enticement.plate.mine.activity.KeFuActivity;
@@ -36,26 +45,29 @@ import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.ImageLoader;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.ViewUtils;
+import com.cuci.enticement.utils.WxShareUtils;
 import com.google.gson.Gson;
+import com.lxj.xpopup.XPopup;
 
 import java.util.Date;
 import java.util.List;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import butterknife.BindView;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance;
+import static com.cuci.enticement.plate.common.MainActivity.ACTION_GO_TO_HOME;
 
 
 /**
  * 首页外层Fragment
  */
+
 public class _MineFragment extends BaseFragment {
 
     private static final String TAG = _MineFragment.class.getSimpleName();
+
     @BindView(R.id.img_kaiguan)
     ImageView imgKaiguan;
     @BindView(R.id.con_toubu)
@@ -123,11 +135,22 @@ public class _MineFragment extends BaseFragment {
     TextView dot3Tv;
     @BindView(R.id.dot4_tv)
     TextView dot4Tv;
+    @BindView(R.id.img_yqhy)
+    ImageView imgYqhy;
+    @BindView(R.id.daifukuan_ll)
+    ConstraintLayout daifukuanLl;
+    @BindView(R.id.daifahuo_ll)
+    ConstraintLayout daifahuoLl;
+    @BindView(R.id.daishouhuo_ll)
+    ConstraintLayout daishouhuoLl;
+    @BindView(R.id.yiwancheng_ll)
+    ConstraintLayout yiwanchengLl;
     private boolean mCouldChange = true;
     private LocalBroadcastManager mBroadcastManager;
     private UserInfo mUserInfo;
     private MineViewModel mViewModel;
-
+    private static final int THUMB_SIZE = 500;
+    private static final int THUMB_SIZE1 = 400;
     @Override
     protected void onLazyLoad() {
         load();
@@ -146,6 +169,7 @@ public class _MineFragment extends BaseFragment {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(LoginActivity.ACTION_WX_LOGIN_SUCCEED);
         intentFilter.addAction(ACTION_LOGIN_SUCCEED);
+        intentFilter.addAction(ACTION_REFRESH_STATUS);
         mBroadcastManager.registerReceiver(mReceiver, intentFilter);
 
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
@@ -155,6 +179,26 @@ public class _MineFragment extends BaseFragment {
         mUserInfo.setId(18281);
         SharedPrefUtils.save(mUserInfo,UserInfo.class);*/
         refreshLayout();
+        imgYqhy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (AppUtils.isAllowPermission(mActivity)) {
+                    Bitmap bitmap = BitmapFactory.decodeResource(BasicApp.getContext().getResources(), R.drawable.tuxiang);
+                    WxShareUtils.shareToWX(WxShareUtils.WX_SCENE_SESSION,
+                            "http://web.enticementchina.com/register.html", mActivity.getString(R.string.app_name_test),
+                            "因诗美，我的质感美学", bitmap);
+                }
+                }
+
+        });
+        textName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (AppUtils.isAllowPermission(mActivity)) {
+
+                }
+            }
+        });
     }
 
 
@@ -205,7 +249,12 @@ public class _MineFragment extends BaseFragment {
     private void refreshLayout() {
         if (mUserInfo == null) {
             ImageLoader.loadNoPlaceholder(R.drawable.tuxiang, imgTuxiang);
-            textName.setText("因诗美");
+            textName.setText("请登录");
+            ViewUtils.hideView(dot1Tv);
+            ViewUtils.hideView(dot2Tv);
+            ViewUtils.hideView(dot3Tv);
+            ViewUtils.hideView(dot4Tv);
+
             return;
         }
         ImageLoader.loadNoPlaceholder(mUserInfo.getHeadimg(), imgTuxiang);
@@ -219,19 +268,36 @@ public class _MineFragment extends BaseFragment {
     @OnClick({R.id.img_kaiguan, R.id.btn_shengji, R.id.text_quanbudingdan, R.id.text_tuiguangyongjing, R.id.text_wodetuandui, R.id.text_shouhuodizi, R.id.text_yejiyuefan, R.id.text_wodekefu})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-
             case R.id.img_kaiguan:
                 if (AppUtils.isAllowPermission(mActivity)) {
-                    int mid = mUserInfo.getId();
-                    String token = mUserInfo.getToken();
-                    mViewModel.loginOut("2", token, "" + mid).observe(this, mloginoutObserver);
-                    //loginout();
-                }
 
+                    new XPopup.Builder(mActivity)
+                            .dismissOnBackPressed(false)
+                            .dismissOnTouchOutside(false)
+                            .asCustom(new TipsPopup(mActivity,
+                                    "亲，确定要退出吗？","取消","确定" ,() -> {
+                                int mid = mUserInfo.getId();
+                                String token = mUserInfo.getToken();
+                                mViewModel.loginOut("2", token, "" + mid).observe(this, mloginoutObserver);
+                                //loginout();
+                            }))
+                            .show();
+
+                }
                 break;
             case R.id.btn_shengji:
-                startActivity(new Intent(mActivity, ZengAddressActivity.class));
-
+                //startActivity(new Intent(mActivity, ZengAddressActivity.class));
+                if (AppUtils.isAllowPermission(mActivity)) {
+                    new XPopup.Builder(mActivity)
+                            .dismissOnBackPressed(false)
+                            .dismissOnTouchOutside(false)
+                            .asCustom(new TipsPopup(mActivity,
+                                    "购买入会礼包即可升级成为经销商","关闭","去购买" , () -> {
+                                LocalBroadcastManager broadcastManager = getInstance(mActivity);
+                                broadcastManager.sendBroadcast(new Intent(ACTION_GO_TO_HOME));
+                            }))
+                            .show();
+                }
                 break;
             case R.id.text_quanbudingdan:
                 if (AppUtils.isAllowPermission(mActivity)) {
@@ -279,7 +345,6 @@ public class _MineFragment extends BaseFragment {
     }
 
 
-
     @OnClick({R.id.daifukuan_ll, R.id.daifahuo_ll, R.id.daishouhuo_ll, R.id.yiwancheng_ll})
     public void onOrderClicked(View view) {
         if (AppUtils.isAllowPermission(mActivity)) {
@@ -287,22 +352,21 @@ public class _MineFragment extends BaseFragment {
             Intent intent = new Intent(mActivity, MyOrderActivity.class);
             switch (view.getId()) {
                 case R.id.daifukuan_ll:
-                    intent.putExtra("cur",1);
+                    intent.putExtra("cur", 1);
                     break;
                 case R.id.daifahuo_ll:
-                    intent.putExtra("cur",2);
+                    intent.putExtra("cur", 2);
                     break;
                 case R.id.daishouhuo_ll:
-                    intent.putExtra("cur",3);
+                    intent.putExtra("cur", 3);
                     break;
                 case R.id.yiwancheng_ll:
-                    intent.putExtra("cur",4);
+                    intent.putExtra("cur", 4);
                     break;
             }
 
             startActivity(intent);
         }
-
 
 
     }
@@ -342,6 +406,7 @@ public class _MineFragment extends BaseFragment {
                 case Status.LOADING:
                     break;
                 case Status.ERROR:
+                    FToast.error("请求错误，请稍后再试。");
                     break;
                 case Status.SUCCESS:
                     if (baseStatus.content == null) {
@@ -361,7 +426,7 @@ public class _MineFragment extends BaseFragment {
                             mOnLoginListener.onLoginSucceed(userInfo, mShowContract);
                         }*/
                     } else {
-                        FToast.error("请求错误，请稍后再试。");
+                        FToast.error(baseStatus.content.info);
                     }
                     break;
             }
@@ -470,7 +535,6 @@ public class _MineFragment extends BaseFragment {
             }
         }
     };
-
 
 
 }

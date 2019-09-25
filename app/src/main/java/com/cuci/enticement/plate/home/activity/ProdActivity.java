@@ -4,65 +4,61 @@ package com.cuci.enticement.plate.home.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.bumptech.glide.util.Util;
-import com.cuci.enticement.BasicApp;
-import com.cuci.enticement.R;
-import com.cuci.enticement.base.BaseActivity;
-import com.cuci.enticement.bean.AllOrderList;
-import com.cuci.enticement.bean.Base;
-import com.cuci.enticement.bean.CartNum;
-import com.cuci.enticement.bean.HomeDetailsBean;
-import com.cuci.enticement.bean.OrderGoods;
-import com.cuci.enticement.bean.OrderResult;
-import com.cuci.enticement.bean.Status;
-import com.cuci.enticement.bean.UserInfo;
-import com.cuci.enticement.network.ServiceCreator;
-import com.cuci.enticement.plate.cart.activity.OrderActivity;
-import com.cuci.enticement.plate.cart.vm.CartViewModel;
-import com.cuci.enticement.plate.common.GlideImageLoader;
-import com.cuci.enticement.plate.common.popup.ShareBottom2TopProdPopup;
-import com.cuci.enticement.plate.home.vm.HomeViewModel;
-import com.cuci.enticement.utils.AppUtils;
-import com.cuci.enticement.utils.Arith;
-import com.cuci.enticement.utils.FToast;
-import com.cuci.enticement.utils.GetByteByNetUrl;
-import com.cuci.enticement.utils.MathExtend;
-import com.cuci.enticement.utils.SharedPrefUtils;
-import com.cuci.enticement.utils.WxShareUtils;
-import com.cuci.enticement.widget.SmoothScrollview;
-import com.google.gson.Gson;
-import com.lxj.xpopup.XPopup;
-import com.tencent.mm.opensdk.modelbiz.WXLaunchMiniProgram;
-import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
-import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
-import com.tencent.mm.opensdk.modelmsg.WXMiniProgramObject;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
-import com.tencent.smtt.sdk.WebView;
-import com.youth.banner.Banner;
-import com.youth.banner.BannerConfig;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import com.cuci.enticement.BasicApp;
+import com.cuci.enticement.R;
+import com.cuci.enticement.base.BaseActivity;
+import com.cuci.enticement.bean.AllOrderList;
+import com.cuci.enticement.bean.CartNum;
+import com.cuci.enticement.bean.HomeDetailsBean;
+import com.cuci.enticement.bean.CartChange;
+import com.cuci.enticement.bean.OrderGoods;
+import com.cuci.enticement.bean.OrderResult;
+import com.cuci.enticement.bean.Status;
+import com.cuci.enticement.bean.UserInfo;
+import com.cuci.enticement.plate.cart.activity.OrderActivity;
+import com.cuci.enticement.plate.cart.vm.CartViewModel;
+import com.cuci.enticement.plate.common.GlideImageLoader;
+import com.cuci.enticement.plate.common.eventbus.AddressEvent;
+import com.cuci.enticement.plate.common.eventbus.CartEvent;
+import com.cuci.enticement.plate.common.popup.ShareBottom2TopProdPopup;
+import com.cuci.enticement.plate.home.vm.HomeViewModel;
+import com.cuci.enticement.utils.AppUtils;
+import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.MathExtend;
+import com.cuci.enticement.utils.SharedPrefUtils;
+import com.cuci.enticement.utils.ViewUtils;
+import com.cuci.enticement.utils.WxShareUtils;
+import com.cuci.enticement.widget.SmoothScrollview;
+import com.google.gson.Gson;
+import com.lxj.xpopup.XPopup;
+import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.opensdk.modelmsg.WXMiniProgramObject;
+import com.tencent.smtt.sdk.WebView;
+import com.youth.banner.Banner;
+import com.youth.banner.BannerConfig;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.ResponseBody;
-
 
 import static androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance;
 import static com.cuci.enticement.plate.cart.fragment._CartFragment.ACTION_REFRESH_DATA;
@@ -104,12 +100,21 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
     @BindView(R.id.iv_cart)
     ImageView ivCart;
 
-    private static final int THUMB_SIZE = 128;
+    private static final int THUMB_SIZE = 500;
+    private static final int THUMB_SIZE1 = 400;
+    @BindView(R.id.ll_dibu)
+    LinearLayout llDibu;
+    @BindView(R.id.text_xiajia)
+    TextView textXiajia;
+    @BindView(R.id.con_xiajiabuju)
+    ConstraintLayout conXiajiabuju;
     private String url;
     private HomeDetailsBean.DataBean mProData;
     private HomeViewModel mHomeViewModel;
     private int mCode;
     private long id;
+    private int status;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_prod;
@@ -144,28 +149,41 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
             @Override
             public void onClick(View view) {
                 if (mProData != null) {
+                    BasicApp.getAppExecutors()
+                            .networkIO()
+                            .execute(() -> {
+                                try {
+                                    WXMiniProgramObject miniProgramObj = new WXMiniProgramObject();
+                                    miniProgramObj.webpageUrl = "https://test.enticementchina.com/pages/goods/detail?id=" + mProData.getId(); // 兼容低版本的网页链接
+                                    miniProgramObj.miniprogramType = WXMiniProgramObject.MINIPTOGRAM_TYPE_RELEASE;// 正式版:0，测试版:1，体验版:2
+                                    miniProgramObj.userName = "gh_f19e5dd49f49";     // 小程序原始id
+                                    miniProgramObj.path = "pages/goods/detail?id=" + mProData.getId();            //小程序页面路径；对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"
+                                    // miniProgramObj.path = "";            //小程序页面路径；对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"
+                                    WXMediaMessage msg = new WXMediaMessage(miniProgramObj);
+                                    msg.title = mProData.getTitle();                    // 小程序消息title
+                                    msg.description = "因诗美，因你而美";               // 小程序消息desc
+                                    Bitmap bmp = BitmapFactory.decodeStream(new URL(mProData.getLogo()).openStream());
+                                    Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, THUMB_SIZE1, THUMB_SIZE, true);
+                                    bmp.recycle();
+                                    msg.thumbData = WxShareUtils.bmpToByteArray(thumbBmp, true); // 小程序消息封面图片，小于128k
+                                    SendMessageToWX.Req req = new SendMessageToWX.Req();
+                                    req.transaction = String.valueOf(System.currentTimeMillis());
+                                    req.message = msg;
+                                    req.scene = SendMessageToWX.Req.WXSceneSession;  // 目前只支持会话
+                                    BasicApp.getIWXAPI().sendReq(req);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            });
+                    //打开小程序
+                 /*   WXLaunchMiniProgram.Req req = new WXLaunchMiniProgram.Req();
+                    req.userName = "gh_f19e5dd49f49"; // 填小程序原始id
+                    req.path = "";                  //拉起小程序页面的可带参路径，不填默认拉起小程序首页
+                    req.miniprogramType = WXLaunchMiniProgram.Req.MINIPTOGRAM_TYPE_RELEASE;// 可选打开 开发版，体验版和正式版
+                    BasicApp.getIWXAPI().sendReq(req);*/
 
-                     /*   WXMiniProgramObject miniProgramObj = new WXMiniProgramObject();
-                        miniProgramObj.webpageUrl = "https://test.enticementchina.com/pages/goods/detail?id="+mProData.getId(); // 兼容低版本的网页链接
-                        miniProgramObj.miniprogramType = WXMiniProgramObject.MINIPTOGRAM_TYPE_RELEASE;// 正式版:0，测试版:1，体验版:2
-                        miniProgramObj.userName = "gh_f19e5dd49f49";     // 小程序原始id
-                        miniProgramObj.path = "pages/goods/detail?id="+mProData.getId();            //小程序页面路径；对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"
-                        WXMediaMessage msg = new WXMediaMessage(miniProgramObj);
-                        msg.title = "小程序消息Title";                    // 小程序消息title
-                        msg.description = "小程序消息Desc";
-                        // 小程序消息desc
-                        Bitmap bitmap = BitmapFactory.decodeResource(OrderActivity.this.getResources(),R.drawable.fightk);
-                        Bitmap sendBitmap = Bitmap.createScaledBitmap(bitmap,200,200,true);
-                          bitmap.recycle();
-                        msg.thumbData = Util.bmpToByteArray(sendBitmap,true);
-                                         // 小程序消息封面图片，小于128k
-                        SendMessageToWX.Req req = new SendMessageToWX.Req();
-                        req.transaction =String.valueOf(System.currentTimeMillis());
-                        req.message = msg;
-                        req.scene = SendMessageToWX.Req.WXSceneSession;  // 目前只支持会话
-                        BasicApp.getIWXAPI().sendReq(req);*/
                 }
-        }
+            }
         });
     }
 
@@ -195,7 +213,12 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                     }
                     if (content.getCode() == 1) {
                         mProData = content.getData();
-
+                        status = mProData.getList().get(0).getStatus();
+                        if(status==1){
+                            ViewUtils.hideView(conXiajiabuju);
+                        }else {
+                            ViewUtils.showView(conXiajiabuju);
+                        }
                         //   String s = new Gson().toJson(mProData);
                         final List<String> images = content.getData().getImage();
                         banner.setImages(images);
@@ -229,21 +252,35 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
 
             case R.id.text_cart:
                 if (AppUtils.isAllowPermission(ProdActivity.this)) {
-                    new XPopup.Builder(ProdActivity.this)
-                            .dismissOnTouchOutside(true)
-                            .dismissOnBackPressed(true)
-                            .asCustom(new ShareBottom2TopProdPopup(ProdActivity.this, mProData, PUT_IN_CART, this))
-                            .show();
+                    if (status == 1) {
+                        new XPopup.Builder(ProdActivity.this)
+                                .dismissOnTouchOutside(true)
+                                .dismissOnBackPressed(true)
+                                .asCustom(new ShareBottom2TopProdPopup(ProdActivity.this, mProData, PUT_IN_CART, this))
+                                .show();
+
+
+                    } else {
+                        FToast.warning("商品已经下架啦~");
+
+                    }
+
                 }
 
                 break;
             case R.id.text_buy:
                 if (AppUtils.isAllowPermission(ProdActivity.this)) {
-                    new XPopup.Builder(ProdActivity.this)
-                            .dismissOnTouchOutside(true)
-                            .dismissOnBackPressed(true)
-                            .asCustom(new ShareBottom2TopProdPopup(ProdActivity.this, mProData, QUICK_BUY, this))
-                            .show();
+                    if (status == 1) {
+                        new XPopup.Builder(ProdActivity.this)
+                                .dismissOnTouchOutside(true)
+                                .dismissOnBackPressed(true)
+                                .asCustom(new ShareBottom2TopProdPopup(ProdActivity.this, mProData, QUICK_BUY, this))
+                                .show();
+
+                    } else {
+                        FToast.warning("商品已经下架啦~");
+                    }
+
                 }
                 break;
             case R.id.iv_cart:
@@ -260,10 +297,10 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
     }
 
 
-
     private double mTotalMoeny;
     private int mNum;
     private String mSpec;
+
     @Override
     public void onCommitClick(String spec, int num, int code) {
         mCode = code;
@@ -279,15 +316,15 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
 
 
         } else if (code == QUICK_BUY) {
-            mNum=num;
-            mSpec=spec;
+            mNum = num;
+            mSpec = spec;
             StringBuilder sb = new StringBuilder();
             sb.append(mProData.getId()).append("@")
                     .append(spec).append("@")
                     .append(num);
 
             String price = mProData.getInitial_price_market();
-            mTotalMoeny= MathExtend.multiply(price,String.valueOf(num));
+            mTotalMoeny = MathExtend.multiply(price, String.valueOf(num));
             String rule = sb.toString();
             mViewModel.commitOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), rule, "").observe(this, mCommitObserver);
 
@@ -353,11 +390,11 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                         e.printStackTrace();
                     }
 
-                        break;
-                        case Status.ERROR:
+                    break;
+                case Status.ERROR:
 
-                            FToast.error(baseStatus.message);
-                            break;
+                    FToast.error(baseStatus.message);
+                    break;
 
             }
 
@@ -365,33 +402,43 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
     };
 
 
-    private Observer<Status<Base>> mIntoCart = new Observer<Status<Base>>() {
+    private Observer<Status<ResponseBody>> mIntoCart = new Observer<Status<ResponseBody>>() {
 
         @Override
-        public void onChanged(Status<Base> baseStatus) {
-            switch (baseStatus.status) {
+        public void onChanged(Status<ResponseBody> status) {
+            switch (status.status) {
                 case Status.LOADING:
                     break;
                 case Status.SUCCESS:
-                    String s = new Gson().toJson(baseStatus.content);
-                    if (baseStatus.content.code == 1) {
-                        FToast.success("加入购物车成功");
-                        //调用接口改变小车上的数量
-                        CartViewModel viewModel = ViewModelProviders.of(ProdActivity.this).get(CartViewModel.class);
-                        viewModel.cartNum(mUserInfo.getToken(), String.valueOf(mUserInfo.getId())).observe(ProdActivity.this, mNumObserver);
+                    ResponseBody content = status.content;
+                    try {
+                        String result = content.string();
+                        CartChange bean = new Gson().fromJson(result, CartChange.class);
 
-                        LocalBroadcastManager broadcastManager = getInstance(ProdActivity.this);
-                        broadcastManager.sendBroadcast(new Intent(ACTION_REFRESH_DATA));
+                        if (bean.getCode() == 1) {
+                            FToast.success(bean.getInfo());
+                            //调用接口改变小车上的数量
+                            CartViewModel viewModel = ViewModelProviders.of(ProdActivity.this).get(CartViewModel.class);
+                            viewModel.cartNum(mUserInfo.getToken(), String.valueOf(mUserInfo.getId())).observe(ProdActivity.this, mNumObserver);
+                            EventBus.getDefault().postSticky(new CartEvent(CartEvent.REFRESH_CART_LIST));
+                           /* LocalBroadcastManager broadcastManager = getInstance(ProdActivity.this);
+                            broadcastManager.sendBroadcast(new Intent(ACTION_REFRESH_DATA));*/
 
 
-                    } else {
-                        FToast.warning(baseStatus.content.info);
+                        } else {
+                            FToast.warning(bean.getInfo());
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
+
+
 
                     break;
                 case Status.ERROR:
 
-                    FToast.error(baseStatus.message);
+                    FToast.error(status.message);
                     break;
             }
 
@@ -415,8 +462,10 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
 
                         CartNum numResult = new Gson().fromJson(result, CartNum.class);
                         if (numResult.getCode() == 1) {
+                            ViewUtils.showView(cartNumTv);
                             cartNumTv.setText(String.valueOf(numResult.getData().getC_num()));
                         } else {
+                            ViewUtils.hideView(cartNumTv);
                             FToast.warning(numResult.getInfo());
                         }
 
@@ -433,7 +482,6 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
 
         }
     };
-
 
 
 }

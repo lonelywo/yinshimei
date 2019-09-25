@@ -11,6 +11,9 @@ import com.cuci.enticement.R;
 import com.cuci.enticement.bean.AllOrderList;
 import com.cuci.enticement.bean.OrderGoods;
 import com.cuci.enticement.bean.OrderList;
+import com.cuci.enticement.utils.ImageLoader;
+
+import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -51,10 +54,11 @@ public class ItemProdViewBinder extends ItemViewBinder<OrderGoods, ItemProdViewB
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull OrderGoods item) {
 
 
-
+        ImageLoader.loadPlaceholder(item.getGoods_logo(),holder.imgTupian);
         holder.textBiaoti.setText(item.getGoods_title());
         holder.textNeirong.setText(item.getGoods_spec());
-
+        holder.textQian.setText(String.format(Locale.CHINA,"x%s",item.getPrice_real()));
+        holder.textNum.setText(String.format(Locale.CHINA,"x%s",item.getNumber()));
         holder.itemView.setOnClickListener(position -> {
             if (mOnProdClickListener != null) {
                 mOnProdClickListener.onProdClick(item);

@@ -31,3 +31,8 @@
 -keep class com.tencent.mm.sdk.** {
     *;
 }
+
+
+#LRecyclerview  滑动删除
+-dontwarn com.github.jdsjlzx.**
+-keep class com.github.jdsjlzx.progressindicator.indicators.** { *; }

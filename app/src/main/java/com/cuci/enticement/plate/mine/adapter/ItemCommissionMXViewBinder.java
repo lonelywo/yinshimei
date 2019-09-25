@@ -47,7 +47,7 @@ public class ItemCommissionMXViewBinder extends ItemViewBinder<CommissionmxBean.
             holder.textWenzi1.setText("付款成功");
         }
         holder.textTime.setText(item.getCreate_at());
-        holder.textMoney.setText(item.getPay_price());
+        holder.textMoney.setText("+"+item.getPay_price());
 
 
 /*

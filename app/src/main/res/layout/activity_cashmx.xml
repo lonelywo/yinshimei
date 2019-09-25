@@ -19,6 +19,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginLeft="20dp"
+            android:padding="5dp"
             />
         <TextView
             android:id="@+id/text_biaoti"
@@ -38,7 +39,6 @@
         android:id="@+id/status_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="10dp"
         app:emptyView="@layout/custom_empty_view_wushuju"
         app:errorView="@layout/custom_error_view"
         app:layout_constraintBottom_toBottomOf="parent"

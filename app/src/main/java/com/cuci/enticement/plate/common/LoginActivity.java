@@ -116,12 +116,6 @@ public class LoginActivity extends BaseActivity {
         mBroadcastManager.registerReceiver(mReceiver, intentFilter);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 
     @OnClick({R.id.tv_code, R.id.ok, R.id.text_zhuce, R.id.weixin})
     public void onViewClicked(View view) {
@@ -193,7 +187,7 @@ public class LoginActivity extends BaseActivity {
                 case Status.SUCCESS:
                     LoginActivity.this.dismissLoading();
                     if (baseStatus.content == null) {
-                        FToast.error("请求错误，请稍后再试。");
+                        FToast.error("数据异常");
                         return;
                     }
                     if (baseStatus.content.code == 1) {

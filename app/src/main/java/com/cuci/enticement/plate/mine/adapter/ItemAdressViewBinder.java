@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cuci.enticement.R;
-import com.cuci.enticement.bean.AdressBean;
+import com.cuci.enticement.bean.AddressBean;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.ViewUtils;
 
@@ -18,17 +18,17 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.drakeet.multitype.ItemViewBinder;
 
-public class ItemAdressViewBinder extends ItemViewBinder<AdressBean.DataBean.ListBean, ItemAdressViewBinder.ViewHolder> {
+public class ItemAdressViewBinder extends ItemViewBinder<AddressBean.DataBean.ListBean, ItemAdressViewBinder.ViewHolder> {
 
 
 
     public interface OnItemClickListener {
 
-        void onEditClick(AdressBean.DataBean.ListBean bean);
+        void onEditClick(AddressBean.DataBean.ListBean bean);
 
-        void onCheckAdress(AdressBean.DataBean.ListBean bean);
+        void onCheckAdress(AddressBean.DataBean.ListBean bean);
 
-        void onDelete(AdressBean.DataBean.ListBean bean);
+        void onDelete(AddressBean.DataBean.ListBean bean,int position);
 
 
     }
@@ -48,7 +48,7 @@ public class ItemAdressViewBinder extends ItemViewBinder<AdressBean.DataBean.Lis
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull AdressBean.DataBean.ListBean item) {
+    protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull AddressBean.DataBean.ListBean item) {
 
         if(item.getIs_default()==1){
             ViewUtils.showView(holder.defaultTv);
@@ -92,9 +92,12 @@ public class ItemAdressViewBinder extends ItemViewBinder<AdressBean.DataBean.Lis
             }
         });
 
+
+
+        int position=holder.getAdapterPosition();
         holder.textShanchu.setOnClickListener(view -> {
             if(mOnItemClickListener!=null){
-                mOnItemClickListener.onDelete(item);
+                mOnItemClickListener.onDelete(item,position);
             }
         });
 

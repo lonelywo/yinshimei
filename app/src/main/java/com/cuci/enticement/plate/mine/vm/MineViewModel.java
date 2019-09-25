@@ -1,6 +1,8 @@
 package com.cuci.enticement.plate.mine.vm;
 
 
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -28,11 +30,6 @@ public class MineViewModel extends ViewModel {
     public MineViewModel() {
         mCreator = ServiceCreator.getInstance();
     }
-
-
-
-
-
 
     /**
      * 开关
@@ -248,7 +245,9 @@ public class MineViewModel extends ViewModel {
         params.put("from_type",from_type);
         params.put("token",token);
         params.put("mid",mid);
-        params.put("nickname",nickname);
+        if(!TextUtils.isEmpty(nickname)){
+            params.put("nickname",nickname);
+        }
         params.put("page",page);
         String signs = SignUtils.signParam(params);
         mCreator.create(MineApi.class)
@@ -295,7 +294,9 @@ public class MineViewModel extends ViewModel {
         params.put("token",token);
         params.put("mid",mid);
         params.put("pid",pid);
-        params.put("nickname",nickname);
+        if(!TextUtils.isEmpty(nickname)){
+            params.put("nickname",nickname);
+        }
         params.put("page",page);
         String signs = SignUtils.signParam(params);
         mCreator.create(MineApi.class)

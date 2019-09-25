@@ -23,9 +23,9 @@ public class ItemCartViewBinder extends ItemViewBinder<OrderGoods, ItemCartViewB
 
     public interface OnItemClickListener {
 
-        void onAddClick(OrderGoods bean);
+        void onAddClick(OrderGoods bean,int position);
 
-        void onMinusClick(OrderGoods bean);
+        void onMinusClick(OrderGoods bean,int position);
         void onCheckedChange();
         void onDelete(OrderGoods bean);
     }
@@ -73,18 +73,22 @@ public class ItemCartViewBinder extends ItemViewBinder<OrderGoods, ItemCartViewB
         holder.textBiaoti.setText(item.getGoods_title());
         holder.textNeirong.setText(item.getGoods_spec());
         holder.textJiage.setText(item.getGoods_price_selling());
+        holder.tvNum.setText(String.valueOf(item.getGoods_num()));
         ImageLoader.loadPlaceholder(item.getGoods_logo(),holder.imgTuxiang);
-     /*   holder.textJia.setOnClickListener(v -> {
+
+
+        int position = holder.getAdapterPosition();
+        holder.ivJia.setOnClickListener(v -> {
             if(mOnItemClickListener!=null){
-                mOnItemClickListener.onAddClick(item);
+                mOnItemClickListener.onAddClick(item,position);
             }
         });
 
-        holder.textJian.setOnClickListener(v -> {
+        holder.ivJian.setOnClickListener(v -> {
             if(mOnItemClickListener!=null){
-                mOnItemClickListener.onMinusClick(item);
+                mOnItemClickListener.onMinusClick(item,position);
             }
-        });*/
+        });
 
 
     }
@@ -104,6 +108,9 @@ public class ItemCartViewBinder extends ItemViewBinder<OrderGoods, ItemCartViewB
         TextView textNeirong;
         @BindView(R.id.text_jiage)
         TextView textJiage;
+
+        @BindView(R.id.text_shuzi)
+        TextView tvNum;
         @BindView(R.id.img_jia)
         ImageView ivJia;
         @BindView(R.id.img_jian)
