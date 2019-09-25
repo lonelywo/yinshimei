@@ -18,13 +18,21 @@ public class TipsPopup extends CenterPopupView {
 
     @BindView(R.id.desc)
     TextView desc;
-
+    @BindView(R.id.cancel)
+    TextView cancel;
+    @BindView(R.id.ok)
+    TextView ok;
     private String mDesc;
+    private String mcancel;
+    private String mok ;
 
-    public TipsPopup(@NonNull Context context, String desc, OnExitListener listener) {
+    public TipsPopup(@NonNull Context context, String desc,String cancel,String ok, OnExitListener listener) {
         super(context);
         mOnExitListener = listener;
         mDesc = desc;
+        mcancel = cancel;
+        mok = ok;
+
     }
 
     @Override
@@ -37,6 +45,8 @@ public class TipsPopup extends CenterPopupView {
         super.onCreate();
         ButterKnife.bind(this);
         desc.setText(mDesc);
+        cancel.setText(mcancel);
+        ok.setText(mok);
     }
 
     @OnClick({R.id.ok, R.id.cancel})

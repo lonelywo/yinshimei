@@ -112,7 +112,7 @@ public class OrderDetailsActivity extends BaseActivity {
             return;
         }
         mInfo = intent.getParcelableExtra("intentInfo");
-        List<OrderGoods> items = mInfo.getList();
+     //   List<OrderGoods> items = mInfo.getList();
 
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
         if (mUserInfo == null) {
@@ -138,7 +138,7 @@ public class OrderDetailsActivity extends BaseActivity {
 
         mRecyclerView.setAdapter(mAdapter);
         mItems.clear();
-        mItems.addAll(items);
+     //   mItems.addAll(items);
 
 
 

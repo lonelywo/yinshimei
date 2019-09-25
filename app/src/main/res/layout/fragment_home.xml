@@ -6,15 +6,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-  <ImageView
-    android:id="@+id/image_top"
-    android:layout_width="0dp"
-    android:layout_height="0dp"
 
-    app:layout_constraintDimensionRatio="750:500"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
 
   <androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/container"

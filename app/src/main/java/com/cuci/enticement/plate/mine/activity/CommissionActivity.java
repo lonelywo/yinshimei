@@ -1,13 +1,11 @@
 package com.cuci.enticement.plate.mine.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -24,8 +22,8 @@ import com.classic.common.MultipleStatusView;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.CommissionjlBean;
+import com.cuci.enticement.bean.CommissionjlBeanitem;
 import com.cuci.enticement.bean.CommissiontjBean;
-import com.cuci.enticement.bean.OrderList;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.plate.mine.adapter.ItemCommissionJLViewBinder;
@@ -53,9 +51,8 @@ import me.drakeet.multitype.MultiTypeAdapter;
 import okhttp3.ResponseBody;
 
 public class CommissionActivity extends BaseActivity implements OnRefreshLoadMoreListener {
-    @BindView(R.id.image_top)
-    TextView imageTop;
-    @BindView(R.id.image_back)
+
+    @BindView(R.id.img_back)
     ImageView imageBack;
     @BindView(R.id.button_tixian)
     Button buttonTixian;
@@ -79,9 +76,6 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
     TextView textShanggeyue;
     @BindView(R.id.text_rqi)
     TextView textRqi;
-    @BindView(R.id.img_xiajiantou)
-    ImageView imgXiajiantou;
-
     @BindView(R.id.text_xiageyue)
     TextView textXiageyue;
     @BindView(R.id.con_hui)
@@ -92,8 +86,6 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
     SmartRefreshLayout refreshLayout;
     @BindView(R.id.status_view)
     MultipleStatusView statusView;
-    @BindView(R.id.container)
-    ConstraintLayout container;
     private MineViewModel mViewModel;
     private UserInfo mUserInfo;
     private Items mItems;
@@ -124,7 +116,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
         mAdapter.setItems(mItems);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         mAdapter.register(CommissionjlBean.DataBean.ListBean.class, new ItemCommissionJLViewBinder());
-        CartItemDecoration mDecoration = new CartItemDecoration(this, 4);
+        CartItemDecoration mDecoration = new CartItemDecoration(this, 10);
         recyclerView.addItemDecoration(mDecoration);
         mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -156,8 +148,14 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
                 String format2 = sdf.format(time1);
                 textRqi.setText(format2);
                 d=time1;
-                mViewModel.hqcommissiontj(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"2",format2,Status.LOAD_REFRESH)
-                        .observe(CommissionActivity.this, mObserver1);
+                if(d.equals(a)){
+                    textXiageyue.setEnabled(false);
+                }else {
+                    textXiageyue.setEnabled(true);
+                    mViewModel.hqcommissiontj(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"2",format2,Status.LOAD_REFRESH)
+                            .observe(CommissionActivity.this, mObserver1);
+                }
+
             }
         });
         textXiageyue.setOnClickListener(new View.OnClickListener() {
@@ -170,6 +168,11 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
                 String format3 = sdf.format(time2);
                 textRqi.setText(format3);
                 d=time2;
+                if(d.equals(a)){
+                    textXiageyue.setEnabled(false);
+                }else {
+                    textXiageyue.setEnabled(true);
+                }
                 mViewModel.hqcommissiontj(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"2",format3,Status.LOAD_REFRESH)
                         .observe(CommissionActivity.this, mObserver1);
             }
@@ -188,7 +191,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
                 finish();
             }
         });
-        imgXiajiantou.setOnClickListener(new View.OnClickListener() {
+        textRqi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dianji();

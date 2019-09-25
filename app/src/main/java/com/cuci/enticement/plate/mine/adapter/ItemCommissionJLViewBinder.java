@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cuci.enticement.R;
 import com.cuci.enticement.bean.CommissionjlBean;
+import com.cuci.enticement.bean.CommissionjlBeanitem;
 import com.cuci.enticement.utils.ImageLoader;
 
 import butterknife.BindView;
@@ -47,7 +48,7 @@ public class ItemCommissionJLViewBinder extends ItemViewBinder<CommissionjlBean.
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull CommissionjlBean.DataBean.ListBean item) {
 
-        ImageLoader.loadPlaceholder(item.getMember().getHeadimg(), holder.imgTuxiang);
+        ImageLoader.loadPlaceholder1(item.getMember().getHeadimg(), holder.imgTuxiang);
         holder.textWenzi1.setText(item.getMember().getNickname());
         holder.textWenzi2.setText(item.getDesc());
         holder.textMoney.setText("+"+item.getProfit_price());

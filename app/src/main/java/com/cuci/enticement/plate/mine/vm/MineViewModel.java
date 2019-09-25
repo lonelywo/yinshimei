@@ -294,7 +294,7 @@ public class MineViewModel extends ViewModel {
         params.put("token",token);
         params.put("mid",mid);
         params.put("pid",pid);
-        if(TextUtils.isEmpty(nickname)){
+        if(!TextUtils.isEmpty(nickname)){
             params.put("nickname",nickname);
         }
         params.put("page",page);

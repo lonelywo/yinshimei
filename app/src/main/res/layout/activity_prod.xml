@@ -183,9 +183,13 @@
       />
    <TextView
      android:id="@+id/cart_num_tv"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:text=""
+       android:layout_width="16dp"
+       android:layout_height="16dp"
+       android:background="@drawable/shape_mine_order_status_num"
+       tools:text="3"
+       android:gravity="center"
+       android:textSize="11sp"
+       android:visibility="gone"
        android:textColor="@color/orange"
        app:layout_constraintTop_toTopOf="@+id/iv_cart"
        app:layout_constraintEnd_toEndOf="@+id/iv_cart"

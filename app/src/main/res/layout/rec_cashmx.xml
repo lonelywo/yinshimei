@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
 
+    >
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@drawable/shape_login_edit_bottom_line"
+        app:layout_constraintTop_toTopOf="parent"
+        />
     <TextView
         android:id="@+id/text_wenzi1"
         android:layout_width="wrap_content"
@@ -13,8 +20,8 @@
         android:text="佣金提现"
         android:textColor="@color/hei"
         android:textSize="20sp"
-        android:layout_marginBottom="20dp"
         android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
         />
     <TextView
         android:id="@+id/text_time"
@@ -25,6 +32,7 @@
         android:text="2019-0-0 00:00:00"
         android:layout_marginTop="5dp"
         android:layout_marginLeft="20dp"
+        android:paddingBottom="10dp"
         />
     <TextView
         android:id="@+id/text_money"
@@ -38,5 +46,7 @@
         android:layout_marginRight="20dp"
         android:textColor="@color/orange"
         android:gravity="center_vertical"
+
         />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

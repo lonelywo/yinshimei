@@ -32,12 +32,17 @@
         <activity android:name=".plate.mine.activity.RecAddressActivity"/>
         <activity android:name=".plate.mine.activity.MyTeamTwoActivity"/>
         <activity android:name=".plate.mall.activity.YuLanActivity"/>
+        <activity
+            android:name=".plate.common.MainActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
 
 
 
 
 
-        <activity android:name=".plate.common.MainActivity">
+        <activity android:name=".plate.common.LauncherActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

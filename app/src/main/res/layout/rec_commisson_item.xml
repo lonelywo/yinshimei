@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="20dp"
     >
-
-    <ImageView
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@drawable/shape_login_edit_bottom_line"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/img_tuxiang"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:src="@drawable/tuxiang"
+        android:layout_marginTop="10dp"
+        android:paddingBottom="10dp"
         />
      <TextView
           android:id="@+id/text_wenzi1"
@@ -22,8 +28,9 @@
           app:layout_constraintTop_toTopOf="@+id/img_tuxiang"
          app:layout_constraintBottom_toBottomOf="@+id/img_tuxiang"
          android:text="美美"
+         android:textColor="@color/hei"
          android:textSize="20sp"
-         android:layout_marginBottom="20dp"
+         android:layout_marginBottom="25dp"
          android:layout_marginLeft="10dp"
          />
     <TextView
@@ -36,6 +43,8 @@
         android:text="经销商直推"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="10dp"
+        android:paddingTop="5dp"
+
         />
       <TextView
           android:id="@+id/text_money"
@@ -56,5 +65,6 @@
         app:layout_constraintBottom_toBottomOf="@id/text_wenzi2"
         app:layout_constraintRight_toRightOf="parent"
         android:text="2019-08-08 14:42:06"
+        android:paddingTop="5dp"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -182,12 +182,22 @@ public class _MineFragment extends BaseFragment {
         imgYqhy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (AppUtils.isAllowPermission(mActivity)) {
                     Bitmap bitmap = BitmapFactory.decodeResource(BasicApp.getContext().getResources(), R.drawable.tuxiang);
                     WxShareUtils.shareToWX(WxShareUtils.WX_SCENE_SESSION,
                             "http://web.enticementchina.com/register.html", mActivity.getString(R.string.app_name_test),
-                             "因诗美，我的质感美学", bitmap);
+                            "因诗美，我的质感美学", bitmap);
+                }
                 }
 
+        });
+        textName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (AppUtils.isAllowPermission(mActivity)) {
+
+                }
+            }
         });
     }
 
@@ -239,7 +249,12 @@ public class _MineFragment extends BaseFragment {
     private void refreshLayout() {
         if (mUserInfo == null) {
             ImageLoader.loadNoPlaceholder(R.drawable.tuxiang, imgTuxiang);
-            textName.setText("因诗美");
+            textName.setText("请登录");
+            ViewUtils.hideView(dot1Tv);
+            ViewUtils.hideView(dot2Tv);
+            ViewUtils.hideView(dot3Tv);
+            ViewUtils.hideView(dot4Tv);
+
             return;
         }
         ImageLoader.loadNoPlaceholder(mUserInfo.getHeadimg(), imgTuxiang);
@@ -255,10 +270,19 @@ public class _MineFragment extends BaseFragment {
         switch (view.getId()) {
             case R.id.img_kaiguan:
                 if (AppUtils.isAllowPermission(mActivity)) {
-                    int mid = mUserInfo.getId();
-                    String token = mUserInfo.getToken();
-                    mViewModel.loginOut("2", token, "" + mid).observe(this, mloginoutObserver);
-                    //loginout();
+
+                    new XPopup.Builder(mActivity)
+                            .dismissOnBackPressed(false)
+                            .dismissOnTouchOutside(false)
+                            .asCustom(new TipsPopup(mActivity,
+                                    "亲，确定要退出吗？","取消","确定" ,() -> {
+                                int mid = mUserInfo.getId();
+                                String token = mUserInfo.getToken();
+                                mViewModel.loginOut("2", token, "" + mid).observe(this, mloginoutObserver);
+                                //loginout();
+                            }))
+                            .show();
+
                 }
                 break;
             case R.id.btn_shengji:
@@ -268,7 +292,7 @@ public class _MineFragment extends BaseFragment {
                             .dismissOnBackPressed(false)
                             .dismissOnTouchOutside(false)
                             .asCustom(new TipsPopup(mActivity,
-                                    "购买入会礼包即可升级成为经销商", () -> {
+                                    "购买入会礼包即可升级成为经销商","关闭","去购买" , () -> {
                                 LocalBroadcastManager broadcastManager = getInstance(mActivity);
                                 broadcastManager.sendBroadcast(new Intent(ACTION_GO_TO_HOME));
                             }))
@@ -382,6 +406,7 @@ public class _MineFragment extends BaseFragment {
                 case Status.LOADING:
                     break;
                 case Status.ERROR:
+                    FToast.error("请求错误，请稍后再试。");
                     break;
                 case Status.SUCCESS:
                     if (baseStatus.content == null) {
@@ -401,7 +426,7 @@ public class _MineFragment extends BaseFragment {
                             mOnLoginListener.onLoginSucceed(userInfo, mShowContract);
                         }*/
                     } else {
-                        FToast.error("请求错误，请稍后再试。");
+                        FToast.error(baseStatus.content.info);
                     }
                     break;
             }

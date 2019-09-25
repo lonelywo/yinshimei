@@ -78,7 +78,7 @@
             app:tl_tab_space_equal="true"
             app:tl_textsize="16sp"
             app:tl_textSelectColor="#000000"
-            app:tl_textUnselectColor="#E6E6E6"
+            app:tl_textUnselectColor="@color/line_gray"
             />
 
         <androidx.viewpager.widget.ViewPager

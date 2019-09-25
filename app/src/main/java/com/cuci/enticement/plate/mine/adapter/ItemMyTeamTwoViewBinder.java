@@ -49,10 +49,10 @@ public class ItemMyTeamTwoViewBinder extends ItemViewBinder<MyTeamlbBean.DataBea
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull MyTeamlbBean.DataBean.ListBean item) {
 
-        ImageLoader.loadNoPlaceholder(item.getHeadimg(),holder.imgTuxiang);
+        ImageLoader.loadPlaceholder1(item.getHeadimg(),holder.imgTuxiang);
         holder.textTime.setText(item.getCreate_at());
         holder.textWenzi1.setText(item.getNickname());
-        holder.text_shuliang.setText(item.getTeams());
+        holder.text_shuliang.setText(""+item.getTeams());
 
 
       holder.itemView.setOnClickListener(new View.OnClickListener() {

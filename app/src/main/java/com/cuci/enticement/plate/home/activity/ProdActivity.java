@@ -37,6 +37,7 @@ import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.MathExtend;
 import com.cuci.enticement.utils.SharedPrefUtils;
+import com.cuci.enticement.utils.ViewUtils;
 import com.cuci.enticement.utils.WxShareUtils;
 import com.cuci.enticement.widget.SmoothScrollview;
 import com.google.gson.Gson;
@@ -212,9 +213,9 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                         mProData = content.getData();
                         status = mProData.getList().get(0).getStatus();
                         if(status==1){
-                            conXiajiabuju.setVisibility(View.GONE);
+                            ViewUtils.hideView(conXiajiabuju);
                         }else {
-                            conXiajiabuju.setVisibility(View.VISIBLE);
+                            ViewUtils.showView(conXiajiabuju);
                         }
                         //   String s = new Gson().toJson(mProData);
                         final List<String> images = content.getData().getImage();
@@ -459,8 +460,10 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
 
                         CartNum numResult = new Gson().fromJson(result, CartNum.class);
                         if (numResult.getCode() == 1) {
+                            ViewUtils.showView(cartNumTv);
                             cartNumTv.setText(String.valueOf(numResult.getData().getC_num()));
                         } else {
+                            ViewUtils.hideView(cartNumTv);
                             FToast.warning(numResult.getInfo());
                         }
 
