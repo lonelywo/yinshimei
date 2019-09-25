@@ -116,12 +116,6 @@ public class LoginActivity extends BaseActivity {
         mBroadcastManager.registerReceiver(mReceiver, intentFilter);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 
     @OnClick({R.id.tv_code, R.id.ok, R.id.text_zhuce, R.id.weixin})
     public void onViewClicked(View view) {

@@ -20,6 +20,7 @@ import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.Version;
 import com.cuci.enticement.plate.cart.fragment._CartFragment;
 import com.cuci.enticement.plate.common.adapter.MainPagerAdapter;
+import com.cuci.enticement.plate.common.popup.UpdatePopup;
 import com.cuci.enticement.plate.common.vm.MainViewModel;
 import com.cuci.enticement.plate.home.fragment._HomeFragment;
 import com.cuci.enticement.plate.mall.fragment._MallFragment;
@@ -29,6 +30,7 @@ import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.widget.BottomBarView;
 import com.cuci.enticement.widget.FitSystemWindowViewPager;
+import com.lxj.xpopup.XPopup;
 
 
 import java.util.ArrayList;
@@ -77,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
     private long mExitTime = 0;
     private MainViewModel mViewModel;
     private ClipboardManager mClipboardManager;
-    private Version.Data mData;
+    private Version  mData;
 
     private LocalBroadcastManager mLocalBroadcastManager;
 
@@ -277,7 +279,7 @@ public class MainActivity extends AppCompatActivity {
         if (baseStatus.status == Status.SUCCESS) {
             Base<Version> base = baseStatus.content;
             if (base == null) return;
-            if (base.code == 200) {
+            if (base.code == 1) {
                 operation(base.data);
             } else {
                 FToast.error(base.msg);
@@ -287,25 +289,25 @@ public class MainActivity extends AppCompatActivity {
 
     private void operation(Version version) {
 
-        Version.Data data = version.getData();
-        mData = data;
+        mData = version;
+
 
         int ignoreVersion = SharedPrefUtils.getIgnoreVersion();
         int localVersion = AppUtils.getVersionCode(this);
-        int serverVersion = data.getVersion();
+        int serverVersion = mData.getVersion();
 
         if (serverVersion == ignoreVersion) {
             return;
         }
 
-      /*  if (serverVersion > localVersion) {
+       if (serverVersion > localVersion) {
             new XPopup.Builder(this)
                     .dismissOnTouchOutside(false)
                     .dismissOnBackPressed(false)
                     .asCustom(new UpdatePopup(this, version,
                             () -> MainActivityPermissionsDispatcher.needsPermissionWithPermissionCheck(this)))
                     .show();
-        }*/
+        }
     }
 
 
