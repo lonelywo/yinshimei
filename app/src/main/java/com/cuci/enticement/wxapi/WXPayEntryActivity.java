@@ -9,7 +9,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.Constant;
+import com.cuci.enticement.plate.cart.activity.OrderActivity;
+import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.cuci.enticement.utils.FToast;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
@@ -18,6 +21,7 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 
 public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
@@ -56,6 +60,9 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
             switch (resp.errCode) {
                 case 0://支付成功
                     FToast.success("支付成功");
+                    //支付成功后，刷新个人中心状态
+                    Intent intent= new Intent(_MineFragment.ACTION_REFRESH_STATUS);
+                    LocalBroadcastManager.getInstance(BasicApp.getContext()).sendBroadcast(intent);
                     Log.d(TAG, "onResp: resp.errCode = 0   支付成功");
                     break;
                 case -1://错误，可能的原因：签名错误、未注册APPID、项目设置APPID不正确、注册的APPID与设置的不匹配、其他异常等

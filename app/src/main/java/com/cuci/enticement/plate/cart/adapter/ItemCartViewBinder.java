@@ -15,6 +15,9 @@ import com.cuci.enticement.bean.CartDataBean;
 import com.cuci.enticement.bean.OrderGoods;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.ImageLoader;
+import com.cuci.enticement.utils.UtilsForClick;
+
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -69,7 +72,7 @@ public class ItemCartViewBinder extends ItemViewBinder<OrderGoods, ItemCartViewB
 
         holder.textBiaoti.setText(item.getGoods_title());
         holder.textNeirong.setText(item.getGoods_spec());
-        holder.textJiage.setText(item.getGoods_price_selling());
+        holder.textJiage.setText(String.format(Locale.CHINA,"%s",item.getGoods_price_selling()));
 
         holder.tvNum.setText(String.valueOf(item.getGoods_num()));
         ImageLoader.loadPlaceholder(item.getGoods_logo(),holder.imgTuxiang);
@@ -77,22 +80,28 @@ public class ItemCartViewBinder extends ItemViewBinder<OrderGoods, ItemCartViewB
 
 
         holder.ivJia.setOnClickListener(v -> {
-            int num= item.getGoods_num()+1;
-            item.setGoods_num(num);
-            if(mOnItemClickListener!=null){
-                mOnItemClickListener.onAddClick(item,position);
+            if (UtilsForClick.isFastClick()) {
+                int num = item.getGoods_num() + 1;
+                item.setGoods_num(num);
+                if (mOnItemClickListener != null) {
+                    mOnItemClickListener.onAddClick(item, position);
+                }
             }
+
+
         });
 
         holder.ivJian.setOnClickListener(v -> {
-            if(item.getGoods_num()<=1){
-                FToast.warning("不能再少了");
-                return;
-            }
-            int num = item.getGoods_num() - 1;
-            item.setGoods_num(num);
-            if(mOnItemClickListener!=null){
-                mOnItemClickListener.onMinusClick(item,position);
+            if (UtilsForClick.isFastClick()) {
+                if (item.getGoods_num() <= 1) {
+                    FToast.warning("不能再少了");
+                    return;
+                }
+                int num = item.getGoods_num() - 1;
+                item.setGoods_num(num);
+                if (mOnItemClickListener != null) {
+                    mOnItemClickListener.onMinusClick(item, position);
+                }
             }
         });
 
@@ -110,6 +119,19 @@ public class ItemCartViewBinder extends ItemViewBinder<OrderGoods, ItemCartViewB
 
             });
         }
+
+
+       holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+           @Override
+           public boolean onLongClick(View v) {
+
+               if (mOnItemClickListener != null) {
+                   mOnItemClickListener.onDelete(item, position);
+               }
+
+               return false;
+           }
+       });
 
     }
 

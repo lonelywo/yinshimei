@@ -189,7 +189,10 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
 
         //进入页面先请求小脚本数字
         CartViewModel viewModel = ViewModelProviders.of(ProdActivity.this).get(CartViewModel.class);
-        viewModel.cartNum(mUserInfo.getToken(), String.valueOf(mUserInfo.getId())).observe(ProdActivity.this, mNumObserver);
+       if(mUserInfo!=null){
+           viewModel.cartNum(mUserInfo.getToken(), String.valueOf(mUserInfo.getId())).observe(ProdActivity.this, mNumObserver);
+       }
+
 
     }
 

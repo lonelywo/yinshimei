@@ -52,15 +52,7 @@ public class ItemAdressViewBinder extends ItemViewBinder<AddressBean.DataBean.Li
 
         if(item.getIs_default()==1){
             ViewUtils.showView(holder.defaultTv);
-            SharedPrefUtils.saveDefaultAdressId(String.valueOf(item.getId()));
-            StringBuilder sb = new StringBuilder();
-            sb.append(item.getName()).append(" ")
-                    .append(item.getPhone()).append(" ")
-                    .append(item.getProvince()).append(" ")
-                    .append(item.getCity()).append(" ")
-                    .append(item.getArea()).append(" ")
-                    .append(item.getAddress());
-            SharedPrefUtils.saveDefaultAdress(sb.toString());
+
         }else {
             ViewUtils.hideView(holder.defaultTv);
         }

@@ -40,6 +40,8 @@ import com.cuci.enticement.plate.cart.adapter.ItemCartViewBinder;
 import com.cuci.enticement.plate.cart.vm.CartViewModel;
 import com.cuci.enticement.plate.common.eventbus.AddressEvent;
 import com.cuci.enticement.plate.common.eventbus.CartEvent;
+import com.cuci.enticement.plate.common.popup.CartTipsPopup;
+import com.cuci.enticement.plate.common.popup.TipsPopup;
 import com.cuci.enticement.plate.home.activity.ProdActivity;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.SharedPrefUtils;
@@ -47,6 +49,7 @@ import com.cuci.enticement.utils.ViewUtils;
 import com.cuci.enticement.widget.CartItemDecoration;
 import com.cuci.enticement.widget.SlideRecyclerView;
 import com.google.gson.Gson;
+import com.lxj.xpopup.XPopup;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
@@ -132,7 +135,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
         mRefreshLayout.setOnRefreshLoadMoreListener(this);
 
         mAdapter.register(OrderGoods.class, new ItemCartViewBinder(this));
-        CartItemDecoration mDecoration = new CartItemDecoration(mActivity, 4);
+        CartItemDecoration mDecoration = new CartItemDecoration(mActivity, 10,4);
 
         mRecyclerView.addItemDecoration(mDecoration);
         mLayoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false);
@@ -454,12 +457,31 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
     @Override
     public void onDelete(OrderGoods bean,int position) {
-            mPosition=position;
-            int cart_id = bean.getCart_id();
 
-            mTvTotal.setText(String.format(Locale.CHINA, "%s", getCheckedsMoeny()));
-            mViewModel.cartDelete(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),String.valueOf(cart_id) )
-                    .observe(mActivity, mDeleteObserver);
+        new XPopup.Builder(mActivity)
+                .dismissOnBackPressed(false)
+                .dismissOnTouchOutside(false)
+                .asCustom(new CartTipsPopup(mActivity,
+                        "亲，确定要从购物车中删除此商品吗？", "取消", "确定", new CartTipsPopup.OnExitListener() {
+                    @Override
+                    public void onPositive() {
+                        mPosition=position;
+                        int cart_id = bean.getCart_id();
+
+                        mTvTotal.setText(String.format(Locale.CHINA, "%s", getCheckedsMoeny()));
+                        mViewModel.cartDelete(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),String.valueOf(cart_id) )
+                                .observe(mActivity, mDeleteObserver);
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        mRecyclerView.closeMenu();
+                    }
+                }))
+                .show();
+
+
+
 
     }
 

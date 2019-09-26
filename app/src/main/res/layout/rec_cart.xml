@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:cardCornerRadius="10dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools"
-  android:orientation="horizontal">
+
+  android:orientation="horizontal"
+    android:padding="10dp"
+    >
 
    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        android:padding="10dp"
+
         >
 
       <ImageView
@@ -30,113 +36,131 @@
 
     <ImageView
         android:id="@+id/img_tuxiang"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:src="@drawable/ic_launcher"
         app:layout_constraintStart_toEndOf="@+id/image_check"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+
        />
 
 
-    <TextView
-        android:id="@+id/text_biaoti"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="新零售首购礼包"
-        android:textColor="@color/hei"
-        android:textSize="20sp"
-        app:layout_constraintTop_toTopOf="@+id/img_tuxiang"
-        app:layout_constraintLeft_toRightOf="@+id/img_tuxiang"
-        android:layout_marginLeft="20dp"
-        />
-    <TextView
-        android:id="@+id/text_neirong"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="黑金魅惑蕾丝"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="@+id/img_tuxiang"
-        app:layout_constraintTop_toBottomOf="@+id/text_biaoti"
-        app:layout_constraintLeft_toRightOf="@+id/img_tuxiang"
-        android:layout_marginLeft="20dp"
-        />
-     <TextView
-         android:id="@+id/text_jiage"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         app:layout_constraintTop_toBottomOf="@+id/text_neirong"
-         app:layout_constraintLeft_toLeftOf="@+id/text_biaoti"
-         android:text="2100"
-         android:textColor="@color/orange"
-         android:textSize="20dp"
-         android:layout_marginTop="20dp"
-         />
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/con_jiajian"
-            android:layout_width="97dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@+id/text_jiage"
-            app:layout_constraintBottom_toBottomOf="@+id/text_jiage"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:background="@drawable/shape_sibian_bai_bg7_jiajian"
-            android:layout_marginRight="20dp"
+       <TextView
+             android:id="@+id/text_biaoti"
+             android:layout_width="0dp"
+             android:layout_height="wrap_content"
+             android:text="新零售首购礼包"
+             android:textColor="@color/hei"
+             android:textSize="15sp"
+             app:layout_constraintTop_toTopOf="@+id/img_tuxiang"
+             app:layout_constraintLeft_toRightOf="@+id/img_tuxiang"
+             app:layout_constraintRight_toRightOf="parent"
 
-            >
+             android:layout_marginLeft="10dp"
+             />
+         <TextView
+             android:id="@+id/text_neirong"
+             android:layout_width="0dp"
+             android:layout_height="0dp"
+             android:text="黑金魅惑蕾丝"
+             android:textSize="13sp"
+             android:textColor="@color/txt_gray"
+             app:layout_constraintBottom_toBottomOf="@+id/img_tuxiang"
+             app:layout_constraintTop_toBottomOf="@+id/text_biaoti"
+             app:layout_constraintLeft_toRightOf="@+id/img_tuxiang"
+             app:layout_constraintRight_toRightOf="parent"
+             android:layout_marginLeft="10dp"
+             android:layout_marginTop="5dp"
+             android:maxLines="3"
+             android:ellipsize="end"
 
-            <ImageView
-                android:id="@+id/img_jia"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/jia"
-                android:padding="10dp"
+             />
+       <TextView
+           android:id="@+id/tv"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           app:layout_constraintBottom_toBottomOf="@+id/img_tuxiang"
+           app:layout_constraintLeft_toLeftOf="@id/text_biaoti"
+           android:textSize="12sp"
+           android:textColor="@color/orange"
+           android:text="¥"
+           />
+          <TextView
+              android:id="@+id/text_jiage"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              app:layout_constraintBottom_toBottomOf="@+id/img_tuxiang"
+              app:layout_constraintLeft_toRightOf="@id/tv"
+              android:text="2100"
+              android:textColor="@color/orange"
+              android:textSize="18dp"
+              android:layout_marginTop="20dp"
+              android:layout_marginLeft="2dp"
+              />
+             <androidx.constraintlayout.widget.ConstraintLayout
+                 android:id="@+id/con_jiajian"
+                 android:layout_width="97dp"
+                 android:layout_height="wrap_content"
+                 app:layout_constraintTop_toTopOf="@+id/text_jiage"
+                 app:layout_constraintBottom_toBottomOf="@+id/text_jiage"
+                 app:layout_constraintEnd_toEndOf="parent"
+                 android:background="@drawable/shape_sibian_bai_bg7_jiajian"
 
-                />
-            <View
-                android:id="@+id/line1"
-                android:layout_width="1dp"
-                android:layout_height="0dp"
-                android:background="@drawable/shape_login_edit_bottom_line"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/img_jia"
+                 >
 
-                />
-            <TextView
-                android:id="@+id/text_shuzi"
-                app:layout_constraintLeft_toLeftOf="@id/line2"
-                app:layout_constraintRight_toRightOf="@id/line1"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:text="1"
-                android:gravity="center"
-                />
-            <View
-                android:id="@+id/line2"
-                android:layout_width="1dp"
-                android:layout_height="0dp"
-                android:background="@drawable/shape_login_edit_bottom_line"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@+id/img_jian"
-                />
-            <ImageView
-                android:id="@+id/img_jian"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/jian"
-                android:padding="10dp"
-                />
+                 <ImageView
+                     android:id="@+id/img_jia"
+                     app:layout_constraintTop_toTopOf="parent"
+                     app:layout_constraintBottom_toBottomOf="parent"
+                     app:layout_constraintRight_toRightOf="parent"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:src="@drawable/jia"
+                     android:padding="10dp"
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                     />
+                 <View
+                     android:id="@+id/line1"
+                     android:layout_width="1dp"
+                     android:layout_height="0dp"
+                     android:background="@drawable/shape_login_edit_bottom_line"
+                     app:layout_constraintTop_toTopOf="parent"
+                     app:layout_constraintBottom_toBottomOf="parent"
+                     app:layout_constraintRight_toLeftOf="@+id/img_jia"
+
+                     />
+                 <TextView
+                     android:id="@+id/text_shuzi"
+                     app:layout_constraintLeft_toLeftOf="@id/line2"
+                     app:layout_constraintRight_toRightOf="@id/line1"
+                     app:layout_constraintTop_toTopOf="parent"
+                     app:layout_constraintBottom_toBottomOf="parent"
+                     android:layout_width="0dp"
+                     android:layout_height="0dp"
+                     android:text="1"
+                     android:gravity="center"
+                     />
+                 <View
+                     android:id="@+id/line2"
+                     android:layout_width="1dp"
+                     android:layout_height="0dp"
+                     android:background="@drawable/shape_login_edit_bottom_line"
+                     app:layout_constraintTop_toTopOf="parent"
+                     app:layout_constraintBottom_toBottomOf="parent"
+                     app:layout_constraintLeft_toRightOf="@+id/img_jian"
+                     />
+                 <ImageView
+                     android:id="@+id/img_jian"
+                     app:layout_constraintTop_toTopOf="parent"
+                     app:layout_constraintBottom_toBottomOf="parent"
+                     app:layout_constraintLeft_toLeftOf="parent"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:src="@drawable/jian"
+                     android:padding="10dp"
+                     />
+
+             </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -152,3 +176,4 @@
     android:textColor="#FFFFFFFF"
     android:textSize="14sp" />
 </LinearLayout>
+</androidx.cardview.widget.CardView>

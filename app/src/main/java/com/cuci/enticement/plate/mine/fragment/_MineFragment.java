@@ -16,11 +16,6 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
 import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseFragment;
@@ -30,14 +25,12 @@ import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.plate.common.LoginActivity;
 import com.cuci.enticement.plate.common.popup.TipsPopup;
-import com.cuci.enticement.plate.home.activity.ProdActivity;
 import com.cuci.enticement.plate.mine.activity.AchievementActivity;
 import com.cuci.enticement.plate.mine.activity.CommissionActivity;
 import com.cuci.enticement.plate.mine.activity.KeFuActivity;
 import com.cuci.enticement.plate.mine.activity.MyOrderActivity;
 import com.cuci.enticement.plate.mine.activity.MyTeamActivity;
 import com.cuci.enticement.plate.mine.activity.RecAddressActivity;
-import com.cuci.enticement.plate.mine.activity.ZengAddressActivity;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.plate.mine.vm.OrderViewModel;
 import com.cuci.enticement.utils.AppUtils;
@@ -52,6 +45,10 @@ import com.lxj.xpopup.XPopup;
 import java.util.Date;
 import java.util.List;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import butterknife.BindView;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -145,12 +142,15 @@ public class _MineFragment extends BaseFragment {
     ConstraintLayout daishouhuoLl;
     @BindView(R.id.yiwancheng_ll)
     ConstraintLayout yiwanchengLl;
+    @BindView(R.id.con_yingchang)
+    ConstraintLayout conYingchang;
     private boolean mCouldChange = true;
     private LocalBroadcastManager mBroadcastManager;
     private UserInfo mUserInfo;
     private MineViewModel mViewModel;
     private static final int THUMB_SIZE = 500;
     private static final int THUMB_SIZE1 = 400;
+
     @Override
     protected void onLazyLoad() {
         load();
@@ -165,7 +165,7 @@ public class _MineFragment extends BaseFragment {
     @Override
     protected void initViews(LayoutInflater inflater, View view, ViewGroup container, Bundle savedInstanceState) {
         mViewModel = ViewModelProviders.of(this).get(MineViewModel.class);
-        mBroadcastManager = LocalBroadcastManager.getInstance(mActivity);
+        mBroadcastManager = getInstance(mActivity);
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(LoginActivity.ACTION_WX_LOGIN_SUCCEED);
         intentFilter.addAction(ACTION_LOGIN_SUCCEED);
@@ -173,6 +173,10 @@ public class _MineFragment extends BaseFragment {
         mBroadcastManager.registerReceiver(mReceiver, intentFilter);
 
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
+        if(mUserInfo==null)
+        {
+            conYingchang.setVisibility(View.GONE);
+        }
         //todo  临时存储
       /*  mUserInfo=new UserInfo();
         mUserInfo.setToken("7ee35ab8215b6992c500a42ae6abe3ec");
@@ -188,7 +192,7 @@ public class _MineFragment extends BaseFragment {
                             "http://web.enticementchina.com/register.html", mActivity.getString(R.string.app_name_test),
                             "因诗美，我的质感美学", bitmap);
                 }
-                }
+            }
 
         });
         textName.setOnClickListener(new View.OnClickListener() {
@@ -254,9 +258,10 @@ public class _MineFragment extends BaseFragment {
             ViewUtils.hideView(dot2Tv);
             ViewUtils.hideView(dot3Tv);
             ViewUtils.hideView(dot4Tv);
-
+            conYingchang.setVisibility(View.GONE);
             return;
         }
+        conYingchang.setVisibility(View.VISIBLE);
         ImageLoader.loadNoPlaceholder(mUserInfo.getHeadimg(), imgTuxiang);
         textName.setText(mUserInfo.getNickname());
 
@@ -275,7 +280,7 @@ public class _MineFragment extends BaseFragment {
                             .dismissOnBackPressed(false)
                             .dismissOnTouchOutside(false)
                             .asCustom(new TipsPopup(mActivity,
-                                    "亲，确定要退出吗？","取消","确定" ,() -> {
+                                    "亲，确定要退出吗？", "取消", "确定", () -> {
                                 int mid = mUserInfo.getId();
                                 String token = mUserInfo.getToken();
                                 mViewModel.loginOut("2", token, "" + mid).observe(this, mloginoutObserver);
@@ -292,7 +297,7 @@ public class _MineFragment extends BaseFragment {
                             .dismissOnBackPressed(false)
                             .dismissOnTouchOutside(false)
                             .asCustom(new TipsPopup(mActivity,
-                                    "购买入会礼包即可升级成为经销商","关闭","去购买" , () -> {
+                                    "购买入会礼包即可升级成为经销商", "关闭", "去购买", () -> {
                                 LocalBroadcastManager broadcastManager = getInstance(mActivity);
                                 broadcastManager.sendBroadcast(new Intent(ACTION_GO_TO_HOME));
                             }))

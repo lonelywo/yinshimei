@@ -8,11 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cuci.enticement.R;
-import com.cuci.enticement.bean.AllOrderList;
 import com.cuci.enticement.bean.OrderGoods;
-import com.cuci.enticement.bean.OrderList;
 import com.cuci.enticement.utils.ImageLoader;
-import com.google.gson.Gson;
 
 import java.util.Locale;
 
@@ -22,7 +19,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.drakeet.multitype.ItemViewBinder;
 
-public class ItemProdViewBinder extends ItemViewBinder<OrderGoods, ItemProdViewBinder.ViewHolder> {
+/**
+ * 预订单使用
+ */
+public class ItemYuProdViewBinder extends ItemViewBinder<OrderGoods, ItemYuProdViewBinder.ViewHolder> {
 
 
 
@@ -36,11 +36,11 @@ public class ItemProdViewBinder extends ItemViewBinder<OrderGoods, ItemProdViewB
 
     private OnProdClickListener mOnProdClickListener;
 
-    public ItemProdViewBinder() {
+    public ItemYuProdViewBinder() {
 
     }
 
-    public ItemProdViewBinder(OnProdClickListener onProdClickListener) {
+    public ItemYuProdViewBinder(OnProdClickListener onProdClickListener) {
         mOnProdClickListener = onProdClickListener;
     }
 
@@ -54,12 +54,12 @@ public class ItemProdViewBinder extends ItemViewBinder<OrderGoods, ItemProdViewB
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull OrderGoods item) {
 
-        String s = new Gson().toJson(item);
+
         ImageLoader.loadPlaceholder(item.getGoods_logo(),holder.imgTupian);
         holder.textBiaoti.setText(item.getGoods_title());
         holder.textNeirong.setText(item.getGoods_spec());
-        holder.textQian.setText(String.format(Locale.CHINA,"%s",item.getPrice_real()));
-        holder.textNum.setText(String.format(Locale.CHINA,"x%s",item.getNumber()));
+        holder.textQian.setText(String.format(Locale.CHINA,"%s",item.getGoods_price_selling()));
+        holder.textNum.setText(String.format(Locale.CHINA,"x%s",item.getGoods_num()));
         holder.itemView.setOnClickListener(position -> {
             if (mOnProdClickListener != null) {
                 mOnProdClickListener.onProdClick(item);

@@ -393,18 +393,25 @@
 
 
     </LinearLayout>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/con_yingchang"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    app:layout_constraintTop_toBottomOf="@+id/img_shape_bai2"
+    android:layout_marginTop="10dp"
+    >
 
     <ImageView
         android:id="@+id/img_shape_bai3"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="0dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"
         android:src="@drawable/shape_mine_bg3"
-        app:layout_constraintTop_toBottomOf="@+id/img_shape_bai2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         />
     <TextView
         android:id="@+id/text_fuwu"
@@ -547,6 +554,8 @@
 
             />
     </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
        <View
            android:id="@+id/v6"
            android:layout_width="0dp"
@@ -554,7 +563,8 @@
            android:background="#E2E3E3"
            app:layout_constraintEnd_toEndOf="parent"
            app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toBottomOf="@+id/img_shape_bai3" />
+           app:layout_constraintTop_toBottomOf="@+id/con_yingchang" />
    </androidx.constraintlayout.widget.ConstraintLayout>
+
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

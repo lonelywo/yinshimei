@@ -5,15 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-  <androidx.constraintlayout.widget.ConstraintLayout
-      android:id="@+id/container"
-      android:layout_width="0dp"
-      android:layout_height="0dp"
-      android:fitsSystemWindows="true"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent">
+   <androidx.constraintlayout.widget.ConstraintLayout
+       android:id="@+id/con_toubu"
+       android:layout_width="match_parent"
+       android:layout_height="65dp"
+      app:layout_constraintTop_toTopOf="parent"
+     app:layout_constraintStart_toStartOf="parent"
+     app:layout_constraintEnd_toEndOf="parent"
+       android:background="@color/colorWhite"
+       >
     <TextView
         android:id="@+id/image_top"
         android:layout_width="wrap_content"
@@ -23,35 +23,31 @@
         android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/image_back"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/image_back"
+        android:gravity="center"
         />
-
     <ImageView
         android:id="@+id/image_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="12dp"
-        android:paddingTop="16dp"
-        android:paddingRight="12dp"
-        android:paddingBottom="16dp"
+        android:padding="16dp"
         android:src="@drawable/buzhidao"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-
+        app:layout_constraintBottom_toBottomOf="parent"
         />
-
+   </androidx.constraintlayout.widget.ConstraintLayout>
     <com.classic.common.MultipleStatusView
         android:id="@+id/status_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="10dp"
         app:emptyView="@layout/custom_empty_view"
         app:errorView="@layout/custom_error_view"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image_back"
+        app:layout_constraintTop_toBottomOf="@+id/con_toubu"
         app:loadingView="@layout/custom_loading_view"
         app:noNetworkView="@layout/custom_no_network_view">
 
@@ -63,17 +59,21 @@
         <com.flyco.tablayout.SlidingTabLayout
             android:id="@+id/tab_layout"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:paddingBottom="6dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tl_indicator_height="0dp"
+            app:tl_indicator_height="4dp"
+            app:tl_indicator_width="30dp"
             app:tl_tab_padding="8dp"
             app:tl_tab_space_equal="true"
             app:tl_textsize="16sp"
-            app:tl_textSelectColor="#000000"
-            app:tl_textUnselectColor="@color/line_gray"
+            app:tl_indicator_color="@color/orange"
+            app:tl_indicator_style="NORMAL"
+            app:tl_textSelectColor="@color/orange"
+            app:tl_textUnselectColor="@color/hei"
+            android:background="@color/colorWhite"
             />
 
         <androidx.viewpager.widget.ViewPager
@@ -89,9 +89,5 @@
 
 
     </com.classic.common.MultipleStatusView>
-
-
-  </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

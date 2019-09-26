@@ -45,6 +45,7 @@ import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.widget.CartItemDecoration;
 import com.cuci.enticement.widget.CustomRefreshHeader;
 import com.cuci.enticement.widget.OrderItemDecoration;
+import com.cuci.enticement.widget.OrderItemTopDecoration;
 import com.google.gson.Gson;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -83,7 +84,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
     SmartRefreshLayout mRefreshLayout;
     @BindView(R.id.image_top)
     ImageView mIvTop;
-    private CartItemDecoration mDecoration;
+
     private LinearLayoutManager mLayoutManager;
     private MultiTypeAdapter mAdapter;
     private Items mItems;
@@ -140,12 +141,12 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
         mAdapter.register(OrderGoods.class, new ItemProdViewBinder(this));
 
         mAdapter.register(ItemOrderBottom.class, new ItemBottomViewBinder(this));
-        OrderItemDecoration mDecoration = new OrderItemDecoration(mActivity, 4);
 
-        mRecyclerView.addItemDecoration(mDecoration);
+
         mLayoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(mLayoutManager);
-
+        OrderItemTopDecoration mDecoration = new OrderItemTopDecoration(mActivity, 4);
+        mRecyclerView.addItemDecoration(mDecoration);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -258,7 +259,8 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
      * @param item
      */
     private void addOrderItem(List<AllOrderList.DataBean.ListBeanX> item) {
-
+        AllOrderList.DataBean.ListBeanX listBeanX = item.get(0);
+        String s = new Gson().toJson(listBeanX);
         for (int i = 0; i <item.size() ; i++) {
             AllOrderList.DataBean.ListBeanX orderBean = item.get(i);
             int cur=mItems.size();
@@ -270,6 +272,10 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
             ItemOrderBottom itemOrderBottom = new ItemOrderBottom();
             itemOrderBottom.status=orderBean.getStatus();
             itemOrderBottom.orderNum=String.valueOf(orderBean.getOrder_no());
+            itemOrderBottom.totalMoney=orderBean.getPrice_total();
+            itemOrderBottom.goodsMoney=orderBean.getPrice_goods();
+            itemOrderBottom.expressMoney=orderBean.getPrice_express();
+            itemOrderBottom.num=orderBean.getGoods_count();
             itemOrderBottom.bottomcur=curBottom;
             itemOrderBottom.topCur=cur;
             mItems.add(itemOrderBottom);
@@ -323,7 +329,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
     @Override
     public void onReBuy(ItemOrderBottom itemOrderBottom) {
 
-        String orderNum = itemOrderBottom.orderNum;
+        /*String orderNum = itemOrderBottom.orderNum;
         int cur=0;
         for (int i = 0; i < mDatas.size(); i++) {
             AllOrderList.DataBean.ListBeanX listBeanX = mDatas.get(i);
@@ -336,7 +342,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
 
         Intent intent = new Intent(mActivity, OrderActivity.class);
         intent.putExtra("intentInfo",cartIntentInfo);
-        startActivity(intent);
+        startActivity(intent);*/
 
 
 
