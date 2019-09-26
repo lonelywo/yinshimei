@@ -1,13 +1,18 @@
 package com.cuci.enticement.plate.mine.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +24,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.alipay.sdk.app.PayTask;
+import com.cuci.enticement.BasicApp;
+import com.cuci.enticement.Constant;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseFragment;
 
@@ -28,28 +36,39 @@ import com.cuci.enticement.bean.ItemOrderTitle;
 import com.cuci.enticement.bean.OrderCancel;
 import com.cuci.enticement.bean.OrderGoods;
 import com.cuci.enticement.bean.OrderList;
+import com.cuci.enticement.bean.OrderPay;
 import com.cuci.enticement.bean.OrderResult;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
+import com.cuci.enticement.bean.WxPayBean;
+import com.cuci.enticement.bean.ZFBBean;
 import com.cuci.enticement.plate.cart.activity.OrderActivity;
 import com.cuci.enticement.plate.cart.activity.OrderDetailsActivity;
 import com.cuci.enticement.plate.common.LoginActivity;
 import com.cuci.enticement.plate.common.eventbus.MessageEvent1;
 import com.cuci.enticement.plate.common.eventbus.OrderEvent;
+import com.cuci.enticement.plate.common.popup.PayBottom2TopProdPopup;
+import com.cuci.enticement.plate.common.popup.ShareBottom2TopProdPopup;
+import com.cuci.enticement.plate.home.activity.ProdActivity;
 import com.cuci.enticement.plate.mine.adapter.ItemBottomViewBinder;
 import com.cuci.enticement.plate.mine.adapter.ItemProdViewBinder;
 import com.cuci.enticement.plate.mine.adapter.ItemTitleViewBinder;
 import com.cuci.enticement.plate.mine.vm.OrderViewModel;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.PayResult;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.widget.CartItemDecoration;
 import com.cuci.enticement.widget.CustomRefreshHeader;
 import com.cuci.enticement.widget.OrderItemDecoration;
 import com.cuci.enticement.widget.OrderItemTopDecoration;
 import com.google.gson.Gson;
+import com.lxj.xpopup.XPopup;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+import com.tencent.mm.opensdk.modelpay.PayReq;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -58,6 +77,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import me.drakeet.multitype.Items;
@@ -71,13 +91,16 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
 , ItemBottomViewBinder.OnItemClickListener {
 
     private static final String TAG = _OrderFragment01.class.getSimpleName();
-
+    private static final int SDK_PAY_FLAG = 1;
     private boolean mCanLoadMore = true;
     private OrderViewModel mViewModel;
     private int page=1;
     private String mtype;
     private final String PAGE_SIZE="20";
 
+
+    //默认支付宝
+    private int mPayType=2;
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @BindView(R.id.refresh_layout)
@@ -109,6 +132,71 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
         return R.layout.fragment_source01;
 
     }
+
+
+
+
+
+    @SuppressLint("HandlerLeak")
+    private Handler mHandler = new Handler() {
+        @SuppressWarnings("unused")
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case SDK_PAY_FLAG: {
+                    PayResult payResult = new PayResult((Map<String, String>) msg.obj);
+                    String resultInfo = payResult.getResult();// 同步返回需要验证的信息
+                    String resultStatus = payResult.getResultStatus();
+                    // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
+                    if (TextUtils.equals(resultStatus, "9000")) {
+
+                        Toast.makeText(mActivity, "支付成功", Toast.LENGTH_SHORT).show();
+
+
+                        //支付成功后，刷新个人中心状态
+                        Intent intent= new Intent(_MineFragment.ACTION_REFRESH_STATUS);
+                        LocalBroadcastManager.getInstance(mActivity).sendBroadcast(intent);
+                        //todo   刷新列表当前  包括微信支付也要刷新
+
+
+
+               /*         if (TextUtils.equals(resultStatus, "9000")) {
+                        // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
+                        FToast.success("支付成功：" + payResult.toString());
+                        try {
+                           AliPayResult aliPayResult = new Gson().fromJson(result, AliPayResult.class);
+                           FLog.e(TAG, aliPayResult.toString());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                       }
+                    } else {
+                       // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
+                        FToast.error("失败：" + payResult.toString());
+                    }*/
+
+
+
+                    } else {
+
+                        if (TextUtils.equals(resultStatus, "6001")) {
+                            Toast.makeText(mActivity, "支付取消", Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
+                            Toast.makeText(mActivity, "支付失败", Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
+    };
+
+
+
+
 
     @Override
     protected void initViews(LayoutInflater inflater, View view, ViewGroup container, Bundle savedInstanceState) {
@@ -259,8 +347,12 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
      * @param item
      */
     private void addOrderItem(List<AllOrderList.DataBean.ListBeanX> item) {
-        AllOrderList.DataBean.ListBeanX listBeanX = item.get(0);
-        String s = new Gson().toJson(listBeanX);
+
+
+
+
+
+
         for (int i = 0; i <item.size() ; i++) {
             AllOrderList.DataBean.ListBeanX orderBean = item.get(i);
             int cur=mItems.size();
@@ -302,25 +394,6 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
     }
 
 
-/*
-    *//**
-     * 查看订单详情
-     *//*
-    @Override
-    public void onProdClick(OrderList.DataBean.OrderBean.GoodsBean item) {
-        Intent intent = new Intent(mActivity, OrderActivity.class);
-        int curOrder=0;
-        for (int i = 0; i < mDatas.size(); i++) {
-            long order_no = mDatas.get(i).getOrder_no();
-            if(order_no==item.getOrder_no()){
-                curOrder=i;
-                break;
-            }
-        }
-        OrderList.DataBean.OrderBean orderBean = mDatas.get(curOrder);
-        intent.putExtra("order",orderBean);
-        startActivity(intent);
-    }*/
 
 
 
@@ -328,23 +401,6 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
 
     @Override
     public void onReBuy(ItemOrderBottom itemOrderBottom) {
-
-        /*String orderNum = itemOrderBottom.orderNum;
-        int cur=0;
-        for (int i = 0; i < mDatas.size(); i++) {
-            AllOrderList.DataBean.ListBeanX listBeanX = mDatas.get(i);
-            if(orderNum.equals(String.valueOf(listBeanX.getOrder_no()))){
-                        cur=i;
-                break;
-            }
-        }
-        AllOrderList.DataBean.ListBeanX cartIntentInfo = mDatas.get(cur);
-
-        Intent intent = new Intent(mActivity, OrderActivity.class);
-        intent.putExtra("intentInfo",cartIntentInfo);
-        startActivity(intent);*/
-
-
 
     }
 
@@ -361,6 +417,8 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
     }
 
 
+
+
     /**
      * 立即支付
      * @param itemOrderBottom
@@ -369,20 +427,23 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
     public void onPay(ItemOrderBottom itemOrderBottom) {
 
 
-        String orderNum = itemOrderBottom.orderNum;
-        int cur=0;
-        for (int i = 0; i < mDatas.size(); i++) {
-            AllOrderList.DataBean.ListBeanX listBeanX = mDatas.get(i);
-            if(orderNum.equals(String.valueOf(listBeanX.getOrder_no()))){
-                cur=i;
-                break;
-            }
-        }
-        AllOrderList.DataBean.ListBeanX cartIntentInfo = mDatas.get(cur);
+        new XPopup.Builder(mActivity)
+                .dismissOnTouchOutside(true)
+                .dismissOnBackPressed(true)
+                .asCustom(new PayBottom2TopProdPopup(mActivity,itemOrderBottom.totalMoney,type -> {
 
-        Intent intent = new Intent(mActivity, OrderDetailsActivity.class);
-        intent.putExtra("intentInfo",cartIntentInfo);
-        startActivity(intent);
+                    mPayType=type;
+                    mViewModel.getOrderPay(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),
+                            String.valueOf(itemOrderBottom.orderNum),String.valueOf(type))
+                            .observe(this,mPayObserver);
+
+
+                }))
+                .show();
+
+
+
+
 
 
     }
@@ -523,4 +584,147 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
         intent.putExtra("intentInfo",orderBean);
         startActivity(intent);
     }
+
+
+
+
+
+
+
+
+
+
+    /**
+     * 获取支付参数接口
+     */
+    private Observer<Status<ResponseBody>> mPayObserver = status -> {
+        switch (status.status) {
+            case Status.SUCCESS:
+                ResponseBody body = status.content;
+                try {
+                    String result = body.string();
+
+                    if(mPayType==2){
+                        ZFBBean orderPay = new Gson().fromJson(result, ZFBBean.class);
+                        if(orderPay.getCode()==1){
+
+                            sendReq2ZFB(orderPay.getData());
+
+                        }else {
+                            FToast.warning(orderPay.getInfo());
+                        }
+
+                    }else if(mPayType==1){
+                        OrderPay orderPay = new Gson().fromJson(result, OrderPay.class);
+                        if(orderPay.getCode()==1){
+                            OrderPay.DataBean data = orderPay.getData();
+                            String appid = data.getAppid();
+                            String prepayid = data.getPrepayid();
+                            String sign = data.getSign();
+                            String timestamp = data.getTimestamp();
+                            String partnerid = data.getPartnerid();
+                            String noncestr = data.getNoncestr();
+                            String packageX = data.getPackageX();
+                            //weixin
+
+                            WxPayBean wxPayBean = new WxPayBean();
+                            wxPayBean.setAppId(appid);
+                            wxPayBean.setPrepayId(prepayid);
+                            wxPayBean.setPartnerId(partnerid);
+                            wxPayBean.setNonceStr(noncestr);
+                            wxPayBean.setPaySign(sign);
+                            wxPayBean.setTimestamp(timestamp);
+                            wxPayBean.setPackageX(packageX);
+                            sendReq2WX(wxPayBean);
+
+                        }else {
+                            FToast.warning(orderPay.getInfo());
+                        }
+
+
+
+
+
+
+                    }
+
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+                break;
+            case Status.LOADING:
+
+                break;
+            case Status.ERROR:
+                FToast.error(status.message);
+
+                break;
+        }
+    };
+
+
+
+    /**
+     * 调支付的方法
+     * <p>
+     * 注意： app支付请求参数字符串，主要包含商户的订单信息，key=value形式，以&连接。
+     *
+     * @param oInfo
+     */
+//支付宝oInfo参数，以后台返回为准
+    private void sendReq2ZFB(String oInfo) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //1、生成订单数据
+                //2、支付
+                PayTask payTask = new PayTask(mActivity);
+				  /*参数1：订单信息
+	                参数2：表示在支付钱包显示之前，true会显示一个dialog提示用户表示正在唤起支付宝钱包
+				    返回值：
+					就是同步返回的支付结果（在实际开发过程中，不应该以此同步结果作为支付成功的依据。以异步结果作为成功支付的依据）
+										                 */
+                Map<String, String> result = payTask.payV2(oInfo, true);
+                Message message = mHandler.obtainMessage();
+                message.what = SDK_PAY_FLAG;
+                message.obj = result;
+                mHandler.sendMessage(message);
+            }
+        }).start();
+    }
+    /**
+     * 调支付的方法
+     * <p>
+     * 注意： 每次调用微信支付的时候都会校验 appid 、包名 和 应用签名的。 这三个必须保持一致才能够成功调起微信
+     *
+     * @param wxPayBean
+     */
+    //这个WxPayBean以后台返回为准,这里是我手动拿接口文档里生成的
+    private  void sendReq2WX(WxPayBean wxPayBean) {
+
+        //这里的appid，替换成自己的即可
+        IWXAPI api = WXAPIFactory.createWXAPI(BasicApp.getContext(), Constant.WX_APP_ID);
+        api.registerApp(Constant.WX_APP_ID);
+
+        //这里的bean，是服务器返回的json生成的bean
+        PayReq payRequest = new PayReq();
+        payRequest.appId = wxPayBean.getAppId();
+        payRequest.partnerId = wxPayBean.getPartnerId();//这里参数也需要，目前没有就屏蔽了
+        payRequest.prepayId = wxPayBean.getPrepayId();//这里参数也需要，目前没有就屏蔽了
+        payRequest.packageValue = "Sign=WXPay";//固定值
+        payRequest.nonceStr = wxPayBean.getNonceStr();
+        payRequest.timeStamp = wxPayBean.getTimestamp();
+        payRequest.sign = wxPayBean.getPaySign();
+
+        //发起请求，调起微信前去支付
+        api.sendReq(payRequest);
+    }
+
+
+
+
 }

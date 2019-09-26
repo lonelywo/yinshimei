@@ -302,6 +302,8 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
                             int c = mItems.size();
                             mAdapter.notifyItemRangeInserted(o, c);
                             mRefreshLayout.finishLoadMore();
+
+
                         }
                     } else {
                         if (status.loadType == Status.LOAD_MORE) {
@@ -462,12 +464,13 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
                 .dismissOnBackPressed(false)
                 .dismissOnTouchOutside(false)
                 .asCustom(new CartTipsPopup(mActivity,
-                        "亲，确定要从购物车中删除此商品吗？", "取消", "确定", new CartTipsPopup.OnExitListener() {
+                        "亲，确定要删除此商品吗？", "取消", "确定", new CartTipsPopup.OnExitListener() {
                     @Override
                     public void onPositive() {
                         mPosition=position;
+                        Log.d("east", "onDelete: "+mPosition);
                         int cart_id = bean.getCart_id();
-
+                        Log.d("east", "cart_id: "+cart_id);
                         mTvTotal.setText(String.format(Locale.CHINA, "%s", getCheckedsMoeny()));
                         mViewModel.cartDelete(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),String.valueOf(cart_id) )
                                 .observe(mActivity, mDeleteObserver);
@@ -503,8 +506,16 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
                         String result = content.string();
                         CartDelete cartDelete = new Gson().fromJson(result, CartDelete.class);
                         if(cartDelete.code==1){
-                            mItems.remove(mPosition);
-                            mAdapter.notifyItemRemoved(mPosition);
+                           // mItems.remove(mPosition);
+
+
+                           mRefreshLayout.autoRefresh();
+
+
+                        //    mAdapter.notifyItemRemoved(mPosition);
+
+
+
                             FToast.success(cartDelete.info);
                             if(mAdapter.getItemCount()==0){
                                 ViewUtils.hideView(bottomLyaout);

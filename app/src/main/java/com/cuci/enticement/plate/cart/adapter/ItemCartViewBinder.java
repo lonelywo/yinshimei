@@ -49,7 +49,7 @@ public class ItemCartViewBinder extends ItemViewBinder<OrderGoods, ItemCartViewB
 
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull OrderGoods item) {
-        int position = holder.getAdapterPosition();
+        int position = holder.getPosition();
 
        if (item.isCheck()) {
             holder.mImageCheck.setImageResource(R.drawable.xuanzhong);

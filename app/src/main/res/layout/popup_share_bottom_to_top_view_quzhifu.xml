@@ -86,37 +86,9 @@
                     />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/con_fangshi3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/con_fangshi2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:background="@drawable/shape_sibian_bai_bg6"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:padding="10dp"
-            >
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/yinlian"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    />
-                <ImageView
-                    android:id="@+id/union_iv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/noxuanzhong"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
       <TextView
           android:id="@+id/test_1"
           android:layout_width="0dp"
@@ -125,11 +97,15 @@
           android:textSize="20sp"
           android:layout_marginTop="10dp"
           android:textColor="@color/hei"
-          app:layout_constraintTop_toBottomOf="@+id/con_fangshi3"
+          app:layout_constraintTop_toBottomOf="@+id/con_fangshi2"
           app:layout_constraintLeft_toLeftOf="parent"
           app:layout_constraintRight_toLeftOf="@+id/text_money"
           android:gravity="right"
           />
+
+
+
+
         <TextView
             android:id="@+id/text_money"
             android:layout_width="0dp"
@@ -138,11 +114,13 @@
             android:textSize="20sp"
             android:textColor="@color/orange"
             android:layout_marginTop="10dp"
-            app:layout_constraintTop_toBottomOf="@+id/con_fangshi3"
+            app:layout_constraintTop_toBottomOf="@+id/con_fangshi2"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/test_1"
             android:layout_marginLeft="5dp"
             />
+
+
         <Button
             android:id="@+id/tv_commit"
             app:layout_constraintTop_toBottomOf="@+id/text_money"
