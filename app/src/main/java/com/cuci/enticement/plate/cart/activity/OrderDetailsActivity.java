@@ -7,8 +7,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
 import com.cuci.enticement.BasicApp;
@@ -17,8 +17,6 @@ import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.AllOrderList;
 import com.cuci.enticement.bean.CommitOrder;
-import com.cuci.enticement.bean.ItemOrderBottom;
-import com.cuci.enticement.bean.ItemOrderTitle;
 import com.cuci.enticement.bean.OrderCancel;
 import com.cuci.enticement.bean.OrderGoods;
 import com.cuci.enticement.bean.OrderPay;
@@ -26,9 +24,7 @@ import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.bean.WxPayBean;
 import com.cuci.enticement.plate.common.eventbus.OrderEvent;
-import com.cuci.enticement.plate.mine.adapter.ItemBottomViewBinder;
 import com.cuci.enticement.plate.mine.adapter.ItemProdViewBinder;
-import com.cuci.enticement.plate.mine.adapter.ItemTitleViewBinder;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.cuci.enticement.plate.mine.vm.OrderViewModel;
 import com.cuci.enticement.utils.FToast;
@@ -44,17 +40,17 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
@@ -86,10 +82,24 @@ public class OrderDetailsActivity extends BaseActivity {
     TextView tvCreateTime;
     @BindView(R.id.tv_total_money)
     TextView tvTotalMoney;
+    @BindView(R.id.image_top)
+    TextView imageTop;
+    @BindView(R.id.image_back)
+    ImageView imageBack;
+    @BindView(R.id.line)
+    View line;
+    @BindView(R.id.con_buju1)
+    ConstraintLayout conBuju1;
+    @BindView(R.id.jizhun1)
+    TextView jizhun1;
+    @BindView(R.id.con_buju3)
+    ConstraintLayout conBuju3;
     @BindView(R.id.tv_left)
     TextView tvLeft;
     @BindView(R.id.tv_right)
     TextView tvRight;
+
+
     private OrderViewModel mViewModel;
     private UserInfo mUserInfo;
 
@@ -99,6 +109,7 @@ public class OrderDetailsActivity extends BaseActivity {
     private LinearLayoutManager mLayoutManager;
     private MultiTypeAdapter mAdapter;
     private Items mItems;
+
     @Override
     public int getLayoutId() {
         return R.layout.order_details;
@@ -112,7 +123,7 @@ public class OrderDetailsActivity extends BaseActivity {
             return;
         }
         mInfo = intent.getParcelableExtra("intentInfo");
-     //   List<OrderGoods> items = mInfo.getList();
+        //   List<OrderGoods> items = mInfo.getList();
 
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
         if (mUserInfo == null) {
@@ -138,8 +149,7 @@ public class OrderDetailsActivity extends BaseActivity {
 
         mRecyclerView.setAdapter(mAdapter);
         mItems.clear();
-     //   mItems.addAll(items);
-
+        //   mItems.addAll(items);
 
 
         mViewModel = ViewModelProviders.of(this).get(OrderViewModel.class);
@@ -152,7 +162,7 @@ public class OrderDetailsActivity extends BaseActivity {
             //已取消          重新购买
             ViewUtils.hideView(tvLeft);
             ViewUtils.hideView(tvRight);
-            
+
         } else if (status == 2) {
             //待付款  取消订单  立即支付
             ViewUtils.showView(tvLeft);
@@ -203,7 +213,6 @@ public class OrderDetailsActivity extends BaseActivity {
     }
 
 
-
     /**
      * 获取支付参数接口
      */
@@ -216,7 +225,7 @@ public class OrderDetailsActivity extends BaseActivity {
                 try {
                     String result = body.string();
                     OrderPay orderPay = new Gson().fromJson(result, OrderPay.class);
-                    if(orderPay.getCode()==1){
+                    if (orderPay.getCode() == 1) {
                         OrderPay.DataBean data = orderPay.getData();
                         String appid = data.getAppid();
                         String prepayid = data.getPrepayid();
@@ -226,7 +235,7 @@ public class OrderDetailsActivity extends BaseActivity {
                         String noncestr = data.getNoncestr();
                         String packageX = data.getPackageX();
 
-                        if(mPayType==1){
+                        if (mPayType == 1) {
                             StringBuilder sb = new StringBuilder();
                             sb.append("appid").append("=").append(appid).append("&")
                                     .append("prepayid").append("=").append(prepayid).append("&")
@@ -236,7 +245,7 @@ public class OrderDetailsActivity extends BaseActivity {
                                     .append("noncestr").append("=").append(noncestr).append("&")
                                     .append("package").append("=").append(packageX);
                             sendReq2ZFB(sb.toString());
-                        }else if(mPayType==2){
+                        } else if (mPayType == 2) {
                             WxPayBean wxPayBean = new WxPayBean();
                             wxPayBean.setAppId(appid);
                             wxPayBean.setNonceStr(noncestr);
@@ -247,11 +256,9 @@ public class OrderDetailsActivity extends BaseActivity {
                         }
 
 
-
-                    }else {
+                    } else {
                         FToast.warning(orderPay.getInfo());
                     }
-
 
 
                 } catch (IOException e) {
@@ -269,7 +276,6 @@ public class OrderDetailsActivity extends BaseActivity {
                 break;
         }
     };
-
 
 
     private Observer<Status<ResponseBody>> mCancelObserver = status -> {
@@ -309,10 +315,6 @@ public class OrderDetailsActivity extends BaseActivity {
     };
 
 
-
-
-
-
     /**
      * 提交订单接口   将预订单变成待支付订单  status由1变成2
      */
@@ -323,7 +325,7 @@ public class OrderDetailsActivity extends BaseActivity {
                 try {
                     String result = body.string();
                     CommitOrder commitOrder = new Gson().fromJson(result, CommitOrder.class);
-                    if(commitOrder.getCode()==1){
+                    if (commitOrder.getCode() == 1) {
 
                         //todo 发送广播去刷新购物车列表  和  个人中心状态
                         //刷新购物车列表
@@ -334,23 +336,18 @@ public class OrderDetailsActivity extends BaseActivity {
 
                         LocalBroadcastManager.getInstance(this).sendBroadcast(intent2);
 
-                        mViewModel.getOrderPay(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),
-                                String.valueOf(mInfo.getOrder_no()),String.valueOf(mPayType))
-                                .observe(this,mPayObserver);
+                        mViewModel.getOrderPay(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),
+                                String.valueOf(mInfo.getOrder_no()), String.valueOf(mPayType))
+                                .observe(this, mPayObserver);
 
-                    }else {
+                    } else {
                         FToast.warning("提交订单失败");
                     }
-
-
-
-
 
 
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
 
 
                 break;
@@ -363,12 +360,6 @@ public class OrderDetailsActivity extends BaseActivity {
                 break;
         }
     };
-
-
-
-
-
-
 
 
     /**
@@ -399,6 +390,7 @@ public class OrderDetailsActivity extends BaseActivity {
             }
         }).start();
     }
+
     /**
      * 调支付的方法
      * <p>
@@ -407,7 +399,7 @@ public class OrderDetailsActivity extends BaseActivity {
      * @param wxPayBean
      */
     //这个WxPayBean以后台返回为准,这里是我手动拿接口文档里生成的
-    private  void sendReq2WX(WxPayBean wxPayBean) {
+    private void sendReq2WX(WxPayBean wxPayBean) {
 
         //这里的appid，替换成自己的即可
         IWXAPI api = WXAPIFactory.createWXAPI(BasicApp.getContext(), Constant.WX_APP_ID);
@@ -426,7 +418,6 @@ public class OrderDetailsActivity extends BaseActivity {
         //发起请求，调起微信前去支付
         api.sendReq(payRequest);
     }
-
 
 
     private static final int SDK_PAY_FLAG = 1;
@@ -464,7 +455,5 @@ public class OrderDetailsActivity extends BaseActivity {
             }
         }
     };
-
-
 
 }

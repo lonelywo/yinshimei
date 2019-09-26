@@ -10,6 +10,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.cuci.enticement.Constant;
+import com.cuci.enticement.utils.FToast;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
@@ -54,16 +55,16 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 
             switch (resp.errCode) {
                 case 0://支付成功
-                    Toast.makeText(this, "支付成功", Toast.LENGTH_SHORT).show();
+                    FToast.success("支付成功");
                     Log.d(TAG, "onResp: resp.errCode = 0   支付成功");
                     break;
                 case -1://错误，可能的原因：签名错误、未注册APPID、项目设置APPID不正确、注册的APPID与设置的不匹配、其他异常等
-                    Toast.makeText(this, "支付失败" + resp.errCode, Toast.LENGTH_SHORT).show();
+                    FToast.error("支付失败");
                     Log.d(TAG, "onResp: resp.errCode = -1  支付失败");
                     break;
                 case -2://用户取消，无需处理。发生场景：用户不支付了，点击取消，返回APP。
                     Log.d(TAG, "onResp: resp.errCode = -2  用户取消");
-                    Toast.makeText(this, "用户取消" + resp.errCode, Toast.LENGTH_SHORT).show();
+                    FToast.warning("支付取消");
                     break;
 
             }

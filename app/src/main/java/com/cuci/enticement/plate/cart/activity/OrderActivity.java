@@ -114,34 +114,17 @@ public class OrderActivity extends BaseActivity {
                     String resultStatus = payResult.getResultStatus();
                     // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
                     if (TextUtils.equals(resultStatus, "9000")) {
-
-                        Toast.makeText(OrderActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
-
+                        FToast.success("支付成功");
                         finish();
-               /*         if (TextUtils.equals(resultStatus, "9000")) {
-                        // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
-                        FToast.success("支付成功：" + payResult.toString());
-                        try {
-                           AliPayResult aliPayResult = new Gson().fromJson(result, AliPayResult.class);
-                           FLog.e(TAG, aliPayResult.toString());
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                       }
-                    } else {
-                       // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
-                        FToast.error("失败：" + payResult.toString());
-                    }*/
-
-
 
                     } else {
 
                         if (TextUtils.equals(resultStatus, "6001")) {
-                            Toast.makeText(OrderActivity.this, "支付取消", Toast.LENGTH_SHORT).show();
+                            FToast.warning("支付取消");
                             finish();
                         } else {
                             // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
-                            Toast.makeText(OrderActivity.this, "支付失败", Toast.LENGTH_SHORT).show();
+                            FToast.error("支付失败");
                             finish();
                         }
                     }
