@@ -7,7 +7,15 @@ public class CartDataBean implements Serializable {
 
     /**
      * page : {"limit":12,"total":2,"pages":1,"current":1}
-     * list : [{"cart_id":101,"mid":18281,"goods_id":6672588222,"goods_title":"新零售礼包B方案","goods_logo":"http://qiniu.cdn.enticementchina.com/ce62bb5fa9fdace8/f71348a7db4928df.jpg","goods_spec":"默认分组:黑金魅惑蕾丝面膜5片/盒*40，温柔高保湿洁面乳(30g)*25，贵族美学*1，油纸*10，标贴*10，手提袋*10;T恤:M","goods_price_selling":"3660.00","goods_price_market":"3660.00","goods_num":1,"stock":9928},{"cart_id":102,"mid":18281,"goods_id":6672579002,"goods_title":"新零售礼包A方案","goods_logo":"http://qiniu.cdn.enticementchina.com/4229e1b0bf62661c/913270e1206f32e0.jpg","goods_spec":"默认分组:黑金魅惑蕾丝面膜5片/盒*20，温柔高保湿洁面乳(30g)*20，因诗美菁纯赋活原生水*12，贵族美学*1，油纸*10，标贴*10，手提袋*10;T恤:M","goods_price_selling":"3660.00","goods_price_market":"3660.00","goods_num":1,"stock":9968}]
+     * list : [{"cart_id":101,"mid":18281,"goods_id":6672588222,
+     * "goods_title":"新零售礼包B方案","goods_logo":"http://qiniu.cdn.enticementchina.com/ce62bb5fa9fdace8/f71348a7db4928df.jpg",
+     * "goods_spec":"默认分组:黑金魅惑蕾丝面膜5片/盒*40，温柔高保湿洁面乳(30g)*25，贵族美学*1，油纸*10，标贴*10，手提袋*10;T恤:M",
+     * "goods_price_selling":"3660.00","goods_price_market":"3660.00","goods_num":1,"stock":9928}
+     * ,{"cart_id":102,"mid":18281,"goods_id":6672579002,"goods_title":"新零售礼包A方案",
+     * "goods_logo":"http://qiniu.cdn.enticementchina.com/4229e1b0bf62661c/913270e1206f32e0.jpg",
+     * "goods_spec":"默认分组:黑金魅惑蕾丝面膜5片/盒*20，温柔高保湿洁面乳(30g)*20，因诗美菁纯赋活原生水*12，
+     * 贵族美学*1，油纸*10，标贴*10，手提袋*10;T恤:M",
+     * "goods_price_selling":"3660.00","goods_price_market":"3660.00","goods_num":1,"stock":9968}]
      * total : {"total_price":"7320.00"}
      */
 

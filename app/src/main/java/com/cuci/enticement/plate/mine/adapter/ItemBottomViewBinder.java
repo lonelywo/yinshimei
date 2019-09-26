@@ -10,6 +10,8 @@ import com.cuci.enticement.R;
 import com.cuci.enticement.bean.ItemOrderBottom;
 import com.cuci.enticement.utils.ViewUtils;
 
+import java.util.Locale;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -52,8 +54,8 @@ public class ItemBottomViewBinder extends ItemViewBinder<ItemOrderBottom, ItemBo
         if(status==0){
             //已取消          重新购买
             ViewUtils.hideView( holder.textQuxiao);
-            ViewUtils.showView( holder.textZhifu);
-            holder.textZhifu.setText("重新购买");
+            ViewUtils.hideView( holder.textZhifu);
+          //  holder.textZhifu.setText("重新购买");
         }else if(status==2){
             //待付款  取消订单  立即支付
             ViewUtils.showView( holder.textQuxiao);
@@ -79,6 +81,17 @@ public class ItemBottomViewBinder extends ItemViewBinder<ItemOrderBottom, ItemBo
 
         }
 
+        double expressMoney = Double.parseDouble(itemOrderBottom.expressMoney);
+
+        if(expressMoney==0){
+            holder.textShuliang.setText(String.format(Locale.CHINA,"共%s件商品",itemOrderBottom.num));
+        }else {
+            holder.textShuliang.setText(String.format(Locale.CHINA,"共%s件商品(含运费¥)",itemOrderBottom.num,itemOrderBottom.expressMoney));
+        }
+        holder.textHeji.setText(String.format(Locale.CHINA,"合计:¥%s",itemOrderBottom.totalMoney));
+
+
+
         holder.textQuxiao.setOnClickListener(v -> {
 
             if(mOnItemClickListener!=null){
@@ -97,10 +110,10 @@ public class ItemBottomViewBinder extends ItemViewBinder<ItemOrderBottom, ItemBo
 
             if(mOnItemClickListener!=null){
 
-                if(status==0){
+              /*  if(status==0){
                     //重新购买
                     mOnItemClickListener.onReBuy(itemOrderBottom);
-                }
+                }*/
                 if(status==2){
                     //立即支付
                     mOnItemClickListener.onPay(itemOrderBottom);

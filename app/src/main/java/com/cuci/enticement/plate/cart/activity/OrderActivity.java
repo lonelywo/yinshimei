@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Parcelable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -21,6 +22,7 @@ import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.Constant;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
+import com.cuci.enticement.bean.AddressBean;
 import com.cuci.enticement.bean.AllOrderList;
 import com.cuci.enticement.bean.CartDataBean;
 import com.cuci.enticement.bean.CartIntentInfo;
@@ -34,8 +36,12 @@ import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.bean.WxPayBean;
 import com.cuci.enticement.bean.ZFBBean;
 import com.cuci.enticement.plate.common.eventbus.CartEvent;
+import com.cuci.enticement.plate.common.popup.TipsPopup;
+import com.cuci.enticement.plate.common.popup.WarningPopup;
+import com.cuci.enticement.plate.common.vm.CommonViewModel;
 import com.cuci.enticement.plate.mine.activity.RecAddressActivity;
 import com.cuci.enticement.plate.mine.adapter.ItemProdViewBinder;
+import com.cuci.enticement.plate.mine.adapter.ItemYuProdViewBinder;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.cuci.enticement.plate.mine.vm.OrderViewModel;
 import com.cuci.enticement.utils.Arith;
@@ -43,9 +49,11 @@ import com.cuci.enticement.utils.FLog;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.PayResult;
 import com.cuci.enticement.utils.SharedPrefUtils;
+import com.cuci.enticement.utils.ViewUtils;
 import com.cuci.enticement.widget.OrderItemDecoration;
 import com.cuci.enticement.wxapi.WXEntryActivity;
 import com.google.gson.Gson;
+import com.lxj.xpopup.XPopup;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -53,6 +61,7 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -68,7 +77,9 @@ import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 import okhttp3.ResponseBody;
 
+import static androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance;
 import static com.cuci.enticement.plate.cart.fragment._CartFragment.ACTION_REFRESH_DATA;
+import static com.cuci.enticement.plate.common.MainActivity.ACTION_GO_TO_HOME;
 
 /**
  *
@@ -78,10 +89,9 @@ public class OrderActivity extends BaseActivity {
     private static final String TAG = OrderActivity.class.getSimpleName();
     @BindView(R.id.text_dizi)
     TextView textDizi;
+    @BindView(R.id.text_address)
+    TextView tvAddress;
 
-
-    @BindView(R.id.text_shangpingzongjia)
-    TextView textShangpingzongjia;
     @BindView(R.id.text_shangpingmoney)
     TextView textShangpingmoney;
     @BindView(R.id.text_yunfeimoney)
@@ -90,8 +100,7 @@ public class OrderActivity extends BaseActivity {
     ImageView aliIv;
     @BindView(R.id.wechat_iv)
     ImageView wechatIv;
-    @BindView(R.id.union_iv)
-    ImageView unionIv;
+
     @BindView(R.id.tv_total_money)
     TextView tvTotalMoney;
     @BindView(R.id.recycler_view)
@@ -120,6 +129,12 @@ public class OrderActivity extends BaseActivity {
                     if (TextUtils.equals(resultStatus, "9000")) {
 
                         Toast.makeText(OrderActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
+
+
+                        //支付成功后，刷新个人中心状态
+                        Intent intent= new Intent(_MineFragment.ACTION_REFRESH_STATUS);
+                        LocalBroadcastManager.getInstance(OrderActivity.this).sendBroadcast(intent);
+
 
                         finish();
                /*         if (TextUtils.equals(resultStatus, "9000")) {
@@ -179,25 +194,33 @@ public class OrderActivity extends BaseActivity {
         }
         mViewModel = ViewModelProviders.of(this).get(OrderViewModel.class);
 
-        String  address = SharedPrefUtils.getDefaultAdress();
 
-        if (TextUtils.isEmpty(address)) {
-            textDizi.setText("请添加收货地址");
-        } else {
-            textDizi.setText(address);
-            //默认地址id，不去选中就用这个
-           mAddressId = SharedPrefUtils.getDefaultAdressId();
-        }
+
+
+
 
         // ImageLoader.loadPlaceholder(mOrderBean.get);
         //设置商品总价，运费，订单总价
         textShangpingmoney.setText(mInfo.getPrice_goods());
 
-        if(!TextUtils.isEmpty(address)){
-            mViewModel.getExpressCost(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),String.valueOf(mInfo.getOrder_no()),mAddressId)
-                    .observe(this,mExpressCostObserver);
-        }
 
+        String  address = SharedPrefUtils.getDefaultAdress();
+
+        if (!TextUtils.isEmpty(address)) {
+
+            ViewUtils.hideView(textDizi);
+            ViewUtils.showView(tvAddress);
+            tvAddress.setText(address);
+            //默认地址id，不去选中就用这个
+            mAddressId = SharedPrefUtils.getDefaultAdressId();
+
+            mViewModel.getExpressCost(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),String.valueOf(mInfo.getOrder_no()),mAddressId)
+                    .observe(OrderActivity.this,mExpressCostObserver);
+
+        }else {
+            ViewUtils.showView(textDizi);
+            ViewUtils.hideView(tvAddress);
+        }
 
 
         mAdapter = new MultiTypeAdapter();
@@ -208,10 +231,10 @@ public class OrderActivity extends BaseActivity {
 
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        mAdapter.register(OrderGoods.class, new ItemProdViewBinder());
+        mAdapter.register(OrderGoods.class, new ItemYuProdViewBinder());
 
 
-        OrderItemDecoration mDecoration = new OrderItemDecoration(this, 4);
+        OrderItemDecoration mDecoration = new OrderItemDecoration(this, 6);
 
         mRecyclerView.addItemDecoration(mDecoration);
         mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -220,6 +243,9 @@ public class OrderActivity extends BaseActivity {
         mRecyclerView.setAdapter(mAdapter);
 
 
+       /* CommonViewModel commonViewModel = ViewModelProviders.of(this).get(CommonViewModel.class);
+        commonViewModel.getAdressList(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),Status.LOAD_REFRESH)
+                .observe(this,mAddressObserver);*/
 
     }
 
@@ -227,6 +253,8 @@ public class OrderActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+
 
     }
     @OnClick({R.id.text_dizi, R.id.tv_commit,R.id.back_iv})
@@ -239,8 +267,16 @@ public class OrderActivity extends BaseActivity {
                 break;
             case R.id.tv_commit:
                 //支付生成订单
-                if(TextUtils.isEmpty(textDizi.getText())){
-                    FToast.warning("请先添加收货地址");
+                if(TextUtils.isEmpty(tvAddress.getText())){
+
+                    new XPopup.Builder(OrderActivity.this)
+                            .dismissOnBackPressed(false)
+                            .dismissOnTouchOutside(false)
+                            .asCustom(new WarningPopup(OrderActivity.this,
+                                    "请选择收货地址","确定")).show();
+
+
+                            //FToast.warning("请选择收货地址");
                     return;
                 }
                 //提交订单，成功后，去调用获取支付参数接口
@@ -252,6 +288,88 @@ public class OrderActivity extends BaseActivity {
                 break;
         }
     }
+
+
+
+
+    //暂不使用  可缩起来
+    private Observer<Status<AddressBean>> mAddressObserver = new Observer<Status<AddressBean>>() {
+        @Override
+        public void onChanged(Status<AddressBean> status) {
+            switch (status.status) {
+
+                case Status.SUCCESS:
+                    dismissLoading();
+                    AddressBean data = status.content;
+                    List<AddressBean.DataBean.ListBean> list = data.getData().getList();
+                    if (list == null||list.size()==0) {
+                        ViewUtils.showView(textDizi);
+                        ViewUtils.hideView(tvAddress);
+                        return;
+                    }
+
+                    if (data.getCode() == 1) {
+                        boolean hasDefault=false;
+                        int num=0;
+                        for (int i = 0; i < list.size(); i++) {
+                            AddressBean.DataBean.ListBean item = list.get(i);
+
+                            int is_default = item.getIs_default();
+                            if(is_default==1){
+                                //存在默认就设置
+                                hasDefault=true;
+                                num=i;
+                                break;
+                            }
+                        }
+
+                        if(hasDefault){
+
+                            AddressBean.DataBean.ListBean item = list.get(num);
+                            ViewUtils.hideView(textDizi);
+                            ViewUtils.showView(tvAddress);
+                            StringBuilder sb = new StringBuilder();
+                            sb.append(item.getName()).append(" ")
+                                    .append(item.getPhone()).append(" ").append("\n")
+                                    .append(item.getProvince()).append(" ")
+                                    .append(item.getCity()).append(" ")
+                                    .append(item.getArea()).append(" ")
+                                    .append(item.getAddress());
+
+                            tvAddress.setText(sb.toString());
+                            mViewModel.getExpressCost(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),String.valueOf(mInfo.getOrder_no()),mAddressId)
+                                    .observe(OrderActivity.this,mExpressCostObserver);
+                        }
+
+
+
+
+                    } else {
+                        ViewUtils.showView(textDizi);
+                        ViewUtils.hideView(tvAddress);
+                        FToast.error(data.getInfo());
+                    }
+                    break;
+                case Status.ERROR:
+                    dismissLoading();
+                    FToast.error(status.message);
+
+                    break;
+                case Status.LOADING:
+                    showLoading();
+                    break;
+            }
+        }
+    };
+
+
+
+
+
+
+
+
+
 
     /**
      * 获取支付参数接口
@@ -325,15 +443,25 @@ public class OrderActivity extends BaseActivity {
         }
     };
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 100 && resultCode == 101) {
             //返回更新地址
             //todo
-            String adress = data.getStringExtra("address");
-            mAddressId= data.getStringExtra("addressId");
+            /*String adress = data.getStringExtra("address");
+            mAddressId= data.getStringExtra("addressId");*/
+            AddressBean.DataBean.ListBean bean = data.getParcelableExtra("addressBean");
+            mAddressId=String.valueOf(bean.getId());
+            StringBuilder sb = new StringBuilder();
+            sb.append(bean.getName()).append(" ")
+                    .append(bean.getPhone()).append(" ").append("\n")
+                    .append(bean.getProvince()).append(" ")
+                    .append(bean.getCity()).append(" ")
+                    .append(bean.getArea()).append(" ")
+                    .append(bean.getAddress());
+            String adress=sb.toString();
+
             textDizi.setText(adress);
             mViewModel.getExpressCost(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),String.valueOf(mInfo.getOrder_no()),mAddressId)
                     .observe(this,mExpressCostObserver);
@@ -347,16 +475,17 @@ public class OrderActivity extends BaseActivity {
     private Observer<Status<ResponseBody>> mExpressCostObserver = status -> {
         switch (status.status) {
             case Status.SUCCESS:
+                dismissLoading();
                 ResponseBody body = status.content;
                 try {
                     String result = body.string();
                     ExpressCost expressCost = new Gson().fromJson(result, ExpressCost.class);
                     if(expressCost.getCode()==1){
                         double express_price = expressCost.getData().getExpress_price();
-                        textYunfeimoney.setText(String.valueOf(express_price));
+                        textYunfeimoney.setText(String.format(Locale.CHINA,"¥%s",express_price));
                         //计算总价
                         double totalMoney= Arith.add(Double.parseDouble(mInfo.getPrice_goods()),express_price);
-                        textShangpingzongjia.setText(String.valueOf(totalMoney));
+                        tvTotalMoney.setText(String.format(Locale.CHINA,"¥%s",totalMoney));
                     }else {
                         FToast.warning(expressCost.getInfo());
                     }
@@ -372,9 +501,10 @@ public class OrderActivity extends BaseActivity {
 
                 break;
             case Status.LOADING:
-
+                showLoading();
                 break;
             case Status.ERROR:
+                dismissLoading();
                 FToast.error(status.message);
 
                 break;
@@ -394,11 +524,11 @@ public class OrderActivity extends BaseActivity {
                     CommitOrder commitOrder = new Gson().fromJson(result, CommitOrder.class);
                     if(commitOrder.getCode()==1){
 
-                        //todo 发送广播去刷新购物车列表  和  个人中心状态
-                        //刷新购物车列表
+
+                        //订单生成成功后，刷新购物车列表
                         EventBus.getDefault().postSticky(new CartEvent(CartEvent.REFRESH_CART_LIST));
 
-                        //刷新个人中心状态
+                        //订单生成成功后，刷新个人中心状态
                         Intent intent2 = new Intent(_MineFragment.ACTION_REFRESH_STATUS);
 
                         LocalBroadcastManager.getInstance(this).sendBroadcast(intent2);
@@ -437,28 +567,28 @@ public class OrderActivity extends BaseActivity {
 
 
 
-    @OnClick({R.id.con_fangshi1, R.id.con_fangshi2, R.id.con_fangshi3})
+    @OnClick({R.id.con_fangshi1, R.id.con_fangshi2})
     public void onPayViewClicked(View view) {
         switch (view.getId()) {
             case R.id.con_fangshi1:
                 aliIv.setImageResource(R.drawable.xuanzhong);
                 wechatIv.setImageResource(R.drawable.noxuanzhong);
-                unionIv.setImageResource(R.drawable.noxuanzhong);
+
                 mPayType=2;
                 break;
             case R.id.con_fangshi2:
                 aliIv.setImageResource(R.drawable.noxuanzhong);
                 wechatIv.setImageResource(R.drawable.xuanzhong);
-                unionIv.setImageResource(R.drawable.noxuanzhong);
+
                 mPayType=1;
 
                 break;
-            case R.id.con_fangshi3:
+           /* case R.id.con_fangshi3:
                 aliIv.setImageResource(R.drawable.noxuanzhong);
                 wechatIv.setImageResource(R.drawable.noxuanzhong);
                 unionIv.setImageResource(R.drawable.xuanzhong);
                 mPayType=3;
-                break;
+                break;*/
         }
     }
 

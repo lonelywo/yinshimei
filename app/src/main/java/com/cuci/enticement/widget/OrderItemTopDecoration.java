@@ -10,11 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-public class OrderItemDecoration extends RecyclerView.ItemDecoration {
+public class OrderItemTopDecoration extends RecyclerView.ItemDecoration {
 
     private int mSpace;
 
-    public OrderItemDecoration(Context context, int space) {
+    public OrderItemTopDecoration(Context context, int space) {
         mSpace = DimensionUtils.dp2px(context, space);
     }
 
@@ -23,9 +23,11 @@ public class OrderItemDecoration extends RecyclerView.ItemDecoration {
                                @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
        int position = parent.getChildAdapterPosition(view);
         if(position==0){
-            outRect.set(0, mSpace, 0, mSpace);
+            outRect.set(0, mSpace, 0, 0);
+        }else {
+            outRect.set(0, 0, 0, 0);
         }
-        outRect.set(0, 0, 0, mSpace);
+
 
 
     }

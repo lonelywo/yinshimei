@@ -162,7 +162,8 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
 
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-        mViewModel.getAdressList(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),Status.LOAD_REFRESH).observe(this,mObserver);
+        mViewModel.getAdressList(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),Status.LOAD_REFRESH)
+                .observe(this,mObserver);
     }
 
 
@@ -196,10 +197,15 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
                     if (data.getCode() == 1) {
                         mCanLoadMore = true;
                         if (status.loadType == Status.LOAD_REFRESH) {
+
+
                             mItems.clear();
                             mItems.addAll(list);
                             mAdapter.notifyDataSetChanged();
                             mRefreshLayout.finishRefresh();
+
+                            saveDefault(list);
+
                         } else {
                             int o = mItems.size();
                             mItems.addAll(list);
@@ -233,6 +239,40 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
         }
     };
 
+    private void saveDefault(List<AddressBean.DataBean.ListBean> list) {
+        boolean hasDefault=false;
+        int num=0;
+        for (int i = 0; i < list.size(); i++) {
+            AddressBean.DataBean.ListBean item = list.get(i);
+
+            int is_default = item.getIs_default();
+            if(is_default==1){
+                //存在默认就设置
+                hasDefault=true;
+                num=i;
+                break;
+            }
+        }
+
+        if(hasDefault){
+
+            AddressBean.DataBean.ListBean item = list.get(num);
+            SharedPrefUtils.saveDefaultAdressId(String.valueOf(item.getId()));
+            StringBuilder sb = new StringBuilder();
+            sb.append(item.getName()).append(" ")
+                    .append(item.getPhone()).append(" ").append("\n")
+                    .append(item.getProvince()).append(" ")
+                    .append(item.getCity()).append(" ")
+                    .append(item.getArea()).append(" ")
+                    .append(item.getAddress());
+            SharedPrefUtils.saveDefaultAdress(sb.toString());
+        }
+
+
+
+
+    }
+
     @Override
     public void onEditClick(AddressBean.DataBean.ListBean bean) {
         Intent intent = new Intent(this, ZengAddressActivity.class);
@@ -243,17 +283,17 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
     @Override
     public void onCheckAdress(AddressBean.DataBean.ListBean bean) {
         if(mCode==100){
-            StringBuilder sb = new StringBuilder();
+        /*    StringBuilder sb = new StringBuilder();
             sb.append(bean.getName()).append(" ")
                     .append(bean.getPhone()).append(" ")
                     .append(bean.getProvince()).append(" ")
                     .append(bean.getCity()).append(" ")
                     .append(bean.getArea()).append(" ")
                     .append(bean.getAddress());
-            String adress=sb.toString();
+            String adress=sb.toString();*/
             Intent intent = new Intent(RecAddressActivity.this, OrderActivity.class);
-            intent.putExtra("address",adress);
-            intent.putExtra("addressId",bean.getId());
+            intent.putExtra("addressBean",bean);
+
 
             setResult(101,intent);
             finish();
