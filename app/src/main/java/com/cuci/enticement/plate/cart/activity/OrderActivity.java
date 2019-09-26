@@ -257,10 +257,11 @@ public class OrderActivity extends BaseActivity {
 
 
     }
-    @OnClick({R.id.text_dizi, R.id.tv_commit,R.id.back_iv})
+    @OnClick({R.id.text_dizi, R.id.text_address,R.id.tv_commit,R.id.back_iv})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.text_dizi:
+            case R.id.text_address:
                 Intent intent = new Intent(OrderActivity.this, RecAddressActivity.class);
                 intent.putExtra("code",100);
                 startActivityForResult(intent, 100);
@@ -462,7 +463,7 @@ public class OrderActivity extends BaseActivity {
                     .append(bean.getAddress());
             String adress=sb.toString();
 
-            textDizi.setText(adress);
+            tvAddress.setText(adress);
             mViewModel.getExpressCost(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),String.valueOf(mInfo.getOrder_no()),mAddressId)
                     .observe(this,mExpressCostObserver);
         }

@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <TextView
         android:id="@+id/image_top"
         android:layout_width="wrap_content"
@@ -30,8 +31,10 @@
        android:id="@+id/text_zhuangtai"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
-       android:padding="20dp"
-       android:text="等待支付"
+       android:paddingLeft="12dp"
+        android:paddingTop="20dp"
+       android:paddingBottom="20dp"
+       tools:text="等待支付"
        android:textColor="@color/colorWhite"
        android:background="@color/orange"
        app:layout_constraintTop_toBottomOf="@id/image_back"
@@ -44,26 +47,18 @@
          android:background="@color/colorWhite"
          >
       <TextView
-          android:id="@+id/text_name"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="美美 15999995555"
+          android:id="@+id/text_dizi"
+          android:layout_width="0dp"
+          android:layout_height="70dp"
+          tools:text="美美 15999995555\n广州市天河区富力盈盛2905"
+          android:lineSpacingExtra="5dp"
           android:textColor="@color/hei"
           app:layout_constraintTop_toTopOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          android:padding="10dp"
+          android:padding="12dp"
+
           />
-         <TextView
-             android:id="@+id/text_dizi"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:text="广州市天河区富力盈盛2905"
-             android:textColor="@color/hei"
-             app:layout_constraintTop_toBottomOf="@+id/text_name"
-             app:layout_constraintStart_toStartOf="parent"
-             android:paddingLeft="10dp"
-             android:paddingBottom="10dp"
-             />
+
          <View
              android:id="@+id/line"
              android:layout_width="match_parent"
@@ -178,7 +173,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
-            android:text="3850"
+
+            tools:text="3850"
             android:textColor="@color/hei"
             app:layout_constraintTop_toBottomOf="@id/jizhun1"
             />
@@ -195,7 +191,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
-            android:text="50"
+            tools:text="50"
             android:textColor="@color/hei"
             app:layout_constraintTop_toBottomOf="@id/tv_goods_money"
             />
@@ -212,7 +208,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
-            android:text="2019-07-09 12:06:33"
+            tools:text="2019-07-09 12:06:33"
             android:textColor="@color/hei"
             app:layout_constraintTop_toBottomOf="@id/tv_express"
             />
@@ -240,7 +236,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="3900"
+        tools:text="3900"
         android:textColor="@color/hei"
         app:layout_constraintTop_toTopOf="parent"
         />

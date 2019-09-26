@@ -147,29 +147,37 @@ public class OrderDetailsActivity extends BaseActivity {
     }
 
     private void initViewStatus() {
+
+
+
+
+
         int status = mInfo.getStatus();
         if (status == 0) {
             //已取消          重新购买
             ViewUtils.hideView(tvLeft);
             ViewUtils.hideView(tvRight);
-            
+            textZhuangtai.setText("已取消");
         } else if (status == 2) {
             //待付款  取消订单  立即支付
             ViewUtils.showView(tvLeft);
             ViewUtils.showView(tvRight);
             tvLeft.setText("取消订单");
             tvRight.setText("立即支付");
+            textZhuangtai.setText("待支付");
         } else if (status == 3) {
             //待发货  取消订单
             ViewUtils.showView(tvLeft);
             ViewUtils.hideView(tvRight);
             tvLeft.setText("取消订单");
+            textZhuangtai.setText("待发货");
         } else if (status == 4) {
             //待收货  查看物流  确认收货
             ViewUtils.showView(tvLeft);
             ViewUtils.showView(tvRight);
             tvLeft.setText("查看物流");
             tvRight.setText("确认收货");
+
         } else if (status == 5) {
             //已完成  查看物流
             ViewUtils.showView(tvLeft);
@@ -177,6 +185,13 @@ public class OrderDetailsActivity extends BaseActivity {
             tvLeft.setText("查看物流");
 
         }
+
+
+
+
+
+
+
     }
 
 

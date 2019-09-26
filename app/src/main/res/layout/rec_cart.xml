@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView android:layout_width="match_parent"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:cardCornerRadius="10dp"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="match_parent"
-  android:layout_height="wrap_content"
-
-  android:orientation="horizontal"
+    android:background="@color/colorWhite"
+    android:orientation="horizontal"
     android:padding="10dp"
     >
 
@@ -172,8 +169,8 @@
     android:gravity="center"
     android:paddingEnd="16dp"
     android:paddingStart="16dp"
+      android:layout_marginStart="6dp"
     android:text="删除"
     android:textColor="#FFFFFFFF"
     android:textSize="14sp" />
 </LinearLayout>
-</androidx.cardview.widget.CardView>
