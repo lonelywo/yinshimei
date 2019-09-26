@@ -1,6 +1,7 @@
 package com.cuci.enticement.plate.mine.activity;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,6 +24,7 @@ import com.tencent.smtt.sdk.WebView;
 import java.io.IOException;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import okhttp3.ResponseBody;
 
 public class AchievementActivity extends BaseActivity {
@@ -42,18 +44,20 @@ public class AchievementActivity extends BaseActivity {
     ConstraintLayout con1;
     @BindView(R.id.text_kelingqu)
     TextView textKelingqu;
-    @BindView(R.id.img_weidabiao)
-    ImageView imgWeidabiao;
+
     @BindView(R.id.line2)
     View line2;
     @BindView(R.id.con_2)
     ConstraintLayout con2;
     @BindView(R.id.text_fafang)
     TextView textFafang;
-    @BindView(R.id.img_weidabiao1)
-    ImageView imgWeidabiao1;
+
     @BindView(R.id.con_3)
     ConstraintLayout con3;
+    @BindView(R.id.text_weidabiao1)
+    TextView textWeidabiao1;
+    @BindView(R.id.text_weidabiao2)
+    TextView textWeidabiao2;
     private MineViewModel mViewModel;
     private UserInfo mUserInfo;
 
@@ -76,6 +80,7 @@ public class AchievementActivity extends BaseActivity {
         });
 
     }
+
     private Observer<Status<ResponseBody>> mObserver = status -> {
 
         switch (status.status) {
@@ -91,6 +96,7 @@ public class AchievementActivity extends BaseActivity {
         }
 
     };
+
     private String getHtmlData(String bodyHTML) {
         String head = "<head>" +
                 "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=no\"> " +
@@ -98,20 +104,28 @@ public class AchievementActivity extends BaseActivity {
                 "</head>";
         return "<html>" + head + "<body>" + bodyHTML + "</body></html>";
     }
+
     private void opera(ResponseBody body) {
         try {
             String b = body.string();
             YeJiYueFanBean mYeJiYueFanBean = new Gson().fromJson(b, YeJiYueFanBean.class);
             YeJiYueFanBean.DataBean item = mYeJiYueFanBean.getData();
-            if (item == null ) {
+            if (item == null) {
                 return;
             }
             if (mYeJiYueFanBean.getCode() == 1) {
                 String htmlContent = mYeJiYueFanBean.getData().getExplain();
                 webGuize.loadDataWithBaseURL(null,
                         getHtmlData(htmlContent), "text/html", "utf-8", null);
-
-
+               if(!TextUtils.isEmpty(item.getAmount())){
+                   textWeidabiao.setText(item.getAmount());
+               }
+                if(!TextUtils.isEmpty(item.getGift_name())){
+                    textWeidabiao1.setText(item.getGift_name());
+                }
+                if(item.getStatus().equals(1)){
+                    textWeidabiao2.setText("已发放");
+                }
             } else {
                 FToast.error(mYeJiYueFanBean.getInfo());
             }
@@ -120,5 +134,6 @@ public class AchievementActivity extends BaseActivity {
             FToast.error("数据错误");
         }
     }
+
 
 }

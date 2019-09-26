@@ -48,17 +48,17 @@ public class ItemCartViewBinder extends ItemViewBinder<OrderGoods, ItemCartViewB
 
 
         if (item.isCheck()) {
-            holder.mImageCheck.setImageResource(R.drawable.icon_popup_checked);
+            holder.mImageCheck.setImageResource(R.drawable.xuanzhong);
         } else {
-            holder.mImageCheck.setImageResource(R.drawable.icon_popup_normal);
+            holder.mImageCheck.setImageResource(R.drawable.noxuanzhong);
         }
 
         holder.mImageCheck.setOnClickListener(v -> {
             item.setCheck(!item.isCheck());
             if (item.isCheck()) {
-                holder.mImageCheck.setImageResource(R.drawable.icon_popup_checked);
+                holder.mImageCheck.setImageResource(R.drawable.xuanzhong);
             } else {
-                holder.mImageCheck.setImageResource(R.drawable.icon_popup_normal);
+                holder.mImageCheck.setImageResource(R.drawable.noxuanzhong);
             }
             if (mOnItemClickListener != null) {
                 mOnItemClickListener.onCheckedChange();

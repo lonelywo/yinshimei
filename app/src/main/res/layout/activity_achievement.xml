@@ -99,15 +99,15 @@
             android:textColor="@color/hei"
             android:textSize="20sp"
             />
-        <ImageView
-            android:id="@+id/img_weidabiao"
+        <TextView
+            android:id="@+id/text_weidabiao1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="@+id/text_kelingqu"
            app:layout_constraintBottom_toBottomOf="@+id/text_kelingqu"
            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginRight="20dp"
-            android:src="@drawable/yejizhuangtai"
+            android:text="-"
             android:textColor="@color/orange"
             android:textSize="20sp"
 
@@ -140,15 +140,15 @@
             android:textColor="@color/hei"
             android:textSize="20sp"
             />
-        <ImageView
-            android:id="@+id/img_weidabiao1"
+        <TextView
+            android:id="@+id/text_weidabiao2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="@+id/text_fafang"
             app:layout_constraintBottom_toBottomOf="@+id/text_fafang"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginRight="20dp"
-            android:src="@drawable/yejizhuangtai"
+            android:text="-"
             android:textColor="@color/orange"
             android:textSize="20sp"
 

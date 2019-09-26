@@ -223,7 +223,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                         banner.start();
                         String htmlContent = content.getData().getContent();
                         homeDetailGoodsname.setText(content.getData().getTitle());
-                        text_jiage.setText(content.getData().getList().get(0).getPrice_selling());
+                        text_jiage.setText("¥"+content.getData().getList().get(0).getPrice_selling());
                         webDetails.loadDataWithBaseURL(null,
                                 getHtmlData(htmlContent), "text/html", "utf-8", null);
 

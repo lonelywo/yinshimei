@@ -40,15 +40,13 @@ public class ItemCommissionMXViewBinder extends ItemViewBinder<CommissionmxBean.
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull CommissionmxBean.DataBean.ListBean item) {
         if (item.getStatus() == 0) {
-            holder.textWenzi1.setText("提现失败");
+            holder.textMoney.setText("提现失败");
         } else if (item.getStatus() == 1) {
-            holder.textWenzi1.setText("代付款");
+            holder.textMoney.setText("审核中");
         } else if (item.getStatus() == 2) {
-            holder.textWenzi1.setText("付款成功");
+            holder.textMoney.setText("+"+item.getPay_price());
         }
         holder.textTime.setText(item.getCreate_at());
-        holder.textMoney.setText("+"+item.getPay_price());
-
 
 /*
         holder.textBiaoti.setText(item.getGoods_title());

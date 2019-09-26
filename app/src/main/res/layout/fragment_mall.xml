@@ -37,7 +37,9 @@
         android:paddingBottom="16dp"
         android:src="@drawable/buzhidao"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+
+        />
 
     <com.classic.common.MultipleStatusView
         android:id="@+id/status_view"

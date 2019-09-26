@@ -223,7 +223,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
         startDate.set(2013, 0, 23);
 
         Calendar endDate = Calendar.getInstance();
-        endDate.set(2019, 11, 28);
+        endDate.set(2030, 11, 28);
         //时间选择器
         pvTime = new TimePickerBuilder(this, new OnTimeSelectListener() {
             @Override
@@ -247,7 +247,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
                     @Override
                     public void customLayout(View v) {
                         final TextView tvSubmit = (TextView) v.findViewById(R.id.tv_finish);
-                        ImageView ivCancel = (ImageView) v.findViewById(R.id.iv_cancel);
+                        TextView ivCancel = (TextView) v.findViewById(R.id.iv_cancel);
                         tvSubmit.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {

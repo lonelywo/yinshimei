@@ -45,7 +45,7 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="10dp"
         android:textSize="12sp"
-        android:textColor="#E6BD1A"
+        android:textColor="@color/orange"
         android:paddingBottom="10dp"
         />
     </androidx.constraintlayout.widget.ConstraintLayout>
