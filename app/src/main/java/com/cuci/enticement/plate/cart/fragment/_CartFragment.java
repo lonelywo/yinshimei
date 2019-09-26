@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -41,7 +43,9 @@ import com.cuci.enticement.plate.common.eventbus.CartEvent;
 import com.cuci.enticement.plate.home.activity.ProdActivity;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.SharedPrefUtils;
+import com.cuci.enticement.utils.ViewUtils;
 import com.cuci.enticement.widget.CartItemDecoration;
+import com.cuci.enticement.widget.SlideRecyclerView;
 import com.google.gson.Gson;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -81,14 +85,15 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
     @BindView(R.id.rb_check_all)
     CheckBox mRbCheckAll;
     @BindView(R.id.recycler_view)
-    SwipeRecyclerView mRecyclerView;
+    SlideRecyclerView mRecyclerView;
     @BindView(R.id.refresh_layout)
     SmartRefreshLayout mRefreshLayout;
     @BindView(R.id.tv_total_money)
     TextView mTvTotal;
     @BindView(R.id.status_view)
     MultipleStatusView mStatusView;
-
+    @BindView(R.id.bottom)
+    ConstraintLayout bottomLyaout;
     private boolean mCanLoadMore = true;
     private CartViewModel mViewModel;
     private MultiTypeAdapter mAdapter;
@@ -101,7 +106,9 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
     @Override
     protected void onLazyLoad() {
         if(mUserInfo==null){
+            ViewUtils.hideView(bottomLyaout);
             mStatusView.showEmpty();
+
             return;
         }
         mRefreshLayout.autoRefresh();
@@ -136,19 +143,8 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
         mLocalBroadcastManager = LocalBroadcastManager.getInstance(mActivity);
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ACTION_REFRESH_DATA);
-        //mLocalBroadcastManager.registerReceiver(mReceiver, intentFilter);
 
 
-        // 侧滑删除，默认关闭。
-        mRecyclerView.setItemViewSwipeEnabled(true);
-        // 监听拖拽，更新UI。
-      //  mRecyclerView.setOnItemMoveListener(mItemMoveListener);
-
-      // 设置监听器。
-        mRecyclerView.setSwipeMenuCreator(mSwipeMenuCreator);
-
-        // 菜单点击监听。
-        mRecyclerView.setOnItemMenuClickListener(mItemMenuClickListener);
 
 
         mRecyclerView.setAdapter(mAdapter);
@@ -157,76 +153,6 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
     }
 
 
-    OnItemMenuClickListener mItemMenuClickListener = new OnItemMenuClickListener() {
-        @Override
-        public void onItemClick(SwipeMenuBridge menuBridge, int position) {
-            // 任何操作必须先关闭菜单，否则可能出现Item菜单打开状态错乱。
-            menuBridge.closeMenu();
-
-            // 左侧还是右侧菜单：
-            int direction = menuBridge.getDirection();
-            // 菜单在Item中的Position：
-            mPosition = menuBridge.getPosition();
-          //  mPosition = srcHolder.getAdapterPosition();
-            if(mCanChange) {
-
-                mCanChange=false;
-                OrderGoods bean = (OrderGoods) mAdapter.getItems().get(mPosition);
-                int cart_id = bean.getCart_id();
-                mViewModel.cartDelete(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),String.valueOf(cart_id) )
-                        .observe(mActivity, mDeleteObserver);
-            }
-
-        }
-    };
-
-    // 创建菜单：
-    SwipeMenuCreator mSwipeMenuCreator = new SwipeMenuCreator() {
-        @Override
-        public void onCreateMenu(SwipeMenu leftMenu, SwipeMenu rightMenu, int position) {
-            SwipeMenuItem deleteItem = new SwipeMenuItem(mActivity);
-            deleteItem.setText("删除");
-            deleteItem.setTextColor(getResources().getColor(R.color.colorWhite));
-            deleteItem.setBackground(R.drawable.shape_delete_bg);
-            // 各种文字和图标属性设置。
-            rightMenu.addMenuItem(deleteItem); // 在Item右侧添加一个菜单。
-
-          /*  SwipeMenuItem deleteItem = new SwipeMenuItem(mActivity);
-            // 各种文字和图标属性设置。
-            leftMenu.addMenuItem(deleteItem); // 在Item右侧添加一个菜单。*/
-
-            // 注意：哪边不想要菜单，那么不要添加即可。
-        }
-    };
-
-
-/*
-
-    OnItemMoveListener mItemMoveListener = new OnItemMoveListener() {
-        @Override
-        public boolean onItemMove(RecyclerView.ViewHolder srcHolder, RecyclerView.ViewHolder targetHolder) {
-
-            return true;
-        }
-
-        @Override
-        public void onItemDismiss(RecyclerView.ViewHolder srcHolder) {
-            // 此方法在Item在侧滑删除时被调用。
-
-            // 从数据源移除该Item对应的数据，并刷新Adapter。
-             mPosition = srcHolder.getAdapterPosition();
-            if(mCanChange) {
-
-                mCanChange=false;
-                OrderGoods bean = (OrderGoods) mAdapter.getItems().get(mPosition);
-                int cart_id = bean.getCart_id();
-                mViewModel.cartDelete(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),String.valueOf(cart_id) )
-                        .observe(mActivity, mDeleteObserver);
-            }
-
-        }
-    };
-*/
 
 
 
@@ -322,27 +248,33 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
                 case Status.SUCCESS:
 
                     mStatusView.showContent();
+
+                    mRbCheckAll.setChecked(false);
+
                     Base<CartDataBean> content = status.content;
                     if (content == null) {
 
                         if (status.loadType == Status.LOAD_MORE) {
                             mRefreshLayout.finishLoadMore();
                         } else {
+                            ViewUtils.hideView(bottomLyaout);
                             mStatusView.showEmpty();
                             mRefreshLayout.finishRefresh();
                         }
                         return;
                     }
+
                     CartDataBean data = content.data;
-                    //  String s = new Gson().toJson(data);
+                    String s = new Gson().toJson(data);
+                    Log.d("east", "onChanged: "+s);
                     if (data.getList() == null||data.getList().size()==0) {
 
 
                         if (status.loadType == Status.LOAD_MORE) {
                             mRefreshLayout.finishLoadMore();
                         } else {
-
-                                mStatusView.showEmpty();
+                            ViewUtils.hideView(bottomLyaout);
+                            mStatusView.showEmpty();
 
                             mRefreshLayout.finishRefresh();
                         }
@@ -351,7 +283,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
                     mStatusView.showContent();
 
-
+                    ViewUtils.showView(bottomLyaout);
                     mPage=data.getPage().getCurrent()+1;
                     List<OrderGoods> list = data.getList();
                    if (status.content.code == 1) {
@@ -396,13 +328,22 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
 
     private void checkAll(boolean checkAll) {
-        if(mItems.size()==0){
+      if(isItemCheck&&!checkAll){
+            isItemCheck=false;
             return;
         }
+        isItemCheck=false;//不能删
+        if(mItems.size()==0){
+
+            return;
+        }
+        //某次操作 item true    全选状态
         for (int i = 0; i < mItems.size(); i++) {
+
             OrderGoods item = (OrderGoods) mItems.get(i);
             item.setCheck(checkAll);
         }
+
         mAdapter.notifyDataSetChanged();
         if (checkAll) {
             mTvTotal.setText(String.format(Locale.CHINA, "%s", getCheckedsMoeny()));
@@ -437,65 +378,88 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
         return totalF;
     }
 
-    private boolean mCanChange=true;
-    private long mGoodsId;
-    private int mNum;
+
+    private boolean isItemCheck;
     @Override
-    public void onAddClick(OrderGoods bean,int position) {
-        //点击一次加1一次
-        if(mCanChange){
-            mPosition=position;
-            mNum= bean.getGoods_num()+1;
-            String goods_id = String.valueOf(bean.getGoods_id());
-            String goods_spec = bean.getGoods_spec();
-            mGoodsId=bean.getGoods_id();
-            mCanChange=false;
-            mViewModel.cartChange(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),
-                    goods_id,goods_spec,String.valueOf(mNum)).observe(this, mChangeObserver);
+    public void onCheckedChange(int position) {
 
-        }
-    }
-
-
-    @Override
-    public void onMinusClick(OrderGoods bean,int position) {
-        if(bean.getGoods_num()==1){
-            FToast.warning("不能再少了");
-            return;
-        }
-        if(mCanChange) {
-            mPosition=position;
-            mNum = bean.getGoods_num() - 1;
-
-            String goods_id = String.valueOf(bean.getGoods_id());
-            String goods_spec = bean.getGoods_spec();
-            mGoodsId=bean.getGoods_id();
-            mCanChange=false;
-            mViewModel.cartChange(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), goods_id,
-                    goods_spec, String.valueOf(mNum)).observe(this, mChangeObserver);
-        }
-
-    }
-
-
-
-
-    @Override
-    public void onCheckedChange() {
         int checkSize = getCheckeds().size();
         int allSize = mItems.size();
 
+
         if (checkSize == allSize) {
+            isItemCheck=false;
             mRbCheckAll.setChecked(true);
         }else {
+
+            isItemCheck=true;
+
             mRbCheckAll.setChecked(false);
         }
 
         mTvTotal.setText(String.format(Locale.CHINA, "%s", getCheckedsMoeny()));
     }
 
+
+    private boolean mCanChange=true;
+    private long mGoodsId;
+
     @Override
-    public void onDelete(OrderGoods bean) {
+    public void onAddClick(OrderGoods bean,int position) {
+        //点击一次加1一次
+        if(mCanChange){
+
+
+            String goods_id = String.valueOf(bean.getGoods_id());
+            String goods_spec = bean.getGoods_spec();
+            mGoodsId=bean.getGoods_id();
+            mCanChange=false;
+
+            mAdapter.notifyItemChanged(position);
+            mTvTotal.setText(String.format(Locale.CHINA, "%s", getCheckedsMoeny()));
+            mViewModel.cartChange(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),
+                    goods_id,goods_spec,String.valueOf(bean.getGoods_num())).observe(this, mChangeObserver);
+           Log.d("east", "onAddClick: "+bean.getGoods_num());
+        }
+    }
+
+
+    @Override
+    public void onMinusClick(OrderGoods bean,int position) {
+
+        if(mCanChange) {
+
+
+
+            String goods_id = String.valueOf(bean.getGoods_id());
+            String goods_spec = bean.getGoods_spec();
+            mGoodsId=bean.getGoods_id();
+
+            mCanChange=false;
+
+            mAdapter.notifyItemChanged(position);
+
+            mTvTotal.setText(String.format(Locale.CHINA, "%s", getCheckedsMoeny()));
+            mViewModel.cartChange(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), goods_id,
+                    goods_spec, String.valueOf(bean.getGoods_num())).observe(this, mChangeObserver);
+          Log.d("east", "onMinusClick: "+bean.getGoods_num());
+        }
+
+    }
+
+
+
+
+
+
+    @Override
+    public void onDelete(OrderGoods bean,int position) {
+            mPosition=position;
+            int cart_id = bean.getCart_id();
+
+            mTvTotal.setText(String.format(Locale.CHINA, "%s", getCheckedsMoeny()));
+            mViewModel.cartDelete(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),String.valueOf(cart_id) )
+                    .observe(mActivity, mDeleteObserver);
 
     }
 
@@ -510,8 +474,8 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
                 case Status.SUCCESS:
                     mStatusView.showContent();
+                    mRecyclerView.closeMenu();
                     mCanChange=true;
-
                     ResponseBody content = status.content;
                     try {
                         String result = content.string();
@@ -521,7 +485,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
                             mAdapter.notifyItemRemoved(mPosition);
                             FToast.success(cartDelete.info);
                             if(mAdapter.getItemCount()==0){
-
+                                ViewUtils.hideView(bottomLyaout);
                                 mStatusView.showEmpty();
                             }
                         }else {
@@ -532,7 +496,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
                     }
                     break;
                 case Status.ERROR:
-
+                    mRecyclerView.closeMenu();
                     FToast.error(status.message);
                     mCanChange = true;
                     break;
@@ -565,11 +529,6 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
                         CartChange bean = new Gson().fromJson(result, CartChange.class);
 
                         if (bean.getCode() == 1) {
-                            OrderGoods item = (OrderGoods) mItems.get(mPosition);
-                            item.setGoods_num(mNum);
-
-
-                            mAdapter.notifyItemChanged(mPosition,item);
 
 
 
@@ -616,7 +575,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
             }
 
         }
-        String s = sb.toString();
+      //  String s = sb.toString();
        mViewModel.commitOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), sb.toString(),"")
                .observe(this, mCommitObserver);
 

@@ -48,7 +48,7 @@
 
       >
 
-        <com.yanzhenjie.recyclerview.SwipeRecyclerView
+        <com.cuci.enticement.widget.SlideRecyclerView
           android:id="@+id/recycler_view"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
@@ -69,6 +69,7 @@
       android:layout_width="0dp"
       android:layout_height="48dp"
       android:background="@color/hei"
+      android:visibility="gone"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent">
@@ -129,22 +130,7 @@
         app:layout_constraintEnd_toStartOf="@+id/tv_total_money"
         app:layout_constraintTop_toTopOf="parent"/>
 
-      <TextView
-        android:id="@+id/tv_delete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="12dp"
-        android:background="@drawable/shape_popup_button_bg"
-        android:paddingStart="12dp"
-        android:paddingTop="4dp"
-        android:paddingEnd="12dp"
-        android:paddingBottom="4dp"
-        android:text="删除"
-        android:textColor="#999999"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/tv1"
-        app:layout_constraintTop_toTopOf="parent"/>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
