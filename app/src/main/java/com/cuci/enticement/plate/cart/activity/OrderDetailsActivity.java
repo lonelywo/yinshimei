@@ -111,8 +111,8 @@ public class OrderDetailsActivity extends BaseActivity {
         if (intent == null) {
             return;
         }
-        mInfo = intent.getParcelableExtra("intentInfo");
-     //   List<OrderGoods> items = mInfo.getList();
+        mInfo = (AllOrderList.DataBean.ListBeanX) intent.getSerializableExtra("intentInfo");
+           List<OrderGoods> items = mInfo.getList();
 
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
         if (mUserInfo == null) {
@@ -123,6 +123,7 @@ public class OrderDetailsActivity extends BaseActivity {
 
         mAdapter = new MultiTypeAdapter();
         mItems = new Items();
+        mItems.addAll(items);
         mAdapter.setItems(mItems);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -137,8 +138,7 @@ public class OrderDetailsActivity extends BaseActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         mRecyclerView.setAdapter(mAdapter);
-        mItems.clear();
-     //   mItems.addAll(items);
+
 
 
 

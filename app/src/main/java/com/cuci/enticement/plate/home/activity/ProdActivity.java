@@ -185,6 +185,12 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                 }
             }
         });
+
+
+        //进入页面先请求小脚本数字
+        CartViewModel viewModel = ViewModelProviders.of(ProdActivity.this).get(CartViewModel.class);
+        viewModel.cartNum(mUserInfo.getToken(), String.valueOf(mUserInfo.getId())).observe(ProdActivity.this, mNumObserver);
+
     }
 
     private String getHtmlData(String bodyHTML) {
@@ -418,6 +424,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                             //调用接口改变小车上的数量
                             CartViewModel viewModel = ViewModelProviders.of(ProdActivity.this).get(CartViewModel.class);
                             viewModel.cartNum(mUserInfo.getToken(), String.valueOf(mUserInfo.getId())).observe(ProdActivity.this, mNumObserver);
+                            //刷新购物车列表
                             EventBus.getDefault().postSticky(new CartEvent(CartEvent.REFRESH_CART_LIST));
                            /* LocalBroadcastManager broadcastManager = getInstance(ProdActivity.this);
                             broadcastManager.sendBroadcast(new Intent(ACTION_REFRESH_DATA));*/
@@ -460,10 +467,15 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
 
                         CartNum numResult = new Gson().fromJson(result, CartNum.class);
                         if (numResult.getCode() == 1) {
-                            ViewUtils.showView(cartNumTv);
-                            cartNumTv.setText(String.valueOf(numResult.getData().getC_num()));
+                            int c_num = numResult.getData().getC_num();
+                            if(c_num==0){
+                                ViewUtils.hideView(cartNumTv);
+                            }else {
+                                ViewUtils.showView(cartNumTv);
+                                cartNumTv.setText(String.valueOf(numResult.getData().getC_num()));
+                            }
+
                         } else {
-                            ViewUtils.hideView(cartNumTv);
                             FToast.warning(numResult.getInfo());
                         }
 

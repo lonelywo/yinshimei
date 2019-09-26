@@ -100,6 +100,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
     private Date d;
     private TimePickerView pvTime;
     private FrameLayout mFrameLayout;
+    private  String formatStart;
     @Override
     public int getLayoutId() {
         return R.layout.activity_commisson;
@@ -134,7 +135,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
         d = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
 
-        String formatStart = sdf.format(a);
+         formatStart = sdf.format(a);
         format = sdf.format(d);
         textRqi.setText(format);
         String nian = format.split("-")[0];
@@ -234,6 +235,14 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
                 textRqi.setText(getTime(date));
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
                 format = sdf.format(d);
+
+                if(format.equals(formatStart)){
+                    textXiageyue.setEnabled(false);
+                }else {
+                    textXiageyue.setEnabled(true);
+                }
+
+
                 pvTime.dismiss();
                 mViewModel.hqcommissiontj(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"2",format,Status.LOAD_REFRESH)
                         .observe(CommissionActivity.this, mObserver1);
