@@ -323,9 +323,9 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
             CommissionjlBean mCommissionjlBean = new Gson().fromJson(b, CommissionjlBean.class);
             List<CommissionjlBean.DataBean.ListBean> item = mCommissionjlBean.getData().getList();
             if (item == null || item.size() == 0) {
-                statusView.showEmpty();
-                if (status.loadType == Status.LOAD_REFRESH) {
 
+                if (status.loadType == Status.LOAD_REFRESH) {
+                    statusView.showEmpty();
                     refreshLayout.finishRefresh();
                 } else {
 
@@ -353,7 +353,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
 
                     refreshLayout.finishRefresh();
                 }
-                FToast.error(mCommissionjlBean.getInfo());
+                FToast.warning(mCommissionjlBean.getInfo());
             }
         } catch (IOException e) {
             e.printStackTrace();

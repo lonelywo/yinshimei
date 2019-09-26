@@ -211,7 +211,7 @@ public class MyTeamActivity extends BaseActivity implements OnRefreshLoadMoreLis
 
                     refreshLayout.finishRefresh();
                 }
-                FToast.error(mMyTeamlbBean.getInfo());
+                FToast.warning(mMyTeamlbBean.getInfo());
 
             }
         } catch (IOException e) {

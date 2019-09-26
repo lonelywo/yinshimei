@@ -12,6 +12,15 @@
        app:layout_constraintStart_toStartOf="parent"
        android:src="@drawable/wuliutubiao_huang"
        />
+    <View
+        android:layout_width="0.5dp"
+        android:layout_height="0dp"
+        android:background="@drawable/shape_login_edit_bottom_line"
+        app:layout_constraintTop_toBottomOf="@+id/img_wuliutubiao"
+        app:layout_constraintStart_toStartOf="@+id/img_wuliutubiao"
+        app:layout_constraintEnd_toEndOf="@+id/img_wuliutubiao"
+        app:layout_constraintBottom_toBottomOf="@+id/text_time"
+        />
     <TextView
         android:id="@+id/text_qianshouxinxi"
         android:layout_width="wrap_content"

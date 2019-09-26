@@ -68,7 +68,7 @@ public interface OrderApi {
      */
     @FormUrlEncoded
     @POST("/store/api.member.order/total")
-    Call<ExpressInfo> getExpressInfo(@Field("express_no") String num,
+    Call<ResponseBody> getExpressInfo(@Field("express_no") String num,
                                  @Field("express_code") String code,
                                      @Field("sign") String signs);
 

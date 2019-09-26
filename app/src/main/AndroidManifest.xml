@@ -32,6 +32,7 @@
         <activity android:name=".plate.mine.activity.RecAddressActivity"/>
         <activity android:name=".plate.mine.activity.MyTeamTwoActivity"/>
         <activity android:name=".plate.mall.activity.YuLanActivity"/>
+        <activity android:name=".plate.cart.activity.LogisticsActivity"/>
         <activity
             android:name=".plate.common.MainActivity"
             android:launchMode="singleTask"
