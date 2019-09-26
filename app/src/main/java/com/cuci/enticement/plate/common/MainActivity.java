@@ -16,6 +16,7 @@ import com.cuci.enticement.R;
 import com.cuci.enticement.BasicApp;
 
 import com.cuci.enticement.bean.Base;
+import com.cuci.enticement.bean.MyTeamslBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.Version;
 import com.cuci.enticement.plate.cart.fragment._CartFragment;
@@ -30,9 +31,11 @@ import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.widget.BottomBarView;
 import com.cuci.enticement.widget.FitSystemWindowViewPager;
+import com.google.gson.Gson;
 import com.lxj.xpopup.XPopup;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import java.util.List;
@@ -50,6 +53,7 @@ import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import okhttp3.ResponseBody;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
@@ -140,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //检测APP更新
-     //   mViewModel.getVersion().observe(this, mUpdateObserver);
+        mViewModel.getVersion("2").observe(this, mUpdateObserver);
 
 
 
@@ -275,17 +279,38 @@ public class MainActivity extends AppCompatActivity {
         return item.getText().toString();
     }
 
-    private Observer<Status<Base<Version>>> mUpdateObserver = baseStatus -> {
-        if (baseStatus.status == Status.SUCCESS) {
-            Base<Version> base = baseStatus.content;
-            if (base == null) return;
-            if (base.code == 1) {
-                operation(base.data);
-            } else {
-                FToast.error(base.msg);
-            }
+    private Observer<Status<ResponseBody>> mUpdateObserver = status -> {
+
+        switch (status.status) {
+            case Status.SUCCESS:
+                ResponseBody body = status.content;
+                opera( body);
+                break;
+            case Status.ERROR:
+
+                FToast.error("网络错误");
+                break;
+            case Status.LOADING:
+
+                break;
         }
+
+
     };
+    private void opera(ResponseBody body) {
+        try {
+            String b = body.string();
+            Version mVersion = new Gson().fromJson(b, Version.class);
+            if (mVersion.getCode() == 1) {
+                operation(mVersion);
+            } else {
+                FToast.error(mVersion.getInfo());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            FToast.error("数据错误");
+        }
+    }
 
     private void operation(Version version) {
 
@@ -294,13 +319,13 @@ public class MainActivity extends AppCompatActivity {
 
         int ignoreVersion = SharedPrefUtils.getIgnoreVersion();
         int localVersion = AppUtils.getVersionCode(this);
-        int serverVersion = mData.getVersion();
+        int serverVersion = mData.getData().getVersionName();
 
         if (serverVersion == ignoreVersion) {
             return;
         }
 
-       if (serverVersion > localVersion) {
+       if (serverVersion == localVersion) {
             new XPopup.Builder(this)
                     .dismissOnTouchOutside(false)
                     .dismissOnBackPressed(false)

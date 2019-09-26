@@ -3,6 +3,8 @@ package com.cuci.enticement.bean;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -114,7 +116,7 @@ public class AllOrderList implements Serializable {
             }
         }
 
-        public static class ListBeanX implements Parcelable {
+        public static class ListBeanX implements Serializable {
             /**
              * id : 40746
              * mid : 18281
@@ -218,109 +220,9 @@ public class AllOrderList implements Serializable {
 
             }
 
-            protected ListBeanX(Parcel in) {
-                id = in.readInt();
-                mid = in.readInt();
-                type = in.readInt();
-                order_no = in.readLong();
-                from_mid = in.readInt();
-                price_total = in.readString();
-                price_goods = in.readString();
-                price_express = in.readString();
-                price_service = in.readString();
-                express_rule_desc = in.readString();
-                express_rule_type = in.readString();
-                express_rule_number = in.readInt();
-                pay_state = in.readInt();
-                pay_type = in.readString();
-                pay_price = in.readString();
-                pay_no = in.readString();
-                cancel_state = in.readInt();
-                cancel_desc = in.readString();
-                refund_state = in.readInt();
-                refund_no = in.readString();
-                refund_price = in.readString();
-                refund_desc = in.readString();
-                api_order_no = in.readString();
-                api_tracking_no = in.readString();
-                express_state = in.readInt();
-                express_company_code = in.readString();
-                express_company_title = in.readString();
-                express_send_no = in.readString();
-                express_address_id = in.readInt();
-                express_name = in.readString();
-                express_phone = in.readString();
-                express_province = in.readString();
-                express_city = in.readString();
-                express_area = in.readString();
-                express_address = in.readString();
-                express_desc = in.readString();
-                status = in.readInt();
-                is_deleted = in.readInt();
-                create_at = in.readString();
-                goods_count = in.readInt();
-            }
 
-            @Override
-            public void writeToParcel(Parcel dest, int flags) {
-                dest.writeInt(id);
-                dest.writeInt(mid);
-                dest.writeInt(type);
-                dest.writeLong(order_no);
-                dest.writeInt(from_mid);
-                dest.writeString(price_total);
-                dest.writeString(price_goods);
-                dest.writeString(price_express);
-                dest.writeString(price_service);
-                dest.writeString(express_rule_desc);
-                dest.writeString(express_rule_type);
-                dest.writeInt(express_rule_number);
-                dest.writeInt(pay_state);
-                dest.writeString(pay_type);
-                dest.writeString(pay_price);
-                dest.writeString(pay_no);
-                dest.writeInt(cancel_state);
-                dest.writeString(cancel_desc);
-                dest.writeInt(refund_state);
-                dest.writeString(refund_no);
-                dest.writeString(refund_price);
-                dest.writeString(refund_desc);
-                dest.writeString(api_order_no);
-                dest.writeString(api_tracking_no);
-                dest.writeInt(express_state);
-                dest.writeString(express_company_code);
-                dest.writeString(express_company_title);
-                dest.writeString(express_send_no);
-                dest.writeInt(express_address_id);
-                dest.writeString(express_name);
-                dest.writeString(express_phone);
-                dest.writeString(express_province);
-                dest.writeString(express_city);
-                dest.writeString(express_area);
-                dest.writeString(express_address);
-                dest.writeString(express_desc);
-                dest.writeInt(status);
-                dest.writeInt(is_deleted);
-                dest.writeString(create_at);
-                dest.writeInt(goods_count);
-            }
 
-            @Override
-            public int describeContents() {
-                return 0;
-            }
 
-            public static final Creator<ListBeanX> CREATOR = new Creator<ListBeanX>() {
-                @Override
-                public ListBeanX createFromParcel(Parcel in) {
-                    return new ListBeanX(in);
-                }
-
-                @Override
-                public ListBeanX[] newArray(int size) {
-                    return new ListBeanX[size];
-                }
-            };
 
             public int getId() {
                 return id;

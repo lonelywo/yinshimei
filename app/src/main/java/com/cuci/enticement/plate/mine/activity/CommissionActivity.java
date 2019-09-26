@@ -100,6 +100,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
     private Date d;
     private TimePickerView pvTime;
     private FrameLayout mFrameLayout;
+    private  String formatStart;
     @Override
     public int getLayoutId() {
         return R.layout.activity_commisson;
@@ -134,7 +135,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
         d = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
 
-        String formatStart = sdf.format(a);
+         formatStart = sdf.format(a);
         format = sdf.format(d);
         textRqi.setText(format);
         String nian = format.split("-")[0];
@@ -223,7 +224,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
         startDate.set(2013, 0, 23);
 
         Calendar endDate = Calendar.getInstance();
-        endDate.set(2019, 11, 28);
+        endDate.set(2030, 11, 28);
         //时间选择器
         pvTime = new TimePickerBuilder(this, new OnTimeSelectListener() {
             @Override
@@ -234,6 +235,14 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
                 textRqi.setText(getTime(date));
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
                 format = sdf.format(d);
+
+                if(format.equals(formatStart)){
+                    textXiageyue.setEnabled(false);
+                }else {
+                    textXiageyue.setEnabled(true);
+                }
+
+
                 pvTime.dismiss();
                 mViewModel.hqcommissiontj(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"2",format,Status.LOAD_REFRESH)
                         .observe(CommissionActivity.this, mObserver1);
@@ -247,7 +256,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
                     @Override
                     public void customLayout(View v) {
                         final TextView tvSubmit = (TextView) v.findViewById(R.id.tv_finish);
-                        ImageView ivCancel = (ImageView) v.findViewById(R.id.iv_cancel);
+                        TextView ivCancel = (TextView) v.findViewById(R.id.iv_cancel);
                         tvSubmit.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -323,9 +332,9 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
             CommissionjlBean mCommissionjlBean = new Gson().fromJson(b, CommissionjlBean.class);
             List<CommissionjlBean.DataBean.ListBean> item = mCommissionjlBean.getData().getList();
             if (item == null || item.size() == 0) {
-                statusView.showEmpty();
-                if (status.loadType == Status.LOAD_REFRESH) {
 
+                if (status.loadType == Status.LOAD_REFRESH) {
+                    statusView.showEmpty();
                     refreshLayout.finishRefresh();
                 } else {
 
@@ -353,7 +362,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
 
                     refreshLayout.finishRefresh();
                 }
-                FToast.error(mCommissionjlBean.getInfo());
+                FToast.warning(mCommissionjlBean.getInfo());
             }
         } catch (IOException e) {
             e.printStackTrace();

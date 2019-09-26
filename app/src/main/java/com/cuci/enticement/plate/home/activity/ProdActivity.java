@@ -185,6 +185,12 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                 }
             }
         });
+
+
+        //进入页面先请求小脚本数字
+        CartViewModel viewModel = ViewModelProviders.of(ProdActivity.this).get(CartViewModel.class);
+        viewModel.cartNum(mUserInfo.getToken(), String.valueOf(mUserInfo.getId())).observe(ProdActivity.this, mNumObserver);
+
     }
 
 
@@ -225,7 +231,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                         banner.start();
                         String htmlContent = content.getData().getContent();
                         homeDetailGoodsname.setText(content.getData().getTitle());
-                        text_jiage.setText(content.getData().getList().get(0).getPrice_selling());
+                        text_jiage.setText("¥"+content.getData().getList().get(0).getPrice_selling());
                         webDetails.loadDataWithBaseURL(null,
                                 getHtmlData(htmlContent), "text/html", "utf-8", null);
 
@@ -420,6 +426,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                             //调用接口改变小车上的数量
                             CartViewModel viewModel = ViewModelProviders.of(ProdActivity.this).get(CartViewModel.class);
                             viewModel.cartNum(mUserInfo.getToken(), String.valueOf(mUserInfo.getId())).observe(ProdActivity.this, mNumObserver);
+                            //刷新购物车列表
                             EventBus.getDefault().postSticky(new CartEvent(CartEvent.REFRESH_CART_LIST));
                            /* LocalBroadcastManager broadcastManager = getInstance(ProdActivity.this);
                             broadcastManager.sendBroadcast(new Intent(ACTION_REFRESH_DATA));*/
@@ -462,10 +469,15 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
 
                         CartNum numResult = new Gson().fromJson(result, CartNum.class);
                         if (numResult.getCode() == 1) {
-                            ViewUtils.showView(cartNumTv);
-                            cartNumTv.setText(String.valueOf(numResult.getData().getC_num()));
+                            int c_num = numResult.getData().getC_num();
+                            if(c_num==0){
+                                ViewUtils.hideView(cartNumTv);
+                            }else {
+                                ViewUtils.showView(cartNumTv);
+                                cartNumTv.setText(String.valueOf(numResult.getData().getC_num()));
+                            }
+
                         } else {
-                            ViewUtils.hideView(cartNumTv);
                             FToast.warning(numResult.getInfo());
                         }
 

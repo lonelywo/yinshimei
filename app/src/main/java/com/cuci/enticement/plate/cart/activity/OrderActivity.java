@@ -33,6 +33,7 @@ import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.bean.WxPayBean;
 import com.cuci.enticement.bean.ZFBBean;
+import com.cuci.enticement.plate.common.eventbus.CartEvent;
 import com.cuci.enticement.plate.mine.activity.RecAddressActivity;
 import com.cuci.enticement.plate.mine.adapter.ItemProdViewBinder;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
@@ -58,6 +59,9 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.greenrobot.eventbus.EventBus;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import me.drakeet.multitype.Items;
@@ -96,7 +100,7 @@ public class OrderActivity extends BaseActivity {
     private OrderViewModel mViewModel;
     private UserInfo mUserInfo;
     private String mAddressId="";
-    private int mPayType=1;
+    private int mPayType=2;
     private AllOrderList.DataBean.ListBeanX   mInfo;
     private LinearLayoutManager mLayoutManager;
     private MultiTypeAdapter mAdapter;
@@ -148,7 +152,7 @@ public class OrderActivity extends BaseActivity {
             return;
         }
 
-        mInfo = intent.getParcelableExtra("intentInfo");
+        mInfo = (AllOrderList.DataBean.ListBeanX) intent.getSerializableExtra("intentInfo");
 
         List<OrderGoods> items = mInfo.getList();
 
@@ -181,7 +185,7 @@ public class OrderActivity extends BaseActivity {
 
         mAdapter = new MultiTypeAdapter();
         mItems = new Items();
-//        mItems.addAll(items);
+           mItems.addAll(items);
         mAdapter.setItems(mItems);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
@@ -375,10 +379,10 @@ public class OrderActivity extends BaseActivity {
 
                         //todo 发送广播去刷新购物车列表  和  个人中心状态
                         //刷新购物车列表
-                        Intent intent1 = new Intent(ACTION_REFRESH_DATA);
-                        LocalBroadcastManager.getInstance(this).sendBroadcast(intent1);
+                        EventBus.getDefault().postSticky(new CartEvent(CartEvent.REFRESH_CART_LIST));
+
                         //刷新个人中心状态
-                        Intent intent2 = new Intent(_MineFragment.ACTION_LOGIN_SUCCEED);
+                        Intent intent2 = new Intent(_MineFragment.ACTION_REFRESH_STATUS);
 
                         LocalBroadcastManager.getInstance(this).sendBroadcast(intent2);
 

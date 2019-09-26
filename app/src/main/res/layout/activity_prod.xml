@@ -139,7 +139,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/con_toubu"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="65dp"
     app:layout_constraintTop_toTopOf="parent"
     android:background="@color/colorWhite"
     >
@@ -153,22 +153,20 @@
     android:gravity="center"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="@id/image_back"
-
+    app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintBottom_toBottomOf="parent"
     />
   <ImageView
     android:id="@+id/image_back"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
-    android:paddingLeft="10dp"
-    android:paddingTop="16dp"
-    android:paddingRight="20dp"
-    android:paddingBottom="16dp"
+    android:padding="@dimen/dp_10"
     android:src="@drawable/icon_back"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="@+id/image_top"
-    app:layout_constraintBottom_toBottomOf="@+id/image_top"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    android:layout_marginLeft="20dp"
     />
 </androidx.constraintlayout.widget.ConstraintLayout>
   <ImageView

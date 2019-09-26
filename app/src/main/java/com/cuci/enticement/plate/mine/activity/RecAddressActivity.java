@@ -133,7 +133,7 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
         mRecyclerView.setAdapter(mAdapter);
 
         CustomRefreshHeader header = new CustomRefreshHeader(this);
-        mRefreshLayout.setRefreshHeader(header);
+       // mRefreshLayout.setRefreshHeader(header);
         mRefreshLayout.setEnableFooterFollowWhenNoMoreData(true);
         mRefreshLayout.setOnRefreshLoadMoreListener(this);
 
@@ -214,7 +214,7 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
                         } else {
                             mRefreshLayout.finishRefresh();
                         }
-                        FToast.error(data.getInfo());
+                        FToast.warning(data.getInfo());
                     }
                     break;
                 case Status.ERROR:

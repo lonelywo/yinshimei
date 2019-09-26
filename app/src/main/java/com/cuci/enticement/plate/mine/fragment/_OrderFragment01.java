@@ -281,7 +281,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
         if(mCanLoadMore=true){
             mCanLoadMore = false;
-            mViewModel.getOrderList(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"",mtype,"",Status.LOAD_MORE).observe(this, mObserver);
+            mViewModel.getOrderList(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),String.valueOf(page),mtype,"",Status.LOAD_MORE).observe(this, mObserver);
 
         }else {
             mRefreshLayout.finishLoadMore();
@@ -374,7 +374,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
         }
         AllOrderList.DataBean.ListBeanX cartIntentInfo = mDatas.get(cur);
 
-        Intent intent = new Intent(mActivity, OrderActivity.class);
+        Intent intent = new Intent(mActivity, OrderDetailsActivity.class);
         intent.putExtra("intentInfo",cartIntentInfo);
         startActivity(intent);
 

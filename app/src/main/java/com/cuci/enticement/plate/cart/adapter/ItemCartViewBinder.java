@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cuci.enticement.R;
 import com.cuci.enticement.bean.CartDataBean;
 import com.cuci.enticement.bean.OrderGoods;
+import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.ImageLoader;
 
 import butterknife.BindView;
@@ -26,8 +27,8 @@ public class ItemCartViewBinder extends ItemViewBinder<OrderGoods, ItemCartViewB
         void onAddClick(OrderGoods bean,int position);
 
         void onMinusClick(OrderGoods bean,int position);
-        void onCheckedChange();
-        void onDelete(OrderGoods bean);
+        void onCheckedChange(int positon);
+        void onDelete(OrderGoods bean,int position);
     }
 
     private ItemCartViewBinder.OnItemClickListener mOnItemClickListener;
@@ -45,51 +46,70 @@ public class ItemCartViewBinder extends ItemViewBinder<OrderGoods, ItemCartViewB
 
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull OrderGoods item) {
+        int position = holder.getAdapterPosition();
 
-
-        if (item.isCheck()) {
-            holder.mImageCheck.setImageResource(R.drawable.icon_popup_checked);
+       if (item.isCheck()) {
+            holder.mImageCheck.setImageResource(R.drawable.xuanzhong);
         } else {
-            holder.mImageCheck.setImageResource(R.drawable.icon_popup_normal);
+            holder.mImageCheck.setImageResource(R.drawable.noxuanzhong);
         }
 
         holder.mImageCheck.setOnClickListener(v -> {
             item.setCheck(!item.isCheck());
             if (item.isCheck()) {
-                holder.mImageCheck.setImageResource(R.drawable.icon_popup_checked);
+                holder.mImageCheck.setImageResource(R.drawable.xuanzhong);
             } else {
-                holder.mImageCheck.setImageResource(R.drawable.icon_popup_normal);
+                holder.mImageCheck.setImageResource(R.drawable.noxuanzhong);
             }
             if (mOnItemClickListener != null) {
-                mOnItemClickListener.onCheckedChange();
+                mOnItemClickListener.onCheckedChange(position);
             }
         });
 
-        holder.textBiaoti.setOnClickListener(v -> {
-            if (mOnItemClickListener != null) {
-                mOnItemClickListener.onDelete(item);
-            }
-        });
+
         holder.textBiaoti.setText(item.getGoods_title());
         holder.textNeirong.setText(item.getGoods_spec());
         holder.textJiage.setText(item.getGoods_price_selling());
+
         holder.tvNum.setText(String.valueOf(item.getGoods_num()));
         ImageLoader.loadPlaceholder(item.getGoods_logo(),holder.imgTuxiang);
 
 
-        int position = holder.getAdapterPosition();
+
         holder.ivJia.setOnClickListener(v -> {
+            int num= item.getGoods_num()+1;
+            item.setGoods_num(num);
             if(mOnItemClickListener!=null){
                 mOnItemClickListener.onAddClick(item,position);
             }
         });
 
         holder.ivJian.setOnClickListener(v -> {
+            if(item.getGoods_num()<=1){
+                FToast.warning("不能再少了");
+                return;
+            }
+            int num = item.getGoods_num() - 1;
+            item.setGoods_num(num);
             if(mOnItemClickListener!=null){
                 mOnItemClickListener.onMinusClick(item,position);
             }
         });
 
+
+
+        holder.itemView.setOnClickListener(v -> {
+                //这里不用写，但是必须加这个监听事件才能滑动
+        });
+
+       if (!holder.tvDelete.hasOnClickListeners()) {
+            holder.tvDelete.setOnClickListener(v -> {
+                if (mOnItemClickListener != null) {
+                    mOnItemClickListener.onDelete(item, position);
+                }
+
+            });
+        }
 
     }
 
@@ -97,7 +117,7 @@ public class ItemCartViewBinder extends ItemViewBinder<OrderGoods, ItemCartViewB
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.img_tuxiang)
+       @BindView(R.id.img_tuxiang)
         ImageView imgTuxiang;
 
         @BindView(R.id.image_check)
@@ -108,13 +128,15 @@ public class ItemCartViewBinder extends ItemViewBinder<OrderGoods, ItemCartViewB
         TextView textNeirong;
         @BindView(R.id.text_jiage)
         TextView textJiage;
-
         @BindView(R.id.text_shuzi)
         TextView tvNum;
         @BindView(R.id.img_jia)
         ImageView ivJia;
         @BindView(R.id.img_jian)
         ImageView ivJian;
+
+        @BindView(R.id.tv_delete)
+        TextView tvDelete;
 
 
         ViewHolder(View itemView) {

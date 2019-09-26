@@ -11,8 +11,8 @@
         >
         <ImageView
             android:id="@+id/img_tuxiang"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
             android:src="@drawable/ic_launcher"
             app:layout_constraintLeft_toLeftOf="@+id/container"
             app:layout_constraintTop_toTopOf="@+id/container"
@@ -31,6 +31,7 @@
              android:visibility="gone"
              />
         <TextView
+            android:id="@+id/text_money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="3660.00"
@@ -38,7 +39,7 @@
             android:textSize="20sp"
             app:layout_constraintTop_toTopOf="@+id/img_tuxiang"
             app:layout_constraintLeft_toRightOf="@+id/img_tuxiang"
-            android:layout_marginLeft="50dp"
+            android:layout_marginLeft="10dp"
             />
         <TextView
             android:id="@+id/stock_tv"
@@ -46,9 +47,9 @@
             android:layout_height="wrap_content"
             android:text="库存10000件"
             android:textSize="15sp"
-            app:layout_constraintBottom_toBottomOf="@+id/img_tuxiang"
+            app:layout_constraintTop_toBottomOf="@+id/text_money"
             app:layout_constraintLeft_toRightOf="@+id/img_tuxiang"
-            android:layout_marginLeft="50dp"
+            android:layout_marginLeft="10dp"
             />
         <TextView
             android:id="@+id/selected_tv"
@@ -56,11 +57,11 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/stock_tv"
             app:layout_constraintLeft_toLeftOf="@+id/stock_tv"
-             app:layout_constraintRight_toRightOf="@+id/tv_commit"
-          android:maxLines="3"
-          android:ellipsize="end"
+            app:layout_constraintRight_toRightOf="@+id/tv_commit"
+            android:maxLines="3"
+            android:ellipsize="end"
             tools:text="已选黑金魅惑蕾丝面膜5片"
-            android:textColor="#595757"
+            android:textColor="@color/hei"
             android:layout_marginTop="8dp"
             />
 
@@ -69,7 +70,7 @@
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:orientation="vertical"
-          app:layout_constraintTop_toBottomOf="@+id/selected_tv"
+          app:layout_constraintTop_toBottomOf="@+id/img_tuxiang"
           app:layout_constraintLeft_toLeftOf="@+id/img_tuxiang"
           app:layout_constraintRight_toRightOf="@+id/tv_commit"
           android:layout_marginTop="10dp"
@@ -78,8 +79,6 @@
             android:id="@+id/text_fenzu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-
             android:text="默认分组"
             android:textSize="15sp"
             android:textColor="#000000"

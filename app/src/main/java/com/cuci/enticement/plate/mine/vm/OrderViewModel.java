@@ -250,9 +250,9 @@ public class OrderViewModel extends ViewModel {
      * 获取快递信息
      * @return
      */
-    public MutableLiveData<Status<ExpressInfo>> getExpressInfo(String expressNo, String expressCode) {
+    public MutableLiveData<Status<ResponseBody>> getExpressInfo(String expressNo, String expressCode,int loadType) {
 
-        final MutableLiveData<Status<ExpressInfo>> data = new MutableLiveData<>();
+        final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
         data.setValue(Status.loading(null));
 
         Map<String, String> params = new HashMap<String, String>();
@@ -262,17 +262,27 @@ public class OrderViewModel extends ViewModel {
         String sign = SignUtils.signParam(params);
         mCreator.create(OrderApi.class)
                 .getExpressInfo(expressNo,expressCode,sign)
-                .enqueue(new Callback<ExpressInfo>() {
+                .enqueue(new Callback<ResponseBody>() {
                     @Override
-                    public void onResponse(@NonNull Call<ExpressInfo> call,
-                                           @NonNull Response<ExpressInfo> response) {
-                        data.setValue(Status.success(response.body()));
+                    public void onResponse(@NonNull Call<ResponseBody> call,
+                                           @NonNull Response<ResponseBody> response) {
+                        if (loadType == Status.LOAD_REFRESH) {
+                            data.setValue(Status.refreshSuccess(response.body()));
+                        } else {
+                            data.setValue(Status.moreSuccess(response.body()));
+                        }
                     }
 
                     @Override
-                    public void onFailure(@NonNull Call<ExpressInfo> call,
+                    public void onFailure(@NonNull Call<ResponseBody> call,
                                           @NonNull Throwable t) {
-                        data.setValue(Status.error(null, t.getMessage() == null ? "获取失败" : t.getMessage()));
+                        if (loadType == Status.LOAD_REFRESH) {
+                            data.setValue(Status.refreshError(null, t.getMessage() ==
+                                    null ? "加载失败" : t.getMessage()));
+                        } else {
+                            data.setValue(Status.moreError(null, t.getMessage() ==
+                                    null ? "加载失败" : t.getMessage()));
+                        }
                     }
                 });
         return data;

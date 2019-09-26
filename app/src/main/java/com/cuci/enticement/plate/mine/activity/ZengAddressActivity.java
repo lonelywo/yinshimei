@@ -156,7 +156,7 @@ public class ZengAddressActivity extends BaseActivity {
                     }else {
                         mIsDefault = "0";
                         checkbox.setChecked(false);
-                        FToast.error(bean.getInfo());
+                        FToast.warning(bean.getInfo());
                     }
 
 
@@ -230,7 +230,7 @@ public class ZengAddressActivity extends BaseActivity {
                         FToast.success(updateAddress.getInfo());
                         finish();
                     } else {
-                        FToast.error(updateAddress.getInfo());
+                        FToast.warning(updateAddress.getInfo());
 
                     }
 

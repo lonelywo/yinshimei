@@ -6,6 +6,7 @@ import com.cuci.enticement.bean.Base;
 import com.cuci.enticement.bean.HomeDetailsBean;
 import com.cuci.enticement.bean.Version;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 
 import retrofit2.http.Field;
@@ -36,8 +37,9 @@ public interface CommonApi {
      */
     @FormUrlEncoded
     @POST("store/api.page/appVersion")
-    Call<Base<Version>> getVersion(
-
+    Call<ResponseBody> getVersion(
+            @Field("from_type") String fromType,
+            @Field("sign") String sign
 
     );
 }
