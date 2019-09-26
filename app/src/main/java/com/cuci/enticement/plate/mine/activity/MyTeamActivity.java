@@ -1,7 +1,9 @@
 package com.cuci.enticement.plate.mine.activity;
 
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -129,6 +131,9 @@ public class MyTeamActivity extends BaseActivity implements OnRefreshLoadMoreLis
             }
 
         });
+
+
+
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

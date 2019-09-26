@@ -47,9 +47,9 @@ public class UpdatePopup extends CenterPopupView {
         super.onCreate();
         ButterKnife.bind(this);
 
-        mContent.setText(mVersion.getContent());
+        mContent.setText(mVersion.getData().getContent());
 
-        if (mVersion.isForcedUpdating()) {
+        if (mVersion.getData().getIs_force()==1) {
             ViewUtils.hideView(mClose);
             ViewUtils.hideView(mIgnore);
         }
@@ -69,7 +69,7 @@ public class UpdatePopup extends CenterPopupView {
                 dismiss();
                 break;
             case R.id.ignore:
-                SharedPrefUtils.saveIgnoreVersion(mVersion.getVersion());
+                SharedPrefUtils.saveIgnoreVersion(mVersion.getData().getVersionName());
                 dismiss();
                 break;
         }

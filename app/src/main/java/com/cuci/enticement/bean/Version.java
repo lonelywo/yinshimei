@@ -5,59 +5,94 @@ import java.io.Serializable;
 
 public class Version implements Serializable {
 
-    public int getVersion() {
-        return version;
+
+    /**
+     * code : 1
+     * info : 版本信息获取成功！
+     * data : {"version":"1.8.0","versionName":1,"url":"http://a.app.qq.com/o/simple.jsp?pkgname=com.cuci.enticemen","content":"测试","is_force":0}
+     */
+
+    private int code;
+    private String info;
+    private DataBean data;
+
+    public int getCode() {
+        return code;
     }
 
-    public void setVersion(int version) {
-        this.version = version;
+    public void setCode(int code) {
+        this.code = code;
     }
 
-    public String getVersionName() {
-        return versionName;
+    public String getInfo() {
+        return info;
     }
 
-    public void setVersionName(String versionName) {
-        this.versionName = versionName;
+    public void setInfo(String info) {
+        this.info = info;
     }
 
-    public String getUrl() {
-        return url;
+    public DataBean getData() {
+        return data;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setData(DataBean data) {
+        this.data = data;
     }
 
-    public String getContent() {
-        return content;
-    }
+    public static class DataBean {
+        /**
+         * version : 1.8.0
+         * versionName : 1
+         * url : http://a.app.qq.com/o/simple.jsp?pkgname=com.cuci.enticemen
+         * content : 测试
+         * is_force : 0
+         */
 
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public boolean isForcedUpdating() {
-        return forcedUpdating;
-    }
-
-    public void setForcedUpdating(boolean forcedUpdating) {
-        this.forcedUpdating = forcedUpdating;
-    }
-
-    /*
-* 版本名 1.0.0
-* 版本号 1
-* APK下载链接
-* 更新内容说明
-* 是否强制更新
-*
-* */
-        private int version;
-        private String versionName;
+        private String version;
+        private int versionName;
         private String url;
         private String content;
-        private boolean forcedUpdating;
+        private int is_force;
 
+        public String getVersion() {
+            return version;
+        }
 
+        public void setVersion(String version) {
+            this.version = version;
+        }
+
+        public int getVersionName() {
+            return versionName;
+        }
+
+        public void setVersionName(int versionName) {
+            this.versionName = versionName;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
+
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
+        }
+
+        public int getIs_force() {
+            return is_force;
+        }
+
+        public void setIs_force(int is_force) {
+            this.is_force = is_force;
+        }
+    }
 }

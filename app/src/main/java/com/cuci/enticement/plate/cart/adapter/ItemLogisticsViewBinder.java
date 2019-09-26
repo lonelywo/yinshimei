@@ -53,7 +53,7 @@ public class ItemLogisticsViewBinder extends ItemViewBinder<ExpressInfo.DataBean
         holder.textQianshouxinxi.setText(item.getContext());
         holder.textTime.setText(item.getTime());
         int adapterPosition = holder.getAdapterPosition();
-            if (adapterPosition==1) {
+            if (adapterPosition==0) {
             holder.imgWuliutubiao.setImageResource(R.drawable.wuliutubiao_huang);
         } else {
             holder.imgWuliutubiao.setImageResource(R.drawable.wuliutubiao_hui);

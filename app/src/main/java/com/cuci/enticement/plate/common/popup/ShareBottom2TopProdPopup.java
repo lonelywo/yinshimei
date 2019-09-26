@@ -21,6 +21,8 @@ import com.cuci.enticement.bean.HomeDetailsBean;
 import com.cuci.enticement.plate.mine.vm.OrderViewModel;
 import com.cuci.enticement.utils.DimensionUtils;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.ImageLoader;
+import com.cuci.enticement.utils.ImageUtils;
 import com.cuci.enticement.utils.ViewUtils;
 import com.lxj.xpopup.core.BottomPopupView;
 
@@ -44,7 +46,8 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
     RadioGroup txRadioGroup;
     @BindView(R.id.text_shuliang)
     TextView textShuliang;
-
+    @BindView(R.id.text_money)
+    TextView text_money;
     @BindView(R.id.text_shuzi)
     TextView textShuzi;
     @BindView(R.id.stock_tv)
@@ -128,7 +131,9 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
         }
         HomeDetailsBean.DataBean.SpecsBean specsBean = specs.get(0);
         List<HomeDetailsBean.DataBean.SpecsBean.ListBean> list = specsBean.getList();
-
+        text_money.setText("¥"+mItem.getList().get(0).getPrice_selling());
+        ImageLoader.loadPlaceholder(mItem.getLogo(),imgTuxiang);
+        stockTv.setText("库存"+mItem.getNumber_stock()+"件");
         textFenzu.setText(specsBean.getName());
 
         addview(radioGroup, list);
@@ -236,8 +241,10 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
 
                 break;
             case R.id.img_jian:
-                if(mCount==0){
+                if(mCount<=1){
+                    FToast.warning("不能再少了");
                     return;
+
                 }else {
                     mCount--;
                     textShuzi.setText(String.valueOf(mCount));
