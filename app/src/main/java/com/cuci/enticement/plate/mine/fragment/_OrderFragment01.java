@@ -539,6 +539,16 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
 
                     if(orderConfirm.getCode()==1){
 
+
+                        //刷新外层
+                        EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.REFRESH_OUTSIDE));
+
+                        //刷新小角标状态
+                        Intent intent = new Intent(_MineFragment.ACTION_REFRESH_STATUS);
+
+                        LocalBroadcastManager.getInstance(mActivity).sendBroadcast(intent);
+
+
                         FToast.success(orderConfirm.getInfo());
 
                     }else {

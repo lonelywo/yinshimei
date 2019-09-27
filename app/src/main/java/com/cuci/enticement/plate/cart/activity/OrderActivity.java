@@ -164,6 +164,21 @@ public class OrderActivity extends BaseActivity {
 
 
 
+
+
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
     @Subscribe(threadMode = ThreadMode.POSTING, sticky = true)
     public void onOrderEventMessage(OrderEvent event) {
         if(event.getCode()==OrderEvent.FINISH_ACTIVITY){

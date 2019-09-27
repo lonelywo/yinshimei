@@ -1,6 +1,7 @@
 package com.cuci.enticement.plate.cart.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -54,6 +55,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -120,6 +123,17 @@ public class OrderDetailsActivity extends BaseActivity {
 
 
 
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 
     @Subscribe(threadMode = ThreadMode.POSTING, sticky = true)
     public void onOrderEventMessage(OrderEvent event) {
