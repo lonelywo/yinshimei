@@ -76,6 +76,8 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
                     //3  关闭页面
 
                     EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.FINISH_ACTIVITY));
+                    // 4  切换tab到待发货
+
 
 
                     Log.d(TAG, "onResp: resp.errCode = 0   支付成功");

@@ -32,6 +32,7 @@ import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.bean.WxError;
 import com.cuci.enticement.bean.WxInfo;
 import com.cuci.enticement.bean.WxToken;
+import com.cuci.enticement.plate.common.eventbus.CartEvent;
 import com.cuci.enticement.plate.common.vm.LoginViewModel;
 import com.cuci.enticement.plate.mall.activity.YuLanActivity;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
@@ -43,6 +44,8 @@ import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.widget.ClearEditText;
 import com.google.gson.Gson;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 import java.util.Date;
@@ -200,8 +203,10 @@ public class LoginActivity extends BaseActivity {
                         LocalBroadcastManager.getInstance(LoginActivity.this).sendBroadcast(intent);
 
                         //刷新购物车数据
-                        LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(LoginActivity.this);
-                        broadcastManager.sendBroadcast(new Intent(ACTION_REFRESH_DATA));
+
+                        EventBus.getDefault().postSticky(new CartEvent(CartEvent.REFRESH_CART_LIST));
+                        /*LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(LoginActivity.this);
+                        broadcastManager.sendBroadcast(new Intent(ACTION_REFRESH_DATA));*/
 
 
                         finish();
