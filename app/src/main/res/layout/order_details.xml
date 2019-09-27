@@ -27,24 +27,47 @@
         android:src="@drawable/icon_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
-   <TextView
-       android:id="@+id/text_zhuangtai"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:paddingLeft="12dp"
+
+
+
+  <com.cuci.enticement.widget.SmoothScrollview
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    app:layout_constraintTop_toBottomOf="@+id/image_back"
+    app:layout_constraintBottom_toTopOf="@+id/bottom"
+    android:layout_marginBottom="10dp"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      >
+      <TextView
+        android:id="@+id/text_zhuangtai"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingLeft="12dp"
         android:paddingTop="20dp"
-       android:paddingBottom="20dp"
-       tools:text="等待支付"
-       android:textColor="@color/colorWhite"
-       android:background="@color/orange"
-       app:layout_constraintTop_toBottomOf="@id/image_back"
-       />
+        android:paddingBottom="20dp"
+        tools:text="等待支付"
+        android:textColor="@color/colorWhite"
+        android:background="@color/orange"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        />
      <androidx.constraintlayout.widget.ConstraintLayout
          android:id="@+id/con_buju1"
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
-         app:layout_constraintTop_toBottomOf="@id/text_zhuangtai"
+        app:layout_constraintLeft_toLeftOf="parent"
+       app:layout_constraintTop_toBottomOf="@id/text_zhuangtai"
          android:background="@color/colorWhite"
+
          >
       <TextView
           android:id="@+id/text_dizi"
@@ -71,7 +94,7 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               app:layout_constraintTop_toBottomOf="@+id/line"
-              android:text="订单编号: 662645193409"
+              tools:text="订单编号: 662645193409"
               android:textColor="@color/hei"
               android:padding="10dp"
               />
@@ -84,56 +107,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         />
- <!--    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/recycler_view"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/con_buju1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-         android:background="@color/colorWhite"
-         android:layout_marginTop="10dp"
-         android:padding="10dp"
-        >
-        <ImageView
-            android:id="@+id/img_tupian"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_launcher"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:paddingRight="5dp"
-            />
 
-        <TextView
-            android:id="@+id/text_biaoti"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="新零售礼包A方案"
-            android:textColor="@color/hei"
-            app:layout_constraintStart_toEndOf="@+id/img_tupian"
-            app:layout_constraintTop_toTopOf="parent"
-            />
-        <TextView
-            android:id="@+id/text_neirong"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="黑金魅惑蕾丝面膜5片/盒*20，温柔高保湿洁面乳(30g)*20，因诗美菁纯赋活原生水*12，贵族美学*1，油纸*10，标贴*10，手提袋*10"
-            app:layout_constraintLeft_toLeftOf="@+id/text_biaoti"
-            app:layout_constraintTop_toBottomOf="@+id/text_biaoti"
-            app:layout_constraintRight_toRightOf="parent"
-            />
-        <TextView
-            android:id="@+id/text_qian"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="3600"
-            android:textColor="@color/orange"
-            app:layout_constraintTop_toBottomOf="@+id/text_neirong"
-            app:layout_constraintStart_toStartOf="@+id/text_biaoti"
-            />
-    </androidx.constraintlayout.widget.ConstraintLayout>-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/con_buju3"
         android:layout_width="match_parent"
@@ -242,9 +216,11 @@
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
+  </com.cuci.enticement.widget.SmoothScrollview>
     <LinearLayout
-        android:layout_width="match_parent"
+      android:id="@+id/bottom"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintLeft_toLeftOf="parent"

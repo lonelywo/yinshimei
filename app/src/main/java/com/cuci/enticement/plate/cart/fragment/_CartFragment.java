@@ -89,6 +89,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
     CheckBox mRbCheckAll;
     @BindView(R.id.recycler_view)
     SlideRecyclerView mRecyclerView;
+    //SlideRecyclerView mRecyclerView;
     @BindView(R.id.refresh_layout)
     SmartRefreshLayout mRefreshLayout;
     @BindView(R.id.tv_total_money)
@@ -410,8 +411,9 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
     private long mGoodsId;
 
     @Override
-    public void onAddClick(OrderGoods bean,int position) {
+    public void onAddClick(OrderGoods b,int position) {
         //点击一次加1一次
+        OrderGoods bean = (OrderGoods)mItems.get(position);
         if(mCanChange){
 
 
@@ -430,8 +432,8 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
 
     @Override
-    public void onMinusClick(OrderGoods bean,int position) {
-
+    public void onMinusClick(OrderGoods b,int position) {
+        OrderGoods bean = (OrderGoods)mItems.get(position);
         if(mCanChange) {
 
 
@@ -458,8 +460,9 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
 
     @Override
-    public void onDelete(OrderGoods bean,int position) {
-
+    public void onDelete(OrderGoods b,int position) {
+        Log.d("east", "ondelete: "+new Gson().toJson(b));
+       OrderGoods bean = (OrderGoods)mItems.get(position);
         new XPopup.Builder(mActivity)
                 .dismissOnBackPressed(false)
                 .dismissOnTouchOutside(false)
@@ -507,14 +510,11 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
                         CartDelete cartDelete = new Gson().fromJson(result, CartDelete.class);
                         if(cartDelete.code==1){
                            // mItems.remove(mPosition);
-
-
-                           mRefreshLayout.autoRefresh();
-
+                            // mRefreshLayout.autoRefresh();
+                            mViewModel.getCartList(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "1", Status.LOAD_REFRESH)
+                                    .observe(mActivity, mObserver);
 
                         //    mAdapter.notifyItemRemoved(mPosition);
-
-
 
                             FToast.success(cartDelete.info);
                             if(mAdapter.getItemCount()==0){

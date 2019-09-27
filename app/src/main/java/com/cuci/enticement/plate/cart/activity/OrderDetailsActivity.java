@@ -26,6 +26,8 @@ import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.bean.WxPayBean;
 import com.cuci.enticement.plate.common.eventbus.OrderEvent;
+import com.cuci.enticement.plate.common.popup.PayBottom2TopProdPopup;
+import com.cuci.enticement.plate.common.popup.TipsPopup;
 import com.cuci.enticement.plate.mine.adapter.ItemBottomViewBinder;
 import com.cuci.enticement.plate.mine.adapter.ItemProdViewBinder;
 import com.cuci.enticement.plate.mine.adapter.ItemTitleViewBinder;
@@ -37,6 +39,7 @@ import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.ViewUtils;
 import com.cuci.enticement.widget.OrderItemDecoration;
 import com.google.gson.Gson;
+import com.lxj.xpopup.XPopup;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -45,6 +48,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import androidx.lifecycle.Observer;
@@ -70,8 +74,7 @@ public class OrderDetailsActivity extends BaseActivity {
 
     @BindView(R.id.text_zhuangtai)
     TextView textZhuangtai;
-    @BindView(R.id.text_name)
-    TextView textName;
+
     @BindView(R.id.text_dizi)
     TextView textDizi;
     @BindView(R.id.tv_order_no)
@@ -90,15 +93,25 @@ public class OrderDetailsActivity extends BaseActivity {
     TextView tvLeft;
     @BindView(R.id.tv_right)
     TextView tvRight;
+
+    public static final int CANCEL_STATUS=0;//取消
+    public static final int NEED_PAY=2;//待支付
+    public static final int NEED_EXPRESS=3;//待发货
+    public static final int NEED_CONFIRM=4;//待收货
+    public static final int HAS_FINISH=5;//已完成
+
+
+
     private OrderViewModel mViewModel;
     private UserInfo mUserInfo;
 
-    private int mPayType = 1;
+    private int mPayType = 2;//默认支付宝付款
 
     private AllOrderList.DataBean.ListBeanX mInfo;
     private LinearLayoutManager mLayoutManager;
     private MultiTypeAdapter mAdapter;
     private Items mItems;
+    private int mStatus;
     @Override
     public int getLayoutId() {
         return R.layout.order_details;
@@ -118,9 +131,9 @@ public class OrderDetailsActivity extends BaseActivity {
         if (mUserInfo == null) {
             return;
         }
-
-        initViewStatus();
-
+        mStatus=mInfo.getStatus();
+        initViewStatus(mStatus);
+        initContent();
         mAdapter = new MultiTypeAdapter();
         mItems = new Items();
         mItems.addAll(items);
@@ -146,13 +159,27 @@ public class OrderDetailsActivity extends BaseActivity {
 
     }
 
-    private void initViewStatus() {
+    private void initContent() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(mInfo.getExpress_name()).append(" ")
+                .append(mInfo.getExpress_phone()).append(" ").append("\n")
+                .append(mInfo.getExpress_province()).append(" ")
+                .append(mInfo.getExpress_city()).append(" ")
+                .append(mInfo.getExpress_area()).append(" ")
+                .append(mInfo.getExpress_address());
+        tvOrderNo.setText(String.format(Locale.CHINA,"订单编号: %s",mInfo.getOrder_no()));
+        textDizi.setText(sb.toString());
+        tvGoodsMoney.setText(String.format(Locale.CHINA,"¥%s",mInfo.getPrice_goods()));
+        tvExpress.setText(String.format(Locale.CHINA,"¥%s",mInfo.getPrice_express()));
+        tvTotalMoney.setText(String.format(Locale.CHINA,"¥%s",mInfo.getPrice_total()));
+        tvCreateTime.setText(mInfo.getCreate_at());
+
+    }
+
+    private void initViewStatus(int status) {
 
 
 
-
-
-        int status = mInfo.getStatus();
         if (status == 0) {
             //已取消          重新购买
             ViewUtils.hideView(tvLeft);
@@ -177,13 +204,13 @@ public class OrderDetailsActivity extends BaseActivity {
             ViewUtils.showView(tvRight);
             tvLeft.setText("查看物流");
             tvRight.setText("确认收货");
-
+            textZhuangtai.setText("待收货");
         } else if (status == 5) {
             //已完成  查看物流
             ViewUtils.showView(tvLeft);
             ViewUtils.hideView(tvRight);
             tvLeft.setText("查看物流");
-
+            textZhuangtai.setText("已完成");
         }
 
 
@@ -202,16 +229,65 @@ public class OrderDetailsActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_left:
+                if(mStatus==2||mStatus==3) {
+                    //待支付和收货  取消按钮
+                    new XPopup.Builder(OrderDetailsActivity.this)
+                            .dismissOnBackPressed(false)
+                            .dismissOnTouchOutside(false)
+                            .asCustom(new TipsPopup(OrderDetailsActivity.this,
+                                    "亲，确定要取消订单吗？", "取消", "确定", () -> {
+                                mViewModel.orderCancel(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(mInfo.getOrder_no()))
+                                        .observe(this, mCancelObserver);
+                            }))
+                            .show();
 
-                mViewModel.orderCancel(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(mInfo.getOrder_no()))
-                        .observe(this, mCancelObserver);
 
+
+
+                }else if(mStatus==4){
+                    //查看物流  intent
+                    Intent intent = new Intent(OrderDetailsActivity.this, LogisticsActivity.class);
+                    intent.putExtra("express_no",String.valueOf(mInfo.getExpress_send_no()));
+                    intent.putExtra("express_code",String.valueOf(mInfo.getExpress_company_code()));
+                    startActivity(intent);
+                }
                 break;
             case R.id.tv_right:
                 //提交订单，成功后，去调用获取支付参数接口
-                mViewModel.udpateAdress(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(mInfo.getOrder_no()),
-                        String.valueOf(mInfo.getExpress_address_id()))
-                        .observe(OrderDetailsActivity.this, mCommitObserver);
+                if(mStatus==2){
+                    //待支付  弹框选择支付
+                    new XPopup.Builder(OrderDetailsActivity.this)
+                            .dismissOnTouchOutside(true)
+                            .dismissOnBackPressed(true)
+                            .asCustom(new PayBottom2TopProdPopup(OrderDetailsActivity.this,mInfo.getPrice_total(), type -> {
+
+                                mPayType=type;
+                                mViewModel.getOrderPay(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),
+                                        String.valueOf(mInfo.getOrder_no()),String.valueOf(type))
+                                        .observe(this,mPayObserver);
+
+                            }))
+                            .show();
+
+
+
+
+                }else if(mStatus==5){
+                    //确认收货  弹框确认收货
+
+
+                    new XPopup.Builder(OrderDetailsActivity.this)
+                            .dismissOnBackPressed(false)
+                            .dismissOnTouchOutside(false)
+                            .asCustom(new TipsPopup(OrderDetailsActivity.this,
+                                    "亲，确定要确认收货吗？", "取消", "确定", () -> {
+
+                            }))
+                            .show();
+
+
+                }
+
 
                 break;
         }
@@ -298,16 +374,16 @@ public class OrderDetailsActivity extends BaseActivity {
                         //取消订单
                         EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.REFRESH_OUTSIDE));
 
-
-                        //刷新状态
+                        //刷新小角标状态
                         Intent intent = new Intent(_MineFragment.ACTION_LOGIN_SUCCEED);
 
                         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-
-
                         FToast.success(orderCancel.getInfo());
+                        //取消订单 刷新头部详情页状态
+                        mStatus=0;
+                        initViewStatus(CANCEL_STATUS);
                     } else {
-                        FToast.error("订单取消失败");
+                        FToast.error(orderCancel.getInfo());
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -326,58 +402,6 @@ public class OrderDetailsActivity extends BaseActivity {
 
 
 
-
-
-    /**
-     * 提交订单接口   将预订单变成待支付订单  status由1变成2
-     */
-    private Observer<Status<ResponseBody>> mCommitObserver = status -> {
-        switch (status.status) {
-            case Status.SUCCESS:
-                ResponseBody body = status.content;
-                try {
-                    String result = body.string();
-                    CommitOrder commitOrder = new Gson().fromJson(result, CommitOrder.class);
-                    if(commitOrder.getCode()==1){
-
-                        //todo 发送广播去刷新购物车列表  和  个人中心状态
-                        //刷新购物车列表
-                        Intent intent1 = new Intent(ACTION_REFRESH_DATA);
-                        LocalBroadcastManager.getInstance(this).sendBroadcast(intent1);
-                        //刷新个人中心状态
-                        Intent intent2 = new Intent(_MineFragment.ACTION_LOGIN_SUCCEED);
-
-                        LocalBroadcastManager.getInstance(this).sendBroadcast(intent2);
-
-                        mViewModel.getOrderPay(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),
-                                String.valueOf(mInfo.getOrder_no()),String.valueOf(mPayType))
-                                .observe(this,mPayObserver);
-
-                    }else {
-                        FToast.warning("提交订单失败");
-                    }
-
-
-
-
-
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-
-
-                break;
-            case Status.LOADING:
-
-                break;
-            case Status.ERROR:
-                FToast.error(status.message);
-
-                break;
-        }
-    };
 
 
 
@@ -465,11 +489,11 @@ public class OrderDetailsActivity extends BaseActivity {
                         if (TextUtils.equals(resultStatus, "6001")) {
                             FToast.success("支付取消");
 
-                            finish();
+
                         } else {
                             // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
                             FToast.error("支付失败");
-                            finish();
+
                         }
                     }
                     break;

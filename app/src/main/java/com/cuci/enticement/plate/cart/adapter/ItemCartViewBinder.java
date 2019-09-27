@@ -1,6 +1,7 @@
 package com.cuci.enticement.plate.cart.adapter;
 
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.cuci.enticement.bean.OrderGoods;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.ImageLoader;
 import com.cuci.enticement.utils.UtilsForClick;
+import com.google.gson.Gson;
 
 import java.util.Locale;
 
@@ -49,7 +51,7 @@ public class ItemCartViewBinder extends ItemViewBinder<OrderGoods, ItemCartViewB
 
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull OrderGoods item) {
-        int position = holder.getPosition();
+        int position = holder.getAdapterPosition();
 
        if (item.isCheck()) {
             holder.mImageCheck.setImageResource(R.drawable.xuanzhong);
@@ -111,6 +113,7 @@ public class ItemCartViewBinder extends ItemViewBinder<OrderGoods, ItemCartViewB
                 //这里不用写，但是必须加这个监听事件才能滑动
         });
 
+        Log.d("east", "onBindViewHolder: "+new Gson().toJson(item));
        if (!holder.tvDelete.hasOnClickListeners()) {
             holder.tvDelete.setOnClickListener(v -> {
                 if (mOnItemClickListener != null) {

@@ -20,8 +20,10 @@ import com.cuci.enticement.bean.DeleteAddress;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.plate.cart.activity.OrderActivity;
+import com.cuci.enticement.plate.cart.activity.OrderDetailsActivity;
 import com.cuci.enticement.plate.common.eventbus.AddressEvent;
 import com.cuci.enticement.plate.common.eventbus.OrderEvent;
+import com.cuci.enticement.plate.common.popup.TipsPopup;
 import com.cuci.enticement.plate.common.vm.CommonViewModel;
 import com.cuci.enticement.plate.mine.adapter.ItemAdressViewBinder;
 import com.cuci.enticement.utils.FToast;
@@ -29,6 +31,7 @@ import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.widget.CartItemDecoration;
 import com.cuci.enticement.widget.CustomRefreshHeader;
 import com.google.gson.Gson;
+import com.lxj.xpopup.XPopup;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
@@ -303,9 +306,18 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
 
     @Override
     public void onDelete(AddressBean.DataBean.ListBean bean,int position) {
-        mPosition=position;
-               mViewModel.deleteAddress(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),String.valueOf(bean.getId()))
-                .observe(this,mDeleteObserver);
+
+        new XPopup.Builder(RecAddressActivity.this)
+                .dismissOnBackPressed(false)
+                .dismissOnTouchOutside(false)
+                .asCustom(new TipsPopup(RecAddressActivity.this,
+                        "亲，确定要删除此收货地址吗？", "取消", "确定", () -> {
+                    mPosition=position;
+                    mViewModel.deleteAddress(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),String.valueOf(bean.getId()))
+                            .observe(this,mDeleteObserver);
+                }))
+                .show();
+
 
 
 

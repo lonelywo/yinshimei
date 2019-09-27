@@ -350,9 +350,6 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
 
 
 
-
-
-
         for (int i = 0; i <item.size() ; i++) {
             AllOrderList.DataBean.ListBeanX orderBean = item.get(i);
             int cur=mItems.size();
@@ -470,7 +467,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
     @Subscribe(threadMode = ThreadMode.POSTING, sticky = true)
     public void onOrderEventMessage(OrderEvent event) {
         if(event.getCode()==OrderEvent.CANCEL_ORDER){
-            if(mtype.equals("")){
+            if(mtype.equals("")||mtype.equals("2")||mtype.equals("3")){
                 mRefreshLayout.autoRefresh();
             }
         }else if(event.getCode()==OrderEvent.REFRESH_OUTSIDE){
@@ -506,17 +503,15 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                     if(orderCancel.getCode()==1){
                         if(mtype.equals("2")||mtype.equals("3")){
                             //待支付或者待发货页面  局部删除
-                           int count= mCancelItem.bottomcur-mCancelItem.topCur+1;
+                         /*  int count= mCancelItem.bottomcur-mCancelItem.topCur+1;
                             Items items = new Items();
                             for (int i = mCancelItem.topCur; i <= mCancelItem.bottomcur; i++) {
                                 items.add(mItems.get(i));
                             }
                             mItems.removeAll(items);
-                            mAdapter.notifyItemRangeRemoved(mCancelItem.topCur,count);
+                            mAdapter.notifyItemRangeRemoved(mCancelItem.topCur,count);*/
 
                            // mAdapter.notifyItemRemoved();
-
-
 
                             EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.CANCEL_ORDER));
 
