@@ -504,7 +504,7 @@ public class OrderActivity extends BaseActivity {
                         textYunfeimoney.setText(String.format(Locale.CHINA,"¥%s",express_price));
                         //计算总价
                         double totalMoney= Arith.add(Double.parseDouble(mInfo.getPrice_goods()),express_price);
-                        tvTotalMoney.setText(String.format(Locale.CHINA,"¥%s",totalMoney));
+                        tvTotalMoney.setText(String.format(Locale.CHINA,"%s",totalMoney));
                     }else {
                         FToast.warning(expressCost.getInfo());
                     }

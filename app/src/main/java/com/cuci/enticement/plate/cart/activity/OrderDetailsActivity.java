@@ -27,6 +27,7 @@ import com.cuci.enticement.bean.OrderPay;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.bean.WxPayBean;
+import com.cuci.enticement.bean.ZFBBean;
 import com.cuci.enticement.plate.common.eventbus.OrderEvent;
 import com.cuci.enticement.plate.common.popup.PayBottom2TopProdPopup;
 import com.cuci.enticement.plate.common.popup.TipsPopup;
@@ -346,41 +347,49 @@ public class OrderDetailsActivity extends BaseActivity {
 
                 try {
                     String result = body.string();
-                    OrderPay orderPay = new Gson().fromJson(result, OrderPay.class);
-                    if(orderPay.getCode()==1){
-                        OrderPay.DataBean data = orderPay.getData();
-                        String appid = data.getAppid();
-                        String prepayid = data.getPrepayid();
-                        String sign = data.getSign();
-                        String timestamp = data.getTimestamp();
-                        String partnerid = data.getPartnerid();
-                        String noncestr = data.getNoncestr();
-                        String packageX = data.getPackageX();
 
-                        if(mPayType==1){
-                            StringBuilder sb = new StringBuilder();
-                            sb.append("appid").append("=").append(appid).append("&")
-                                    .append("prepayid").append("=").append(prepayid).append("&")
-                                    .append("sign").append("=").append(sign).append("&")
-                                    .append("timestamp").append("=").append(timestamp).append("&")
-                                    .append("partnerid").append("=").append(partnerid).append("&")
-                                    .append("noncestr").append("=").append(noncestr).append("&")
-                                    .append("package").append("=").append(packageX);
-                            sendReq2ZFB(sb.toString());
-                        }else if(mPayType==2){
+                    if(mPayType==2){
+                        ZFBBean orderPay = new Gson().fromJson(result, ZFBBean.class);
+                        if(orderPay.getCode()==1){
+
+                            sendReq2ZFB(orderPay.getData());
+
+                        }else {
+                            FToast.warning(orderPay.getInfo());
+                        }
+
+                    }else if(mPayType==1){
+                        OrderPay orderPay = new Gson().fromJson(result, OrderPay.class);
+                        if(orderPay.getCode()==1){
+                            OrderPay.DataBean data = orderPay.getData();
+                            String appid = data.getAppid();
+                            String prepayid = data.getPrepayid();
+                            String sign = data.getSign();
+                            String timestamp = data.getTimestamp();
+                            String partnerid = data.getPartnerid();
+                            String noncestr = data.getNoncestr();
+                            String packageX = data.getPackageX();
+                            //weixin
+
                             WxPayBean wxPayBean = new WxPayBean();
                             wxPayBean.setAppId(appid);
+                            wxPayBean.setPrepayId(prepayid);
+                            wxPayBean.setPartnerId(partnerid);
                             wxPayBean.setNonceStr(noncestr);
                             wxPayBean.setPaySign(sign);
                             wxPayBean.setTimestamp(timestamp);
-                            wxPayBean.setTimeStamp(timestamp);
+                            wxPayBean.setPackageX(packageX);
                             sendReq2WX(wxPayBean);
+
+                        }else {
+                            FToast.warning("");
                         }
 
 
 
-                    }else {
-                        FToast.warning(orderPay.getInfo());
+
+
+
                     }
 
 
@@ -388,7 +397,6 @@ public class OrderDetailsActivity extends BaseActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
 
                 break;
             case Status.LOADING:
