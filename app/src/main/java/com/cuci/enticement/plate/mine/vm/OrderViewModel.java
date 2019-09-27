@@ -95,9 +95,9 @@ public class OrderViewModel extends ViewModel {
      * @param orderNum
      * @return
      */
-    public MutableLiveData<Status<OrderResult>> orderConfirm(String token,String mid,String orderNum) {
+    public MutableLiveData<Status<ResponseBody>> orderConfirm(String token,String mid,String orderNum) {
 
-        final MutableLiveData<Status<OrderResult>> data = new MutableLiveData<>();
+        final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
         data.setValue(Status.loading(null));
 
         Map<String, String> params = new HashMap<String, String>();
@@ -105,18 +105,19 @@ public class OrderViewModel extends ViewModel {
         params.put("mid",mid);
 
         params.put("order_no",orderNum);
+        params.put("from_type","2");
         String sign = SignUtils.signParam(params);
         mCreator.create(OrderApi.class)
-                .confirmOrder(token,mid,orderNum,sign)
-                .enqueue(new Callback<OrderResult>() {
+                .confirmOrder("2",token,mid,orderNum,sign)
+                .enqueue(new Callback<ResponseBody>() {
                     @Override
-                    public void onResponse(@NonNull Call<OrderResult> call,
-                                           @NonNull Response<OrderResult> response) {
+                    public void onResponse(@NonNull Call<ResponseBody> call,
+                                           @NonNull Response<ResponseBody> response) {
                         data.setValue(Status.success(response.body()));
                     }
 
                     @Override
-                    public void onFailure(@NonNull Call<OrderResult> call,
+                    public void onFailure(@NonNull Call<ResponseBody> call,
                                           @NonNull Throwable t) {
                         data.setValue(Status.error(null, t.getMessage() == null ? "获取失败" : t.getMessage()));
                     }

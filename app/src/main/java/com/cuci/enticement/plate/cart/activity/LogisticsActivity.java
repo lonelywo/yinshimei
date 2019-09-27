@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.classic.common.MultipleStatusView;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
-import com.cuci.enticement.bean.CommissionmxBean;
 import com.cuci.enticement.bean.ExpressInfo;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
@@ -33,9 +32,11 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 import okhttp3.ResponseBody;
@@ -68,7 +69,8 @@ public class LogisticsActivity extends BaseActivity implements OnRefreshLoadMore
     private LinearLayoutManager mLayoutManager;
     private UserInfo mUserInfo;
     private boolean mCanLoadMore = true;
-
+    private String mExpressNo;
+    private String mExpressCode;
     @Override
     public int getLayoutId() {
         return R.layout.activity_logistics;
@@ -83,7 +85,8 @@ public class LogisticsActivity extends BaseActivity implements OnRefreshLoadMore
             FToast.error("数据错误");
             return;
         }
-
+       mExpressNo= intent.getStringExtra("express_no");
+        mExpressCode = intent.getStringExtra("express_code");
        /* data = (MyTeamlbBean.DataBean.ListBean) intent.getSerializableExtra("Data");
 
         if (data == null) {
@@ -101,9 +104,7 @@ public class LogisticsActivity extends BaseActivity implements OnRefreshLoadMore
         mAdapter.setItems(mItems);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         mAdapter.register(ExpressInfo.DataBeanX.DataBean.class, new ItemLogisticsViewBinder());
-        CartItemDecoration mDecoration = new CartItemDecoration(this, 10);
-        //  recyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
-        recyclerView.addItemDecoration(mDecoration);
+
         mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(mAdapter);
@@ -115,7 +116,7 @@ public class LogisticsActivity extends BaseActivity implements OnRefreshLoadMore
             refreshLayout.finishRefresh();
             return;
         }
-        mViewModel.getExpressInfo("", "", Status.LOAD_REFRESH)
+        mViewModel.getExpressInfo(mExpressNo, mExpressCode, Status.LOAD_REFRESH)
                 .observe(this, mObserver1);
     }
 
@@ -149,8 +150,8 @@ public class LogisticsActivity extends BaseActivity implements OnRefreshLoadMore
         try {
             String b = body.string();
             ExpressInfo mExpressInfo = new Gson().fromJson(b, ExpressInfo.class);
-            textWuliugongsi.setText("物流公司："+mExpressInfo.getData().getCom());
-            textYundanbianhao.setText(mExpressInfo.getData().getNu());
+            textWuliugongsi.setText(String.format(Locale.CHINA,"物流公司:%s",mExpressInfo.getData().getCom()));
+            textYundanbianhao.setText(String.format(Locale.CHINA,"运单编号：%s",mExpressInfo.getData().getNu()));
             List<ExpressInfo.DataBeanX.DataBean> item = mExpressInfo.getData().getData();
             if (item == null || item.size() == 0) {
 
@@ -205,4 +206,9 @@ public class LogisticsActivity extends BaseActivity implements OnRefreshLoadMore
     }
 
 
+
+    @OnClick(R.id.image_back)
+    public void onViewClicked() {
+        finish();
+    }
 }

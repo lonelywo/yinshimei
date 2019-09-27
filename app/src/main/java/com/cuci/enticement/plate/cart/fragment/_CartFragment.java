@@ -147,7 +147,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
         mLocalBroadcastManager = LocalBroadcastManager.getInstance(mActivity);
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ACTION_REFRESH_DATA);
-
+        mLocalBroadcastManager.registerReceiver(mReceiver, intentFilter);
 
 
 
@@ -185,7 +185,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
 
 
-  /*  private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+   private BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent != null && intent.getAction() != null) {
@@ -201,7 +201,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
             }
         }
-    };*/
+    };
 
 
 
@@ -630,7 +630,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
                         if(orderResult.getCode()==1){
                             //跳转
 
-                            List<OrderGoods> items = (List<OrderGoods>) mAdapter.getItems();
+                            List<OrderGoods> items = getCheckeds();
                             AllOrderList.DataBean.ListBeanX cartIntentInfo=new AllOrderList.DataBean.ListBeanX();
 
                             cartIntentInfo.setOrder_no(Long.parseLong(orderResult.getData().getOrder().getOrder_no()));

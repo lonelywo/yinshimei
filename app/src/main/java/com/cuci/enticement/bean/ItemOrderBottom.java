@@ -8,6 +8,8 @@ public class ItemOrderBottom {
     public String totalMoney ;
     public String goodsMoney ;
     public String expressMoney ;
+    public String expressNo ;
+    public String expressCode ;
     public int bottomcur;
     public int topCur;
 

@@ -13,12 +13,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cuci.enticement.R;
 import com.cuci.enticement.bean.ExpressInfo;
 import com.cuci.enticement.bean.OrderGoods;
+import com.cuci.enticement.utils.ViewUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.drakeet.multitype.ItemViewBinder;
 
 public class ItemLogisticsViewBinder extends ItemViewBinder<ExpressInfo.DataBeanX.DataBean, ItemLogisticsViewBinder.ViewHolder> {
+
 
 
 
@@ -53,13 +55,21 @@ public class ItemLogisticsViewBinder extends ItemViewBinder<ExpressInfo.DataBean
         holder.textQianshouxinxi.setText(item.getContext());
         holder.textTime.setText(item.getTime());
         int adapterPosition = holder.getAdapterPosition();
-            if (adapterPosition==0) {
+        int itemCount = getAdapter().getItemCount();
+        if (adapterPosition == 0) {
             holder.imgWuliutubiao.setImageResource(R.drawable.wuliutubiao_huang);
-        } else {
+            ViewUtils.hideView(holder.line);
+            ViewUtils.showView(holder.line2);
+        } else if(adapterPosition==itemCount-1){
             holder.imgWuliutubiao.setImageResource(R.drawable.wuliutubiao_hui);
+            ViewUtils.showView(holder.line);
+            ViewUtils.hideView(holder.line2);
+
+        }else {
+            holder.imgWuliutubiao.setImageResource(R.drawable.wuliutubiao_hui);
+            ViewUtils.showView(holder.line);
+            ViewUtils.showView(holder.line2);
         }
-
-
 
 
     }
@@ -73,8 +83,10 @@ public class ItemLogisticsViewBinder extends ItemViewBinder<ExpressInfo.DataBean
         TextView textQianshouxinxi;
         @BindView(R.id.text_time)
         TextView textTime;
-
-
+        @BindView(R.id.line)
+        View line;
+        @BindView(R.id.line2)
+        View line2;
         ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

@@ -77,9 +77,7 @@ import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 import okhttp3.ResponseBody;
 
-import static androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance;
-import static com.cuci.enticement.plate.cart.fragment._CartFragment.ACTION_REFRESH_DATA;
-import static com.cuci.enticement.plate.common.MainActivity.ACTION_GO_TO_HOME;
+
 
 /**
  *
