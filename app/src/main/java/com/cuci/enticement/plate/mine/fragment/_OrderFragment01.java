@@ -151,8 +151,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                     // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
                     if (TextUtils.equals(resultStatus, "9000")) {
 
-                        Toast.makeText(mActivity, "支付成功", Toast.LENGTH_SHORT).show();
-
+                        FToast.success("支付成功");
 
                         //支付成功后，刷新个人中心状态
                         Intent intent= new Intent(_MineFragment.ACTION_REFRESH_STATUS);
@@ -180,12 +179,11 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                     } else {
 
                         if (TextUtils.equals(resultStatus, "6001")) {
-                            Toast.makeText(mActivity, "支付取消", Toast.LENGTH_SHORT).show();
 
+                            FToast.warning("支付取消");
                         } else {
                             // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
-                            Toast.makeText(mActivity, "支付失败", Toast.LENGTH_SHORT).show();
-
+                            FToast.error("支付失败");
                         }
                     }
                     break;
