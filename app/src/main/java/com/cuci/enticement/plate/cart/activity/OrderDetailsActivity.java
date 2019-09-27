@@ -20,6 +20,7 @@ import com.cuci.enticement.bean.CommitOrder;
 import com.cuci.enticement.bean.ItemOrderBottom;
 import com.cuci.enticement.bean.ItemOrderTitle;
 import com.cuci.enticement.bean.OrderCancel;
+import com.cuci.enticement.bean.OrderConfirm;
 import com.cuci.enticement.bean.OrderGoods;
 import com.cuci.enticement.bean.OrderPay;
 import com.cuci.enticement.bean.Status;
@@ -45,6 +46,8 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
 import java.util.List;
@@ -111,6 +114,28 @@ public class OrderDetailsActivity extends BaseActivity {
     private MultiTypeAdapter mAdapter;
     private Items mItems;
     private int mStatus;
+
+
+
+
+
+
+
+    @Subscribe(threadMode = ThreadMode.POSTING, sticky = true)
+    public void onOrderEventMessage(OrderEvent event) {
+        if(event.getCode()==OrderEvent.FINISH_ACTIVITY){
+            finish();
+        }
+
+
+    }
+
+
+
+
+
+
+
     @Override
     public int getLayoutId() {
         return R.layout.order_details;
@@ -372,15 +397,31 @@ public class OrderDetailsActivity extends BaseActivity {
 
                 ResponseBody body = status.content;
 
+
                 try {
                     String result = body.string();
-                    OrderPay orderPay = new Gson().fromJson(result, OrderPay.class);
+                    OrderConfirm orderConfirm = new Gson().fromJson(result, OrderConfirm.class);
 
-                    if(orderPay.getCode()==1){
+                    if(orderConfirm.getCode()==1){
 
+                        FToast.success(orderConfirm.getInfo());
+                        mStatus=HAS_FINISH;
+                        initViewStatus(HAS_FINISH);
+
+                        //刷新外层
+                        EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.REFRESH_OUTSIDE));
+
+                        //刷新小角标状态
+                        Intent intent = new Intent(_MineFragment.ACTION_LOGIN_SUCCEED);
+
+                        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+
+
+
+                        finish();
 
                     }else {
-                        FToast.warning(orderPay.getInfo());
+                        FToast.warning(orderConfirm.getInfo());
                     }
 
 
@@ -414,17 +455,22 @@ public class OrderDetailsActivity extends BaseActivity {
                     String result = content.string();
                     OrderCancel orderCancel = new Gson().fromJson(result, OrderCancel.class);
                     if (orderCancel.getCode() == 1) {
-                        //取消订单
+                        //刷新外层
                         EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.REFRESH_OUTSIDE));
 
                         //刷新小角标状态
                         Intent intent = new Intent(_MineFragment.ACTION_LOGIN_SUCCEED);
 
                         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+
+
                         FToast.success(orderCancel.getInfo());
                         //取消订单 刷新头部详情页状态
                         mStatus=0;
+
                         initViewStatus(CANCEL_STATUS);
+
+                        finish();
                     } else {
                         FToast.error(orderCancel.getInfo());
                     }
@@ -525,18 +571,28 @@ public class OrderDetailsActivity extends BaseActivity {
                     // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
                     if (TextUtils.equals(resultStatus, "9000")) {
                         FToast.success("支付成功");
+
+
+                        //刷新外层
+                        EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.REFRESH_OUTSIDE));
+
+                        //刷新小角标状态
+                        Intent intent = new Intent(_MineFragment.ACTION_LOGIN_SUCCEED);
+
+                        LocalBroadcastManager.getInstance(OrderDetailsActivity.this).sendBroadcast(intent);
+
                         finish();
 
                     } else {
 
                         if (TextUtils.equals(resultStatus, "6001")) {
                             FToast.success("支付取消");
-
+                            finish();
 
                         } else {
                             // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
                             FToast.error("支付失败");
-
+                            finish();
                         }
                     }
                     break;

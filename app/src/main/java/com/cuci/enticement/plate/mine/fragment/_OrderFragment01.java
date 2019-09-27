@@ -34,6 +34,7 @@ import com.cuci.enticement.bean.AllOrderList;
 import com.cuci.enticement.bean.ItemOrderBottom;
 import com.cuci.enticement.bean.ItemOrderTitle;
 import com.cuci.enticement.bean.OrderCancel;
+import com.cuci.enticement.bean.OrderConfirm;
 import com.cuci.enticement.bean.OrderGoods;
 import com.cuci.enticement.bean.OrderList;
 import com.cuci.enticement.bean.OrderPay;
@@ -153,10 +154,15 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
 
                         FToast.success("支付成功");
 
-                        //支付成功后，刷新个人中心状态
-                        Intent intent= new Intent(_MineFragment.ACTION_REFRESH_STATUS);
+                        //刷新外层
+                        EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.REFRESH_OUTSIDE));
+
+                        //刷新小角标状态
+                        Intent intent = new Intent(_MineFragment.ACTION_LOGIN_SUCCEED);
+
                         LocalBroadcastManager.getInstance(mActivity).sendBroadcast(intent);
-                        //todo   刷新列表当前  包括微信支付也要刷新
+
+
 
 
 
@@ -529,13 +535,14 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
 
                 try {
                     String result = body.string();
-                    OrderPay orderPay = new Gson().fromJson(result, OrderPay.class);
+                    OrderConfirm orderConfirm = new Gson().fromJson(result, OrderConfirm.class);
 
-                    if(orderPay.getCode()==1){
+                    if(orderConfirm.getCode()==1){
 
+                        FToast.success(orderConfirm.getInfo());
 
                     }else {
-                        FToast.warning(orderPay.getInfo());
+                        FToast.warning(orderConfirm.getInfo());
                     }
 
 

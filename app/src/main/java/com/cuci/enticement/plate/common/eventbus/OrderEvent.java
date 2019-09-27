@@ -6,6 +6,7 @@ public class OrderEvent {
 
     public static final int CONFIRM_ORDER=101;
     public static final int REFRESH_OUTSIDE=102;
+    public static final int FINISH_ACTIVITY=103;
     public OrderEvent(int code) {
         this.code = code;
     }

@@ -36,6 +36,7 @@ import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.bean.WxPayBean;
 import com.cuci.enticement.bean.ZFBBean;
 import com.cuci.enticement.plate.common.eventbus.CartEvent;
+import com.cuci.enticement.plate.common.eventbus.OrderEvent;
 import com.cuci.enticement.plate.common.popup.TipsPopup;
 import com.cuci.enticement.plate.common.popup.WarningPopup;
 import com.cuci.enticement.plate.common.vm.CommonViewModel;
@@ -70,6 +71,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -125,13 +128,20 @@ public class OrderActivity extends BaseActivity {
                     String resultStatus = payResult.getResultStatus();
                     // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
                     if (TextUtils.equals(resultStatus, "9000")) {
-
+                        FToast.success("支付成功");
                         //支付成功后，刷新个人中心状态
-                        Intent intent= new Intent(_MineFragment.ACTION_REFRESH_STATUS);
+                        //刷新外层
+                        EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.REFRESH_OUTSIDE));
+
+                        //刷新小角标状态
+                        Intent intent = new Intent(_MineFragment.ACTION_LOGIN_SUCCEED);
+
                         LocalBroadcastManager.getInstance(OrderActivity.this).sendBroadcast(intent);
 
-                        FToast.success("支付成功");
                         finish();
+
+
+
 
                     } else {
 
@@ -151,6 +161,19 @@ public class OrderActivity extends BaseActivity {
             }
         }
     };
+
+
+
+    @Subscribe(threadMode = ThreadMode.POSTING, sticky = true)
+    public void onOrderEventMessage(OrderEvent event) {
+        if(event.getCode()==OrderEvent.FINISH_ACTIVITY){
+            finish();
+        }
+
+
+    }
+
+
 
     @Override
     public int getLayoutId() {
