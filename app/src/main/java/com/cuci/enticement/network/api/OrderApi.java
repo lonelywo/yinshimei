@@ -35,7 +35,7 @@ public interface OrderApi {
      */
     @FormUrlEncoded
     @POST("store/api.member.order/confirm")
-    Call<OrderResult> confirmOrder(@Field("token") String token,
+    Call<ResponseBody> confirmOrder(@Field("from_type") String fromType,@Field("token") String token,
                                  @Field("mid") String mid,
                                  @Field("order_no") String orderNum,
                                    @Field("sign") String signs);
@@ -57,7 +57,7 @@ public interface OrderApi {
      * 获取会员订单统计
      */
     @FormUrlEncoded
-    @POST("/store/api.member.order/total")
+    @POST("store/api.member.order/total")
     Call<OrderStatistics> getTotalOrder(@Field("from_type") String fromType,@Field("token") String token,
                                       @Field("mid") String mid,
                                         @Field("sign") String signs);
@@ -67,7 +67,7 @@ public interface OrderApi {
      * //快递单号   快递公司编号
      */
     @FormUrlEncoded
-    @POST("/store/api.member.order/total")
+    @POST("store/api.express/query")
     Call<ResponseBody> getExpressInfo(@Field("express_no") String num,
                                  @Field("express_code") String code,
                                      @Field("sign") String signs);

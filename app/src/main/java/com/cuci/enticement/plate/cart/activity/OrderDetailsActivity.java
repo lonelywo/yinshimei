@@ -64,7 +64,6 @@ import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 import okhttp3.ResponseBody;
 
-import static com.cuci.enticement.plate.cart.fragment._CartFragment.ACTION_REFRESH_DATA;
 
 /**
  * 订单详情页
@@ -281,7 +280,9 @@ public class OrderDetailsActivity extends BaseActivity {
                             .dismissOnTouchOutside(false)
                             .asCustom(new TipsPopup(OrderDetailsActivity.this,
                                     "亲，确定要确认收货吗？", "取消", "确定", () -> {
-
+                                mViewModel.orderConfirm(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),
+                                        String.valueOf(mInfo.getOrder_no()))
+                                        .observe(this,mConfirmObserver);
                             }))
                             .show();
 
@@ -360,6 +361,48 @@ public class OrderDetailsActivity extends BaseActivity {
                 break;
         }
     };
+
+
+    /**
+     * 确认收货
+     */
+    private Observer<Status<ResponseBody>> mConfirmObserver = status -> {
+        switch (status.status) {
+            case Status.SUCCESS:
+
+                ResponseBody body = status.content;
+
+                try {
+                    String result = body.string();
+                    OrderPay orderPay = new Gson().fromJson(result, OrderPay.class);
+
+                    if(orderPay.getCode()==1){
+
+
+                    }else {
+                        FToast.warning(orderPay.getInfo());
+                    }
+
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+                break;
+            case Status.LOADING:
+
+                break;
+            case Status.ERROR:
+                FToast.error(status.message);
+
+                break;
+        }
+    };
+
+
+
 
 
 

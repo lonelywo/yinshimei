@@ -55,10 +55,11 @@
         android:layout_height="wrap_content"
         android:background="@drawable/shape_sibian_bai_bg6"
         app:layout_constraintEnd_toStartOf="@+id/text_zhifu_rebuy_queren"
-        app:layout_constraintTop_toTopOf="@+id/text_zhifu_rebuy_queren"
+        app:layout_constraintTop_toBottomOf="@+id/line2"
+      app:layout_constraintBottom_toTopOf="@+id/line_bottom"
         android:text="取消订单"
         android:padding="5dp"
-        android:layout_marginRight="24dp"
+        android:layout_marginRight="20dp"
 
         />
     <TextView

@@ -42,6 +42,7 @@ import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.bean.WxPayBean;
 import com.cuci.enticement.bean.ZFBBean;
+import com.cuci.enticement.plate.cart.activity.LogisticsActivity;
 import com.cuci.enticement.plate.cart.activity.OrderActivity;
 import com.cuci.enticement.plate.cart.activity.OrderDetailsActivity;
 import com.cuci.enticement.plate.common.LoginActivity;
@@ -49,6 +50,7 @@ import com.cuci.enticement.plate.common.eventbus.MessageEvent1;
 import com.cuci.enticement.plate.common.eventbus.OrderEvent;
 import com.cuci.enticement.plate.common.popup.PayBottom2TopProdPopup;
 import com.cuci.enticement.plate.common.popup.ShareBottom2TopProdPopup;
+import com.cuci.enticement.plate.common.popup.TipsPopup;
 import com.cuci.enticement.plate.home.activity.ProdActivity;
 import com.cuci.enticement.plate.mine.adapter.ItemBottomViewBinder;
 import com.cuci.enticement.plate.mine.adapter.ItemProdViewBinder;
@@ -364,6 +366,8 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
             itemOrderBottom.totalMoney=orderBean.getPrice_total();
             itemOrderBottom.goodsMoney=orderBean.getPrice_goods();
             itemOrderBottom.expressMoney=orderBean.getPrice_express();
+            itemOrderBottom.expressNo=orderBean.getExpress_send_no();
+            itemOrderBottom.expressCode=orderBean.getExpress_company_code();
             itemOrderBottom.num=orderBean.getGoods_count();
             itemOrderBottom.bottomcur=curBottom;
             itemOrderBottom.topCur=cur;
@@ -398,7 +402,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
 
     @Override
     public void onReBuy(ItemOrderBottom itemOrderBottom) {
-
+        //重新购买
     }
 
     /**
@@ -407,10 +411,22 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
      */
     @Override
     public void onCancel(ItemOrderBottom itemOrderBottom) {
+        new XPopup.Builder(mActivity)
+                .dismissOnBackPressed(false)
+                .dismissOnTouchOutside(false)
+                .asCustom(new TipsPopup(mActivity,
+                        "亲，确定要取消订单吗？", "取消", "确定", () -> {
+                    String orderNum = itemOrderBottom.orderNum;
+                    mCancelItem=itemOrderBottom;
+                    mViewModel.orderCancel(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),orderNum).observe(this, mCancelObserver);
 
-        String orderNum = itemOrderBottom.orderNum;
-        mCancelItem=itemOrderBottom;
-        mViewModel.orderCancel(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),orderNum).observe(this, mCancelObserver);
+
+                }))
+                .show();
+
+
+
+
     }
 
 
@@ -451,7 +467,16 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
      */
     @Override
     public void onConfirmGoods(ItemOrderBottom itemOrderBottom) {
-
+        new XPopup.Builder(mActivity)
+                .dismissOnBackPressed(false)
+                .dismissOnTouchOutside(false)
+                .asCustom(new TipsPopup(mActivity,
+                        "亲，确定要确认收货吗？", "取消", "确定", () -> {
+                    mViewModel.orderConfirm(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),
+                            itemOrderBottom.orderNum)
+                            .observe(this,mConfirmObserver);
+                }))
+                .show();
     }
 
 
@@ -461,7 +486,10 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
      */
     @Override
     public void onViewLogistics(ItemOrderBottom itemOrderBottom) {
-
+        Intent intent = new Intent(mActivity, LogisticsActivity.class);
+        intent.putExtra("express_no",itemOrderBottom.expressNo);
+        intent.putExtra("express_code",itemOrderBottom.expressCode);
+        startActivity(intent);
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING, sticky = true)
@@ -490,6 +518,45 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
         super.onDetach();
         EventBus.getDefault().unregister(this);
     }
+
+
+    /**
+     * 确认收货
+     */
+    private Observer<Status<ResponseBody>> mConfirmObserver = status -> {
+        switch (status.status) {
+            case Status.SUCCESS:
+
+                ResponseBody body = status.content;
+
+                try {
+                    String result = body.string();
+                    OrderPay orderPay = new Gson().fromJson(result, OrderPay.class);
+
+                    if(orderPay.getCode()==1){
+
+
+                    }else {
+                        FToast.warning(orderPay.getInfo());
+                    }
+
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+                break;
+            case Status.LOADING:
+
+                break;
+            case Status.ERROR:
+                FToast.error(status.message);
+
+                break;
+        }
+    };
 
 
 

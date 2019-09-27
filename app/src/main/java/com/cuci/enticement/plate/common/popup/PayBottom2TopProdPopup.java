@@ -69,16 +69,9 @@ public class PayBottom2TopProdPopup extends BottomPopupView {
     }
 
 
-    @OnClick(R.id.tv_commit)
-    public void onViewClicked() {
 
-        if (mOnCommitClickListener != null) {
 
-            dismiss();
-        }
-    }
-
-    @OnClick({R.id.con_fangshi1, R.id.con_fangshi2, R.id.tv_commit})
+    @OnClick({R.id.con_fangshi1, R.id.con_fangshi2, R.id.tv_commit,R.id.text_fangshi})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.con_fangshi1:
@@ -98,6 +91,9 @@ public class PayBottom2TopProdPopup extends BottomPopupView {
                     dismiss();
                 }
 
+                break;
+            case R.id.text_fangshi:
+                dismiss();
                 break;
         }
 

@@ -61,7 +61,7 @@ import butterknife.OnClick;
 import okhttp3.ResponseBody;
 
 import static androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance;
-import static com.cuci.enticement.plate.cart.fragment._CartFragment.ACTION_REFRESH_DATA;
+
 import static com.cuci.enticement.plate.common.MainActivity.ACTION_GO_TO_CART;
 
 public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPopup.OnCommitClickListener {
