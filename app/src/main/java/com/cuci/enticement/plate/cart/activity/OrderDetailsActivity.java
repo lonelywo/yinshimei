@@ -283,7 +283,7 @@ public class OrderDetailsActivity extends BaseActivity {
 
 
 
-                }else if(mStatus==4){
+                }else if(mStatus==4||mStatus==5){
                     //查看物流  intent
                     Intent intent = new Intent(OrderDetailsActivity.this, LogisticsActivity.class);
                     intent.putExtra("express_no",String.valueOf(mInfo.getExpress_send_no()));
@@ -608,7 +608,7 @@ public class OrderDetailsActivity extends BaseActivity {
                     } else {
 
                         if (TextUtils.equals(resultStatus, "6001")) {
-                            FToast.success("支付取消");
+                            FToast.warning("支付取消");
                             finish();
 
                         } else {
