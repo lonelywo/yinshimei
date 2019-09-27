@@ -274,8 +274,9 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
                 })
                 .setType(new boolean[]{true, true, false, false, false, false})
                 .setLabel("", "", "", "", "", "") //设置空字符串以隐藏单位提示   hide label
-                .setDividerColor(Color.DKGRAY)
+                .setDividerColor(Color.BLACK)
                 .setContentTextSize(20)
+                .setLineSpacingMultiplier((float) 2.0)
                 .setDate(selectedDate)
                 .setRangDate(startDate, selectedDate)
                // .setDecorView(mFrameLayout)//非dialog模式下,设置ViewGroup, pickerView将会添加到这个ViewGroup中
@@ -362,7 +363,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
 
                     refreshLayout.finishRefresh();
                 }
-                FToast.warning(mCommissionjlBean.getInfo());
+                FToast.error(mCommissionjlBean.getInfo());
             }
         } catch (IOException e) {
             e.printStackTrace();

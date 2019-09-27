@@ -130,7 +130,7 @@ public class CashActivity extends BaseActivity {
             if (mCommissiontxBean.getCode() == 1) {
 
             } else {
-                FToast.warning(mCommissiontxBean.getInfo());
+                FToast.error(mCommissiontxBean.getInfo());
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -139,10 +139,5 @@ public class CashActivity extends BaseActivity {
     }
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
+
 }

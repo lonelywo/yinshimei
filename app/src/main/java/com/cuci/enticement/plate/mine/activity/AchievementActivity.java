@@ -127,7 +127,7 @@ public class AchievementActivity extends BaseActivity {
                     textWeidabiao2.setText("已发放");
                 }
             } else {
-                FToast.warning(mYeJiYueFanBean.getInfo());
+                FToast.error(mYeJiYueFanBean.getInfo());
             }
         } catch (IOException e) {
             e.printStackTrace();

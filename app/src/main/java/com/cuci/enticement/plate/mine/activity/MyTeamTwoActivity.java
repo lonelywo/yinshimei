@@ -212,7 +212,7 @@ public class MyTeamTwoActivity extends BaseActivity implements OnRefreshLoadMore
 
                     refreshLayout.finishRefresh();
                 }
-                FToast.warning(mMyTeamlbBean.getInfo());
+                FToast.error(mMyTeamlbBean.getInfo());
             }
         } catch (IOException e) {
             e.printStackTrace();

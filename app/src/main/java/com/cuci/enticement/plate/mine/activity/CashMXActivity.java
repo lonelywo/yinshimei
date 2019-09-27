@@ -162,7 +162,7 @@ public class CashMXActivity extends BaseActivity implements OnRefreshLoadMoreLis
 
                     refreshLayout.finishRefresh();
                 }
-                FToast.warning(mCommissionjlBean.getInfo());
+                FToast.error(mCommissionjlBean.getInfo());
             }
         } catch (IOException e) {
             e.printStackTrace();

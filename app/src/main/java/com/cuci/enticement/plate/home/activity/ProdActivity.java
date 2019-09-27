@@ -393,7 +393,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
 
 
                         } else {
-                            FToast.warning(orderResult.getInfo());
+                            FToast.error(orderResult.getInfo());
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -436,7 +436,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
 
 
                         } else {
-                            FToast.warning(bean.getInfo());
+                            FToast.error(bean.getInfo());
                         }
 
                     } catch (IOException e) {
@@ -481,7 +481,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                             }
 
                         } else {
-                            FToast.warning(numResult.getInfo());
+                            FToast.error(numResult.getInfo());
                         }
 
                     } catch (IOException e) {

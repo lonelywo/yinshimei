@@ -223,7 +223,7 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
                         } else {
                             mRefreshLayout.finishRefresh();
                         }
-                        FToast.warning(data.getInfo());
+                        FToast.error(data.getInfo());
                     }
                     break;
                 case Status.ERROR:

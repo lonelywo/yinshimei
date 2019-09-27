@@ -156,7 +156,7 @@ public class ZengAddressActivity extends BaseActivity {
                     }else {
                         mIsDefault = "0";
                         checkbox.setChecked(false);
-                        FToast.warning(bean.getInfo());
+                        FToast.error(bean.getInfo());
                     }
 
 
@@ -230,7 +230,7 @@ public class ZengAddressActivity extends BaseActivity {
                         FToast.success(updateAddress.getInfo());
                         finish();
                     } else {
-                        FToast.warning(updateAddress.getInfo());
+                        FToast.error(updateAddress.getInfo());
 
                     }
 
@@ -299,6 +299,7 @@ public class ZengAddressActivity extends BaseActivity {
                 .setDividerColor(Color.BLACK)
                 .setTextColorCenter(Color.BLACK) //设置选中项文字颜色
                 .setContentTextSize(20)
+                .setLineSpacingMultiplier((float) 2.0)
                 .build();
 
         /*pvOptions.setPicker(options1Items);//一级选择器
