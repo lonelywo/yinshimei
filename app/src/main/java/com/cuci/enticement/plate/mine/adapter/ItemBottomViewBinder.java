@@ -63,10 +63,10 @@ public class ItemBottomViewBinder extends ItemViewBinder<ItemOrderBottom, ItemBo
             holder.textQuxiao.setText("取消订单");
             holder.textZhifu.setText("立即支付");
         }else if(status==3){
-            //待发货  取消订单
-            ViewUtils.showView( holder.textQuxiao);
+            //待发货
+            ViewUtils.hideView( holder.textQuxiao);
             ViewUtils.hideView( holder.textZhifu);
-            holder.textQuxiao.setText("取消订单");
+
         }else if(status==4){
             //待收货  查看物流  确认收货
             ViewUtils.showView( holder.textQuxiao);

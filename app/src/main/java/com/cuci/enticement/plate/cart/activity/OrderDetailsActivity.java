@@ -231,10 +231,10 @@ public class OrderDetailsActivity extends BaseActivity {
             tvRight.setText("立即支付");
             textZhuangtai.setText("待支付");
         } else if (status == 3) {
-            //待发货  取消订单
-            ViewUtils.showView(tvLeft);
+            //待发货
+            ViewUtils.hideView(tvLeft);
             ViewUtils.hideView(tvRight);
-            tvLeft.setText("取消订单");
+
             textZhuangtai.setText("待发货");
         } else if (status == 4) {
             //待收货  查看物流  确认收货
