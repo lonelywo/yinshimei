@@ -158,7 +158,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                         EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.REFRESH_OUTSIDE));
 
                         //刷新小角标状态
-                        Intent intent = new Intent(_MineFragment.ACTION_LOGIN_SUCCEED);
+                        Intent intent = new Intent(_MineFragment.ACTION_REFRESH_STATUS);
 
                         LocalBroadcastManager.getInstance(mActivity).sendBroadcast(intent);
 
@@ -600,7 +600,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                         }
 
                         //刷新状态
-                        Intent intent = new Intent(_MineFragment.ACTION_LOGIN_SUCCEED);
+                        Intent intent = new Intent(_MineFragment.ACTION_REFRESH_STATUS);
 
                         LocalBroadcastManager.getInstance(mActivity).sendBroadcast(intent);
 

@@ -412,7 +412,7 @@ public class OrderDetailsActivity extends BaseActivity {
                         EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.REFRESH_OUTSIDE));
 
                         //刷新小角标状态
-                        Intent intent = new Intent(_MineFragment.ACTION_LOGIN_SUCCEED);
+                        Intent intent = new Intent(_MineFragment.ACTION_REFRESH_STATUS);
 
                         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
 
@@ -459,7 +459,7 @@ public class OrderDetailsActivity extends BaseActivity {
                         EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.REFRESH_OUTSIDE));
 
                         //刷新小角标状态
-                        Intent intent = new Intent(_MineFragment.ACTION_LOGIN_SUCCEED);
+                        Intent intent = new Intent(_MineFragment.ACTION_REFRESH_STATUS);
 
                         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
 
@@ -577,7 +577,7 @@ public class OrderDetailsActivity extends BaseActivity {
                         EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.REFRESH_OUTSIDE));
 
                         //刷新小角标状态
-                        Intent intent = new Intent(_MineFragment.ACTION_LOGIN_SUCCEED);
+                        Intent intent = new Intent(_MineFragment.ACTION_REFRESH_STATUS);
 
                         LocalBroadcastManager.getInstance(OrderDetailsActivity.this).sendBroadcast(intent);
 

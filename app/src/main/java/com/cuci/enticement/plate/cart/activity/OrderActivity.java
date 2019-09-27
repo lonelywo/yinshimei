@@ -134,7 +134,7 @@ public class OrderActivity extends BaseActivity {
                         EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.REFRESH_OUTSIDE));
 
                         //刷新小角标状态
-                        Intent intent = new Intent(_MineFragment.ACTION_LOGIN_SUCCEED);
+                        Intent intent = new Intent(_MineFragment.ACTION_REFRESH_STATUS);
 
                         LocalBroadcastManager.getInstance(OrderActivity.this).sendBroadcast(intent);
 
