@@ -20,6 +20,6 @@
         android:layout_marginTop="16dp"
         android:gravity="center_horizontal"
         android:lineSpacingExtra="6dp"
-        android:text="啊哦，您还没有相关数据"/>
+        android:text="啊哦，您还没有相关订单"/>
 
 </LinearLayout>

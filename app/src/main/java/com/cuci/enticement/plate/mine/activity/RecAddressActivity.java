@@ -129,7 +129,7 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mRecyclerView.addItemDecoration(new CartItemDecoration(this,4));
+        mRecyclerView.addItemDecoration(new CartItemDecoration(this,10));
         mRecyclerView.setAdapter(mAdapter);
 
         CustomRefreshHeader header = new CustomRefreshHeader(this);

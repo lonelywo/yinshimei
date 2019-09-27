@@ -183,22 +183,22 @@ public class MainActivity extends AppCompatActivity {
         List<BottomBarView.Tab> tabs = new ArrayList<>();
 
         BottomBarView.Tab tab1 = new BottomBarView.Tab(
-                R.drawable.tab_find_selected,
-                R.drawable.tab_find_normal, false, getString(R.string.tab_home));
+                R.drawable.home_huang,
+                R.drawable.home_hui, false, getString(R.string.tab_home));
 
         BottomBarView.Tab tab2 = new BottomBarView.Tab(
-                R.drawable.tab_find_selected,
-                R.drawable.tab_find_normal, false, getString(R.string.tab_material));
+                R.drawable.mall_huang,
+                R.drawable.mall_hui, false, getString(R.string.tab_material));
 
 
 
         BottomBarView.Tab tab3 = new BottomBarView.Tab(
-                R.drawable.tab_find_selected,
-                R.drawable.tab_find_normal, false, getString(R.string.tab_find));
+                R.drawable.cart_huang,
+                R.drawable.cart_hui, false, getString(R.string.tab_find));
 
         BottomBarView.Tab tab4 = new BottomBarView.Tab(
-                R.drawable.tab_find_selected,
-                R.drawable.tab_find_normal, false, getString(R.string.tab_mine));
+                R.drawable.mine_huang,
+                R.drawable.mine_hui, false, getString(R.string.tab_mine));
 
         tabs.add(tab1);
         tabs.add(tab2);
