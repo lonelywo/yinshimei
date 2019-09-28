@@ -551,7 +551,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                         FToast.success(orderConfirm.getInfo());
 
                     }else {
-                        FToast.warning(orderConfirm.getInfo());
+                        FToast.error(orderConfirm.getInfo());
                     }
 
 
@@ -687,7 +687,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                             sendReq2ZFB(orderPay.getData());
 
                         }else {
-                            FToast.warning(orderPay.getInfo());
+                            FToast.error(orderPay.getInfo());
                         }
 
                     }else if(mPayType==1){
@@ -714,7 +714,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                             sendReq2WX(wxPayBean);
 
                         }else {
-                            FToast.warning(orderPay.getInfo());
+                            FToast.error(orderPay.getInfo());
                         }
 
 
