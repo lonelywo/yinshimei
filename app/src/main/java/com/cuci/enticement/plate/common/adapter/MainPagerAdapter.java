@@ -18,6 +18,11 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
         super(fm);
     }
 
+    public MainPagerAdapter(FragmentManager fm, List<Fragment> fragments) {
+        super(fm);
+        mFragments = fragments;
+    }
+
     public void addFragment(Fragment fragment) {
         if (fragment == null)
             return;

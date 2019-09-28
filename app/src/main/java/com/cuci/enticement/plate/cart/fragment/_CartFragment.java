@@ -182,6 +182,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
     public void onDetach() {
         super.onDetach();
         EventBus.getDefault().unregister(this);
+        mLocalBroadcastManager.unregisterReceiver(mReceiver);
     }
 
 
