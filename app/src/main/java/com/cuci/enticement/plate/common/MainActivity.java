@@ -19,6 +19,8 @@ import com.cuci.enticement.bean.Base;
 import com.cuci.enticement.bean.MyTeamslBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.Version;
+import com.cuci.enticement.event.LoginOutEvent;
+import com.cuci.enticement.event.LoginSucceedEvent;
 import com.cuci.enticement.plate.cart.fragment._CartFragment;
 import com.cuci.enticement.plate.common.adapter.MainPagerAdapter;
 import com.cuci.enticement.plate.common.popup.UpdatePopup;
@@ -29,6 +31,7 @@ import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.SharedPrefUtils;
+import com.cuci.enticement.utils.ViewUtils;
 import com.cuci.enticement.widget.BottomBarView;
 import com.cuci.enticement.widget.FitSystemWindowViewPager;
 import com.google.gson.Gson;
@@ -42,14 +45,21 @@ import java.util.List;
 
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -86,7 +96,8 @@ public class MainActivity extends AppCompatActivity {
     private Version  mData;
 
     private LocalBroadcastManager mLocalBroadcastManager;
-
+    private List<Fragment> mFragments;
+    private  MainPagerAdapter mPagerAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,20 +110,29 @@ public class MainActivity extends AppCompatActivity {
        // if (Rom.check(Rom.ROM_FLYME)) {
          //   FlymeStatusBarColorUtils.setStatusBarDarkIcon(this, true);
        // }
+
+
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+
+        EventBus.getDefault().register(this);
+
 
         mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         mClipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
 
-        MainPagerAdapter adapter = new MainPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new _HomeFragment());
-        adapter.addFragment(new _MallFragment());
-        adapter.addFragment(new _CartFragment());
-        adapter.addFragment(new _MineFragment());
+        mFragments = new ArrayList<>();
+
+        mFragments.add(new _HomeFragment());
+        mFragments.add(new _MallFragment());
+        mFragments.add(new _CartFragment());
+        mFragments.add(new _MineFragment());
+
+        mPagerAdapter = new MainPagerAdapter(getSupportFragmentManager(),mFragments);
 
         mViewPager.setOffscreenPageLimit(3);
-        mViewPager.setAdapter(adapter);
+        mViewPager.setAdapter(mPagerAdapter);
         initBottomLayout();
         mBottomLayout.setOnTabClickListener(position -> mViewPager.setCurrentItem(position));
 
@@ -171,10 +191,6 @@ public class MainActivity extends AppCompatActivity {
                 FLog.e(TAG, "有效标签："+s);
             }
         }*/
-
-
-
-
 
     }
 
@@ -253,16 +269,46 @@ public class MainActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault()
+                .unregister(this);
+        mLocalBroadcastManager.unregisterReceiver(mReceiver);
     }
 
+    //退出登录
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onLogoutEvent(LoginOutEvent event) {
+        if ( mPagerAdapter.getCount() == 4) {
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+            mFragments.clear();
+            mFragments.add(new _HomeFragment());
+            mFragments.add(new _MallFragment());
+            mFragments.add(new _CartFragment());
+            mFragments.add(new _MineFragment());
+            mViewPager.setAdapter(mPagerAdapter);
+            mViewPager.setOffscreenPageLimit(3);
+            mViewPager.setCurrentItem(3);
+        }
+    }
+
+    //登录成功
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onLoginEvent(LoginSucceedEvent event) {
+
+        if (mPagerAdapter.getCount() == 4) {
+
+            mFragments.clear();
+            mFragments.add(new _HomeFragment());
+            mFragments.add(new _MallFragment());
+            mFragments.add(new _CartFragment());
+            mFragments.add(new _MineFragment());
+            mViewPager.setAdapter(mPagerAdapter);
+            mViewPager.setOffscreenPageLimit(3);
+            mViewPager.setCurrentItem(3);
+        }
 
     }
 

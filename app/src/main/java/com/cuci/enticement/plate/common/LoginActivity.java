@@ -32,6 +32,7 @@ import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.bean.WxError;
 import com.cuci.enticement.bean.WxInfo;
 import com.cuci.enticement.bean.WxToken;
+import com.cuci.enticement.event.LoginSucceedEvent;
 import com.cuci.enticement.plate.common.eventbus.CartEvent;
 import com.cuci.enticement.plate.common.vm.LoginViewModel;
 import com.cuci.enticement.plate.mall.activity.YuLanActivity;
@@ -198,9 +199,13 @@ public class LoginActivity extends BaseActivity {
                         UserInfo userInfo=baseStatus.content.data;
                         FToast.success("登录成功");
                         SharedPrefUtils.save(userInfo,UserInfo.class);
+                        //登录成功后发广播刷新，此次改成eventbus，原先的先不删除
                         Intent intent = new Intent(_MineFragment.ACTION_LOGIN_SUCCEED);
                         intent.putExtra(_MineFragment.DATA_USER_INFO, userInfo);
                         LocalBroadcastManager.getInstance(LoginActivity.this).sendBroadcast(intent);
+                        //eventbus  刷新视图  四个fragment重新载入
+
+                        EventBus.getDefault().post(new LoginSucceedEvent());
 
                         //刷新购物车数据
 
@@ -401,7 +406,7 @@ public class LoginActivity extends BaseActivity {
             //登录成功
             boolean save = SharedPrefUtils.save(userInfo, UserInfo.class);
             FToast.success("登录成功");
-
+            EventBus.getDefault().post(new LoginSucceedEvent());
             if (save) {
                 FLog.e(TAG, "用户信息保存成功");
             } else {
