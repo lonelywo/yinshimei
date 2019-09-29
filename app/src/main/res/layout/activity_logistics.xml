@@ -54,7 +54,7 @@
         android:id="@+id/text_wuliugongsi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="物流公司： 德邦快递"
+        android:text="物流公司： "
 
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"

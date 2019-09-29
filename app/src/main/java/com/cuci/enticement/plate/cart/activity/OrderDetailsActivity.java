@@ -121,9 +121,6 @@ public class OrderDetailsActivity extends BaseActivity {
 
 
 
-
-
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -288,6 +285,7 @@ public class OrderDetailsActivity extends BaseActivity {
                     Intent intent = new Intent(OrderDetailsActivity.this, LogisticsActivity.class);
                     intent.putExtra("express_no",String.valueOf(mInfo.getExpress_send_no()));
                     intent.putExtra("express_code",String.valueOf(mInfo.getExpress_company_code()));
+                    intent.putExtra("express_company_title",String.valueOf(mInfo.getExpress_company_title()));
                     startActivity(intent);
                 }
                 break;

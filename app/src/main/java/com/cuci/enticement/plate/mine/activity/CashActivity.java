@@ -128,7 +128,7 @@ public class CashActivity extends BaseActivity {
             String b = body.string();
             CommissiontxBean mCommissiontxBean = new Gson().fromJson(b, CommissiontxBean.class);
             if (mCommissiontxBean.getCode() == 1) {
-
+                FToast.success(mCommissiontxBean.getInfo());
             } else {
                 FToast.error(mCommissiontxBean.getInfo());
             }

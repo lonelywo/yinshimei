@@ -71,6 +71,8 @@ public class LogisticsActivity extends BaseActivity implements OnRefreshLoadMore
     private boolean mCanLoadMore = true;
     private String mExpressNo;
     private String mExpressCode;
+    private String express_company_title;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_logistics;
@@ -87,6 +89,7 @@ public class LogisticsActivity extends BaseActivity implements OnRefreshLoadMore
         }
        mExpressNo= intent.getStringExtra("express_no");
         mExpressCode = intent.getStringExtra("express_code");
+        express_company_title = intent.getStringExtra("express_company_title");
        /* data = (MyTeamlbBean.DataBean.ListBean) intent.getSerializableExtra("Data");
 
         if (data == null) {
@@ -150,7 +153,7 @@ public class LogisticsActivity extends BaseActivity implements OnRefreshLoadMore
         try {
             String b = body.string();
             ExpressInfo mExpressInfo = new Gson().fromJson(b, ExpressInfo.class);
-            textWuliugongsi.setText(String.format(Locale.CHINA,"物流公司:%s",mExpressInfo.getData().getCom()));
+            textWuliugongsi.setText(String.format(Locale.CHINA,"物流公司:%s",express_company_title));
             textYundanbianhao.setText(String.format(Locale.CHINA,"运单编号：%s",mExpressInfo.getData().getNu()));
             List<ExpressInfo.DataBeanX.DataBean> item = mExpressInfo.getData().getData();
             if (item == null || item.size() == 0) {

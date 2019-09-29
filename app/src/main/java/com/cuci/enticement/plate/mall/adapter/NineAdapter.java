@@ -77,7 +77,7 @@ public class NineAdapter extends RecyclerView.Adapter<NineAdapter.ViewHolder> {
          }
         MallSourceBean.DataBean.ListBean bean = mList.get(position);
 
-        ImageLoader.loadPlaceholder(bean.getImage(),holder.img_source);
+        ImageLoader.loadPlaceholder(bean.getImage()+"-dealwith",holder.img_source);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

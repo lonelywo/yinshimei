@@ -177,6 +177,53 @@ public class WxShareUtils {
      * @param description 描述
      * @param bitmap      图片Bitmap
      */
+    public static void shareToWX(int type, String url, String title, String description, Bitmap bitmap,String phone) {
+
+        WXWebpageObject object = new WXWebpageObject();
+        object.webpageUrl = url;
+        WXMediaMessage mediaMessage = new WXMediaMessage(object);
+
+        if (title.length() > 512) {
+            title = title.substring(0, 511);
+        }
+
+        if (description.length() > 1024) {
+            description = description.substring(0, 1023);
+        }
+
+        mediaMessage.title = title;
+        mediaMessage.description = description;
+
+        mediaMessage.setThumbImage(bitmap);
+
+        SendMessageToWX.Req req = new SendMessageToWX.Req();
+        req.transaction = phone;
+        req.message = mediaMessage;
+
+        switch (type) {
+            case WX_SCENE_SESSION:
+                req.scene = SendMessageToWX.Req.WXSceneSession;
+                break;
+            case WX_SCENE_TIME_LINE:
+                req.scene = SendMessageToWX.Req.WXSceneTimeline;
+                break;
+            case WX_SCENE_FAVORITE:
+                req.scene = SendMessageToWX.Req.WXSceneFavorite;
+                break;
+        }
+
+        BasicApp.getIWXAPI().sendReq(req);
+
+    }
+    /**
+     * 链接分享（APP）
+     *
+     * @param type        类型
+     * @param url         地址
+     * @param title       标题
+     * @param description 描述
+     * @param bitmap      图片Bitmap
+     */
     public static void shareToWX(int type, String url, String title, String description, Bitmap bitmap) {
 
         WXWebpageObject object = new WXWebpageObject();
@@ -197,7 +244,7 @@ public class WxShareUtils {
         mediaMessage.setThumbImage(bitmap);
 
         SendMessageToWX.Req req = new SendMessageToWX.Req();
-        req.transaction = String.valueOf(System.currentTimeMillis());
+        req.transaction = String.valueOf(System.currentTimeMillis());;
         req.message = mediaMessage;
 
         switch (type) {
@@ -215,7 +262,6 @@ public class WxShareUtils {
         BasicApp.getIWXAPI().sendReq(req);
 
     }
-
     /**
      * 分享纯图片
      *

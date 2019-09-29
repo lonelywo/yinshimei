@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //检测APP更新
-        mViewModel.getVersion("2").observe(this, mUpdateObserver);
+        //mViewModel.getVersion("2").observe(this, mUpdateObserver);
 
 
 

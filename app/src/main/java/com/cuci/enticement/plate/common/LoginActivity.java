@@ -20,9 +20,9 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.cuci.enticement.R;
 import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.Constant;
+import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.Base;
 import com.cuci.enticement.bean.CheckPhoneBean;
@@ -34,10 +34,8 @@ import com.cuci.enticement.bean.WxInfo;
 import com.cuci.enticement.bean.WxToken;
 import com.cuci.enticement.event.LoginSucceedEvent;
 import com.cuci.enticement.plate.common.eventbus.CartEvent;
-import com.cuci.enticement.plate.common.popup.TipsPopup;
 import com.cuci.enticement.plate.common.popup.TipsPopupxieyi;
 import com.cuci.enticement.plate.common.vm.LoginViewModel;
-import com.cuci.enticement.plate.mall.activity.YuLanActivity;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.cuci.enticement.utils.FLog;
 import com.cuci.enticement.utils.FToast;
@@ -58,10 +56,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.ResponseBody;
-
-import static androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance;
-import static com.cuci.enticement.plate.cart.fragment._CartFragment.ACTION_REFRESH_DATA;
-import static com.cuci.enticement.plate.common.MainActivity.ACTION_GO_TO_HOME;
 
 public class LoginActivity extends BaseActivity {
     @BindView(R.id.img_shoutu)
@@ -92,14 +86,23 @@ public class LoginActivity extends BaseActivity {
     TextView textWeixindenglu;
     public static final String ACTION_WX_LOGIN_SUCCEED = "com.example.enticement.plate.user.ACTION_WX_LOGIN_SUCCEED";
     public static final String DATA_UNION_ID = "data_union_id";
+    @BindView(R.id.image_back)
+    ImageView imageBack;
     private LocalBroadcastManager mBroadcastManager;
     private static final String TAG = LoginActivity.class.getSimpleName();
     private LoginViewModel mViewModel;
     private String guojiacode;
     private Handler mTimeHandler = new Handler();
     private boolean mShowContract = false;
-    private String mUnionId="";
+    private String mUnionId = "";
     private WxInfo minfo;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 
     public interface OnLoginListener {
         void onLoginSucceed(UserInfo userInfo, boolean showContract);
@@ -110,6 +113,7 @@ public class LoginActivity extends BaseActivity {
     public void setOnLoginListener(OnLoginListener onLoginListener) {
         mOnLoginListener = onLoginListener;
     }
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_login;
@@ -123,6 +127,12 @@ public class LoginActivity extends BaseActivity {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ACTION_WX_LOGIN_SUCCEED);
         mBroadcastManager.registerReceiver(mReceiver, intentFilter);
+        imageBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
 
@@ -147,9 +157,9 @@ public class LoginActivity extends BaseActivity {
                         .dismissOnBackPressed(false)
                         .dismissOnTouchOutside(false)
                         .asCustom(new TipsPopupxieyi(this,
-                              () -> {
+                                () -> {
 
-                        }))
+                                }))
                         .show();
 
                 break;
@@ -175,8 +185,8 @@ public class LoginActivity extends BaseActivity {
 
         String phone = edtPhone.getText().toString().trim();
         String smsCode = edtCode.getText().toString().trim();
-        if ( TextUtils.isEmpty(phone)
-                || TextUtils.isEmpty(smsCode) ) {
+        if (TextUtils.isEmpty(phone)
+                || TextUtils.isEmpty(smsCode)) {
             FToast.warning("请填写完整");
             return;
         }
@@ -212,9 +222,9 @@ public class LoginActivity extends BaseActivity {
                     }
                     if (baseStatus.content.code == 1) {
                         String s = new Gson().toJson(baseStatus.content.data);
-                        UserInfo userInfo=baseStatus.content.data;
+                        UserInfo userInfo = baseStatus.content.data;
                         FToast.success("登录成功");
-                        SharedPrefUtils.save(userInfo,UserInfo.class);
+                        SharedPrefUtils.save(userInfo, UserInfo.class);
                         //登录成功后发广播刷新，此次改成eventbus，原先的先不删除
                         Intent intent = new Intent(_MineFragment.ACTION_LOGIN_SUCCEED);
                         intent.putExtra(_MineFragment.DATA_USER_INFO, userInfo);
@@ -250,8 +260,9 @@ public class LoginActivity extends BaseActivity {
             return;
         }
         int showquyuCode = SharedPrefUtils.getShowquyuCode();
-        mViewModel.getSmsCodelogin(phone, "cuci", ""+showquyuCode).observe(this, mSmsCodeObserver);
+        mViewModel.getSmsCodelogin(phone, "cuci", "" + showquyuCode).observe(this, mSmsCodeObserver);
     }
+
     private Observer<Status<Base>> mSmsCodeObserver = new Observer<Status<Base>>() {
         @Override
         public void onChanged(Status<Base> baseStatus) {
@@ -262,7 +273,7 @@ public class LoginActivity extends BaseActivity {
                         FToast.error("请求错误，请稍后再试。");
                         return;
                     }
-                    FLog.e("dengluyanzhengma",baseStatus.content.toString());
+                    FLog.e("dengluyanzhengma", baseStatus.content.toString());
                     if (baseStatus.content.code == 1) {
 
                         tvCode.setClickable(false);
@@ -291,6 +302,7 @@ public class LoginActivity extends BaseActivity {
         super.onDestroy();
         mBroadcastManager.unregisterReceiver(mReceiver);
     }
+
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -336,6 +348,7 @@ public class LoginActivity extends BaseActivity {
         }
 
     };
+
     private void operaWxToken(ResponseBody body) {
         try {
             String b = body.string();
@@ -361,6 +374,7 @@ public class LoginActivity extends BaseActivity {
             FToast.error("数据错误");
         }
     }
+
     private Observer<Status<ResponseBody>> mWxInfoObserver = status -> {
         switch (status.status) {
             case Status.SUCCESS:
@@ -373,6 +387,7 @@ public class LoginActivity extends BaseActivity {
                 break;
         }
     };
+
     private void operaWxInfo(ResponseBody body) {
         try {
             String b = body.string();
@@ -381,11 +396,11 @@ public class LoginActivity extends BaseActivity {
                 WxError error = new Gson().fromJson(b, WxError.class);
                 FToast.error(error.getErrMsg() + ":" + error.getErrCode());
             } else {
-                 minfo = new Gson().fromJson(b, WxInfo.class);
-                 mUnionId = minfo.getUnionId();
+                minfo = new Gson().fromJson(b, WxInfo.class);
+                mUnionId = minfo.getUnionId();
 
-                mViewModel.checkUserInfo(minfo.getUnionId(),minfo.getOpenId(),  minfo.getHeadImgUrl(),  minfo.getNickName(),"2",String.valueOf(minfo.getSex())
-                      ).observe(this, mCheckWxInfoObserver);
+                mViewModel.checkUserInfo(minfo.getUnionId(), minfo.getOpenId(), minfo.getHeadImgUrl(), minfo.getNickName(), "2", String.valueOf(minfo.getSex())
+                ).observe(this, mCheckWxInfoObserver);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -401,7 +416,7 @@ public class LoginActivity extends BaseActivity {
                 dismissLoading();
                 Base<UserInfo> userInfoBase = baseStatus.content;
                 if (userInfoBase.code == 1) {
-                  UserInfo muserInfoBase = userInfoBase.data;
+                    UserInfo muserInfoBase = userInfoBase.data;
 
                     dispatchUserInfo(muserInfoBase);
                 } else {
@@ -414,10 +429,11 @@ public class LoginActivity extends BaseActivity {
                 break;
         }
     };
+
     private void dispatchUserInfo(UserInfo userInfo) {
         if ("0".equals(userInfo.getIs_binding())) {
             mViewModel.wxCheckBindPhone(userInfo.getPhone())
-            .observe(this, mObservercheck);
+                    .observe(this, mObservercheck);
         } else {
             //登录成功
             boolean save = SharedPrefUtils.save(userInfo, UserInfo.class);
@@ -434,6 +450,7 @@ public class LoginActivity extends BaseActivity {
             finish();
         }
     }
+
     private Observer<Status<ResponseBody>> mObservercheck = status -> {
         switch (status.status) {
             case Status.SUCCESS:
@@ -451,13 +468,13 @@ public class LoginActivity extends BaseActivity {
         try {
             String b = body.string();
             CheckPhoneBean info = new Gson().fromJson(b, CheckPhoneBean.class);
-            if (info.getCode()==1) {
-                if(info.getData().getIs_reg()==1){
-                     FToast.warning("请绑定手机号");
-                     Intent intent = new Intent(this, BindPhoneActivity.class);
-                     intent.putExtra("Data", minfo);
-                     startActivityForResult(intent, 10000);
-                }else {
+            if (info.getCode() == 1) {
+                if (info.getData().getIs_reg() == 1) {
+                    FToast.warning("请绑定手机号");
+                    Intent intent = new Intent(this, BindPhoneActivity.class);
+                    intent.putExtra("Data", minfo);
+                    startActivityForResult(intent, 10000);
+                } else {
                     FToast.warning("请先完成手机注册，重新登录");
                     Intent intent = new Intent(this, RegisterActivity.class);
                     intent.putExtra("Data", "");
@@ -475,7 +492,7 @@ public class LoginActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK && data != null) {
-            if ( requestCode == 10000) {
+            if (requestCode == 10000) {
                 UserInfo userInfo = (UserInfo) data.getSerializableExtra(_MineFragment.DATA_USER_INFO);
                 Intent intent = new Intent(_MineFragment.ACTION_LOGIN_SUCCEED);
                 intent.putExtra(_MineFragment.DATA_USER_INFO, userInfo);
@@ -485,7 +502,6 @@ public class LoginActivity extends BaseActivity {
 
         }
     }
-
 
 
     //判断是否超过10分钟
@@ -526,8 +542,6 @@ public class LoginActivity extends BaseActivity {
             }
         }
     };
-
-
 
 
 }

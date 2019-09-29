@@ -12,7 +12,7 @@ public class ItemOrderBottom {
     public String expressCode ;
     public int bottomcur;
     public int topCur;
-
+    public String express_company_title;
 
 /*price_total : 3660.00
  * price_goods : 3660.00

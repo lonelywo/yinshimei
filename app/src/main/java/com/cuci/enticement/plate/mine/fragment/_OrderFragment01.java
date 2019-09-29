@@ -370,6 +370,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
             itemOrderBottom.goodsMoney=orderBean.getPrice_goods();
             itemOrderBottom.expressMoney=orderBean.getPrice_express();
             itemOrderBottom.expressNo=orderBean.getExpress_send_no();
+            itemOrderBottom.express_company_title=orderBean.getExpress_company_title();
             itemOrderBottom.expressCode=orderBean.getExpress_company_code();
             itemOrderBottom.num=orderBean.getGoods_count();
             itemOrderBottom.bottomcur=curBottom;
@@ -492,6 +493,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
         Intent intent = new Intent(mActivity, LogisticsActivity.class);
         intent.putExtra("express_no",itemOrderBottom.expressNo);
         intent.putExtra("express_code",itemOrderBottom.expressCode);
+        intent.putExtra("express_company_title",itemOrderBottom.express_company_title);
         startActivity(intent);
     }
 
