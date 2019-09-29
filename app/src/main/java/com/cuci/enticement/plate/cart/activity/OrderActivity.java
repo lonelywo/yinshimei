@@ -226,7 +226,7 @@ public class OrderActivity extends BaseActivity {
         // ImageLoader.loadPlaceholder(mOrderBean.get);
         //设置商品总价，运费，订单总价
         textShangpingmoney.setText(mInfo.getPrice_goods());
-
+        tvTotalMoney.setText(mInfo.getPrice_goods());
 
         String  address = SharedPrefUtils.getDefaultAdress();
 
@@ -486,7 +486,8 @@ public class OrderActivity extends BaseActivity {
                     .append(bean.getArea()).append(" ")
                     .append(bean.getAddress());
             String adress=sb.toString();
-
+            ViewUtils.hideView(textDizi);
+            ViewUtils.showView(tvAddress);
             tvAddress.setText(adress);
             mViewModel.getExpressCost(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),String.valueOf(mInfo.getOrder_no()),mAddressId)
                     .observe(this,mExpressCostObserver);
