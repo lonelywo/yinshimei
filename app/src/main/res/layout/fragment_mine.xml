@@ -125,6 +125,7 @@
          app:layout_constraintTop_toBottomOf="@+id/img_shape_bai"
          />
       <TextView
+          android:id="@+id/text_huiyuan"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           app:layout_constraintLeft_toLeftOf="@+id/img_jingxiao"
@@ -145,6 +146,7 @@
           app:layout_constraintBottom_toBottomOf="@+id/img_shape_huang"
           >
          <TextView
+             android:id="@+id/text_huiyuan1"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
              android:text="升级服务商"
@@ -152,6 +154,7 @@
              android:textSize="15sp"
              />
           <TextView
+              android:id="@+id/text_huiyuan2"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:text="获得更多佣金"
@@ -521,6 +524,7 @@
             android:textColor="#646262"
             android:layout_marginTop="5dp"
             android:gravity="center_horizontal"
+            android:visibility="gone"
 
             />
         <TextView

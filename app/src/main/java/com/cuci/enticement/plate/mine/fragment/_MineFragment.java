@@ -16,6 +16,11 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseFragment;
@@ -24,9 +29,9 @@ import com.cuci.enticement.bean.OrderStatistics;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.event.LoginOutEvent;
-import com.cuci.enticement.event.LoginSucceedEvent;
 import com.cuci.enticement.plate.common.LoginActivity;
 import com.cuci.enticement.plate.common.popup.TipsPopup;
+import com.cuci.enticement.plate.common.popup.TipsPopup1;
 import com.cuci.enticement.plate.mine.activity.AchievementActivity;
 import com.cuci.enticement.plate.mine.activity.CommissionActivity;
 import com.cuci.enticement.plate.mine.activity.KeFuActivity;
@@ -44,15 +49,10 @@ import com.cuci.enticement.utils.WxShareUtils;
 import com.google.gson.Gson;
 import com.lxj.xpopup.XPopup;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.Date;
 import java.util.List;
-
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
-import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -149,6 +149,12 @@ public class _MineFragment extends BaseFragment {
     ConstraintLayout yiwanchengLl;
     @BindView(R.id.con_yingchang)
     ConstraintLayout conYingchang;
+    @BindView(R.id.text_huiyuan)
+    TextView textHuiyuan;
+    @BindView(R.id.text_huiyuan1)
+    TextView textHuiyuan1;
+    @BindView(R.id.text_huiyuan2)
+    TextView textHuiyuan2;
     private boolean mCouldChange = true;
     private LocalBroadcastManager mBroadcastManager;
     private UserInfo mUserInfo;
@@ -178,8 +184,7 @@ public class _MineFragment extends BaseFragment {
         mBroadcastManager.registerReceiver(mReceiver, intentFilter);
 
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
-        if(mUserInfo==null)
-        {
+        if (mUserInfo == null) {
             conYingchang.setVisibility(View.GONE);
         }
         //todo  临时存储
@@ -266,6 +271,18 @@ public class _MineFragment extends BaseFragment {
             conYingchang.setVisibility(View.GONE);
             return;
         }
+        if (mUserInfo.getVip_level() == 0) {
+            textHuiyuan.setText("会员");
+            textHuiyuan1.setText("升级经销商");
+        } else if (mUserInfo.getVip_level() == 1) {
+            textHuiyuan.setText("经销商");
+            textHuiyuan1.setText("升级服务商");
+        } else if (mUserInfo.getVip_level() == 2) {
+            textHuiyuan.setText("服务商");
+            textHuiyuan1.setVisibility(View.GONE);
+            textHuiyuan2.setVisibility(View.GONE);
+            btnShengji.setVisibility(View.GONE);
+        }
         conYingchang.setVisibility(View.VISIBLE);
         ImageLoader.loadNoPlaceholder(mUserInfo.getHeadimg(), imgTuxiang);
         textName.setText(mUserInfo.getNickname());
@@ -298,15 +315,28 @@ public class _MineFragment extends BaseFragment {
             case R.id.btn_shengji:
                 //startActivity(new Intent(mActivity, ZengAddressActivity.class));
                 if (AppUtils.isAllowPermission(mActivity)) {
-                    new XPopup.Builder(mActivity)
-                            .dismissOnBackPressed(false)
-                            .dismissOnTouchOutside(false)
-                            .asCustom(new TipsPopup(mActivity,
-                                    "购买入会礼包即可升级成为经销商", "关闭", "去购买", () -> {
-                                LocalBroadcastManager broadcastManager = getInstance(mActivity);
-                                broadcastManager.sendBroadcast(new Intent(ACTION_GO_TO_HOME));
-                            }))
-                            .show();
+                    if (mUserInfo.getVip_level() == 0) {
+                        new XPopup.Builder(mActivity)
+                                .dismissOnBackPressed(false)
+                                .dismissOnTouchOutside(false)
+                                .asCustom(new TipsPopup(mActivity,
+                                        "购买入会礼包即可升级成为经销商", "关闭", "去购买", () -> {
+                                    LocalBroadcastManager broadcastManager = getInstance(mActivity);
+                                    broadcastManager.sendBroadcast(new Intent(ACTION_GO_TO_HOME));
+                                }))
+                                .show();
+                    } else if (mUserInfo.getVip_level() == 1) {
+                        new XPopup.Builder(mActivity)
+                                .dismissOnBackPressed(false)
+                                .dismissOnTouchOutside(false)
+                                .asCustom(new TipsPopup1(mActivity,
+                                        "团队满50人即可成为服务商", "关闭", () -> {
+                                }))
+                                .show();
+                    } else if (mUserInfo.getVip_level() == 2) {
+
+                    }
+
                 }
                 break;
             case R.id.text_quanbudingdan:
@@ -466,7 +496,7 @@ public class _MineFragment extends BaseFragment {
         SharedPrefUtils.exit();
         mUserInfo = null;
         EventBus.getDefault().postSticky(new LoginOutEvent());
-       // refreshLayout();
+        // refreshLayout();
     }
 
 

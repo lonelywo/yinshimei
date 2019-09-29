@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/shape_popup_bg1"
+    >
+    <TextView
+        android:id="@+id/desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="购买入会礼包即可升级成为经销商"
+        android:textColor="@color/hei"
+        android:textSize="20sp"
+        android:padding="35dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+       />
+   <ImageView
+       android:id="@+id/img_xian"
+       android:layout_marginTop="2dp"
+       android:layout_width="match_parent"
+       android:layout_height="0.5dp"
+       android:src="@drawable/xian"
+       app:layout_constraintTop_toBottomOf="@+id/desc"
+       android:scaleType="centerCrop"
+       android:background="@drawable/shape_login_edit_bottom_line"
+       />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    app:layout_constraintTop_toBottomOf="@+id/img_xian"
+    >
+    <TextView
+        android:id="@+id/cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="关闭"
+        android:textColor="@color/hei"
+        android:textSize="20sp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center"
+        android:padding="10dp"
+
+        />
+    <View
+        android:layout_width="0.5dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/shape_login_edit_bottom_line"
+        />
+
+</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
