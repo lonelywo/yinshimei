@@ -188,7 +188,7 @@ public class OrderActivity extends BaseActivity {
             tvAddress.setText("");
             ViewUtils.hideView(tvAddress);
             ViewUtils.showView(textDizi);
-
+            tvTotalMoney.setText(mInfo.getPrice_goods());
         }
 
 
