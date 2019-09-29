@@ -9,4 +9,7 @@
     <string name="tab_find" translatable="false">购物车</string>
     <string name="tab_mine" translatable="false">我的</string>
 
+    <string name="channel_name" translatable="false">因诗美更新</string>
+    <string name="channel_description" translatable="false">因诗美正在更新，请稍后…</string>
+
 </resources>

@@ -33,7 +33,7 @@ public class ImageViewerPopup extends FullScreenPopupView {
     private int mPosition;
     private Context mContext;
 
-    private int mCurrentPosition = 0;
+
 
     public ImageViewerPopup(@NonNull Context context, List<String> list, int position) {
         super(context);
@@ -65,7 +65,7 @@ public class ImageViewerPopup extends FullScreenPopupView {
 
             @Override
             public void onPageSelected(int position) {
-                mCurrentPosition = position;
+                mPosition = position;
             }
 
             @Override
@@ -92,7 +92,7 @@ public class ImageViewerPopup extends FullScreenPopupView {
         new XPopup.Builder(mContext)
                 .dismissOnTouchOutside(false)
                 .dismissOnBackPressed(false)
-                .asCustom(new DownloadPopup(mContext, mList.get(mCurrentPosition),
+                .asCustom(new DownloadPopup(mContext, mList.get(mPosition),
                         DownloadPopup.DATA_TYPE_IMAGE, false))
                 .show();
     }

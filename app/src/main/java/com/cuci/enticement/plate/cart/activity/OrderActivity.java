@@ -183,6 +183,12 @@ public class OrderActivity extends BaseActivity {
     public void onOrderEventMessage(OrderEvent event) {
         if(event.getCode()==OrderEvent.FINISH_ACTIVITY){
             finish();
+        }else if(event.getCode()==OrderEvent.SET_ADDRESS){
+
+            tvAddress.setText("");
+            ViewUtils.hideView(tvAddress);
+            ViewUtils.showView(textDizi);
+
         }
 
 

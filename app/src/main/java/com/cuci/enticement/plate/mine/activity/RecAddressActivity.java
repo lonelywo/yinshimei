@@ -338,6 +338,11 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
                         mItems.remove(mPosition);
                         mAdapter.notifyItemRemoved(mPosition);
                         if(mItems.size()==0){
+                            //默认收货地址置空
+                            SharedPrefUtils.saveDefaultAdress("");
+                            //置空地址
+                            EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.SET_ADDRESS));
+
                             mStatusView.showEmpty();
                         }
 

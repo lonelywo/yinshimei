@@ -24,6 +24,7 @@ import com.cuci.enticement.event.LoginSucceedEvent;
 import com.cuci.enticement.plate.cart.fragment._CartFragment;
 import com.cuci.enticement.plate.common.adapter.MainPagerAdapter;
 import com.cuci.enticement.plate.common.popup.UpdatePopup;
+import com.cuci.enticement.plate.common.popup.UpdateProgressPopup;
 import com.cuci.enticement.plate.common.vm.MainViewModel;
 import com.cuci.enticement.plate.home.fragment._HomeFragment;
 import com.cuci.enticement.plate.mall.fragment._MallFragment;
@@ -93,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
     private long mExitTime = 0;
     private MainViewModel mViewModel;
     private ClipboardManager mClipboardManager;
-    private Version  mData;
+    private Version.DataBean  mData;
 
     private LocalBroadcastManager mLocalBroadcastManager;
     private List<Fragment> mFragments;
@@ -191,8 +192,10 @@ public class MainActivity extends AppCompatActivity {
                 FLog.e(TAG, "有效标签："+s);
             }
         }*/
-        MainActivityPermissionsDispatcher.needsPermissionWithPermissionCheck(this);
 
+
+
+       MainActivityPermissionsDispatcher.needsPermissionWithPermissionCheck(this);
     }
 
     private void initBottomLayout() {
@@ -361,12 +364,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void operation(Version version) {
 
-        mData = version;
+        mData = version.getData();
 
 
         int ignoreVersion = SharedPrefUtils.getIgnoreVersion();
         int localVersion = AppUtils.getVersionCode(this);
-        int serverVersion = mData.getData().getVersionName();
+        int serverVersion = version.getData().getVersionName();
 
         if (serverVersion == ignoreVersion) {
             return;
@@ -395,13 +398,13 @@ public class MainActivity extends AppCompatActivity {
     @NeedsPermission({Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE})
     public void needsPermission() {
-    /*    if (mData != null) {
+       if (mData != null) {
             new XPopup.Builder(this)
                     .dismissOnBackPressed(false)
                     .dismissOnTouchOutside(false)
                     .asCustom(new UpdateProgressPopup(this, mData))
                     .show();
-        }*/
+        }
     }
 
     /**

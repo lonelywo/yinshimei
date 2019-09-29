@@ -377,8 +377,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                             orderGoods.setGoods_title(mProData.getTitle());
                             orderGoods.setGoods_num(mNum);
                             orderGoods.setGoods_spec(mSpec);
-                            double goodsPrice=MathExtend.multiply(mProData.getInitial_price_selling(),String.valueOf(mNum));
-                            orderGoods.setGoods_price_selling(String.valueOf(goodsPrice));
+                            orderGoods.setGoods_price_selling(mProData.getInitial_price_selling());
 
                             items.add(orderGoods);
 
@@ -387,7 +386,8 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                             cartIntentInfo.setOrder_no(Long.parseLong(orderResult.getData().getOrder().getOrder_no()));
                             cartIntentInfo.setList(items);
                             cartIntentInfo.setGoods_count(items.size());
-                            cartIntentInfo.setPrice_goods(mProData.getInitial_price_selling());
+                            double goodsPrice=MathExtend.multiply(mProData.getInitial_price_selling(),String.valueOf(mNum));
+                            cartIntentInfo.setPrice_goods(String.valueOf(goodsPrice));
                             Intent intent = new Intent(ProdActivity.this, OrderActivity.class);
                             intent.putExtra("intentInfo", cartIntentInfo);
                             startActivity(intent);

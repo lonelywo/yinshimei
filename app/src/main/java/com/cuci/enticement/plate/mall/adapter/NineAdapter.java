@@ -76,14 +76,15 @@ public class NineAdapter extends RecyclerView.Adapter<NineAdapter.ViewHolder> {
              return;
          }
         MallSourceBean.DataBean.ListBean bean = mList.get(position);
-        List<String>  list=new  ArrayList<String>();
-        for (int i = 0; i <mList.size() ; i++) {
-            list.add(mList.get(i).getImage());
-        }
+
         ImageLoader.loadPlaceholder(bean.getImage(),holder.img_source);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                List<String>  list=new  ArrayList<String>();
+                for (int i = 0; i <mList.size() ; i++) {
+                    list.add(mList.get(i).getImage());
+                }
                 new XPopup.Builder(mcontext)
                         .dismissOnTouchOutside(false)
                         .asCustom(new ImageViewerPopup(mcontext,list,position))
