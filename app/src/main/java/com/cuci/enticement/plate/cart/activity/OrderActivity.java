@@ -242,8 +242,12 @@ public class OrderActivity extends BaseActivity {
                     .observe(OrderActivity.this,mExpressCostObserver);
 
         }else {
-            ViewUtils.showView(textDizi);
-            ViewUtils.hideView(tvAddress);
+
+
+            CommonViewModel commonViewModel = ViewModelProviders.of(this).get(CommonViewModel.class);
+            commonViewModel.getAdressList(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),Status.LOAD_REFRESH)
+                    .observe(this,mObserver);
+
         }
 
 
@@ -281,6 +285,99 @@ public class OrderActivity extends BaseActivity {
 
 
     }
+
+
+
+
+    private Observer<Status<AddressBean>> mObserver = new Observer<Status<AddressBean>>() {
+        @Override
+        public void onChanged(Status<AddressBean> status) {
+            switch (status.status) {
+
+                case Status.SUCCESS:
+
+                    AddressBean data = status.content;
+                    List<AddressBean.DataBean.ListBean> list = data.getData().getList();
+                    if (list == null||list.size()==0) {
+
+                        ViewUtils.showView(textDizi);
+                        ViewUtils.hideView(tvAddress);
+                        return;
+                    }
+
+                    if (data.getCode() == 1) {
+
+                        saveDefault(list);
+                        ViewUtils.hideView(textDizi);
+                        ViewUtils.showView(tvAddress);
+                        tvAddress.setText(SharedPrefUtils.getDefaultAdress());
+
+                    } else {
+                        ViewUtils.showView(textDizi);
+                        ViewUtils.hideView(tvAddress);
+                        FToast.error(data.getInfo());
+                    }
+                    break;
+                case Status.ERROR:
+                    FToast.error(status.message);
+                    ViewUtils.showView(textDizi);
+                    ViewUtils.hideView(tvAddress);
+                    break;
+                case Status.LOADING:
+
+                    break;
+            }
+        }
+    };
+
+
+
+
+
+    private void saveDefault(List<AddressBean.DataBean.ListBean> list) {
+        boolean hasDefault=false;
+        int num=0;
+        for (int i = 0; i < list.size(); i++) {
+            AddressBean.DataBean.ListBean item = list.get(i);
+
+            int is_default = item.getIs_default();
+            if(is_default==1){
+                //存在默认就设置
+                hasDefault=true;
+                num=i;
+                break;
+            }
+        }
+
+        if(hasDefault){
+
+            AddressBean.DataBean.ListBean item = list.get(num);
+            SharedPrefUtils.saveDefaultAdressId(String.valueOf(item.getId()));
+            StringBuilder sb = new StringBuilder();
+            sb.append(item.getName()).append(" ")
+                    .append(item.getPhone()).append(" ").append("\n")
+                    .append(item.getProvince()).append(" ")
+                    .append(item.getCity()).append(" ")
+                    .append(item.getArea()).append(" ")
+                    .append(item.getAddress());
+            SharedPrefUtils.saveDefaultAdress(sb.toString());
+        }
+
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
     @OnClick({R.id.text_dizi, R.id.text_address,R.id.tv_commit,R.id.back_iv})
     public void onViewClicked(View view) {
         switch (view.getId()) {

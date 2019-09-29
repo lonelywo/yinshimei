@@ -186,6 +186,8 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
 
                     AddressBean data = status.content;
                     List<AddressBean.DataBean.ListBean> list = data.getData().getList();
+
+
                     if (list == null||list.size()==0) {
 
                         if (status.loadType == Status.LOAD_MORE) {
@@ -196,6 +198,8 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
                         }
                         return;
                     }
+
+
                     mStatusView.showContent();
                     if (data.getCode() == 1) {
                         mCanLoadMore = true;
@@ -320,8 +324,6 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
 
 
 
-
-
     }
 
     private int mPosition;
@@ -335,8 +337,10 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
                     String result = body.string();
                     DeleteAddress deleteAddress = new Gson().fromJson(result, DeleteAddress.class);
                     if(deleteAddress.getCode()==1){
-                        mItems.remove(mPosition);
-                        mAdapter.notifyItemRemoved(mPosition);
+
+
+                       mRefreshLayout.autoRefresh();
+
                         if(mItems.size()==0){
                             //默认收货地址置空
                             SharedPrefUtils.saveDefaultAdress("");
