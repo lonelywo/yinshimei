@@ -40,6 +40,7 @@ import com.cuci.enticement.plate.common.eventbus.OrderEvent;
 import com.cuci.enticement.plate.common.popup.TipsPopup;
 import com.cuci.enticement.plate.common.popup.WarningPopup;
 import com.cuci.enticement.plate.common.vm.CommonViewModel;
+import com.cuci.enticement.plate.mine.activity.MyOrderActivity;
 import com.cuci.enticement.plate.mine.activity.RecAddressActivity;
 import com.cuci.enticement.plate.mine.adapter.ItemProdViewBinder;
 import com.cuci.enticement.plate.mine.adapter.ItemYuProdViewBinder;
@@ -138,6 +139,10 @@ public class OrderActivity extends BaseActivity {
 
                         LocalBroadcastManager.getInstance(OrderActivity.this).sendBroadcast(intent);
 
+                        //跳转订单页面--全部
+
+                        startActivity(new Intent(OrderActivity.this, MyOrderActivity.class));
+
                         finish();
 
 
@@ -147,10 +152,14 @@ public class OrderActivity extends BaseActivity {
 
                         if (TextUtils.equals(resultStatus, "6001")) {
                             FToast.warning("支付取消");
+
+                            startActivity(new Intent(OrderActivity.this, MyOrderActivity.class));
+
                             finish();
                         } else {
                             // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
                             FToast.error("支付失败");
+
                             finish();
                         }
                     }

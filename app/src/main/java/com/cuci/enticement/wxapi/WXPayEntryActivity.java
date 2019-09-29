@@ -13,6 +13,7 @@ import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.Constant;
 import com.cuci.enticement.plate.cart.activity.OrderActivity;
 import com.cuci.enticement.plate.common.eventbus.OrderEvent;
+import com.cuci.enticement.plate.mine.activity.MyOrderActivity;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.cuci.enticement.utils.FToast;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
@@ -73,10 +74,14 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
                     Intent intent= new Intent(_MineFragment.ACTION_REFRESH_STATUS);
                     LocalBroadcastManager.getInstance(BasicApp.getContext()).sendBroadcast(intent);
 
-                    //3  关闭页面
+                    //3  跳转订单页面--全部
+
+                    startActivity(new Intent(WXPayEntryActivity.this, MyOrderActivity.class));
+
+                    //4  关闭页面
 
                     EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.FINISH_ACTIVITY));
-                    // 4  切换tab到待发货
+
 
 
 
@@ -91,6 +96,13 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
                 case -2://用户取消，无需处理。发生场景：用户不支付了，点击取消，返回APP。
                     Log.d(TAG, "onResp: resp.errCode = -2  用户取消");
                     FToast.warning("支付取消");
+
+
+                    //跳转订单页面--全部
+
+                    startActivity(new Intent(WXPayEntryActivity.this, MyOrderActivity.class));
+
+                    //关闭预定单或订单详情页
                     EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.FINISH_ACTIVITY));
 
 

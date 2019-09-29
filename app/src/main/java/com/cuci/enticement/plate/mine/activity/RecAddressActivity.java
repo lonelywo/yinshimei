@@ -183,7 +183,7 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
             switch (status.status) {
 
                 case Status.SUCCESS:
-
+                    dismissLoading();
                     AddressBean data = status.content;
                     List<AddressBean.DataBean.ListBean> list = data.getData().getList();
 
@@ -195,6 +195,14 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
                         } else {
                             mStatusView.showEmpty();
                             mRefreshLayout.finishRefresh();
+
+                                //默认收货地址置空
+                                SharedPrefUtils.saveDefaultAdress("");
+                                //置空地址
+                                EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.SET_ADDRESS));
+
+
+
                         }
                         return;
                     }
@@ -231,6 +239,7 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
                     }
                     break;
                 case Status.ERROR:
+                    dismissLoading();
                     FToast.error(status.message);
                     if (status.loadType == Status.LOAD_MORE) {
                         mCanLoadMore = true;
@@ -240,7 +249,7 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
                     }
                     break;
                 case Status.LOADING:
-
+                    showLoading();
                     break;
             }
         }
@@ -339,16 +348,10 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
                     if(deleteAddress.getCode()==1){
 
 
-                       mRefreshLayout.autoRefresh();
+                        mViewModel.getAdressList(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),Status.LOAD_REFRESH)
+                                .observe(this,mObserver);
 
-                        if(mItems.size()==0){
-                            //默认收货地址置空
-                            SharedPrefUtils.saveDefaultAdress("");
-                            //置空地址
-                            EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.SET_ADDRESS));
 
-                            mStatusView.showEmpty();
-                        }
 
                         FToast.success(deleteAddress.getInfo());
                     }else {

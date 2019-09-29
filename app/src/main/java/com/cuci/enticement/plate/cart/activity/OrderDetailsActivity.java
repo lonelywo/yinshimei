@@ -438,6 +438,10 @@ public class OrderDetailsActivity extends BaseActivity {
 
 
 
+                        //切换全部订单
+                        EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.INTENT_MY_ORDER));
+
+
                         finish();
 
                     }else {
@@ -489,6 +493,10 @@ public class OrderDetailsActivity extends BaseActivity {
                         mStatus=0;
 
                         initViewStatus(CANCEL_STATUS);
+
+                        //切换全部订单
+                        EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.INTENT_MY_ORDER));
+
 
                         finish();
                     } else {
@@ -601,12 +609,20 @@ public class OrderDetailsActivity extends BaseActivity {
 
                         LocalBroadcastManager.getInstance(OrderDetailsActivity.this).sendBroadcast(intent);
 
+                        //切换全部订单
+                        EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.INTENT_MY_ORDER));
+
+
                         finish();
 
                     } else {
 
                         if (TextUtils.equals(resultStatus, "6001")) {
                             FToast.warning("支付取消");
+
+                            //切换全部订单
+                            EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.INTENT_MY_ORDER));
+
                             finish();
 
                         } else {

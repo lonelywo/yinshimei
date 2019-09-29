@@ -9,6 +9,7 @@ public class OrderEvent {
     public static final int FINISH_ACTIVITY=103;
     public static final int SELECT_STATUS=104;
     public static final int SET_ADDRESS=105;
+    public static final int INTENT_MY_ORDER=106;
     private int cur;
 
     //此处是viewpager光标位
