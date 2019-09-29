@@ -86,7 +86,7 @@ public class ItemBottomViewBinder extends ItemViewBinder<ItemOrderBottom, ItemBo
         if(expressMoney==0){
             holder.textShuliang.setText(String.format(Locale.CHINA,"共%s件商品",itemOrderBottom.num));
         }else {
-            holder.textShuliang.setText(String.format(Locale.CHINA,"共%s件商品(含运费¥)",itemOrderBottom.num,itemOrderBottom.expressMoney));
+            holder.textShuliang.setText(String.format(Locale.CHINA,"共%s件商品(含运费¥%s)",itemOrderBottom.num,itemOrderBottom.expressMoney));
         }
         holder.textHeji.setText(String.format(Locale.CHINA,"合计:¥%s",itemOrderBottom.totalMoney));
 

@@ -205,6 +205,9 @@ public class ZengAddressActivity extends BaseActivity {
                     String phone = edtPhone.getText().toString().trim();
                     String detailAdress = edtXiangxi.getText().toString().trim();
 
+                    if(TextUtils.isEmpty(SharedPrefUtils.getDefaultAdress())){
+                        mIsDefault="1";
+                    }
 
                     mViewModel.addAdress(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),
                             name, phone, mProvince, mCity, mArea, detailAdress, mIsDefault, mAddressId)
