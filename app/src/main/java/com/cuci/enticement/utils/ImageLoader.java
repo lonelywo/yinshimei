@@ -18,7 +18,7 @@ public class ImageLoader {
     public static void loadPlaceholder1(String url, ImageView imageView) {
 
         RequestOptions options = new RequestOptions()
-                .placeholder(R.drawable.tuxiang);
+                .placeholder(R.mipmap.ic_launcher);
 
         Glide.with(BasicApp.getContext())
                 .load(url)

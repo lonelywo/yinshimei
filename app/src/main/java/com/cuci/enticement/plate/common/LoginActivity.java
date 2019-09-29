@@ -34,6 +34,8 @@ import com.cuci.enticement.bean.WxInfo;
 import com.cuci.enticement.bean.WxToken;
 import com.cuci.enticement.event.LoginSucceedEvent;
 import com.cuci.enticement.plate.common.eventbus.CartEvent;
+import com.cuci.enticement.plate.common.popup.TipsPopup;
+import com.cuci.enticement.plate.common.popup.TipsPopupxieyi;
 import com.cuci.enticement.plate.common.vm.LoginViewModel;
 import com.cuci.enticement.plate.mall.activity.YuLanActivity;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
@@ -44,6 +46,7 @@ import com.cuci.enticement.utils.Re;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.widget.ClearEditText;
 import com.google.gson.Gson;
+import com.lxj.xpopup.XPopup;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 
 import org.greenrobot.eventbus.EventBus;
@@ -56,7 +59,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.ResponseBody;
 
+import static androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance;
 import static com.cuci.enticement.plate.cart.fragment._CartFragment.ACTION_REFRESH_DATA;
+import static com.cuci.enticement.plate.common.MainActivity.ACTION_GO_TO_HOME;
 
 public class LoginActivity extends BaseActivity {
     @BindView(R.id.img_shoutu)
@@ -121,7 +126,7 @@ public class LoginActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.tv_code, R.id.ok, R.id.text_zhuce, R.id.weixin})
+    @OnClick({R.id.tv_code, R.id.ok, R.id.text_zhuce, R.id.weixin, R.id.text_dibuwenzi})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_code:
@@ -136,6 +141,17 @@ public class LoginActivity extends BaseActivity {
             case R.id.weixin:
                 SharedPrefUtils.saveWechatAuth("login");
                 startWxLogin();
+                break;
+            case R.id.text_dibuwenzi:
+                new XPopup.Builder(this)
+                        .dismissOnBackPressed(false)
+                        .dismissOnTouchOutside(false)
+                        .asCustom(new TipsPopupxieyi(this,
+                              () -> {
+
+                        }))
+                        .show();
+
                 break;
         }
     }

@@ -65,6 +65,17 @@
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
             android:launchMode="singleTop"/>
+        <!--适配Android 7.0 + -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.cuci.enticement.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"
+                tools:replace="android:resource" />
+        </provider>
 
     </application>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

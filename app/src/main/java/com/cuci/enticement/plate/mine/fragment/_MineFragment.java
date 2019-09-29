@@ -262,7 +262,7 @@ public class _MineFragment extends BaseFragment {
 
     private void refreshLayout() {
         if (mUserInfo == null) {
-            ImageLoader.loadNoPlaceholder(R.drawable.tuxiang, imgTuxiang);
+            ImageLoader.loadPlaceholder(R.drawable.tuxiang, imgTuxiang);
             textName.setText("请登录");
             ViewUtils.hideView(dot1Tv);
             ViewUtils.hideView(dot2Tv);
