@@ -21,6 +21,7 @@ import com.cuci.enticement.bean.CheckPhoneBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.bean.WxInfo;
+import com.cuci.enticement.event.LoginSucceedEvent;
 import com.cuci.enticement.plate.common.vm.RegActivityViewModel;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.cuci.enticement.utils.FLog;
@@ -29,6 +30,8 @@ import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.widget.ClearEditText;
 import com.google.gson.Gson;
 import com.tencent.bugly.crashreport.biz.UserInfoBean;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 
@@ -136,6 +139,7 @@ public class BindPhoneActivity extends BaseActivity {
             //登录成功
             boolean save = SharedPrefUtils.save(userInfo, UserInfo.class);
             FToast.success("登录成功");
+            EventBus.getDefault().post(new LoginSucceedEvent());
             mSucceed = true;
             if (save) {
                 FLog.e(TAG, "用户信息保存成功");

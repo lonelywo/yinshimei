@@ -8,14 +8,20 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 
-public class MainPagerAdapter extends FragmentPagerAdapter {
+public class MainPagerAdapter extends FragmentStatePagerAdapter {
 
     private List<Fragment> mFragments = new ArrayList<>();
     private List<String> mTitles;
 
     public MainPagerAdapter(@NonNull FragmentManager fm) {
         super(fm);
+    }
+
+    public MainPagerAdapter(FragmentManager fm, List<Fragment> fragments) {
+        super(fm);
+        mFragments = fragments;
     }
 
     public void addFragment(Fragment fragment) {

@@ -377,7 +377,8 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                             orderGoods.setGoods_title(mProData.getTitle());
                             orderGoods.setGoods_num(mNum);
                             orderGoods.setGoods_spec(mSpec);
-                            orderGoods.setGoods_price_selling(mProData.getInitial_price_selling());
+                            double goodsPrice=MathExtend.multiply(mProData.getInitial_price_selling(),String.valueOf(mNum));
+                            orderGoods.setGoods_price_selling(String.valueOf(goodsPrice));
 
                             items.add(orderGoods);
 

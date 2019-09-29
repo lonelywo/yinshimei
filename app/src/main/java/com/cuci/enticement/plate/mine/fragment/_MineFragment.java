@@ -23,6 +23,8 @@ import com.cuci.enticement.bean.Base;
 import com.cuci.enticement.bean.OrderStatistics;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
+import com.cuci.enticement.event.LoginOutEvent;
+import com.cuci.enticement.event.LoginSucceedEvent;
 import com.cuci.enticement.plate.common.LoginActivity;
 import com.cuci.enticement.plate.common.popup.TipsPopup;
 import com.cuci.enticement.plate.mine.activity.AchievementActivity;
@@ -49,6 +51,9 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import org.greenrobot.eventbus.EventBus;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -460,7 +465,8 @@ public class _MineFragment extends BaseFragment {
         FToast.success("退出登录");
         SharedPrefUtils.exit();
         mUserInfo = null;
-        refreshLayout();
+        EventBus.getDefault().postSticky(new LoginOutEvent());
+       // refreshLayout();
     }
 
 

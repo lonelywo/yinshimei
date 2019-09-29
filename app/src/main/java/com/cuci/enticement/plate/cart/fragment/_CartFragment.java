@@ -164,6 +164,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
     @Subscribe(threadMode = ThreadMode.POSTING, sticky = true)
     public void onCartEventMessage(CartEvent event) {
         if(event.getCode()==CartEvent.REFRESH_CART_LIST){
+            mUserInfo = SharedPrefUtils.get(UserInfo.class);
             mRefreshLayout.autoRefresh();
         }
 
@@ -181,6 +182,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
     public void onDetach() {
         super.onDetach();
         EventBus.getDefault().unregister(this);
+        mLocalBroadcastManager.unregisterReceiver(mReceiver);
     }
 
 
@@ -191,12 +193,12 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
             if (intent != null && intent.getAction() != null) {
                 if(intent.getAction().equals(ACTION_REFRESH_DATA)){
                     //刷新购物车列表
-                    mUserInfo = SharedPrefUtils.get(UserInfo.class);
+                /*    mUserInfo = SharedPrefUtils.get(UserInfo.class);
                     if(mUserInfo==null){
                         mStatusView.showEmpty();
                         return;
                     }
-                    load();
+                    load();*/
                 }
 
             }

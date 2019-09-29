@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -60,6 +61,7 @@ import com.cuci.enticement.plate.mine.vm.OrderViewModel;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.PayResult;
 import com.cuci.enticement.utils.SharedPrefUtils;
+import com.cuci.enticement.utils.ViewUtils;
 import com.cuci.enticement.widget.CartItemDecoration;
 import com.cuci.enticement.widget.CustomRefreshHeader;
 import com.cuci.enticement.widget.OrderItemDecoration;
@@ -111,6 +113,11 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
     @BindView(R.id.image_top)
     ImageView mIvTop;
 
+    @BindView(R.id.empty_view)
+    LinearLayout mEmptyLayout;
+
+
+
     private LinearLayoutManager mLayoutManager;
     private MultiTypeAdapter mAdapter;
     private Items mItems;
@@ -154,7 +161,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
 
                         FToast.success("支付成功");
 
-                        //刷新外层
+                        //刷新列表
                         EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.REFRESH_OUTSIDE));
 
                         //刷新小角标状态
@@ -162,23 +169,6 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
 
                         LocalBroadcastManager.getInstance(mActivity).sendBroadcast(intent);
 
-
-
-
-
-               /*         if (TextUtils.equals(resultStatus, "9000")) {
-                        // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
-                        FToast.success("支付成功：" + payResult.toString());
-                        try {
-                           AliPayResult aliPayResult = new Gson().fromJson(result, AliPayResult.class);
-                           FLog.e(TAG, aliPayResult.toString());
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                       }
-                    } else {
-                       // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
-                        FToast.error("失败：" + payResult.toString());
-                    }*/
 
 
 
@@ -274,6 +264,8 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                         if (item == null ) {
                             if (status.loadType == Status.LOAD_REFRESH) {
 
+                                    ViewUtils.showView(mEmptyLayout);
+
                                 mRefreshLayout.finishRefresh();
                             } else {
 
@@ -287,14 +279,21 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                         mCanLoadMore = true;
 
                         if (status.loadType == Status.LOAD_REFRESH) {
-                            mDatas.clear();
-                            mDatas.addAll(item);
+
+                            if (item.size() > 0) {
+                                ViewUtils.hideView(mEmptyLayout);
+
+                                mDatas.clear();
+                                mDatas.addAll(item);
+                                mItems.clear();
+                                addOrderItem(item);
+                                mAdapter.notifyDataSetChanged();
+                                mRefreshLayout.finishRefresh();
+                            } else {
+                                ViewUtils.showView(mEmptyLayout);
+                            }
 
 
-                            mItems.clear();
-                            addOrderItem(item);
-                            mAdapter.notifyDataSetChanged();
-                            mRefreshLayout.finishRefresh();
                         } else {
 
 
@@ -314,7 +313,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                             mCanLoadMore = true;
                             mRefreshLayout.finishLoadMore();
                         } else {
-
+                            ViewUtils.showView(mEmptyLayout);
                             mRefreshLayout.finishRefresh();
                         }
                         FToast.error(allOrderList.getInfo());
@@ -552,7 +551,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                         FToast.success(orderConfirm.getInfo());
 
                     }else {
-                        FToast.warning(orderConfirm.getInfo());
+                        FToast.error(orderConfirm.getInfo());
                     }
 
 
@@ -688,7 +687,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                             sendReq2ZFB(orderPay.getData());
 
                         }else {
-                            FToast.warning(orderPay.getInfo());
+                            FToast.error(orderPay.getInfo());
                         }
 
                     }else if(mPayType==1){
@@ -715,7 +714,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                             sendReq2WX(wxPayBean);
 
                         }else {
-                            FToast.warning(orderPay.getInfo());
+                            FToast.error(orderPay.getInfo());
                         }
 
 
