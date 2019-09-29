@@ -2,6 +2,7 @@ package com.cuci.enticement.plate.common.popup;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,7 +20,7 @@ public class TipsPopupxieyi extends CenterPopupView {
     @BindView(R.id.web_context)
     WebView webContext;
     @BindView(R.id.cancel)
-    TextView cancel;
+    ImageView cancel;
 
     public TipsPopupxieyi(@NonNull Context context, OnExitListener listener) {
         super(context);
