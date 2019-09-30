@@ -282,6 +282,12 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
                     .append(item.getArea()).append(" ")
                     .append(item.getAddress());
             SharedPrefUtils.saveDefaultAdress(sb.toString());
+        }else {
+            //默认收货地址置空
+            SharedPrefUtils.saveDefaultAdress("");
+            //置空地址
+            EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.SET_ADDRESS));
+
         }
 
 

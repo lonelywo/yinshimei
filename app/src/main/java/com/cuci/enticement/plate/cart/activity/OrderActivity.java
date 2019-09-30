@@ -317,9 +317,7 @@ public class OrderActivity extends BaseActivity {
                     if (data.getCode() == 1) {
 
                         saveDefault(list);
-                        ViewUtils.hideView(textDizi);
-                        ViewUtils.showView(tvAddress);
-                        tvAddress.setText(SharedPrefUtils.getDefaultAdress());
+
 
                     } else {
                         ViewUtils.showView(textDizi);
@@ -370,6 +368,13 @@ public class OrderActivity extends BaseActivity {
                     .append(item.getArea()).append(" ")
                     .append(item.getAddress());
             SharedPrefUtils.saveDefaultAdress(sb.toString());
+            ViewUtils.hideView(textDizi);
+            ViewUtils.showView(tvAddress);
+            tvAddress.setText(SharedPrefUtils.getDefaultAdress());
+
+        }else {
+            ViewUtils.showView(textDizi);
+            ViewUtils.hideView(tvAddress);
         }
 
 
@@ -619,7 +624,7 @@ public class OrderActivity extends BaseActivity {
                         double totalMoney= Arith.add(Double.parseDouble(mInfo.getPrice_goods()),express_price);
                         tvTotalMoney.setText(String.format(Locale.CHINA,"%s",totalMoney));
                     }else {
-                        FToast.warning(expressCost.getInfo());
+                        FToast.error(expressCost.getInfo());
                     }
 
 

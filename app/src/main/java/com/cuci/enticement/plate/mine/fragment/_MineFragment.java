@@ -199,8 +199,8 @@ public class _MineFragment extends BaseFragment {
                 if (AppUtils.isAllowPermission(mActivity)) {
                     Bitmap bitmap = BitmapFactory.decodeResource(BasicApp.getContext().getResources(), R.drawable.tuxiang);
                     WxShareUtils.shareToWX(WxShareUtils.WX_SCENE_SESSION,
-                            "http://web.enticementchina.com/register.html", mActivity.getString(R.string.app_name_test),
-                            "因诗美，我的质感美学", bitmap,mUserInfo.getPhone());
+                            "http://web.enticementchina.com/register.html?phone="+mUserInfo.getPhone(), mActivity.getString(R.string.app_name_test),
+                            "因诗美，我的质感美学", bitmap);
                 }
             }
 
