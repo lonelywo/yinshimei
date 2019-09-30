@@ -63,9 +63,7 @@ public class ItemMyTeamViewBinder extends ItemViewBinder<MyTeamlbBean.DataBean.L
         holder.itemView.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View view) {
-              Intent intentProd = new Intent(BasicApp.getContext(), MyTeamTwoActivity.class);
-              intentProd.putExtra("Data", item);
-              BasicApp.getContext().startActivity(intentProd);
+
               mOnProdClickListener.onProdClick(item);
           }
       });

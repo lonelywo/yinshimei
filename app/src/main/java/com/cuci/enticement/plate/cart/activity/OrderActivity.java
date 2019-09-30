@@ -188,7 +188,7 @@ public class OrderActivity extends BaseActivity {
         EventBus.getDefault().unregister(this);
     }
 
-    @Subscribe(threadMode = ThreadMode.POSTING, sticky = true)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onOrderEventMessage(OrderEvent event) {
         if(event.getCode()==OrderEvent.FINISH_ACTIVITY){
             finish();

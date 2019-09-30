@@ -1,5 +1,6 @@
 package com.cuci.enticement.plate.mine.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.classic.common.MultipleStatusView;
+import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.MyTeamlbBean;
@@ -281,7 +283,9 @@ public class MyTeamActivity extends BaseActivity implements OnRefreshLoadMoreLis
 
     @Override
     public void onProdClick(MyTeamlbBean.DataBean.ListBean item) {
-
+        Intent intentProd = new Intent(this, MyTeamTwoActivity.class);
+        intentProd.putExtra("Data", item);
+        startActivity(intentProd);
     }
 
 

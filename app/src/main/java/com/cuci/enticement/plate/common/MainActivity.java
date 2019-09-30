@@ -375,7 +375,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-       if (serverVersion == localVersion) {
+       if (serverVersion > localVersion) {
             new XPopup.Builder(this)
                     .dismissOnTouchOutside(false)
                     .dismissOnBackPressed(false)

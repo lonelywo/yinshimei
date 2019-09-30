@@ -439,7 +439,7 @@ public class OrderDetailsActivity extends BaseActivity {
 
 
                         //切换全部订单
-                        EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.INTENT_MY_ORDER));
+                        EventBus.getDefault().post(new OrderEvent(OrderEvent.INTENT_YIWANCHENG));
 
 
                         finish();
@@ -495,7 +495,7 @@ public class OrderDetailsActivity extends BaseActivity {
                         initViewStatus(CANCEL_STATUS);
 
                         //切换全部订单
-                        EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.INTENT_MY_ORDER));
+                        EventBus.getDefault().post(new OrderEvent(OrderEvent.INTENT_MY_ORDER));
 
 
                         finish();
@@ -610,7 +610,7 @@ public class OrderDetailsActivity extends BaseActivity {
                         LocalBroadcastManager.getInstance(OrderDetailsActivity.this).sendBroadcast(intent);
 
                         //切换全部订单
-                        EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.INTENT_MY_ORDER));
+                        EventBus.getDefault().post(new OrderEvent(OrderEvent.INTENT_MY_ORDER));
 
 
                         finish();
@@ -621,7 +621,7 @@ public class OrderDetailsActivity extends BaseActivity {
                             FToast.warning("支付取消");
 
                             //切换全部订单
-                            EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.INTENT_MY_ORDER));
+                            EventBus.getDefault().post(new OrderEvent(OrderEvent.INTENT_MY_ORDER));
 
                             finish();
 

@@ -420,7 +420,7 @@ public class LoginActivity extends BaseActivity {
 
                     dispatchUserInfo(muserInfoBase);
                 } else {
-                    FToast.error(userInfoBase.msg);
+                    FToast.error(userInfoBase.info);
                 }
                 break;
             case Status.ERROR:
@@ -432,8 +432,12 @@ public class LoginActivity extends BaseActivity {
 
     private void dispatchUserInfo(UserInfo userInfo) {
         if ("0".equals(userInfo.getIs_binding())) {
-            mViewModel.wxCheckBindPhone(userInfo.getPhone())
-                    .observe(this, mObservercheck);
+
+            FToast.warning("请绑定手机号");
+            Intent intent = new Intent(this, BindPhoneActivity.class);
+            intent.putExtra("Data", minfo);
+            startActivity(intent);
+            finish();
         } else {
             //登录成功
             boolean save = SharedPrefUtils.save(userInfo, UserInfo.class);
@@ -451,57 +455,6 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-    private Observer<Status<ResponseBody>> mObservercheck = status -> {
-        switch (status.status) {
-            case Status.SUCCESS:
-                ResponseBody body = status.content;
-                operacheck(body);
-                break;
-            case Status.ERROR:
-                dismissLoading();
-                FToast.error("网络错误");
-                break;
-        }
-    };
-
-    private void operacheck(ResponseBody body) {
-        try {
-            String b = body.string();
-            CheckPhoneBean info = new Gson().fromJson(b, CheckPhoneBean.class);
-            if (info.getCode() == 1) {
-                if (info.getData().getIs_reg() == 1) {
-                    FToast.warning("请绑定手机号");
-                    Intent intent = new Intent(this, BindPhoneActivity.class);
-                    intent.putExtra("Data", minfo);
-                    startActivityForResult(intent, 10000);
-                } else {
-                    FToast.warning("请先完成手机注册，重新登录");
-                    Intent intent = new Intent(this, RegisterActivity.class);
-                    intent.putExtra("Data", "");
-                    startActivity(intent);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            dismissLoading();
-            FToast.error("数据错误");
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK && data != null) {
-            if (requestCode == 10000) {
-                UserInfo userInfo = (UserInfo) data.getSerializableExtra(_MineFragment.DATA_USER_INFO);
-                Intent intent = new Intent(_MineFragment.ACTION_LOGIN_SUCCEED);
-                intent.putExtra(_MineFragment.DATA_USER_INFO, userInfo);
-                LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-                finish();
-            }
-
-        }
-    }
 
 
     //判断是否超过10分钟

@@ -284,7 +284,7 @@ public class _MineFragment extends BaseFragment {
             btnShengji.setVisibility(View.GONE);
         }
         conYingchang.setVisibility(View.VISIBLE);
-        ImageLoader.loadNoPlaceholder(mUserInfo.getHeadimg(), imgTuxiang);
+        ImageLoader.loadPlaceholder1(mUserInfo.getHeadimg(), imgTuxiang);
         textName.setText(mUserInfo.getNickname());
 
         OrderViewModel orderViewModel = ViewModelProviders.of(this).get(OrderViewModel.class);

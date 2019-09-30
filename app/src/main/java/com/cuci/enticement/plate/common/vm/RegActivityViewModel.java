@@ -1,5 +1,7 @@
 package com.cuci.enticement.plate.common.vm;
 
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -29,25 +31,43 @@ public class RegActivityViewModel extends ViewModel {
         mCreator = ServiceCreator.getInstance();
     }
 
-    public MutableLiveData<Status<Base>> register(String code, String phone, String agent_phone) {
+    public MutableLiveData<Status<Base<UserInfo>>> register(String code, String phone, String agent_phone, String unionId, String openId, String avatarUrl, String nickname, String gender) {
 
-        final MutableLiveData<Status<Base>> liveData = new MutableLiveData<>();
+        final MutableLiveData<Status<Base<UserInfo>>> liveData = new MutableLiveData<>();
 
         liveData.setValue(Status.loading(null));
-        String  stringA = "agent_phone="+agent_phone+"&code="+code+"&phone="+phone;
-        String sign = EncryptUtils.md5Encrypt(stringA+"&key=A8sUd9bqis3sN5GK6aF9JDFl5I9skPkd");
-        String signs = sign.toUpperCase();
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("code",code);
+        params.put("phone",phone);
+        params.put("agent_phone",agent_phone);
+        if(!TextUtils.isEmpty(unionId)){
+            params.put("unionId",unionId);
+        }
+        if(!TextUtils.isEmpty(openId)){
+            params.put("openId",openId);
+        }
+        if(!TextUtils.isEmpty(avatarUrl)){
+            params.put("avatarUrl",avatarUrl);
+        }
+        if(!TextUtils.isEmpty(nickname)){
+            params.put("nickname",nickname);
+        }
+        if(!TextUtils.isEmpty(gender)){
+            params.put("gender",gender);
+        }
+
+        String signs = SignUtils.signParam(params);
         mCreator.create(UserApi.class)
-                .register(code, phone, agent_phone,signs)
-                .enqueue(new Callback<Base>() {
+                .register(code, phone, agent_phone,unionId,openId,avatarUrl,nickname,gender,signs)
+                .enqueue(new Callback<Base<UserInfo>>() {
                     @Override
-                    public void onResponse(@NonNull Call<Base> call,
-                                           @NonNull Response<Base> response) {
+                    public void onResponse(@NonNull Call<Base<UserInfo>> call,
+                                           @NonNull Response<Base<UserInfo>> response) {
                         liveData.setValue(Status.success(response.body()));
                     }
 
                     @Override
-                    public void onFailure(@NonNull Call<Base> call,
+                    public void onFailure(@NonNull Call<Base<UserInfo>> call,
                                           @NonNull Throwable t) {
                         liveData.setValue(Status.error(null, t.getMessage() == null ? "网络错误" : t.getMessage()));
                     }
@@ -55,7 +75,7 @@ public class RegActivityViewModel extends ViewModel {
         return liveData;
     }
 
-   public MutableLiveData<Status<Base>> getSmsCode(String phone, String secure, String region) {
+   public MutableLiveData<Status<Base>> getSmsCode(String phone, String secure, String region,String type) {
 
         final MutableLiveData<Status<Base>> liveData = new MutableLiveData<>();
 
@@ -64,11 +84,11 @@ public class RegActivityViewModel extends ViewModel {
        params.put("phone",phone);
        params.put("secure",secure);
        params.put("region",region);
-       params.put("type","1");
+       params.put("type",type);
        String signs = SignUtils.signParam(params);
 
        mCreator.create(UserApi.class)
-                .getSmsCode(phone, secure, region,"1",signs)
+                .getSmsCode(phone, secure, region,type,signs)
                 .enqueue(new Callback<Base>() {
                     @Override
                     public void onResponse(@NonNull Call<Base> call,
@@ -110,6 +130,32 @@ public class RegActivityViewModel extends ViewModel {
 
                     @Override
                     public void onFailure(@NonNull Call<Base<UserInfo>> call,
+                                          @NonNull Throwable t) {
+                        liveData.setValue(Status.error(null, t.getMessage() == null ? "网络错误" : t.getMessage()));
+                    }
+                });
+        return liveData;
+    }
+    public MutableLiveData<Status<ResponseBody>> wxCheckBindPhone(String phone) {
+
+        final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
+
+        liveData.setValue(Status.loading(null));
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("phone",phone);
+        String signs = SignUtils.signParam(params);
+
+        mCreator.create(UserApi.class)
+                .wxCheckBindPhone(phone,signs)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(@NonNull Call<ResponseBody> call,
+                                           @NonNull Response<ResponseBody> response) {
+                        liveData.setValue(Status.success(response.body()));
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<ResponseBody> call,
                                           @NonNull Throwable t) {
                         liveData.setValue(Status.error(null, t.getMessage() == null ? "网络错误" : t.getMessage()));
                     }

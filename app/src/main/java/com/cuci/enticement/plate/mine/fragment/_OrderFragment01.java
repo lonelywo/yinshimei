@@ -170,7 +170,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                         LocalBroadcastManager.getInstance(mActivity).sendBroadcast(intent);
 
                         //切换全部订单
-                        EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.INTENT_MY_ORDER));
+                        EventBus.getDefault().post(new OrderEvent(OrderEvent.INTENT_MY_ORDER));
 
 
                     } else {
@@ -181,7 +181,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
 
 
                             //切换全部订单
-                            EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.INTENT_MY_ORDER));
+                            EventBus.getDefault().post(new OrderEvent(OrderEvent.INTENT_MY_ORDER));
                         } else {
                             // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
                             FToast.error("支付失败");
@@ -555,7 +555,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                         LocalBroadcastManager.getInstance(mActivity).sendBroadcast(intent);
 
                         //切换全部订单
-                        EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.INTENT_MY_ORDER));
+                        EventBus.getDefault().post(new OrderEvent(OrderEvent.INTENT_YIWANCHENG));
 
 
                         FToast.success(orderConfirm.getInfo());
@@ -624,7 +624,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                         LocalBroadcastManager.getInstance(mActivity).sendBroadcast(intent);
 
                         //切换全部订单
-                        EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.INTENT_MY_ORDER));
+                        EventBus.getDefault().post(new OrderEvent(OrderEvent.INTENT_MY_ORDER));
 
 
                         FToast.success(orderCancel.getInfo());

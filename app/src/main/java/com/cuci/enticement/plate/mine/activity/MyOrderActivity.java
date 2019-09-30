@@ -109,15 +109,16 @@ public class MyOrderActivity extends BaseActivity {
         EventBus.getDefault().unregister(this);
     }
 
-    @Subscribe(threadMode = ThreadMode.POSTING, sticky = true)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onOrderEventMessage(OrderEvent event) {
         if(event.getCode()==OrderEvent.INTENT_MY_ORDER){
             mViewPager.setCurrentItem(0);
         }
-
+        if(event.getCode()==OrderEvent.INTENT_YIWANCHENG){
+            mViewPager.setCurrentItem(4);
+        }
 
     }
-
 
 
 

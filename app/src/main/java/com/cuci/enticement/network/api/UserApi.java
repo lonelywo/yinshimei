@@ -20,10 +20,15 @@ public interface UserApi {
      */
     @FormUrlEncoded
     @POST("store/api.user/reg")
-    Call<Base> register(@Field("code") String code,
+    Call<Base<UserInfo>> register(@Field("code") String code,
                         @Field("phone") String phone,
                         @Field("agent_phone") String agent_phone,
-                        @Field("sign") String sign
+                        @Field("unionId") String unionId,
+                        @Field("openId") String openId,
+                        @Field("avatarUrl") String avatarUrl,
+                        @Field("nickname") String nickname,
+                        @Field("gender") String gender,
+                                          @Field("sign") String sign
                                                           );
     /**
      * 获取注册验证码

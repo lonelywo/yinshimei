@@ -172,31 +172,6 @@ public class LoginViewModel extends ViewModel {
                 });
         return liveData;
     }
-    public MutableLiveData<Status<ResponseBody>> wxCheckBindPhone(String phone) {
 
-        final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
-
-        liveData.setValue(Status.loading(null));
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("phone",phone);
-        String signs = SignUtils.signParam(params);
-
-        mCreator.create(UserApi.class)
-                .wxCheckBindPhone(phone,signs)
-                .enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(@NonNull Call<ResponseBody> call,
-                                           @NonNull Response<ResponseBody> response) {
-                        liveData.setValue(Status.success(response.body()));
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull Call<ResponseBody> call,
-                                          @NonNull Throwable t) {
-                        liveData.setValue(Status.error(null, t.getMessage() == null ? "网络错误" : t.getMessage()));
-                    }
-                });
-        return liveData;
-    }
 
 }

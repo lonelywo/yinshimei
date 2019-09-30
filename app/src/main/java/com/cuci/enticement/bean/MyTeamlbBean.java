@@ -64,7 +64,7 @@ public class MyTeamlbBean implements Serializable {
             this.list = list;
         }
 
-        public static class PageBean {
+        public static class PageBean implements Serializable{
             /**
              * limit : 20
              * total : 1

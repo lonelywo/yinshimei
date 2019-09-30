@@ -20,6 +20,7 @@ import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.Base;
 import com.cuci.enticement.bean.Status;
+import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.plate.common.vm.RegActivityViewModel;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.cuci.enticement.utils.FLog;
@@ -124,12 +125,12 @@ public class RegisterActivity extends BaseActivity {
             FToast.warning("请填写正确的推荐人手机号");
             return;
         }
-        mViewModel.register(smsCode,phone,inviteCode).observe(this, mObserver);
+        mViewModel.register(smsCode,phone,inviteCode,"","","","","").observe(this, mObserver);
 
     }
-    private Observer<Status<Base>> mObserver = new Observer<Status<Base>>() {
+    private Observer<Status<Base<UserInfo>>> mObserver = new Observer<Status<Base<UserInfo>>>() {
         @Override
-        public void onChanged(Status<Base> baseStatus) {
+        public void onChanged(Status<Base<UserInfo>> baseStatus) {
             switch (baseStatus.status) {
                 case Status.LOADING:
                     RegisterActivity.this.showLoading();
@@ -168,7 +169,7 @@ public class RegisterActivity extends BaseActivity {
             guojiacode ="60";
         }
 
-        mViewModel.getSmsCode(phone, "cuci", guojiacode).observe(this, mSmsCodeObserver);
+        mViewModel.getSmsCode(phone, "cuci", guojiacode,"1").observe(this, mSmsCodeObserver);
 
     }
     private Observer<Status<Base>> mSmsCodeObserver = new Observer<Status<Base>>() {
