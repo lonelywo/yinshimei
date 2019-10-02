@@ -89,7 +89,7 @@ public class RegisterActivity extends BaseActivity {
 
 
 
-    @OnClick({R.id.tv_code, R.id.ok,R.id.image_back,R.id.img_youjiantou})
+    @OnClick({R.id.tv_code, R.id.ok,R.id.image_back,R.id.text_guojia})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_code:
@@ -103,7 +103,7 @@ public class RegisterActivity extends BaseActivity {
                finish();
 
                 break;
-            case R.id.img_youjiantou:
+            case R.id.text_guojia:
                 showQrCodeDialog();
 
                 break;
@@ -159,8 +159,8 @@ public class RegisterActivity extends BaseActivity {
 
         String phone = edtPhone.getText().toString().trim();
         String guojia = textGuojia.getText().toString();
-        if (TextUtils.isEmpty(phone) || !Re.is11Number(phone)) {
-            FToast.warning("请填写正确的手机号");
+        if (TextUtils.isEmpty(phone) ) {
+            FToast.warning("请填写手机号");
             return;
         }
         if(guojia.equals("中国")){

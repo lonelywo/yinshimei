@@ -1,6 +1,6 @@
 package com.cuci.enticement.plate.common;
 
-import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -13,19 +13,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
 import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.Constant;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.Base;
-import com.cuci.enticement.bean.CheckPhoneBean;
 import com.cuci.enticement.bean.LoginBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
@@ -52,20 +44,37 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.IOException;
 import java.util.Date;
 
+import androidx.core.content.ContextCompat;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.ResponseBody;
 
 public class LoginActivity extends BaseActivity {
+
+    public static final String ACTION_WX_LOGIN_SUCCEED = "com.example.enticement.plate.user.ACTION_WX_LOGIN_SUCCEED";
+    public static final String DATA_UNION_ID = "data_union_id";
     @BindView(R.id.img_shoutu)
     ImageView imgShoutu;
+    @BindView(R.id.image_back)
+    ImageView imageBack;
+    @BindView(R.id.text_suosu)
+    TextView textSuosu;
+    @BindView(R.id.text_guojia)
+    TextView textGuojia;
+    @BindView(R.id.img_youjiantou)
+    ImageView imgYoujiantou;
+    @BindView(R.id.view_zeng)
+    View viewZeng;
     @BindView(R.id.edt_phone)
     ClearEditText edtPhone;
+    @BindView(R.id.view_zeng1)
+    View viewZeng1;
     @BindView(R.id.text_shoujihao)
     TextView textShoujihao;
-    @BindView(R.id.edt_phone_container)
-    ConstraintLayout edtPhoneContainer;
     @BindView(R.id.text_yanzhengma)
     TextView textYanzhengma;
     @BindView(R.id.edt_code)
@@ -84,10 +93,7 @@ public class LoginActivity extends BaseActivity {
     ImageView weixin;
     @BindView(R.id.text_weixindenglu)
     TextView textWeixindenglu;
-    public static final String ACTION_WX_LOGIN_SUCCEED = "com.example.enticement.plate.user.ACTION_WX_LOGIN_SUCCEED";
-    public static final String DATA_UNION_ID = "data_union_id";
-    @BindView(R.id.image_back)
-    ImageView imageBack;
+
     private LocalBroadcastManager mBroadcastManager;
     private static final String TAG = LoginActivity.class.getSimpleName();
     private LoginViewModel mViewModel;
@@ -96,14 +102,8 @@ public class LoginActivity extends BaseActivity {
     private boolean mShowContract = false;
     private String mUnionId = "";
     private WxInfo minfo;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
-
+    private int mQrCodeChoice=0;
+    private String[] mQrItems = new String[]{"中国", "马来西亚"};
     public interface OnLoginListener {
         void onLoginSucceed(UserInfo userInfo, boolean showContract);
     }
@@ -136,7 +136,7 @@ public class LoginActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.tv_code, R.id.ok, R.id.text_zhuce, R.id.weixin, R.id.text_dibuwenzi})
+    @OnClick({R.id.tv_code, R.id.ok, R.id.text_zhuce, R.id.weixin, R.id.text_dibuwenzi,R.id.text_guojia})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_code:
@@ -162,6 +162,9 @@ public class LoginActivity extends BaseActivity {
                                 }))
                         .show();
 
+                break;
+            case R.id.text_guojia:
+                showQrCodeDialog();
                 break;
         }
     }
@@ -254,13 +257,18 @@ public class LoginActivity extends BaseActivity {
     private void getSmsCodelogin() {
 
         String phone = edtPhone.getText().toString().trim();
-
-        if (TextUtils.isEmpty(phone) || !Re.is11Number(phone)) {
-            FToast.warning("请填写正确的手机号");
+        String guojia = textGuojia.getText().toString();
+        if (TextUtils.isEmpty(phone)) {
+            FToast.warning("请填写手机号");
             return;
         }
-        int showquyuCode = SharedPrefUtils.getShowquyuCode();
-        mViewModel.getSmsCodelogin(phone, "cuci", "" + showquyuCode).observe(this, mSmsCodeObserver);
+      //  int showquyuCode = SharedPrefUtils.getShowquyuCode();
+        if(guojia.equals("中国")){
+            guojiacode ="86";
+        }else {
+            guojiacode ="60";
+        }
+        mViewModel.getSmsCodelogin(phone, "cuci", guojiacode).observe(this, mSmsCodeObserver);
     }
 
     private Observer<Status<Base>> mSmsCodeObserver = new Observer<Status<Base>>() {
@@ -456,7 +464,6 @@ public class LoginActivity extends BaseActivity {
     }
 
 
-
     //判断是否超过10分钟
     private boolean tenOuter() {
 
@@ -495,6 +502,34 @@ public class LoginActivity extends BaseActivity {
             }
         }
     };
+    private void showQrCodeDialog() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
+        builder.setTitle("选择");
+        if (mQrCodeChoice == 0) {
+            mQrCodeChoice = 0;
+        } else if (mQrCodeChoice == 1) {
+            mQrCodeChoice = 1;
+        }
+        builder.setSingleChoiceItems(mQrItems, mQrCodeChoice, (dialog, which) ->
+                mQrCodeChoice = which);
+
+        builder.setPositiveButton("保存", (dialog, which) -> {
+            if (mQrCodeChoice == 0) {
+                SharedPrefUtils.saveShowquyuCode(86);
+                textGuojia.setText("中国");
+            } else if (mQrCodeChoice == 1) {
+                SharedPrefUtils.saveShowquyuCode(60);
+                textGuojia.setText("马来西亚");
+            }
+            FToast.success("保存成功");
+        });
+
+        builder.setNegativeButton("取消", null);
+        builder.create().show();
+
+    }
 
 
 }
