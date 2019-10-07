@@ -397,4 +397,42 @@ public class MineViewModel extends ViewModel {
 
     }
 
+    /**
+     * 环信注册
+     * @param phone
+     * @param from_type
+     * @param token
+     * @param mid
+     * @return
+     */
+    public MutableLiveData<Status<ResponseBody>> hxreg(String phone, String from_type, String token,String mid) {
+
+        final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
+       // liveData.setValue(Status.loading(null));
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("phone",phone);
+        params.put("from_type",from_type);
+        params.put("token",token);
+        params.put("mid",mid);
+        String signs = SignUtils.signParam(params);
+        mCreator.create(MineApi.class)
+                .hxreg(phone,from_type,token,mid,signs)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(@NonNull Call<ResponseBody> call,
+                                           @NonNull Response<ResponseBody> response) {
+                        liveData.setValue(Status.success(response.body()));
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<ResponseBody> call,
+                                          @NonNull Throwable t) {
+                        liveData.setValue(Status.error(null, t.getMessage() == null ? "网络错误" : t.getMessage()));
+                    }
+                });
+        return liveData;
+
+    }
+
+
 }

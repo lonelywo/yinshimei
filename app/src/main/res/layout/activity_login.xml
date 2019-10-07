@@ -64,13 +64,15 @@
         />
     <View
         android:id="@+id/view_zeng"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0.5dp"
         android:background="@drawable/shape_login_edit_bottom_line"
         app:layout_constraintTop_toBottomOf="@+id/text_suosu"
         android:layout_marginTop="10dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         />
 
 
@@ -94,13 +96,15 @@
             />
     <View
         android:id="@+id/view_zeng1"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0.5dp"
          android:background="@drawable/shape_login_edit_bottom_line"
         app:layout_constraintTop_toBottomOf="@+id/edt_phone"
         android:layout_marginTop="10dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         />
         <TextView
             android:id="@+id/text_shoujihao"

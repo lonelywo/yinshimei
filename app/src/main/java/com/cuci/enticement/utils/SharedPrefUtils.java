@@ -547,4 +547,22 @@ public class SharedPrefUtils {
         SharedPreferences sp = BasicApp.getContext().getSharedPreferences(NAME_STRING, Context.MODE_PRIVATE);
         return sp.getString("default_adress_id", "");
     }
+    /**
+     * 保存环信注册结果
+     */
+    public static void saveShowhxCode(int show) {
+        SharedPreferences sp = BasicApp.getContext().getSharedPreferences("huanxing", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putInt("showHxCode", show);
+        editor.apply();
+    }
+    /**
+     * 获取环信注册结果
+     */
+    public static int getShowhxCode() {
+        SharedPreferences sp = BasicApp.getContext().getSharedPreferences("huanxing", Context.MODE_PRIVATE);
+        return sp.getInt("showHxCode", 0);
+    }
+
+
 }

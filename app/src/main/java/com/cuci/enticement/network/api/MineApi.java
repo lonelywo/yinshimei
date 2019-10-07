@@ -101,5 +101,18 @@ public interface MineApi {
                         @Field("from_type") String from_type,
                         @Field("sign") String sign
     );
+
+    /**
+     * 环信注册
+     */
+    @FormUrlEncoded
+    @POST("store/api.member.easemob/easemobReg")
+    Call<ResponseBody> hxreg(
+            @Field("phone") String phone,
+            @Field("from_type") String from_type,
+            @Field("token") String token,
+            @Field("mid") String mid,
+            @Field("sign") String sign
+    );
 }
 

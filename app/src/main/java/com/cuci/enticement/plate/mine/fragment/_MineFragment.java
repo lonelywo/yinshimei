@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,8 @@ import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseFragment;
 import com.cuci.enticement.bean.Base;
+import com.cuci.enticement.bean.CheckPhoneBean;
+import com.cuci.enticement.bean.HxBean;
 import com.cuci.enticement.bean.OrderStatistics;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
@@ -47,16 +50,21 @@ import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.ViewUtils;
 import com.cuci.enticement.utils.WxShareUtils;
 import com.google.gson.Gson;
+import com.hyphenate.chat.ChatClient;
+import com.hyphenate.helpdesk.callback.Callback;
+import com.hyphenate.helpdesk.easeui.util.IntentBuilder;
 import com.lxj.xpopup.XPopup;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.ResponseBody;
 
 import static androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance;
 import static com.cuci.enticement.plate.common.MainActivity.ACTION_GO_TO_HOME;
@@ -287,6 +295,26 @@ public class _MineFragment extends BaseFragment {
         ImageLoader.loadPlaceholder1(mUserInfo.getHeadimg(), imgTuxiang);
         textName.setText(mUserInfo.getNickname());
 
+        if (SharedPrefUtils.getShowhxCode()==0) {
+            mViewModel.hxreg(mUserInfo.getPhone(), "2",mUserInfo.getToken() , String.valueOf(mUserInfo.getId())).observe(this, mhxregObserver);
+        }else {
+            ChatClient.getInstance().login(mUserInfo.getPhone(), "ysm6j351r6", new Callback(){
+                @Override
+                public void onSuccess() {
+                    Log.d("Success_hx" , "环信登录成功");
+                }
+
+                @Override
+                public void onError(int code, String error) {
+                   Log.d("error_hx" , error);
+                }
+
+                @Override
+                public void onProgress(int progress, String status) {
+
+                }
+            });
+        }
         OrderViewModel orderViewModel = ViewModelProviders.of(this).get(OrderViewModel.class);
         orderViewModel.getStatisticsOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()))
                 .observe(mActivity, mTotalOrderObserver);
@@ -375,14 +403,63 @@ public class _MineFragment extends BaseFragment {
                 }
                 break;
             case R.id.text_wodekefu:
-                if (AppUtils.isAllowPermission(mActivity)) {
-                    Intent intentProd = new Intent(mActivity, KeFuActivity.class);
-                    intentProd.putExtra("Data", "");
-                    mActivity.startActivity(intentProd);
+                if(ChatClient.getInstance().isLoggedInBefore()){
+                    //已经登录，可以直接进入会话界面
+                    Intent intent = new IntentBuilder(mActivity)
+						     .setServiceIMNumber("kefuchannelimid_269943")
+                            .build();
+                    startActivity(intent);
+                }else{
+                    //未登录，需要登录后，再进入会话界面
+                    FToast.error("未登录环信");
                 }
                 break;
         }
     }
+
+    private Observer<Status<ResponseBody>> mhxregObserver = status -> {
+        switch (status.status) {
+            case Status.SUCCESS:
+                ResponseBody body = status.content;
+                operacheck(body);
+                break;
+            case Status.ERROR:
+                FToast.error("网络错误");
+                break;
+        }
+    };
+
+    private void operacheck(ResponseBody body) {
+        try {
+            String b = body.string();
+            HxBean info = new Gson().fromJson(b, HxBean.class);
+            if (info.getCode() == 1) {
+                SharedPrefUtils.saveShowhxCode(1);
+                ChatClient.getInstance().login(mUserInfo.getPhone(), "ysm6j351r6", new Callback(){
+                    @Override
+                    public void onSuccess() {
+                        Log.d("Success_hx" , "环信登录成功");
+                    }
+
+                    @Override
+                    public void onError(int code, String error) {
+                        Log.d("error_hx" , error);
+                    }
+
+                    @Override
+                    public void onProgress(int progress, String status) {
+
+                    }
+                });
+            } else {
+                FToast.error(info.getInfo());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            FToast.error("数据错误");
+        }
+    }
+
 
 
     @OnClick({R.id.daifukuan_ll, R.id.daifahuo_ll, R.id.daishouhuo_ll, R.id.yiwancheng_ll})
@@ -497,6 +574,23 @@ public class _MineFragment extends BaseFragment {
         mUserInfo = null;
         EventBus.getDefault().postSticky(new LoginOutEvent());
         // refreshLayout();
+        //第一个参数为是否解绑推送的devicetoken
+        ChatClient.getInstance().logout(true, new Callback(){
+            @Override
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onError(int code, String error) {
+
+            }
+
+            @Override
+            public void onProgress(int progress, String status) {
+
+            }
+        });
     }
 
 

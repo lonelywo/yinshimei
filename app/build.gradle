@@ -9,6 +9,11 @@ android {
         versionCode 2
         versionName "1.8.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a", "mips", "x86",'arm64-v8a'
+        }
+
     }
 
 
@@ -135,6 +140,7 @@ dependencies {
     implementation 'org.greenrobot:eventbus:3.1.1'
     //支付宝
     implementation(name: 'alipaySdk-15.6.5-20190718211159-noUtdid', ext: 'aar')
-
+   //环信客服SDK
+    implementation 'com.hyphenate:kefu-easeui-android:latest.release'
 
 }
