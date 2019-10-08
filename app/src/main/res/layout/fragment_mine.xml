@@ -524,7 +524,7 @@
             android:textColor="#646262"
             android:layout_marginTop="5dp"
             android:gravity="center_horizontal"
-            android:visibility="visible"
+            android:visibility="gone"
 
             />
         <TextView
