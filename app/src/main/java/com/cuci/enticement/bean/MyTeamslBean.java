@@ -46,6 +46,7 @@ public class MyTeamslBean implements Serializable {
 
         private int total_all;
         private int total_mon;
+        private int total_day;
 
         public int getTotal_all() {
             return total_all;
@@ -61,6 +62,13 @@ public class MyTeamslBean implements Serializable {
 
         public void setTotal_mon(int total_mon) {
             this.total_mon = total_mon;
+        }
+        public int getTotal_day() {
+            return total_day;
+        }
+
+        public void setTotal_day(int total_day) {
+            this.total_day = total_day;
         }
     }
 }

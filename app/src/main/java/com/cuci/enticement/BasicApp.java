@@ -1,19 +1,31 @@
 package com.cuci.enticement;
 
 import android.app.Application;
+import android.content.Intent;
 import android.os.Build;
 import android.os.StrictMode;
+import android.text.TextUtils;
 
+
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.cuci.enticement.bean.WxPayBean;
+import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.hyphenate.chat.ChatClient;
+import com.hyphenate.chat.ChatManager;
+import com.hyphenate.chat.EMCmdMessageBody;
+import com.hyphenate.chat.Message;
 import com.hyphenate.helpdesk.easeui.UIProvider;
+import com.hyphenate.helpdesk.model.MessageHelper;
+import com.hyphenate.helpdesk.util.Log;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
+import org.json.JSONObject;
 import org.litepal.LitePal;
 
+import java.util.List;
 
 
 public class BasicApp extends Application {
@@ -24,7 +36,10 @@ public class BasicApp extends Application {
     private static AppExecutors mAppExecutors;
 
     private static IWXAPI mIWXAPI;
-
+    /**
+     * kefuChat.MessageListener
+     */
+    protected ChatManager.MessageListener messageListener = null;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -56,9 +71,91 @@ public class BasicApp extends Application {
         UIProvider.getInstance().init(this);
         //后面可以设置其他属性
 
+        //注册消息事件监听
+        registerEventListener();
 
     }
+    /**
+     * 全局事件监听
+     * 因为可能会有UI页面先处理到这个消息，所以一般如果UI页面已经处理，这里就不需要再次处理
+     * activityList.size() <= 0 意味着所有页面都已经在后台运行，或者已经离开Activity Stack
+     */
+    protected void registerEventListener(){
+        messageListener = new ChatManager.MessageListener(){
 
+            @Override
+            public void onMessage(List<Message> msgs) {
+
+                //刷新小角标状态
+                Intent intent = new Intent(_MineFragment.ACTION_REFRESH_HX);
+                intent.putExtra("data",msgs.size());
+                LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+                for (Message message : msgs){
+                    Log.d(TAG, "onMessageReceived id : " + message.messageId());
+
+                    //这里全局监听通知类消息,通知类消息是通过普通消息的扩展实现
+                    if (MessageHelper.isNotificationMessage(message)){
+                        // 检测是否为留言的通知消息
+                        String eventName = getEventNameByNotification(message);
+                        if (!TextUtils.isEmpty(eventName)){
+                            if (eventName.equals("TicketStatusChangedEvent") || eventName.equals("CommentCreatedEvent")){
+                                // 检测为留言部分的通知类消息,刷新留言列表
+                                JSONObject jsonTicket = null;
+                                try{
+                                    jsonTicket = message.getJSONObjectAttribute("weichat").getJSONObject("event").getJSONObject("ticket");
+                                }catch (Exception ignored){}
+                              //  ListenerManager.getInstance().sendBroadCast(eventName, jsonTicket);
+                            }
+                        }
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCmdMessage(List<Message> msgs) {
+                for (Message message : msgs){
+                    Log.d(TAG, "收到透传消息");
+                    //获取消息body
+                    EMCmdMessageBody cmdMessageBody = (EMCmdMessageBody) message.body();
+                    String action = cmdMessageBody.action(); //获取自定义action
+                    Log.d(TAG, String.format("透传消息: action:%s,message:%s", action, message.toString()));
+                }
+            }
+
+            @Override
+            public void onMessageStatusUpdate() {
+
+            }
+
+            @Override
+            public void onMessageSent() {
+
+            }
+        };
+
+        ChatClient.getInstance().chatManager().addMessageListener(messageListener);
+    }
+    /**
+     * 获取EventName
+     * @param message
+     * @return
+     */
+    public String getEventNameByNotification(Message message){
+
+        try {
+            JSONObject weichatJson = message.getJSONObjectAttribute("weichat");
+            if (weichatJson != null && weichatJson.has("event")) {
+                JSONObject eventJson = weichatJson.getJSONObject("event");
+                if (eventJson != null && eventJson.has("eventName")){
+                    return eventJson.getString("eventName");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public static IWXAPI getIWXAPI() {
         return mIWXAPI;

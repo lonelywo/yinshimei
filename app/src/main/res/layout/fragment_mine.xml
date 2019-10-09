@@ -252,8 +252,7 @@
           android:gravity="center"
           app:layout_constraintTop_toTopOf="parent"
           android:layout_marginTop="5dp"
-          android:layout_marginEnd="5dp"
-          android:paddingEnd="8dp"
+
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintEnd_toEndOf="parent"
@@ -292,8 +291,7 @@
        android:gravity="center"
        app:layout_constraintTop_toTopOf="parent"
        android:layout_marginTop="5dp"
-       android:layout_marginEnd="5dp"
-       android:paddingEnd="8dp"
+
        app:layout_constraintBottom_toBottomOf="parent"
        app:layout_constraintStart_toStartOf="parent"
        app:layout_constraintEnd_toEndOf="parent"
@@ -331,9 +329,8 @@
     android:textColor="#646262"
     android:gravity="center"
     app:layout_constraintTop_toTopOf="parent"
-    android:layout_marginTop="5dp"
-    android:layout_marginEnd="5dp"
-    android:paddingEnd="8dp"
+    android:layout_marginTop="3dp"
+
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
@@ -371,9 +368,8 @@
           android:textColor="#646262"
           android:gravity="center"
           app:layout_constraintTop_toTopOf="parent"
-          android:layout_marginTop="5dp"
-          android:layout_marginEnd="5dp"
-          android:paddingEnd="8dp"
+          android:layout_marginTop="2dp"
+
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintEnd_toEndOf="parent"
@@ -513,20 +509,42 @@
         android:layout_weight="1"
         android:padding="10dp"
         >
-        <TextView
-            android:id="@+id/text_wodekefu"
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/wodekefu_ll"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:drawableTop="@drawable/wodekefu"
-            android:drawablePadding="6dp"
-            android:text="我的客服"
-            android:textColor="#646262"
-            android:layout_marginTop="5dp"
-            android:gravity="center_horizontal"
-            android:visibility="gone"
-
-            />
+            android:layout_gravity="center_horizontal"
+            >
+            <TextView
+                android:id="@+id/text_wodekefu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/wodekefu"
+                android:drawablePadding="6dp"
+                android:text="我的客服"
+                android:textColor="#646262"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="5dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+            <TextView
+                android:id="@+id/dot1_hx"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:background="@drawable/shape_mine_hx_status_num"
+                tools:text="!"
+                android:visibility="gone"
+                android:gravity="center"
+                android:textSize="11sp"
+                android:textColor="@color/colorWhite"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/text_wodekefu"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
