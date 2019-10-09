@@ -85,11 +85,13 @@ public class BasicApp extends Application {
 
             @Override
             public void onMessage(List<Message> msgs) {
-
                 //刷新小角标状态
-                Intent intent = new Intent(_MineFragment.ACTION_REFRESH_HX);
-                intent.putExtra("data",msgs.size());
-                LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+
+                    Intent intent = new Intent(_MineFragment.ACTION_REFRESH_HX);
+                    intent.putExtra("data",msgs.size());
+                    LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+
+
                 for (Message message : msgs){
                     Log.d(TAG, "onMessageReceived id : " + message.messageId());
 
@@ -120,6 +122,7 @@ public class BasicApp extends Application {
                     EMCmdMessageBody cmdMessageBody = (EMCmdMessageBody) message.body();
                     String action = cmdMessageBody.action(); //获取自定义action
                     Log.d(TAG, String.format("透传消息: action:%s,message:%s", action, message.toString()));
+
                 }
             }
 

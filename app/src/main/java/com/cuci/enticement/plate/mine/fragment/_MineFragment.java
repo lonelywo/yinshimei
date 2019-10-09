@@ -49,6 +49,7 @@ import com.cuci.enticement.utils.ViewUtils;
 import com.cuci.enticement.utils.WxShareUtils;
 import com.google.gson.Gson;
 import com.hyphenate.chat.ChatClient;
+import com.hyphenate.chat.Conversation;
 import com.hyphenate.helpdesk.callback.Callback;
 import com.hyphenate.helpdesk.easeui.util.IntentBuilder;
 import com.lxj.xpopup.XPopup;
@@ -192,6 +193,7 @@ public class _MineFragment extends BaseFragment {
         intentFilter.addAction(LoginActivity.ACTION_WX_LOGIN_SUCCEED);
         intentFilter.addAction(ACTION_LOGIN_SUCCEED);
         intentFilter.addAction(ACTION_REFRESH_STATUS);
+        intentFilter.addAction(ACTION_REFRESH_HX);
         mBroadcastManager.registerReceiver(mReceiver, intentFilter);
 
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
@@ -267,7 +269,9 @@ public class _MineFragment extends BaseFragment {
                             .observe(mActivity, mTotalOrderObserver);
                 } else if (ACTION_REFRESH_HX.equals(intent.getAction())) {
                     int data = intent.getIntExtra("data",0);
-                   if(data==0){
+                    Conversation conversation = ChatClient.getInstance().chatManager().getConversation("kefuchannelimid_269943");
+                    int i = conversation.unreadMessagesCount();
+                  if(i==0){
                        dot1Hx.setVisibility(View.GONE);
                    } else {
                        dot1Hx.setVisibility(View.VISIBLE);
@@ -420,6 +424,9 @@ public class _MineFragment extends BaseFragment {
                             .setTitleName("美美")
                             .build();
                     startActivity(intent);
+                    //所有未读消息数清零
+                    ChatClient.getInstance().chatManager().markAllConversationsAsRead();
+                    dot1Hx.setVisibility(View.GONE);
                 } else {
                     //未登录，需要登录后，再进入会话界面
                     FToast.error("未登录环信");
