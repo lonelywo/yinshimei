@@ -114,5 +114,17 @@ public interface MineApi {
             @Field("mid") String mid,
             @Field("sign") String sign
     );
+    /**
+     * PK排行榜
+     */
+    @FormUrlEncoded
+    @POST("store/api.member.Ranking/teamList")
+    Call<ResponseBody> pk(
+            @Field("token") String token,
+            @Field("from_type") String from_type,
+            @Field("mid") String mid,
+            @Field("page") String page,
+            @Field("sign") String sign
+    );
 }
 

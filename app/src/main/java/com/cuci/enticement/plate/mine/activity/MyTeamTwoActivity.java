@@ -2,11 +2,11 @@ package com.cuci.enticement.plate.mine.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,11 +21,13 @@ import com.classic.common.MultipleStatusView;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.MyTeamlbBean;
+import com.cuci.enticement.bean.MyTeamslBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.plate.mine.adapter.ItemMyTeamTwoViewBinder;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.ImageLoader;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.widget.CartItemDecoration;
 import com.cuci.enticement.widget.ClearEditText;
@@ -40,6 +42,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 import okhttp3.ResponseBody;
@@ -60,6 +63,28 @@ public class MyTeamTwoActivity extends BaseActivity implements OnRefreshLoadMore
     SmartRefreshLayout refreshLayout;
     @BindView(R.id.status_view)
     MultipleStatusView statusView;
+    @BindView(R.id.civ_tuxiang)
+    CircleImageView civTuxiang;
+    @BindView(R.id.text_zhongrenshu)
+    TextView textZhongrenshu;
+    @BindView(R.id.text_xinzengrenshu)
+    TextView textXinzengrenshu;
+    @BindView(R.id.text_rzengrenshu)
+    TextView textRzengrenshu;
+    @BindView(R.id.ll_shuzi)
+    LinearLayout llShuzi;
+    @BindView(R.id.text_zhongrenshu1)
+    TextView textZhongrenshu1;
+    @BindView(R.id.text_xinzengrenshu1)
+    TextView textXinzengrenshu1;
+    @BindView(R.id.text_rzengrenshu1)
+    TextView textRzengrenshu1;
+    @BindView(R.id.ll_wenzi)
+    LinearLayout llWenzi;
+    @BindView(R.id.con_zhongbu)
+    ConstraintLayout conZhongbu;
+    @BindView(R.id.text_name)
+    TextView textName;
     private MineViewModel mViewModel;
     private UserInfo mUserInfo;
     private MultiTypeAdapter mAdapter;
@@ -88,6 +113,9 @@ public class MyTeamTwoActivity extends BaseActivity implements OnRefreshLoadMore
         data = (MyTeamlbBean.DataBean.ListBean) intent.getSerializableExtra("Data");
         int id = data.getId();
         String nickname = data.getNickname();
+        String headimg = data.getHeadimg();
+        textName.setText(nickname);
+        ImageLoader.loadPlaceholder1(headimg, civTuxiang);
         if (data == null) {
             FToast.error("数据错误");
             return;
@@ -108,19 +136,20 @@ public class MyTeamTwoActivity extends BaseActivity implements OnRefreshLoadMore
         mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(mAdapter);
+
+        mViewModel.hqteamsl(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2")
+                .observe(this, mObserver);
         refreshLayout.autoRefresh();
 
         edtShousuo.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
-            public boolean onEditorAction(TextView v, int actionId,                   KeyEvent event)  {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 
-                if (actionId==EditorInfo.IME_ACTION_SEND ||(event!=null&&event.getKeyCode()== KeyEvent.KEYCODE_ENTER))
+                if (actionId == EditorInfo.IME_ACTION_SEND || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
 
-                {
+                    //do something;
 
-                 //do something;
-
-                  load();
+                    load();
                     return true;
 
                 }
@@ -144,8 +173,8 @@ public class MyTeamTwoActivity extends BaseActivity implements OnRefreshLoadMore
             return;
         }
         s = edtShousuo.getText().toString();
-            mViewModel.hqteamtj2(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", String.valueOf(data.getId())  , s, "1", Status.LOAD_REFRESH)
-                    .observe(this, mObserver1);
+        mViewModel.hqteamtj2(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", String.valueOf(data.getId()), s, "1", Status.LOAD_REFRESH)
+                .observe(this, mObserver1);
 
     }
 
@@ -220,11 +249,47 @@ public class MyTeamTwoActivity extends BaseActivity implements OnRefreshLoadMore
         }
     }
 
+    private Observer<Status<ResponseBody>> mObserver = status -> {
+
+        switch (status.status) {
+            case Status.SUCCESS:
+
+                ResponseBody body = status.content;
+                opera(body);
+                break;
+            case Status.ERROR:
+
+                FToast.error("网络错误");
+                break;
+            case Status.LOADING:
+
+                break;
+        }
+
+    };
+
+    private void opera(ResponseBody body) {
+        try {
+            String b = body.string();
+            MyTeamslBean mMyTeamslBean = new Gson().fromJson(b, MyTeamslBean.class);
+            if (mMyTeamslBean.getCode() == 1) {
+                textZhongrenshu.setText("" + mMyTeamslBean.getData().getTotal_all());
+                textXinzengrenshu.setText("" + mMyTeamslBean.getData().getTotal_mon());
+                textRzengrenshu.setText("" + mMyTeamslBean.getData().getTotal_day());
+            } else {
+                FToast.error(mMyTeamslBean.getInfo());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            FToast.error("数据错误");
+        }
+    }
+
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
         if (mCanLoadMore) {
             mCanLoadMore = false;
-            mViewModel.hqteamtj2(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", ""+ data.getId(), s, "" + page, Status.LOAD_MORE)
+            mViewModel.hqteamtj2(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", "" + data.getId(), s, "" + page, Status.LOAD_MORE)
                     .observe(this, mObserver1);
         } else {
             refreshLayout.finishLoadMore();
@@ -244,4 +309,10 @@ public class MyTeamTwoActivity extends BaseActivity implements OnRefreshLoadMore
     }
 
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 }

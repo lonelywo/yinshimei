@@ -21,7 +21,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginLeft="20dp"
-            android:padding="5dp"
+            android:padding="10dp"
             />
         <TextView
             android:id="@+id/text_biaoti"
@@ -40,11 +40,46 @@
   <androidx.constraintlayout.widget.ConstraintLayout
       android:id="@+id/con_huang"
       android:layout_width="match_parent"
-      android:layout_height="200dp"
+      android:layout_height="250dp"
       app:layout_constraintTop_toBottomOf="@id/con_toubu"
       android:background="@color/orange"
       >
-    <Button
+      <ImageView
+          android:layout_width="250dp"
+          android:layout_height="0dp"
+          android:src="@drawable/beijingtu_wode"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          app:layout_constraintBottom_toBottomOf="parent"
+          android:scaleType="centerCrop"
+          android:paddingBottom="100dp"
+          />
+      <de.hdodenhof.circleimageview.CircleImageView
+          android:id="@+id/civ_tuxiang"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:src="@drawable/tuxiang"
+          app:layout_constraintTop_toTopOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          android:layout_marginTop="40dp"
+          android:layout_marginLeft="40dp"
+          app:civ_border_width="2dp"
+          app:civ_border_color="#E2C08D"
+          />
+      <TextView
+          android:id="@+id/text_name"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          tools:text="美美"
+          android:textSize="20sp"
+          app:layout_constraintTop_toTopOf="@+id/civ_tuxiang"
+          app:layout_constraintBottom_toBottomOf="@+id/civ_tuxiang"
+          app:layout_constraintLeft_toRightOf="@+id/civ_tuxiang"
+          android:layout_marginLeft="10dp"
+          android:textColor="@color/colorWhite"
+          />
+
+    <!--<Button
         android:id="@+id/button_tixian"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -55,18 +90,18 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
-        />
+        />-->
    <TextView
        android:id="@+id/text_wenzi"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
        android:text="推广佣金总收入"
-       android:textSize="20sp"
+       android:textSize="16sp"
        android:textColor="@color/colorWhite"
+       android:layout_marginLeft="40dp"
        app:layout_constraintLeft_toLeftOf="parent"
-       app:layout_constraintRight_toRightOf="parent"
-       app:layout_constraintTop_toTopOf="parent"
-       android:layout_marginTop="30dp"
+       app:layout_constraintBottom_toBottomOf="@id/con_huang"
+       android:layout_marginBottom="40dp"
        />
       <TextView
           android:id="@+id/text_yongjing"
@@ -75,12 +110,11 @@
           android:text="0"
           android:textSize="30sp"
           android:textColor="@color/colorWhite"
-          app:layout_constraintLeft_toLeftOf="parent"
-          app:layout_constraintRight_toRightOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/text_wenzi"
-          android:layout_marginTop="5dp"
+          app:layout_constraintLeft_toRightOf="@+id/text_wenzi"
+          app:layout_constraintBottom_toBottomOf="@+id/text_wenzi"
+          android:layout_marginLeft="10dp"
           />
-      <TextView
+     <!-- <TextView
           android:id="@+id/text_wenzi1"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -136,14 +170,137 @@
           app:layout_constraintRight_toRightOf="parent"
           app:layout_constraintTop_toBottomOf="@+id/text_wenzi2"
           android:layout_marginTop="5dp"
-          />
+          />-->
   </androidx.constraintlayout.widget.ConstraintLayout>
+
+   <View
+       android:id="@+id/view_beijing1"
+       android:layout_width="match_parent"
+       android:layout_height="10dp"
+       android:background="@color/black"
+       app:layout_constraintTop_toBottomOf="@+id/con_huang"
+       />
+    <Button
+        android:id="@+id/button_tixian"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_sibian_yongjin"
+        android:text="立即提现"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/con_huang"
+        android:layout_marginTop="10dp"
+        />
+    <View
+        android:id="@+id/view_beijing2"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/button_tixian"
+        />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/con_money"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/button_tixian"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorWhite"
+        >
+        <TextView
+            android:id="@+id/text_wenzi1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="已提现金额"
+            android:textSize="16sp"
+            android:textColor="@color/hei"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="@+id/line"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="10dp"
+
+            />
+        <TextView
+            android:id="@+id/text_yitixian"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textSize="30sp"
+            android:textColor="@color/orange"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="@+id/line"
+            app:layout_constraintTop_toBottomOf="@+id/text_wenzi1"
+            android:layout_marginTop="5dp"
+            />
+        <View
+            android:id="@+id/line"
+            android:layout_width="0.5dp"
+            android:layout_height="80dp"
+            android:background="@color/line_gray"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+        <TextView
+            android:id="@+id/text_wenzi2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="可提现金额"
+            android:textSize="16sp"
+            android:textColor="@color/hei"
+            app:layout_constraintLeft_toLeftOf="@+id/line"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="10dp"
+            />
+        <TextView
+            android:id="@+id/text_ketixian"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textSize="30sp"
+            android:textColor="@color/orange"
+            app:layout_constraintLeft_toLeftOf="@+id/line"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_wenzi2"
+            android:layout_marginTop="5dp"
+            />
+
+       <!-- <LinearLayout
+            android:id="@+id/ll_money"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            >
+            <TextView
+                android:id="@+id/text_wenzi1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="已提现金额"
+                android:textSize="20sp"
+                android:textColor="@color/colorWhite"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="@+id/line"
+                app:layout_constraintTop_toBottomOf="@+id/text_yongjing"
+
+                />
+
+
+
+        </LinearLayout>-->
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
 
  <androidx.constraintlayout.widget.ConstraintLayout
      android:id="@+id/con_hui"
      android:layout_width="match_parent"
      android:layout_height="wrap_content"
-     app:layout_constraintTop_toBottomOf="@+id/con_huang"
+     app:layout_constraintTop_toBottomOf="@+id/con_money"
      android:padding="10dp"
      android:background="@color/black"
      >
@@ -227,7 +384,8 @@
                         app:srlAccentColor="#888"
                         app:srlClassicsSpinnerStyle="Translate"
                         app:srlDrawableProgress="@drawable/ic_index_dashboard"
-                        app:srlTextSizeTitle="12sp" />
+                        app:srlTextSizeTitle="12sp"
+                        />
 
                 </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 

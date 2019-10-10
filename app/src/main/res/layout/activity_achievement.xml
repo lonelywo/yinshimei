@@ -24,7 +24,7 @@
             android:id="@+id/text_biaoti"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="业绩月返"
+            android:text="消费月返"
             android:textColor="@color/hei"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
