@@ -56,6 +56,7 @@
             android:layout_marginRight="20dp"
             android:layout_marginTop="20dp"
             android:src="@drawable/kaiguan"
+            android:visibility="visible"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -473,13 +474,13 @@
             android:gravity="center_horizontal"
             />
         <TextView
-            android:id="@+id/text_shouhuodizi"
+            android:id="@+id/text_pk"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:drawableTop="@drawable/dizi"
+            android:drawableTop="@drawable/pk"
             android:drawablePadding="6dp"
-            android:text="收货地址"
+            android:text="PK排行榜"
             android:textColor="#646262"
             android:layout_marginTop="5dp"
             android:gravity="center_horizontal"
@@ -546,24 +547,28 @@
                 />
         </androidx.constraintlayout.widget.ConstraintLayout>
         <TextView
+            android:id="@+id/text_shouhuodizi"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:drawableTop="@drawable/dizi"
+            android:drawablePadding="6dp"
+            android:text="收货地址"
             android:textColor="#646262"
             android:layout_marginTop="5dp"
             android:gravity="center_horizontal"
-            android:drawablePadding="6dp"
-
             />
         <TextView
+            android:id="@+id/text_wodeshezhi"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:drawableTop="@drawable/setup"
+            android:drawablePadding="6dp"
+            android:text="我的设置"
             android:textColor="#646262"
             android:layout_marginTop="5dp"
             android:gravity="center_horizontal"
-            android:drawablePadding="6dp"
-
             />
         <TextView
             android:layout_width="0dp"

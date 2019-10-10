@@ -167,6 +167,10 @@ public class _MineFragment extends BaseFragment {
     TextView dot1Hx;
     @BindView(R.id.wodekefu_ll)
     ConstraintLayout wodekefuLl;
+    @BindView(R.id.text_pk)
+    TextView textPk;
+    @BindView(R.id.text_wodeshezhi)
+    TextView textWodeshezhi;
     private boolean mCouldChange = true;
     private LocalBroadcastManager mBroadcastManager;
     private UserInfo mUserInfo;
@@ -226,6 +230,23 @@ public class _MineFragment extends BaseFragment {
                 }
             }
         });
+        textPk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (AppUtils.isAllowPermission(mActivity)) {
+
+                }
+            }
+        });
+        textWodeshezhi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (AppUtils.isAllowPermission(mActivity)) {
+
+                }
+            }
+        });
+
     }
 
 
@@ -268,14 +289,14 @@ public class _MineFragment extends BaseFragment {
                     orderViewModel.getStatisticsOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()))
                             .observe(mActivity, mTotalOrderObserver);
                 } else if (ACTION_REFRESH_HX.equals(intent.getAction())) {
-                    int data = intent.getIntExtra("data",0);
+                    int data = intent.getIntExtra("data", 0);
                     Conversation conversation = ChatClient.getInstance().chatManager().getConversation("kefuchannelimid_269943");
                     int i = conversation.unreadMessagesCount();
-                  if(i==0){
-                       dot1Hx.setVisibility(View.GONE);
-                   } else {
-                       dot1Hx.setVisibility(View.VISIBLE);
-                   }
+                    if (i == 0) {
+                        dot1Hx.setVisibility(View.GONE);
+                    } else {
+                        dot1Hx.setVisibility(View.VISIBLE);
+                    }
                 }
 
             }
