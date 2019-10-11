@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/container"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+
+
+
+    <ImageView
+      android:id="@+id/image_back"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:background="?attr/selectableItemBackground"
+      android:padding="12dp"
+      android:src="@drawable/icon_back"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+      android:id="@+id/tv_title"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:ellipsize="end"
+      android:gravity="center"
+      android:paddingStart="8dp"
+      android:paddingEnd="8dp"
+      android:singleLine="true"
+      android:text="我的设置"
+      android:textColor="@color/hei"
+      android:textSize="16sp"
+      app:layout_constraintBottom_toBottomOf="@+id/image_back"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.core.widget.NestedScrollView
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:background="#F3F4F6"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/tv_title"
+      app:layout_constraintBottom_toBottomOf="parent"
+      >
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="#ffffff"
+        android:orientation="vertical">
+
+        <LinearLayout
+          android:id="@+id/ll_info"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+
+          android:gravity="center_vertical"
+          android:paddingStart="16dp"
+          android:paddingEnd="16dp"
+          app:layout_constraintLeft_toLeftOf="parent"
+          app:layout_constraintRight_toRightOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/line2">
+
+          <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"
+            android:text="个人信息"
+            android:textColor="@color/hei"
+            android:textSize="14sp" />
+
+
+
+          <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/youjiantou" />
+
+        </LinearLayout>
+
+        <View
+          android:id="@+id/view_contract"
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:background="#F3F4F6"
+          android:paddingStart="16dp"
+          android:paddingEnd="16dp"
+          android:visibility="gone"
+          tools:visibility="visible" />
+
+
+
+
+
+
+
+        <LinearLayout
+          android:id="@+id/ll_phone"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+
+          android:gravity="center_vertical"
+          android:paddingStart="16dp"
+          android:paddingEnd="16dp"
+          app:layout_constraintLeft_toLeftOf="parent"
+          app:layout_constraintRight_toRightOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/line2">
+
+          <TextView
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"
+            android:text="换绑手机"
+            android:textColor="@color/hei"
+            android:textSize="14sp" />
+
+          <TextView
+            android:id="@+id/phone_tv"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            tools:text="18922406060"
+
+            android:textSize="12sp"
+            android:layout_marginLeft="14dp"
+            />
+
+          <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/youjiantou" />
+
+        </LinearLayout>
+
+        <View
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:background="#F3F4F6"
+          android:paddingStart="16dp"
+          android:paddingEnd="16dp" />
+        <LinearLayout
+          android:id="@+id/ll_wechat"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+
+          android:gravity="center_vertical"
+          android:paddingStart="16dp"
+          android:paddingEnd="16dp"
+          app:layout_constraintLeft_toLeftOf="parent"
+          app:layout_constraintRight_toRightOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/line2">
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"
+
+            android:text="微信绑定"
+            android:textColor="@color/hei"
+            android:textSize="14sp" />
+
+          <TextView
+            android:id="@+id/bind_status_tv"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            tools:text="未绑定"
+            android:textSize="12sp"
+            android:layout_marginLeft="14dp"
+            />
+
+
+          <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/youjiantou" />
+
+        </LinearLayout>
+
+        <View
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:background="#F3F4F6"
+          android:paddingStart="16dp"
+          android:paddingEnd="16dp" />
+
+
+        <LinearLayout
+          android:id="@+id/ll_about_us"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+
+          android:gravity="center_vertical"
+          android:paddingStart="16dp"
+          android:paddingEnd="16dp"
+          app:layout_constraintLeft_toLeftOf="parent"
+          app:layout_constraintRight_toRightOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/line2">
+
+          <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"
+            android:text="关于茵斯美"
+            android:textColor="@color/hei"
+            android:textSize="14sp" />
+
+
+
+          <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/youjiantou" />
+
+        </LinearLayout>
+
+        <View
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:background="#F3F4F6"
+          android:paddingStart="16dp"
+          android:paddingEnd="16dp" />
+        <TextView
+          android:id="@+id/tv_exit"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:background="@drawable/shape_sibian_huang_bg1"
+          android:gravity="center"
+          android:text="退出当前账户"
+          android:textColor="@color/colorWhite"
+          android:textSize="16sp"
+          android:layout_marginStart="12dp"
+          android:layout_marginEnd="12dp"
+          android:layout_marginTop="24dp"
+          android:paddingTop="10dp"
+          android:paddingBottom="10dp"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent" />
+      </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

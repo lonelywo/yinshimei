@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FFFFFF"
+    >
+  <LinearLayout
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    >
+    <TextView
+      android:id="@+id/man_tv"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="男"
+      />
+    <View
+      android:layout_width="match_parent"
+      android:layout_height="1dp"
+      android:background="@color/line_gray"
+      />
+    <TextView
+      android:id="@+id/women_tv"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="女"
+
+      />
+    <View
+      android:layout_width="match_parent"
+      android:layout_height="10dp"
+      android:background="@color/line_gray"
+      />
+    <TextView
+      android:id="@+id/cancel_tv"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="取消"
+
+      />
+  </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
