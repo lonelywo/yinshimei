@@ -280,9 +280,7 @@ public class OrderActivity extends BaseActivity {
         mRecyclerView.setAdapter(mAdapter);
 
 
-       /* CommonViewModel commonViewModel = ViewModelProviders.of(this).get(CommonViewModel.class);
-        commonViewModel.getAdressList(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),Status.LOAD_REFRESH)
-                .observe(this,mAddressObserver);*/
+
 
     }
 
