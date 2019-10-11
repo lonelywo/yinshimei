@@ -25,8 +25,10 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseFragment;
+import com.cuci.enticement.bean.Bag499Bean;
 import com.cuci.enticement.bean.Base;
 import com.cuci.enticement.bean.HxBean;
+import com.cuci.enticement.bean.MyTeamslBean;
 import com.cuci.enticement.bean.OrderStatistics;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
@@ -43,6 +45,7 @@ import com.cuci.enticement.plate.mine.activity.RecAddressActivity;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.plate.mine.vm.OrderViewModel;
 import com.cuci.enticement.utils.AppUtils;
+import com.cuci.enticement.utils.FLog;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.ImageLoader;
 import com.cuci.enticement.utils.SharedPrefUtils;
@@ -178,7 +181,7 @@ public class _MineFragment extends BaseFragment {
     private MineViewModel mViewModel;
     private static final int THUMB_SIZE = 500;
     private static final int THUMB_SIZE1 = 400;
-
+    private boolean bag=false;
     @Override
     protected void onLazyLoad() {
         load();
@@ -205,6 +208,7 @@ public class _MineFragment extends BaseFragment {
         if (mUserInfo == null) {
             conYingchang.setVisibility(View.GONE);
         }
+
         //todo  临时存储
       /*  mUserInfo=new UserInfo();
         mUserInfo.setToken("7ee35ab8215b6992c500a42ae6abe3ec");
@@ -215,10 +219,15 @@ public class _MineFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 if (AppUtils.isAllowPermission(mActivity)) {
-                    Bitmap bitmap = BitmapFactory.decodeResource(BasicApp.getContext().getResources(), R.drawable.tuxiang);
-                    WxShareUtils.shareToWX(WxShareUtils.WX_SCENE_SESSION,
-                            "http://web.enticementchina.com/register.html?phone=" + mUserInfo.getPhone(), mActivity.getString(R.string.app_name_test),
-                            "因诗美，我的质感美学", bitmap);
+                    if(bag){
+                        Bitmap bitmap = BitmapFactory.decodeResource(BasicApp.getContext().getResources(), R.drawable.tuxiang);
+                        WxShareUtils.shareToWX(WxShareUtils.WX_SCENE_SESSION,
+                                "http://web.enticementchina.com/register.html?phone=" + mUserInfo.getPhone(), mActivity.getString(R.string.app_name_test),
+                                "因诗美，我的质感美学", bitmap);
+                    }else {
+                        FToast.warning("请先购买礼包");
+                    }
+
                 }
             }
 
@@ -254,7 +263,7 @@ public class _MineFragment extends BaseFragment {
 
 
     private void load() {
-        //   mViewModel.getSplash().observe(this, mObserver);
+
 
     }
 
@@ -293,13 +302,14 @@ public class _MineFragment extends BaseFragment {
                             .observe(mActivity, mTotalOrderObserver);
                 } else if (ACTION_REFRESH_HX.equals(intent.getAction())) {
                     int data = intent.getIntExtra("data", 0);
-                    Conversation conversation = ChatClient.getInstance().chatManager().getConversation("kefuchannelimid_269943");
+                   /* Conversation conversation = ChatClient.getInstance().chatManager().getConversation("kefuchannelimid_269943");
                     int i = conversation.unreadMessagesCount();
+                    FLog.e("shuangliang",""+i);
                     if (i == 0) {
                         dot1Hx.setVisibility(View.GONE);
                     } else {
                         dot1Hx.setVisibility(View.VISIBLE);
-                    }
+                    }*/
                 }
 
             }
@@ -353,9 +363,57 @@ public class _MineFragment extends BaseFragment {
                 }
             });
         }
+        if (ChatClient.getInstance().isLoggedInBefore()) {
+            Conversation conversation = ChatClient.getInstance().chatManager().getConversation("kefuchannelimid_269943");
+            int i = conversation.unreadMessagesCount();
+            FLog.e("shuangliang",""+i);
+            if (i == 0) {
+                dot1Hx.setVisibility(View.GONE);
+            } else {
+                dot1Hx.setVisibility(View.VISIBLE);
+            }
+        }
+
+
+
         OrderViewModel orderViewModel = ViewModelProviders.of(this).get(OrderViewModel.class);
         orderViewModel.getStatisticsOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()))
                 .observe(mActivity, mTotalOrderObserver);
+      //  mViewModel.bag499(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"2").observe(this, mbagObserver);
+    }
+    private Observer<Status<ResponseBody>> mbagObserver = status -> {
+
+        switch (status.status) {
+            case Status.SUCCESS:
+
+                ResponseBody body = status.content;
+                opera(body);
+                break;
+            case Status.ERROR:
+
+                FToast.error("网络错误");
+                break;
+            case Status.LOADING:
+
+                break;
+        }
+
+    };
+
+    private void opera(ResponseBody body) {
+        try {
+            String b = body.string();
+            Bag499Bean mMyTeamslBean = new Gson().fromJson(b, Bag499Bean.class);
+            if (mMyTeamslBean.getCode() == 1) {
+                bag=true;
+            } else {
+                bag=false;
+               // FToast.error(mMyTeamslBean.getInfo());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            FToast.error("数据错误");
+        }
     }
 
     @OnClick({R.id.img_kaiguan, R.id.btn_shengji, R.id.text_quanbudingdan, R.id.text_tuiguangyongjing, R.id.text_wodetuandui, R.id.text_shouhuodizi, R.id.text_yejiyuefan, R.id.text_wodekefu})

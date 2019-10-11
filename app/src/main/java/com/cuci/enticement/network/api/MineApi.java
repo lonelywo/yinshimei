@@ -150,5 +150,16 @@ public interface MineApi {
             @Field("page") String page,
             @Field("sign") String sign
     );
+    /**
+     * 499礼包
+     */
+    @FormUrlEncoded
+    @POST("store/api.member.center/ispay")
+    Call<ResponseBody> bag499(
+            @Field("token") String token,
+            @Field("from_type") String from_type,
+            @Field("mid") String mid,
+            @Field("sign") String sign
+    );
 }
 
