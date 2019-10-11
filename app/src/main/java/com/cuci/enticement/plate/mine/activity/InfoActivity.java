@@ -19,6 +19,9 @@ import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.JsonBean;
 import com.cuci.enticement.bean.UserInfo;
+import com.cuci.enticement.plate.cart.activity.OrderDetailsActivity;
+import com.cuci.enticement.plate.common.popup.PayBottom2TopProdPopup;
+import com.cuci.enticement.plate.common.popup.SexBottom2TopProdPopup;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.GetJsonDataUtil;
 import com.cuci.enticement.utils.ImageLoader;
@@ -26,6 +29,7 @@ import com.cuci.enticement.utils.ImageUtils;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.ViewUtils;
 import com.google.gson.Gson;
+import com.lxj.xpopup.XPopup;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 
 import org.json.JSONArray;
@@ -126,7 +130,13 @@ public class InfoActivity extends BaseActivity {
                 startActivity(new Intent(this,NickModifyActivity.class));
                 break;
             case R.id.ll_sex:
+                new XPopup.Builder(this)
+                        .dismissOnTouchOutside(true)
+                        .dismissOnBackPressed(true)
+                        .asCustom(new SexBottom2TopProdPopup(this, type -> {
 
+                        }))
+                        .show();
                 break;
             case R.id.ll_address:
                 if (isLoaded) {

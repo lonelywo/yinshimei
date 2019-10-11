@@ -3,7 +3,6 @@ package com.cuci.enticement.plate.common.popup;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,12 +20,10 @@ import butterknife.OnClick;
 public class SexBottom2TopProdPopup extends BottomPopupView {
 
     private static final String TAG = SexBottom2TopProdPopup.class.getSimpleName();
-    @BindView(R.id.ali_iv)
-    ImageView aliIv;
-    @BindView(R.id.wechat_iv)
-    ImageView wechatIv;
-    @BindView(R.id.text_money)
-    TextView textMoney;
+    @BindView(R.id.man_tv)
+    TextView manTv;
+    @BindView(R.id.women_tv)
+    TextView womenTv;
 
     private OrderViewModel mViewModel;
 
@@ -34,15 +31,11 @@ public class SexBottom2TopProdPopup extends BottomPopupView {
     private Context mContext;
 
 
-
     @BindView(R.id.container)
     ConstraintLayout mContainer;
 
 
-    private int mType = 2;
-
-
-    public SexBottom2TopProdPopup(@NonNull Context context,  OnCommitClickListener OnCommitClickListener) {
+    public SexBottom2TopProdPopup(@NonNull Context context, OnCommitClickListener OnCommitClickListener) {
         super(context);
         mContext = context;
 
@@ -54,7 +47,7 @@ public class SexBottom2TopProdPopup extends BottomPopupView {
     @Override
     protected int getImplLayoutId() {
 
-        return R.layout.popup_share_bottom_to_top_view_quzhifu;
+        return R.layout.popup_share_bottom_to_top_sex;
     }
 
     @Override
@@ -69,38 +62,34 @@ public class SexBottom2TopProdPopup extends BottomPopupView {
 
     }
 
-
-
-
-    @OnClick({R.id.con_fangshi1, R.id.con_fangshi2, R.id.tv_commit,R.id.text_fangshi})
+    @OnClick({R.id.man_tv, R.id.women_tv, R.id.cancel_tv})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.con_fangshi1:
-                mType=2;
-
-                aliIv.setImageResource(R.drawable.xuanzhong);
-                wechatIv.setImageResource(R.drawable.noxuanzhong);
-                break;
-            case R.id.con_fangshi2:
-                mType=1;
-                aliIv.setImageResource(R.drawable.noxuanzhong);
-                wechatIv.setImageResource(R.drawable.xuanzhong);
-                break;
-            case R.id.tv_commit:
+            case R.id.man_tv:
                 if (mOnCommitClickListener != null) {
-                    mOnCommitClickListener.onCommitClick(mType);
+                    mOnCommitClickListener.onCommitClick(1);
                     dismiss();
                 }
-
                 break;
-            case R.id.text_fangshi:
+            case R.id.women_tv:
+                if (mOnCommitClickListener != null) {
+                    mOnCommitClickListener.onCommitClick(2);
+                    dismiss();
+                }
+                break;
+            case R.id.cancel_tv:
                 dismiss();
                 break;
         }
-
-
-
     }
+
+
+/*
+      if (mOnCommitClickListener != null) {
+        mOnCommitClickListener.onCommitClick(mType);
+        dismiss();
+    }
+*/
 
 
     public interface OnCommitClickListener {
