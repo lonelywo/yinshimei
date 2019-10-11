@@ -155,8 +155,8 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
         textRqi.setText(format);
         String nian = format.split("-")[0];
         String yue = format.split("-")[1];
-        load();
-        //refreshLayout.autoRefresh();
+
+        refreshLayout.autoRefresh();
         if (d.equals(a)) {
             textXiageyue.setEnabled(false);
         } else {
@@ -323,7 +323,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
         switch (status.status) {
             case Status.SUCCESS:
                 statusView.showContent();
-                dismissLoading();
+              //  dismissLoading();
                 ResponseBody body = status.content;
                 opera1(body, status);
                 break;
@@ -335,11 +335,11 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
                 } else {
                     refreshLayout.finishRefresh();
                 }
-                dismissLoading();
+             //   dismissLoading();
                 FToast.error("网络错误");
                 break;
             case Status.LOADING:
-                showLoading();
+                //showLoading();
                 break;
         }
 
@@ -437,7 +437,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         mCanLoadMore = false;
-        refreshLayout.finishRefresh();
+        load();
 
     }
 
