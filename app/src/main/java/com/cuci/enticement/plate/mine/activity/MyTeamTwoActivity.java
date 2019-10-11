@@ -29,6 +29,7 @@ import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.ImageLoader;
 import com.cuci.enticement.utils.SharedPrefUtils;
+import com.cuci.enticement.widget.BrandItemDecoration;
 import com.cuci.enticement.widget.CartItemDecoration;
 import com.cuci.enticement.widget.ClearEditText;
 import com.cuci.enticement.widget.CustomRefreshHeader;
@@ -131,7 +132,7 @@ public class MyTeamTwoActivity extends BaseActivity implements OnRefreshLoadMore
         mAdapter.setItems(mItems);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         mAdapter.register(MyTeamlbBean.DataBean.ListBean.class, new ItemMyTeamTwoViewBinder(this));
-        CartItemDecoration mDecoration = new CartItemDecoration(this, 10);
+        BrandItemDecoration mDecoration = new BrandItemDecoration(this, 10);
         recyclerView.addItemDecoration(mDecoration);
         mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(mLayoutManager);

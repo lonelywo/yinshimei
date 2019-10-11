@@ -34,6 +34,7 @@ import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.ImageLoader;
 import com.cuci.enticement.utils.MathExtend;
 import com.cuci.enticement.utils.SharedPrefUtils;
+import com.cuci.enticement.widget.BrandItemDecoration;
 import com.cuci.enticement.widget.CartItemDecoration;
 import com.cuci.enticement.widget.CustomRefreshHeader;
 import com.google.gson.Gson;
@@ -135,7 +136,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
         mAdapter.setItems(mItems);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         mAdapter.register(CommissionjlBean.DataBean.ListBean.class, new ItemCommissionJLViewBinder());
-        CartItemDecoration mDecoration = new CartItemDecoration(this, 10);
+        BrandItemDecoration mDecoration = new BrandItemDecoration(this, 10);
         recyclerView.addItemDecoration(mDecoration);
         mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -154,7 +155,8 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
         textRqi.setText(format);
         String nian = format.split("-")[0];
         String yue = format.split("-")[1];
-        refreshLayout.autoRefresh();
+        load();
+        //refreshLayout.autoRefresh();
         if (d.equals(a)) {
             textXiageyue.setEnabled(false);
         } else {
@@ -169,12 +171,13 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
                 Date time1 = calendar.getTime();
                 String format2 = sdf.format(time1);
                 textRqi.setText(format2);
+                format=format2;
                 d = time1;
                 if (d.equals(a)) {
                     textXiageyue.setEnabled(false);
                 } else {
                     textXiageyue.setEnabled(true);
-                    mViewModel.hqcommissiontj(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", format2, Status.LOAD_REFRESH)
+                    mViewModel.hqcommissiontj(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", format, Status.LOAD_REFRESH)
                             .observe(CommissionActivity.this, mObserver1);
                 }
 
@@ -189,13 +192,14 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
                 Date time2 = calendar.getTime();
                 String format3 = sdf.format(time2);
                 textRqi.setText(format3);
+                format=format3;
                 d = time2;
                 if (format3.equals(formatStart)) {
                     textXiageyue.setEnabled(false);
                 } else {
                     textXiageyue.setEnabled(true);
                 }
-                mViewModel.hqcommissiontj(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", format3, Status.LOAD_REFRESH)
+                mViewModel.hqcommissiontj(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", format, Status.LOAD_REFRESH)
                         .observe(CommissionActivity.this, mObserver1);
             }
         });
@@ -319,7 +323,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
         switch (status.status) {
             case Status.SUCCESS:
                 statusView.showContent();
-
+                dismissLoading();
                 ResponseBody body = status.content;
                 opera1(body, status);
                 break;
@@ -331,10 +335,11 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
                 } else {
                     refreshLayout.finishRefresh();
                 }
+                dismissLoading();
                 FToast.error("网络错误");
                 break;
             case Status.LOADING:
-
+                showLoading();
                 break;
         }
 
@@ -410,9 +415,9 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
             CommissiontjBean mCommissiontjBean = new Gson().fromJson(b, CommissiontjBean.class);
             if (mCommissiontjBean.getCode() == 1) {
                 String subtract = MathExtend.subtract(String.valueOf(mCommissiontjBean.getData().getTotal()), String.valueOf(mCommissiontjBean.getData().getUsed()));
-                textYongjing.setText(String.valueOf(mCommissiontjBean.getData().getTotal()));
-                textYitixian.setText(String.valueOf(mCommissiontjBean.getData().getUsed()));
-                textKetixian.setText(subtract);
+                textYongjing.setText("¥"+mCommissiontjBean.getData().getTotal());
+                textYitixian.setText("¥"+mCommissiontjBean.getData().getUsed());
+                textKetixian.setText("¥"+subtract);
             } else {
                 FToast.error(mCommissiontjBean.getInfo());
             }
@@ -425,20 +430,14 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-     /*  if(mCanLoadMore){
-            mCanLoadMore = false;
-           mViewModel.getSource01(mtype, String.valueOf(page),PAGE_SIZE,
-                    Status.LOAD_MORE).observe(this, mObserver);
-        }else {
 
-        }*/
         refreshLayout.finishLoadMore();
     }
 
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         mCanLoadMore = false;
-        load();
+        refreshLayout.finishRefresh();
 
     }
 

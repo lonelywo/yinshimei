@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cuci.enticement.R;
+import com.cuci.enticement.bean.PKbean2;
 import com.cuci.enticement.bean.PKbean3;
 import com.cuci.enticement.utils.ImageLoader;
 
@@ -20,21 +21,21 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import me.drakeet.multitype.ItemViewBinder;
 
-public class ItemPKViewBinder extends ItemViewBinder<PKbean3.DataBean.ListBean, ItemPKViewBinder.ViewHolder> {
+public class ItemPKViewBinder2 extends ItemViewBinder<PKbean2.DataBean.ListBean, ItemPKViewBinder2.ViewHolder> {
 
 
 
 
     public interface OnPKClickListener {
 
-        void onProdClick(PKbean3.DataBean.ListBean item);
+        void onProdClick(PKbean2.DataBean.ListBean item);
 
 
     }
 
     private OnPKClickListener mOnProdClickListener;
 
-    public ItemPKViewBinder(OnPKClickListener onProdClickListener) {
+    public ItemPKViewBinder2(OnPKClickListener onProdClickListener) {
         mOnProdClickListener = onProdClickListener;
     }
 
@@ -46,7 +47,7 @@ public class ItemPKViewBinder extends ItemViewBinder<PKbean3.DataBean.ListBean, 
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull PKbean3.DataBean.ListBean item) {
+    protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull PKbean2.DataBean.ListBean item) {
        final int position = getPosition(holder);
 
         ImageLoader.loadPlaceholder1(item.getHeadimg(), holder.imgTuxiang);
@@ -74,7 +75,7 @@ public class ItemPKViewBinder extends ItemViewBinder<PKbean3.DataBean.ListBean, 
         holder.textNum.setText(String.valueOf(1 + position));
 
         holder.textWenzi1.setText(item.getNickname());
-        holder.textShuliang.setText(item.getTeams()+"人");
+        holder.textShuliang.setText("¥"+item.getDay_amount());
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

@@ -434,13 +434,13 @@ public class MineViewModel extends ViewModel {
 
     }
     /**
-     * 获取PK排行榜
+     * 获取PK排行榜1
      * @param from_type
      * @param token
      * @param mid
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> pk(String token, String mid, String from_type,String page,int loadType) {
+    public MutableLiveData<Status<ResponseBody>> pk1(String token, String mid, String from_type,String page,int loadType) {
 
         final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
         liveData.setValue(Status.loading(null));
@@ -451,7 +451,101 @@ public class MineViewModel extends ViewModel {
         params.put("page",page);
         String signs = SignUtils.signParam(params);
         mCreator.create(MineApi.class)
-                .pk(token,from_type,mid,page,signs)
+                .pk1(token,from_type,mid,page,signs)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(@NonNull Call<ResponseBody> call,
+                                           @NonNull Response<ResponseBody> response) {
+                        if (loadType == Status.LOAD_REFRESH) {
+                            liveData.setValue(Status.refreshSuccess(response.body()));
+                        } else {
+                            liveData.setValue(Status.moreSuccess(response.body()));
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<ResponseBody> call,
+                                          @NonNull Throwable t) {
+                        if (loadType == Status.LOAD_REFRESH) {
+                            liveData.setValue(Status.refreshError(null, t.getMessage() ==
+                                    null ? "加载失败" : t.getMessage()));
+                        } else {
+                            liveData.setValue(Status.moreError(null, t.getMessage() ==
+                                    null ? "加载失败" : t.getMessage()));
+                        }
+                    }
+                });
+        return liveData;
+
+    }
+    /**
+     * 获取PK排行榜2
+     * @param from_type
+     * @param token
+     * @param mid
+     * @return
+     */
+    public MutableLiveData<Status<ResponseBody>> pk2(String token, String mid, String from_type,String page,int loadType) {
+
+        final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
+        liveData.setValue(Status.loading(null));
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("from_type",from_type);
+        params.put("token",token);
+        params.put("mid",mid);
+        params.put("page",page);
+        String signs = SignUtils.signParam(params);
+        mCreator.create(MineApi.class)
+                .pk2(token,from_type,mid,page,signs)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(@NonNull Call<ResponseBody> call,
+                                           @NonNull Response<ResponseBody> response) {
+                        if (loadType == Status.LOAD_REFRESH) {
+                            liveData.setValue(Status.refreshSuccess(response.body()));
+                        } else {
+                            liveData.setValue(Status.moreSuccess(response.body()));
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<ResponseBody> call,
+                                          @NonNull Throwable t) {
+                        if (loadType == Status.LOAD_REFRESH) {
+                            liveData.setValue(Status.refreshError(null, t.getMessage() ==
+                                    null ? "加载失败" : t.getMessage()));
+                        } else {
+                            liveData.setValue(Status.moreError(null, t.getMessage() ==
+                                    null ? "加载失败" : t.getMessage()));
+                        }
+                    }
+                });
+        return liveData;
+
+    }
+    /**
+     * 获取PK排行榜3
+     * @param from_type
+     * @param token
+     * @param mid
+     * @return
+     */
+    public MutableLiveData<Status<ResponseBody>> pk3(String token, String mid, String from_type,String page,int loadType) {
+
+        final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
+        liveData.setValue(Status.loading(null));
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("from_type",from_type);
+        params.put("token",token);
+        params.put("mid",mid);
+        params.put("page",page);
+        String signs = SignUtils.signParam(params);
+        mCreator.create(MineApi.class)
+                .pk3(token,from_type,mid,page,signs)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,

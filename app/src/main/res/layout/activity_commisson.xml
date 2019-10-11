@@ -111,8 +111,9 @@
           android:textSize="30sp"
           android:textColor="@color/colorWhite"
           app:layout_constraintLeft_toRightOf="@+id/text_wenzi"
-          app:layout_constraintBottom_toBottomOf="@+id/text_wenzi"
+          app:layout_constraintBottom_toBottomOf="@id/con_huang"
           android:layout_marginLeft="10dp"
+          android:layout_marginBottom="35dp"
           />
      <!-- <TextView
           android:id="@+id/text_wenzi1"

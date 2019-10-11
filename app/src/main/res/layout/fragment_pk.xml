@@ -68,8 +68,8 @@
          >
          <TextView
              android:id="@+id/text_num"
-             android:layout_width="0dp"
-             android:layout_height="25dp"
+             android:layout_width="35dp"
+             android:layout_height="35dp"
              app:layout_constraintBottom_toTopOf="@+id/text_num1"
              app:layout_constraintStart_toStartOf="@+id/text_num1"
              app:layout_constraintEnd_toEndOf="@+id/text_num1"
@@ -86,12 +86,11 @@
              android:text="我的排名"
              android:textColor="@color/hei"
              android:gravity="center"
-             android:layout_marginLeft="10dp"
-             android:layout_marginBottom="5dp"
+
              />
 
          <ImageView
-             android:id="@+id/img_huangguan"
+             android:id="@+id/img_huangguan1"
              android:layout_width="28dp"
              android:layout_height="23dp"
              android:src="@drawable/huangguan_1"
@@ -99,8 +98,30 @@
              app:layout_constraintTop_toTopOf="parent"
              android:layout_marginTop="3dp"
              android:scaleType="centerCrop"
+             android:visibility="gone"
              />
-
+         <ImageView
+             android:id="@+id/img_huangguan2"
+             android:layout_width="28dp"
+             android:layout_height="23dp"
+             android:src="@drawable/huangguan_2"
+             app:layout_constraintLeft_toLeftOf="@+id/img_tuxiang"
+             app:layout_constraintTop_toTopOf="parent"
+             android:layout_marginTop="3dp"
+             android:scaleType="centerCrop"
+             android:visibility="gone"
+             />
+         <ImageView
+             android:id="@+id/img_huangguan3"
+             android:layout_width="28dp"
+             android:layout_height="23dp"
+             android:src="@drawable/huangguan_3"
+             app:layout_constraintLeft_toLeftOf="@+id/img_tuxiang"
+             app:layout_constraintTop_toTopOf="parent"
+             android:layout_marginTop="3dp"
+             android:scaleType="centerCrop"
+             android:visibility="gone"
+             />
          <de.hdodenhof.circleimageview.CircleImageView
              android:id="@+id/img_tuxiang"
              android:layout_width="47dp"
@@ -116,15 +137,19 @@
              />
          <TextView
              android:id="@+id/text_wenzi1"
-             android:layout_width="wrap_content"
+             android:layout_width="0dp"
              android:layout_height="wrap_content"
              app:layout_constraintLeft_toRightOf="@+id/img_tuxiang"
              app:layout_constraintTop_toTopOf="parent"
              app:layout_constraintBottom_toBottomOf="parent"
              android:text="美美"
+             app:layout_constraintRight_toLeftOf="@+id/text_shuliang"
              android:textColor="@color/hei"
              android:textSize="20sp"
              android:layout_marginLeft="30dp"
+             android:gravity="left"
+             android:ellipsize = "marquee"
+
              />
 
          <TextView

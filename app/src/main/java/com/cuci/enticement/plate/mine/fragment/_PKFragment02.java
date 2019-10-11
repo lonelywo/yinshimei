@@ -19,14 +19,14 @@ import com.classic.common.MultipleStatusView;
 import com.cuci.enticement.Constant;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseFragment;
-import com.cuci.enticement.bean.PKbean1;
+import com.cuci.enticement.bean.PKbean2;
 import com.cuci.enticement.bean.PKbean3;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.event.PKEvent;
-import com.cuci.enticement.event.PKEvent1;
+import com.cuci.enticement.event.PKEvent2;
 import com.cuci.enticement.plate.mine.adapter.ItemPKViewBinder;
-import com.cuci.enticement.plate.mine.adapter.ItemPKViewBinder1;
+import com.cuci.enticement.plate.mine.adapter.ItemPKViewBinder2;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.ImageLoader;
@@ -53,9 +53,9 @@ import okhttp3.ResponseBody;
 /**
  * 首页外层Fragment
  */
-public class _PKFragment01 extends BaseFragment implements OnRefreshLoadMoreListener, ItemPKViewBinder1.OnPKClickListener {
+public class _PKFragment02 extends BaseFragment implements OnRefreshLoadMoreListener, ItemPKViewBinder2.OnPKClickListener {
 
-    private static final String TAG = _PKFragment01.class.getSimpleName();
+    private static final String TAG = _PKFragment02.class.getSimpleName();
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.refresh_layout)
@@ -90,10 +90,10 @@ public class _PKFragment01 extends BaseFragment implements OnRefreshLoadMoreList
     private UserInfo mUserInfo;
 
 
-    public static _PKFragment01 newInstance(String type) {
+    public static _PKFragment02 newInstance(String type) {
         Bundle args = new Bundle();
         args.putString("type", type);
-        _PKFragment01 fragment = new _PKFragment01();
+        _PKFragment02 fragment = new _PKFragment02();
         fragment.setArguments(args);
         return fragment;
 
@@ -126,7 +126,7 @@ public class _PKFragment01 extends BaseFragment implements OnRefreshLoadMoreList
         mItems = new Items();
         mAdapter.setItems(mItems);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        mAdapter.register(PKbean1.DataBean.ListBean.class, new ItemPKViewBinder1(this));
+        mAdapter.register(PKbean2.DataBean.ListBean.class, new ItemPKViewBinder2(this));
         BrandItemDecoration mDecoration = new BrandItemDecoration(mActivity, 0,0);
         recyclerView.addItemDecoration(mDecoration);
         mLayoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false);
@@ -138,7 +138,7 @@ public class _PKFragment01 extends BaseFragment implements OnRefreshLoadMoreList
 
     private void load() {
         page = 1;
-        mViewModel.pk1(mUserInfo.getToken(), "" + mUserInfo.getId(), "2", "" + page, Status.LOAD_REFRESH).observe(this, mObserver);
+        mViewModel.pk2(mUserInfo.getToken(), "" + mUserInfo.getId(), "2", "" + page, Status.LOAD_REFRESH).observe(this, mObserver);
     }
 
     private Observer<Status<ResponseBody>> mObserver = status -> {
@@ -170,8 +170,8 @@ public class _PKFragment01 extends BaseFragment implements OnRefreshLoadMoreList
     private void opera1(ResponseBody body, Status status) {
         try {
             String b = body.string();
-            PKbean1 mPKbean1 = new Gson().fromJson(b, PKbean1.class);
-            String total_amount = mPKbean1.getData().getMyself().getTotal_amount();
+            PKbean2 mPKbean1 = new Gson().fromJson(b, PKbean2.class);
+            String day_amount = mPKbean1.getData().getMyself().getDay_amount();
             String headimg = mPKbean1.getData().getMyself().getHeadimg();
             String nickname = mPKbean1.getData().getMyself().getNickname();
             int ranking = mPKbean1.getData().getMyself().getRanking();
@@ -199,11 +199,11 @@ public class _PKFragment01 extends BaseFragment implements OnRefreshLoadMoreList
             textNum.setText("" + ranking);
             ImageLoader.loadPlaceholder1(headimg, imgTuxiang);
             textWenzi1.setText(nickname);
-            textShuliang.setText("¥"+total_amount);
+            textShuliang.setText("¥"+day_amount);
             //传送数据
-            Constant.PK1=total_amount;
-            EventBus.getDefault().post(new PKEvent1(total_amount, headimg, nickname));
-            List<PKbean1.DataBean.ListBean> item = mPKbean1.getData().getList();
+            Constant.PK2=day_amount;
+            EventBus.getDefault().post(new PKEvent2(day_amount, headimg, nickname));
+            List<PKbean2.DataBean.ListBean> item = mPKbean1.getData().getList();
             if (item == null || item.size() == 0) {
 
                 if (status.loadType == Status.LOAD_REFRESH) {
@@ -249,7 +249,7 @@ public class _PKFragment01 extends BaseFragment implements OnRefreshLoadMoreList
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
         if (mCanLoadMore) {
             mCanLoadMore = false;
-            mViewModel.pk1(mUserInfo.getToken(), "" + mUserInfo.getId(), "2", "" + page, Status.LOAD_MORE).observe(this, mObserver);
+            mViewModel.pk2(mUserInfo.getToken(), "" + mUserInfo.getId(), "2", "" + page, Status.LOAD_MORE).observe(this, mObserver);
         } else {
             refreshLayout.finishLoadMore();
         }
@@ -265,7 +265,7 @@ public class _PKFragment01 extends BaseFragment implements OnRefreshLoadMoreList
 
 
     @Override
-    public void onProdClick(PKbean1.DataBean.ListBean item) {
+    public void onProdClick(PKbean2.DataBean.ListBean item) {
 
     }
 }

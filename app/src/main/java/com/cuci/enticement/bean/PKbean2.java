@@ -3,13 +3,13 @@ package com.cuci.enticement.bean;
 import java.io.Serializable;
 import java.util.List;
 
-public class PKbean1 implements Serializable {
+public class PKbean2 implements Serializable {
 
 
     /**
      * code : 1
-     * info : 获取个人消费榜成功！
-     * data : {"page":{"limit":20,"total":1,"pages":1,"current":1},"list":[{"mid":62,"headimg":"https://wx.qlogo.cn/mmopen/vi_32/PiajxSqBRaEK1rn5ls0qBibICbC54StdA9vg0y3Ufo7YMqWP2jGEM2XeLwR4foXDmJReZ6jh0MjYhKWy7CczNHhQ/132","nickname":"lost","total_amount":"15400.00"}],"myself":{"id":41,"headimg":"https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIZGu5BWDoZKiallib0WgaV3VkLvARwf6ZLUl3N81n6N1QMCfhCdJ9ia5iaq7nvCvrl7JFnHQp2cKKfgQ/132","nickname":"凯婷","total_amount":"0.00","ranking":3284}}
+     * info : 获取个人日消费榜成功！
+     * data : {"page":{"limit":20,"total":2,"pages":1,"current":1},"list":[{"mid":1,"headimg":"https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJsRg0rPKBkPFDnTjRsEaXKkWpaAWJyVzoMic5gG9nEGhibSc1OFXwgPvZSFcrVKibZ4Fhz9PMho6gJQ/132","nickname":"因诗美","day_amount":"5130.00"},{"mid":74,"headimg":"https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLhKfKwcPX90cibibER6T2S6FYBclmt1RLzwN9CZRd4dUGS2t9eolMyDK1NacDOLNpF377VusFVRBBg/132","nickname":"yvonne","day_amount":"5060.00"}],"myself":{"day_amount":"5060.00","mid":74,"ranking":2,"headimg":"https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLhKfKwcPX90cibibER6T2S6FYBclmt1RLzwN9CZRd4dUGS2t9eolMyDK1NacDOLNpF377VusFVRBBg/132","nickname":"yvonne"}}
      */
 
     private int code;
@@ -42,9 +42,9 @@ public class PKbean1 implements Serializable {
 
     public static class DataBean implements Serializable{
         /**
-         * page : {"limit":20,"total":1,"pages":1,"current":1}
-         * list : [{"mid":62,"headimg":"https://wx.qlogo.cn/mmopen/vi_32/PiajxSqBRaEK1rn5ls0qBibICbC54StdA9vg0y3Ufo7YMqWP2jGEM2XeLwR4foXDmJReZ6jh0MjYhKWy7CczNHhQ/132","nickname":"lost","total_amount":"15400.00"}]
-         * myself : {"id":41,"headimg":"https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIZGu5BWDoZKiallib0WgaV3VkLvARwf6ZLUl3N81n6N1QMCfhCdJ9ia5iaq7nvCvrl7JFnHQp2cKKfgQ/132","nickname":"凯婷","total_amount":"0.00","ranking":3284}
+         * page : {"limit":20,"total":2,"pages":1,"current":1}
+         * list : [{"mid":1,"headimg":"https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJsRg0rPKBkPFDnTjRsEaXKkWpaAWJyVzoMic5gG9nEGhibSc1OFXwgPvZSFcrVKibZ4Fhz9PMho6gJQ/132","nickname":"因诗美","day_amount":"5130.00"},{"mid":74,"headimg":"https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLhKfKwcPX90cibibER6T2S6FYBclmt1RLzwN9CZRd4dUGS2t9eolMyDK1NacDOLNpF377VusFVRBBg/132","nickname":"yvonne","day_amount":"5060.00"}]
+         * myself : {"day_amount":"5060.00","mid":74,"ranking":2,"headimg":"https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLhKfKwcPX90cibibER6T2S6FYBclmt1RLzwN9CZRd4dUGS2t9eolMyDK1NacDOLNpF377VusFVRBBg/132","nickname":"yvonne"}
          */
 
         private PageBean page;
@@ -75,10 +75,10 @@ public class PKbean1 implements Serializable {
             this.list = list;
         }
 
-        public static class PageBean implements Serializable{
+        public static class PageBean implements Serializable {
             /**
              * limit : 20
-             * total : 1
+             * total : 2
              * pages : 1
              * current : 1
              */
@@ -123,25 +123,41 @@ public class PKbean1 implements Serializable {
 
         public static class MyselfBean implements Serializable{
             /**
-             * id : 41
-             * headimg : https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIZGu5BWDoZKiallib0WgaV3VkLvARwf6ZLUl3N81n6N1QMCfhCdJ9ia5iaq7nvCvrl7JFnHQp2cKKfgQ/132
-             * nickname : 凯婷
-             * total_amount : 0.00
-             * ranking : 3284
+             * day_amount : 5060.00
+             * mid : 74
+             * ranking : 2
+             * headimg : https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLhKfKwcPX90cibibER6T2S6FYBclmt1RLzwN9CZRd4dUGS2t9eolMyDK1NacDOLNpF377VusFVRBBg/132
+             * nickname : yvonne
              */
 
-            private int id;
+            private String day_amount;
+            private int mid;
+            private int ranking;
             private String headimg;
             private String nickname;
-            private String total_amount;
-            private int ranking;
 
-            public int getId() {
-                return id;
+            public String getDay_amount() {
+                return day_amount;
             }
 
-            public void setId(int id) {
-                this.id = id;
+            public void setDay_amount(String day_amount) {
+                this.day_amount = day_amount;
+            }
+
+            public int getMid() {
+                return mid;
+            }
+
+            public void setMid(int mid) {
+                this.mid = mid;
+            }
+
+            public int getRanking() {
+                return ranking;
+            }
+
+            public void setRanking(int ranking) {
+                this.ranking = ranking;
             }
 
             public String getHeadimg() {
@@ -159,36 +175,20 @@ public class PKbean1 implements Serializable {
             public void setNickname(String nickname) {
                 this.nickname = nickname;
             }
-
-            public String getTotal_amount() {
-                return total_amount;
-            }
-
-            public void setTotal_amount(String total_amount) {
-                this.total_amount = total_amount;
-            }
-
-            public int getRanking() {
-                return ranking;
-            }
-
-            public void setRanking(int ranking) {
-                this.ranking = ranking;
-            }
         }
 
         public static class ListBean implements Serializable{
             /**
-             * mid : 62
-             * headimg : https://wx.qlogo.cn/mmopen/vi_32/PiajxSqBRaEK1rn5ls0qBibICbC54StdA9vg0y3Ufo7YMqWP2jGEM2XeLwR4foXDmJReZ6jh0MjYhKWy7CczNHhQ/132
-             * nickname : lost
-             * total_amount : 15400.00
+             * mid : 1
+             * headimg : https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJsRg0rPKBkPFDnTjRsEaXKkWpaAWJyVzoMic5gG9nEGhibSc1OFXwgPvZSFcrVKibZ4Fhz9PMho6gJQ/132
+             * nickname : 因诗美
+             * day_amount : 5130.00
              */
 
             private int mid;
             private String headimg;
             private String nickname;
-            private String total_amount;
+            private String day_amount;
 
             public int getMid() {
                 return mid;
@@ -214,12 +214,12 @@ public class PKbean1 implements Serializable {
                 this.nickname = nickname;
             }
 
-            public String getTotal_amount() {
-                return total_amount;
+            public String getDay_amount() {
+                return day_amount;
             }
 
-            public void setTotal_amount(String total_amount) {
-                this.total_amount = total_amount;
+            public void setDay_amount(String day_amount) {
+                this.day_amount = day_amount;
             }
         }
     }
