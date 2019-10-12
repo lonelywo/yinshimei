@@ -18,7 +18,9 @@
     <TextView
       android:id="@+id/man_tv"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
+      android:layout_height="48dp"
+      android:gravity="center"
+      android:background="@color/colorWhite"
       android:text="男"
       />
     <View
@@ -29,7 +31,9 @@
     <TextView
       android:id="@+id/women_tv"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
+      android:layout_height="48dp"
+      android:gravity="center"
+      android:background="@color/colorWhite"
       android:text="女"
 
       />
@@ -41,7 +45,9 @@
     <TextView
       android:id="@+id/cancel_tv"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
+      android:layout_height="48dp"
+      android:gravity="center"
+      android:background="@color/colorWhite"
       android:text="取消"
 
       />

@@ -1,16 +1,20 @@
 package com.cuci.enticement.plate.mine.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.CommissiontxBean;
+import com.cuci.enticement.bean.ModifyInfo;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
+import com.cuci.enticement.plate.common.vm.CommonViewModel;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.widget.ClearEditText;
@@ -27,6 +31,8 @@ public class NickModifyActivity extends BaseActivity {
 
     @BindView(R.id.nick_et)
     ClearEditText nickEt;
+    private CommonViewModel mViewModel;
+    private UserInfo mUserInfo;
 
     @Override
     public int getLayoutId() {
@@ -35,10 +41,13 @@ public class NickModifyActivity extends BaseActivity {
 
     @Override
     public void initViews(Bundle savedInstanceState) {
-        UserInfo userInfo = SharedPrefUtils.get(UserInfo.class);
-        String nickname = userInfo.getNickname();
+        Intent intent = getIntent();
+        mUserInfo = SharedPrefUtils.get(UserInfo.class);
+        String nickname = mUserInfo.getNickname();
         nickEt.setText(nickname);
         nickEt.setSelection(nickname.length());
+
+        mViewModel = ViewModelProviders.of(this).get(CommonViewModel.class);
     }
 
 
@@ -49,8 +58,10 @@ public class NickModifyActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_commit:
-                String nickStr = nickEt.getText().toString().trim();
-
+               String nickStr = nickEt.getText().toString().trim();
+                mViewModel.modifyInfo(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),mUserInfo.getOpenid(),mUserInfo.getHeadimg(),"",nickStr,mUserInfo.getSex(),mUserInfo.getUnionid()
+                ,mUserInfo.getProvince(),mUserInfo.getCity(),mUserInfo.getArea())
+                        .observe(this, mObserver);
 
                 break;
         }
@@ -66,13 +77,16 @@ public class NickModifyActivity extends BaseActivity {
 
         switch (status.status) {
             case Status.SUCCESS:
+                dismissLoading();
                 ResponseBody body = status.content;
                 opera(body);
                 break;
             case Status.ERROR:
+                dismissLoading();
                 FToast.error("网络错误");
                 break;
             case Status.LOADING:
+                showLoading();
                 break;
         }
 
@@ -81,13 +95,19 @@ public class NickModifyActivity extends BaseActivity {
     private void opera(ResponseBody body) {
         try {
             String b = body.string();
-            //todo   昵称  保存本地
-         /*   CommissiontxBean mCommissiontxBean = new Gson().fromJson(b, CommissiontxBean.class);
-            if (mCommissiontxBean.getCode() == 1) {
-                FToast.success(mCommissiontxBean.getInfo());
+
+           ModifyInfo modifyInfo = new Gson().fromJson(b, ModifyInfo.class);
+            if (modifyInfo.getCode() == 1) {
+                UserInfo userInfo = modifyInfo.getData();
+                SharedPrefUtils.save(userInfo,UserInfo.class);
+                Intent intent = new Intent(this, InfoActivity.class);
+                intent.putExtra("nickname",userInfo.getNickname());
+                setResult(101,intent);
+                finish();
+                FToast.success(modifyInfo.getInfo());
             } else {
-                FToast.error(mCommissiontxBean.getInfo());
-            }*/
+                FToast.error(modifyInfo.getInfo());
+            }
         } catch (IOException e) {
             e.printStackTrace();
             FToast.error("数据错误");

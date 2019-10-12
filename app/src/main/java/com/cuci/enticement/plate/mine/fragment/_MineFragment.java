@@ -42,6 +42,7 @@ import com.cuci.enticement.plate.mine.activity.MyOrderActivity;
 import com.cuci.enticement.plate.mine.activity.MyTeamActivity;
 import com.cuci.enticement.plate.mine.activity.PKActivity;
 import com.cuci.enticement.plate.mine.activity.RecAddressActivity;
+import com.cuci.enticement.plate.mine.activity.SettingsActivity;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.plate.mine.vm.OrderViewModel;
 import com.cuci.enticement.utils.AppUtils;
@@ -254,7 +255,7 @@ public class _MineFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 if (AppUtils.isAllowPermission(mActivity)) {
-
+                    startActivity(new Intent(mActivity, SettingsActivity.class));
                 }
             }
         });
