@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
@@ -37,6 +38,7 @@ import com.cuci.enticement.plate.common.popup.HeadImageBottom2TopProdPopup;
 import com.cuci.enticement.plate.common.popup.PayBottom2TopProdPopup;
 import com.cuci.enticement.plate.common.popup.SexBottom2TopProdPopup;
 import com.cuci.enticement.plate.common.vm.CommonViewModel;
+import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.GetJsonDataUtil;
 import com.cuci.enticement.utils.ImageLoader;
@@ -424,22 +426,24 @@ public class InfoActivity extends BaseActivity {
                         ViewUtils.hideView(tvIcon);
                         ViewUtils.showView(iconIv);
                         ImageLoader.loadPlaceholder(userInfo.getHeadimg(), iconIv);
+                        refreshBroadcast( userInfo);
                         break;
                     case CHANGE_SEX:
                         if(!TextUtils.isEmpty(userInfo.getSex())) {
                             tvSex.setText(userInfo.getSex());
+                            refreshBroadcast( userInfo);
                         }
                         break;
                     case CHANGE_ADDRESS:
                         String address=userInfo.getProvince()+" "+userInfo.getCity()+" "+userInfo.getArea();
                         if(!TextUtils.isEmpty(address)){
                             tvAddress.setText(address);
+
                         }
                         break;
                 }
-
-
                 FToast.success(modifyInfo.getInfo());
+
             } else {
                 FToast.error(modifyInfo.getInfo());
             }
@@ -447,6 +451,13 @@ public class InfoActivity extends BaseActivity {
             e.printStackTrace();
             FToast.error("数据错误");
         }
+    }
+
+    private void refreshBroadcast( UserInfo userInfo) {
+        Intent intentRefresh = new Intent(_MineFragment.ACTION_LOGIN_SUCCEED);
+        intentRefresh.putExtra(_MineFragment.DATA_USER_INFO, userInfo);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intentRefresh);
+
     }
 
 

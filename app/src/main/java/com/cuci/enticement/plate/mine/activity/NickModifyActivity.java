@@ -7,6 +7,7 @@ import android.view.View;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
@@ -15,6 +16,7 @@ import com.cuci.enticement.bean.ModifyInfo;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.plate.common.vm.CommonViewModel;
+import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.widget.ClearEditText;
@@ -103,6 +105,9 @@ public class NickModifyActivity extends BaseActivity {
                 Intent intent = new Intent(this, InfoActivity.class);
                 intent.putExtra("nickname",userInfo.getNickname());
                 setResult(101,intent);
+                Intent intentRefresh = new Intent(_MineFragment.ACTION_LOGIN_SUCCEED);
+                intentRefresh.putExtra(_MineFragment.DATA_USER_INFO, userInfo);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(intentRefresh);
                 finish();
                 FToast.success(modifyInfo.getInfo());
             } else {
