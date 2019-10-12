@@ -67,13 +67,13 @@ public class SexBottom2TopProdPopup extends BottomPopupView {
         switch (view.getId()) {
             case R.id.man_tv:
                 if (mOnCommitClickListener != null) {
-                    mOnCommitClickListener.onCommitClick(1);
+                    mOnCommitClickListener.onCommitClick("男");
                     dismiss();
                 }
                 break;
             case R.id.women_tv:
                 if (mOnCommitClickListener != null) {
-                    mOnCommitClickListener.onCommitClick(2);
+                    mOnCommitClickListener.onCommitClick("女");
                     dismiss();
                 }
                 break;
@@ -94,7 +94,7 @@ public class SexBottom2TopProdPopup extends BottomPopupView {
 
     public interface OnCommitClickListener {
 
-        void onCommitClick(int type);
+        void onCommitClick(String sex);
 
     }
 

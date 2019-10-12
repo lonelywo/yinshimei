@@ -183,5 +183,35 @@ public interface UserApi {
             @Field("gender") String gender,
                     @Field("sign") String sign
     );
+
+
+
+
+    /**
+     * 修改用户信息
+     */
+    @FormUrlEncoded
+    @POST("store/api.member.center/info")
+    Call<ResponseBody> modifyInfo(@Field("from_type") String fromType,
+                                  @Field("token") String token,
+                               @Field("mid") String mid,
+                               @Field("openid") String openid,
+                               @Field("headimg") String headimg,
+                               @Field("headimgapp") String headimgapp,
+                               @Field("sex") String sex,
+                               @Field("nickname") String nickname,
+                               @Field("unionid") String unionid,
+                               @Field("province") String province,
+                               @Field("city") String city,
+                               @Field("area") String area,
+                               @Field("sign") String sign);
+
+
+
+
+
+
+
+
 }
 
