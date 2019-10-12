@@ -9,7 +9,9 @@ public class Constant {
     public static final String BUGLY_ID = "ffc4cc99ab";
 
     public static final String QQ_APP_ID = "1108066491";
-
+    public static  String PK1 = "0";
+    public static  String PK2 = "0";
+    public static  int PK3 = 0;
     //刷新圆圈的颜色
     public static int[] refreshColors = new int[]{
             0xFFF44336, 0xFFE91E63, 0xFF9C27B0, 0xFF673AB7, 0xFF3F51B5, 0xFF2196F3,

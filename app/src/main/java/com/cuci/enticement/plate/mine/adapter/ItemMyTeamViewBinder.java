@@ -1,8 +1,6 @@
 package com.cuci.enticement.plate.mine.adapter;
 
 
-import android.content.Intent;
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,18 +10,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.bean.MyTeamlbBean;
-import com.cuci.enticement.plate.mine.activity.MyOrderActivity;
-import com.cuci.enticement.plate.mine.activity.MyTeamActivity;
-import com.cuci.enticement.plate.mine.activity.MyTeamTwoActivity;
-import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.ImageLoader;
-import com.cuci.enticement.utils.ImageUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 import me.drakeet.multitype.ItemViewBinder;
 
 public class ItemMyTeamViewBinder extends ItemViewBinder<MyTeamlbBean.DataBean.ListBean, ItemMyTeamViewBinder.ViewHolder> {
@@ -54,34 +47,38 @@ public class ItemMyTeamViewBinder extends ItemViewBinder<MyTeamlbBean.DataBean.L
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull MyTeamlbBean.DataBean.ListBean item) {
 
-        ImageLoader.loadPlaceholder1(item.getHeadimg(),holder.imgTuxiang);
+        ImageLoader.loadPlaceholder1(item.getHeadimg(), holder.imgTuxiang);
         holder.textTime.setText(item.getCreate_at());
         holder.textWenzi1.setText(item.getNickname());
-        holder.text_shuliang.setText(""+item.getTeams());
+        holder.textShuliang.setText(item.getTeams()+"人");
+        holder.textRzeng.setText("日新增：" + item.getDaily_teams()+"人");
+
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
+            @Override
+            public void onClick(View view) {
 
-              mOnProdClickListener.onProdClick(item);
-          }
-      });
+                mOnProdClickListener.onProdClick(item);
+            }
+        });
 
 
     }
 
 
-
     static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.img_tuxiang)
-        ImageView imgTuxiang;
+        CircleImageView imgTuxiang;
         @BindView(R.id.text_wenzi1)
         TextView textWenzi1;
         @BindView(R.id.text_time)
         TextView textTime;
+        @BindView(R.id.text_rzeng)
+        TextView textRzeng;
         @BindView(R.id.text_shuliang)
-        TextView text_shuliang;
+        TextView textShuliang;
+
         ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

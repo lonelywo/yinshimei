@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+    >
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/colorWhite"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
+        <com.classic.common.MultipleStatusView
+            android:id="@+id/status_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:emptyView="@layout/custom_empty_view_wushuju"
+            app:errorView="@layout/custom_error_view"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:loadingView="@layout/custom_loading_view"
+            app:noNetworkView="@layout/custom_no_network_view">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <com.scwang.smartrefresh.layout.SmartRefreshLayout
+                    android:id="@+id/refresh_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:focusableInTouchMode="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:overScrollMode="never"
+                        android:scrollbars="vertical" />
+
+                    <com.scwang.smartrefresh.layout.footer.ClassicsFooter
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        app:srlAccentColor="#888"
+                        app:srlClassicsSpinnerStyle="Translate"
+                        app:srlDrawableProgress="@drawable/ic_index_dashboard"
+                        app:srlTextSizeTitle="12sp" />
+
+                </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </com.classic.common.MultipleStatusView>
+
+     <androidx.constraintlayout.widget.ConstraintLayout
+         android:layout_width="match_parent"
+         android:layout_height="80dp"
+         app:layout_constraintBottom_toBottomOf="parent"
+         android:background="@color/colorWhite"
+         >
+         <TextView
+             android:id="@+id/text_num"
+             android:layout_width="35dp"
+             android:layout_height="35dp"
+             app:layout_constraintBottom_toTopOf="@+id/text_num1"
+             app:layout_constraintStart_toStartOf="@+id/text_num1"
+             app:layout_constraintEnd_toEndOf="@+id/text_num1"
+             android:text="1"
+             android:textColor="@color/hei"
+             android:gravity="center"
+             />
+         <TextView
+             android:id="@+id/text_num1"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             app:layout_constraintBottom_toBottomOf="@+id/img_tuxiang"
+             app:layout_constraintStart_toStartOf="parent"
+             android:text="我的排名"
+             android:textColor="@color/hei"
+             android:gravity="center"
+
+             />
+
+         <ImageView
+             android:id="@+id/img_huangguan1"
+             android:layout_width="28dp"
+             android:layout_height="23dp"
+             android:src="@drawable/huangguan_1"
+             app:layout_constraintLeft_toLeftOf="@+id/img_tuxiang"
+             app:layout_constraintTop_toTopOf="parent"
+             android:layout_marginTop="3dp"
+             android:scaleType="centerCrop"
+             android:visibility="gone"
+             />
+         <ImageView
+             android:id="@+id/img_huangguan2"
+             android:layout_width="28dp"
+             android:layout_height="23dp"
+             android:src="@drawable/huangguan_2"
+             app:layout_constraintLeft_toLeftOf="@+id/img_tuxiang"
+             app:layout_constraintTop_toTopOf="parent"
+             android:layout_marginTop="3dp"
+             android:scaleType="centerCrop"
+             android:visibility="gone"
+             />
+         <ImageView
+             android:id="@+id/img_huangguan3"
+             android:layout_width="28dp"
+             android:layout_height="23dp"
+             android:src="@drawable/huangguan_3"
+             app:layout_constraintLeft_toLeftOf="@+id/img_tuxiang"
+             app:layout_constraintTop_toTopOf="parent"
+             android:layout_marginTop="3dp"
+             android:scaleType="centerCrop"
+             android:visibility="gone"
+             />
+         <de.hdodenhof.circleimageview.CircleImageView
+             android:id="@+id/img_tuxiang"
+             android:layout_width="47dp"
+             android:layout_height="47dp"
+             android:src="@drawable/tuxiang"
+             app:civ_border_color="#fff"
+             app:civ_border_width="1dp"
+             app:layout_constraintBottom_toBottomOf="parent"
+             app:layout_constraintStart_toStartOf="parent"
+             android:layout_marginLeft="80dp"
+             app:layout_constraintTop_toTopOf="parent"
+
+             />
+         <TextView
+             android:id="@+id/text_wenzi1"
+             android:layout_width="0dp"
+             android:layout_height="wrap_content"
+             app:layout_constraintLeft_toRightOf="@+id/img_tuxiang"
+             app:layout_constraintTop_toTopOf="parent"
+             app:layout_constraintBottom_toBottomOf="parent"
+             android:text="美美"
+             app:layout_constraintRight_toLeftOf="@+id/text_shuliang"
+             android:textColor="@color/hei"
+             android:textSize="20sp"
+             android:layout_marginLeft="30dp"
+             android:gravity="left"
+             android:ellipsize = "marquee"
+
+             />
+
+         <TextView
+             android:id="@+id/text_shuliang"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             app:layout_constraintTop_toTopOf="parent"
+             app:layout_constraintBottom_toBottomOf="parent"
+             app:layout_constraintRight_toRightOf="parent"
+             tools:text="20000"
+             android:textSize="20sp"
+             android:textColor="@color/orange"
+             android:layout_marginRight="10dp"
+             />
+
+
+
+
+     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

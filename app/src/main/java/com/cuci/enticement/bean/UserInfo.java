@@ -24,6 +24,10 @@ public class UserInfo implements Serializable {
     private int vip_level;
     private int vip_auth;
     private String token;
+    private String sex;
+    private String address;
+
+
     public String getBlack_state() {
         return black_state;
     }
@@ -43,6 +47,23 @@ public class UserInfo implements Serializable {
     private String black_state;
     private String is_binding;
 
+
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public int getId() {
         return id;

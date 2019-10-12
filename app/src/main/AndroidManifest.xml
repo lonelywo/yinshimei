@@ -53,6 +53,11 @@
             >
 
         </activity>
+        <activity android:name=".plate.mine.activity.PKActivity"
+            android:screenOrientation="portrait"
+            >
+
+        </activity>
         <activity android:name=".plate.common.BindPhoneActivity"
             android:screenOrientation="portrait"
             >
@@ -100,9 +105,22 @@
         </activity>
         <activity android:name=".plate.mall.activity.YuLanActivity"
             android:screenOrientation="portrait"
-            >
+           />
+        <activity android:name=".plate.mine.activity.YinshimeiActivity"
+          android:screenOrientation="portrait"
+          />
+        <activity android:name=".plate.mine.activity.InfoActivity"
+          android:screenOrientation="portrait"
+          />
 
-        </activity>
+        <activity android:name=".plate.mine.activity.NickModifyActivity"
+          android:screenOrientation="portrait"
+          />
+
+        <activity android:name=".plate.mine.activity.SettingsActivity"
+          android:screenOrientation="portrait"
+          />
+
         <activity android:name=".plate.cart.activity.LogisticsActivity"
             android:screenOrientation="portrait"
             >

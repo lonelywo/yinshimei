@@ -25,15 +25,16 @@ import com.classic.common.MultipleStatusView;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.CommissionjlBean;
-import com.cuci.enticement.bean.CommissionjlBeanitem;
 import com.cuci.enticement.bean.CommissiontjBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.plate.mine.adapter.ItemCommissionJLViewBinder;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.ImageLoader;
 import com.cuci.enticement.utils.MathExtend;
 import com.cuci.enticement.utils.SharedPrefUtils;
+import com.cuci.enticement.widget.BrandItemDecoration;
 import com.cuci.enticement.widget.CartItemDecoration;
 import com.cuci.enticement.widget.CustomRefreshHeader;
 import com.google.gson.Gson;
@@ -49,6 +50,8 @@ import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 import okhttp3.ResponseBody;
@@ -89,18 +92,29 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
     SmartRefreshLayout refreshLayout;
     @BindView(R.id.status_view)
     MultipleStatusView statusView;
+    @BindView(R.id.text_biaoti)
+    TextView textBiaoti;
+    @BindView(R.id.con_toubu)
+    ConstraintLayout conToubu;
+    @BindView(R.id.civ_tuxiang)
+    CircleImageView civTuxiang;
+    @BindView(R.id.text_name)
+    TextView textName;
+    @BindView(R.id.con_money)
+    ConstraintLayout conMoney;
     private MineViewModel mViewModel;
     private UserInfo mUserInfo;
     private Items mItems;
     private MultiTypeAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
-    private  List<CommissionjlBean.DataBean.ListBean> mDatas=new ArrayList<>();
+    private List<CommissionjlBean.DataBean.ListBean> mDatas = new ArrayList<>();
     private boolean mCanLoadMore = true;
     private String format;
     private Date d;
     private TimePickerView pvTime;
     private FrameLayout mFrameLayout;
-    private  String formatStart;
+    private String formatStart;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_commisson;
@@ -110,7 +124,8 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
     public void initViews(Bundle savedInstanceState) {
         mViewModel = ViewModelProviders.of(this).get(MineViewModel.class);
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
-
+        ImageLoader.loadPlaceholder1(mUserInfo.getHeadimg(), civTuxiang);
+        textName.setText(mUserInfo.getNickname());
         CustomRefreshHeader header = new CustomRefreshHeader(this);
         header.setBackground(0xFFF3F4F6);
         //mRefreshLayout.setRefreshHeader(header);
@@ -121,29 +136,30 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
         mAdapter.setItems(mItems);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         mAdapter.register(CommissionjlBean.DataBean.ListBean.class, new ItemCommissionJLViewBinder());
-        CartItemDecoration mDecoration = new CartItemDecoration(this, 10);
+        BrandItemDecoration mDecoration = new BrandItemDecoration(this, 10);
         recyclerView.addItemDecoration(mDecoration);
         mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(mAdapter);
 
-        mViewModel.hqcommissiontj(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"2")
+        mViewModel.hqcommissiontj(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2")
                 .observe(this, mObserver);
 
-        Date a= new Date();
+        Date a = new Date();
 
         d = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
 
-         formatStart = sdf.format(a);
+        formatStart = sdf.format(a);
         format = sdf.format(d);
         textRqi.setText(format);
         String nian = format.split("-")[0];
-        String yue =  format.split("-")[1];
+        String yue = format.split("-")[1];
+
         refreshLayout.autoRefresh();
-        if(d.equals(a)){
+        if (d.equals(a)) {
             textXiageyue.setEnabled(false);
-        }else {
+        } else {
             textXiageyue.setEnabled(true);
         }
         textShanggeyue.setOnClickListener(new View.OnClickListener() {
@@ -155,12 +171,13 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
                 Date time1 = calendar.getTime();
                 String format2 = sdf.format(time1);
                 textRqi.setText(format2);
-                d=time1;
-                if(d.equals(a)){
+                format=format2;
+                d = time1;
+                if (d.equals(a)) {
                     textXiageyue.setEnabled(false);
-                }else {
+                } else {
                     textXiageyue.setEnabled(true);
-                    mViewModel.hqcommissiontj(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"2",format2,Status.LOAD_REFRESH)
+                    mViewModel.hqcommissiontj(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", format, Status.LOAD_REFRESH)
                             .observe(CommissionActivity.this, mObserver1);
                 }
 
@@ -175,13 +192,14 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
                 Date time2 = calendar.getTime();
                 String format3 = sdf.format(time2);
                 textRqi.setText(format3);
-                d=time2;
-                if(format3.equals(formatStart)){
+                format=format3;
+                d = time2;
+                if (format3.equals(formatStart)) {
                     textXiageyue.setEnabled(false);
-                }else {
+                } else {
                     textXiageyue.setEnabled(true);
                 }
-                mViewModel.hqcommissiontj(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"2",format3,Status.LOAD_REFRESH)
+                mViewModel.hqcommissiontj(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", format, Status.LOAD_REFRESH)
                         .observe(CommissionActivity.this, mObserver1);
             }
         });
@@ -199,8 +217,6 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
                 finish();
             }
         });
-
-
 
 
         //初始化时间选择器
@@ -231,22 +247,21 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
             public void onTimeSelect(Date date, View v) {//选中事件回调
                 // 这里回调过来的v,就是show()方法里面所添加的 View 参数，如果show的时候没有添加参数，v则为null
                 /*btn_Time.setText(getTime(date));*/
-                d=date;
+                d = date;
                 textRqi.setText(getTime(date));
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
                 format = sdf.format(d);
 
-                if(format.equals(formatStart)){
+                if (format.equals(formatStart)) {
                     textXiageyue.setEnabled(false);
-                }else {
+                } else {
                     textXiageyue.setEnabled(true);
                 }
 
 
                 pvTime.dismiss();
-                mViewModel.hqcommissiontj(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"2",format,Status.LOAD_REFRESH)
+                mViewModel.hqcommissiontj(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", format, Status.LOAD_REFRESH)
                         .observe(CommissionActivity.this, mObserver1);
-
 
 
             }
@@ -279,7 +294,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
                 .setLineSpacingMultiplier((float) 2.0)
                 .setDate(selectedDate)
                 .setRangDate(startDate, selectedDate)
-               // .setDecorView(mFrameLayout)//非dialog模式下,设置ViewGroup, pickerView将会添加到这个ViewGroup中
+                // .setDecorView(mFrameLayout)//非dialog模式下,设置ViewGroup, pickerView将会添加到这个ViewGroup中
                 .setOutSideColor(0x00000000)
                 .setOutSideCancelable(false)
                 .build();
@@ -295,21 +310,22 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
     }
 
     private void load() {
-        if(mUserInfo==null){
+        if (mUserInfo == null) {
             refreshLayout.finishRefresh();
             return;
         }
-        mViewModel.hqcommissiontj(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"2",format,Status.LOAD_REFRESH)
+        mViewModel.hqcommissiontj(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", format, Status.LOAD_REFRESH)
                 .observe(this, mObserver1);
     }
+
     private Observer<Status<ResponseBody>> mObserver1 = status -> {
 
         switch (status.status) {
             case Status.SUCCESS:
                 statusView.showContent();
-
+              //  dismissLoading();
                 ResponseBody body = status.content;
-                opera1(body,status);
+                opera1(body, status);
                 break;
             case Status.ERROR:
 
@@ -319,15 +335,17 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
                 } else {
                     refreshLayout.finishRefresh();
                 }
+             //   dismissLoading();
                 FToast.error("网络错误");
                 break;
             case Status.LOADING:
-
+                //showLoading();
                 break;
         }
 
     };
-    private void opera1(ResponseBody body,Status status) {
+
+    private void opera1(ResponseBody body, Status status) {
         try {
             String b = body.string();
             CommissionjlBean mCommissionjlBean = new Gson().fromJson(b, CommissionjlBean.class);
@@ -343,7 +361,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
                 }
                 return;
             }
-            if (mCommissionjlBean.getCode()==1) {
+            if (mCommissionjlBean.getCode() == 1) {
                 mCanLoadMore = true;
                 if (status.loadType == Status.LOAD_REFRESH) {
                     mItems.clear();
@@ -355,7 +373,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
                     mAdapter.notifyDataSetChanged();
                     refreshLayout.finishLoadMore();
                 }
-            }else {
+            } else {
                 if (status.loadType == Status.LOAD_MORE) {
                     mCanLoadMore = true;
                     refreshLayout.finishLoadMore();
@@ -370,12 +388,6 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
             FToast.error("数据错误");
         }
     }
-
-
-
-
-
-
 
 
     private Observer<Status<ResponseBody>> mObserver = status -> {
@@ -396,16 +408,17 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
         }
 
     };
+
     private void opera(ResponseBody body) {
         try {
             String b = body.string();
             CommissiontjBean mCommissiontjBean = new Gson().fromJson(b, CommissiontjBean.class);
-            if (mCommissiontjBean.getCode()==1) {
+            if (mCommissiontjBean.getCode() == 1) {
                 String subtract = MathExtend.subtract(String.valueOf(mCommissiontjBean.getData().getTotal()), String.valueOf(mCommissiontjBean.getData().getUsed()));
-                textYongjing.setText(String.valueOf(mCommissiontjBean.getData().getTotal()));
-                textYitixian.setText(String.valueOf(mCommissiontjBean.getData().getUsed()));
-                textKetixian.setText(subtract);
-            }else {
+                textYongjing.setText("¥"+mCommissiontjBean.getData().getTotal());
+                textYitixian.setText("¥"+mCommissiontjBean.getData().getUsed());
+                textKetixian.setText("¥"+subtract);
+            } else {
                 FToast.error(mCommissiontjBean.getInfo());
             }
         } catch (IOException e) {
@@ -417,13 +430,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-     /*  if(mCanLoadMore){
-            mCanLoadMore = false;
-           mViewModel.getSource01(mtype, String.valueOf(page),PAGE_SIZE,
-                    Status.LOAD_MORE).observe(this, mObserver);
-        }else {
 
-        }*/
         refreshLayout.finishLoadMore();
     }
 
@@ -435,6 +442,10 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
     }
 
 
-
-
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 }

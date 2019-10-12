@@ -19,6 +19,7 @@ import com.cuci.enticement.utils.ImageLoader;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 import me.drakeet.multitype.ItemViewBinder;
 
 public class ItemMyTeamTwoViewBinder extends ItemViewBinder<MyTeamlbBean.DataBean.ListBean, ItemMyTeamTwoViewBinder.ViewHolder> {
@@ -52,8 +53,8 @@ public class ItemMyTeamTwoViewBinder extends ItemViewBinder<MyTeamlbBean.DataBea
         ImageLoader.loadPlaceholder1(item.getHeadimg(),holder.imgTuxiang);
         holder.textTime.setText(item.getCreate_at());
         holder.textWenzi1.setText(item.getNickname());
-        holder.text_shuliang.setText(""+item.getTeams());
-
+        holder.textShuliang.setText(item.getTeams()+"人");
+        holder.textRzeng.setText("日新增：" + item.getDaily_teams()+"人");
 
       holder.itemView.setOnClickListener(new View.OnClickListener() {
           @Override
@@ -69,13 +70,15 @@ public class ItemMyTeamTwoViewBinder extends ItemViewBinder<MyTeamlbBean.DataBea
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.img_tuxiang)
-        ImageView imgTuxiang;
+        CircleImageView imgTuxiang;
         @BindView(R.id.text_wenzi1)
         TextView textWenzi1;
         @BindView(R.id.text_time)
         TextView textTime;
+        @BindView(R.id.text_rzeng)
+        TextView textRzeng;
         @BindView(R.id.text_shuliang)
-        TextView text_shuliang;
+        TextView textShuliang;
         ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

@@ -114,5 +114,52 @@ public interface MineApi {
             @Field("mid") String mid,
             @Field("sign") String sign
     );
+    /**
+     * PK排行榜1
+     */
+    @FormUrlEncoded
+    @POST("store/api.member.Ranking/amountList")
+    Call<ResponseBody> pk1(
+            @Field("token") String token,
+            @Field("from_type") String from_type,
+            @Field("mid") String mid,
+            @Field("page") String page,
+            @Field("sign") String sign
+    );
+    /**
+     * PK排行榜2
+     */
+    @FormUrlEncoded
+    @POST("store/api.member.Ranking/amountDailyList")
+    Call<ResponseBody> pk2(
+            @Field("token") String token,
+            @Field("from_type") String from_type,
+            @Field("mid") String mid,
+            @Field("page") String page,
+            @Field("sign") String sign
+    );
+    /**
+     * PK排行榜3
+     */
+    @FormUrlEncoded
+    @POST("store/api.member.Ranking/teamList")
+    Call<ResponseBody> pk3(
+            @Field("token") String token,
+            @Field("from_type") String from_type,
+            @Field("mid") String mid,
+            @Field("page") String page,
+            @Field("sign") String sign
+    );
+    /**
+     * 499礼包
+     */
+    @FormUrlEncoded
+    @POST("store/api.member.center/ispay")
+    Call<ResponseBody> bag499(
+            @Field("token") String token,
+            @Field("from_type") String from_type,
+            @Field("mid") String mid,
+            @Field("sign") String sign
+    );
 }
 
