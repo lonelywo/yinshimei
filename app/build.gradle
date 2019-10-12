@@ -142,5 +142,4 @@ dependencies {
     implementation(name: 'alipaySdk-15.6.5-20190718211159-noUtdid', ext: 'aar')
    //环信客服SDK
     implementation 'com.hyphenate:kefu-easeui-android:latest.release'
-
 }
