@@ -7,15 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.CustomListener;
@@ -34,8 +27,8 @@ import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.ImageLoader;
 import com.cuci.enticement.utils.MathExtend;
 import com.cuci.enticement.utils.SharedPrefUtils;
+import com.cuci.enticement.utils.ViewUtils;
 import com.cuci.enticement.widget.BrandItemDecoration;
-import com.cuci.enticement.widget.CartItemDecoration;
 import com.cuci.enticement.widget.CustomRefreshHeader;
 import com.google.gson.Gson;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -49,6 +42,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -102,6 +102,12 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
     TextView textName;
     @BindView(R.id.con_money)
     ConstraintLayout conMoney;
+    @BindView(R.id.view_beijing1)
+    View viewBeijing1;
+    @BindView(R.id.view_beijing2)
+    View viewBeijing2;
+    @BindView(R.id.progress_bar)
+    ProgressBar progressBar;
     private MineViewModel mViewModel;
     private UserInfo mUserInfo;
     private Items mItems;
@@ -171,7 +177,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
                 Date time1 = calendar.getTime();
                 String format2 = sdf.format(time1);
                 textRqi.setText(format2);
-                format=format2;
+                format = format2;
                 d = time1;
                 if (d.equals(a)) {
                     textXiageyue.setEnabled(false);
@@ -179,6 +185,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
                     textXiageyue.setEnabled(true);
                     mViewModel.hqcommissiontj(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", format, Status.LOAD_REFRESH)
                             .observe(CommissionActivity.this, mObserver1);
+                    ViewUtils.showView(progressBar);
                 }
 
             }
@@ -192,7 +199,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
                 Date time2 = calendar.getTime();
                 String format3 = sdf.format(time2);
                 textRqi.setText(format3);
-                format=format3;
+                format = format3;
                 d = time2;
                 if (format3.equals(formatStart)) {
                     textXiageyue.setEnabled(false);
@@ -201,6 +208,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
                 }
                 mViewModel.hqcommissiontj(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", format, Status.LOAD_REFRESH)
                         .observe(CommissionActivity.this, mObserver1);
+                ViewUtils.showView(progressBar);
             }
         });
         buttonTixian.setOnClickListener(new View.OnClickListener() {
@@ -262,7 +270,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
                 pvTime.dismiss();
                 mViewModel.hqcommissiontj(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", format, Status.LOAD_REFRESH)
                         .observe(CommissionActivity.this, mObserver1);
-
+                ViewUtils.showView(progressBar);
 
             }
         })
@@ -322,20 +330,21 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
 
         switch (status.status) {
             case Status.SUCCESS:
+                ViewUtils.hideView(progressBar);
                 statusView.showContent();
-              //  dismissLoading();
+                //  dismissLoading();
                 ResponseBody body = status.content;
                 opera1(body, status);
                 break;
             case Status.ERROR:
-
+                ViewUtils.hideView(progressBar);
                 if (status.loadType == Status.LOAD_MORE) {
                     mCanLoadMore = true;
                     refreshLayout.finishLoadMore();
                 } else {
                     refreshLayout.finishRefresh();
                 }
-             //   dismissLoading();
+                //   dismissLoading();
                 FToast.error("网络错误");
                 break;
             case Status.LOADING:
@@ -415,9 +424,9 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
             CommissiontjBean mCommissiontjBean = new Gson().fromJson(b, CommissiontjBean.class);
             if (mCommissiontjBean.getCode() == 1) {
                 String subtract = MathExtend.subtract(String.valueOf(mCommissiontjBean.getData().getTotal()), String.valueOf(mCommissiontjBean.getData().getUsed()));
-                textYongjing.setText("¥"+mCommissiontjBean.getData().getTotal());
-                textYitixian.setText("¥"+mCommissiontjBean.getData().getUsed());
-                textKetixian.setText("¥"+subtract);
+                textYongjing.setText("¥" + mCommissiontjBean.getData().getTotal());
+                textYitixian.setText("¥" + mCommissiontjBean.getData().getUsed());
+                textKetixian.setText("¥" + subtract);
             } else {
                 FToast.error(mCommissiontjBean.getInfo());
             }

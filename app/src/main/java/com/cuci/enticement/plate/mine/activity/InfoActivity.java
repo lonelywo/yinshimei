@@ -106,8 +106,7 @@ public class InfoActivity extends BaseActivity {
     @Override
     public void initViews(Bundle savedInstanceState) {
         mUserInfo= SharedPrefUtils.get(UserInfo.class);
-        String nickname = mUserInfo.getNickname();
-        tvNick.setText(nickname);
+
       /*  if("1".equals(userInfo.getSex())){
             tvSex.setText("男");
         }else if("0".equals(userInfo.getSex())){
@@ -140,7 +139,7 @@ public class InfoActivity extends BaseActivity {
       }
 
         String address=mUserInfo.getProvince()+" "+mUserInfo.getCity()+" "+mUserInfo.getArea();
-        if(!TextUtils.isEmpty(address)){
+        if(!TextUtils.isEmpty(mUserInfo.getProvince())){
             tvAddress.setText(address);
         }else {
             tvAddress.setText("点击设置地区");

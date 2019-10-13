@@ -1,19 +1,14 @@
 package com.cuci.enticement.plate.mine.fragment;
 
+import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.classic.common.MultipleStatusView;
 import com.cuci.enticement.Constant;
@@ -28,8 +23,8 @@ import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.ImageLoader;
 import com.cuci.enticement.utils.SharedPrefUtils;
+import com.cuci.enticement.utils.ViewUtils;
 import com.cuci.enticement.widget.BrandItemDecoration;
-import com.cuci.enticement.widget.CartItemDecoration;
 import com.cuci.enticement.widget.CustomRefreshHeader;
 import com.google.gson.Gson;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -41,6 +36,13 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.IOException;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import de.hdodenhof.circleimageview.CircleImageView;
 import me.drakeet.multitype.Items;
@@ -75,6 +77,10 @@ public class _PKFragment03 extends BaseFragment implements OnRefreshLoadMoreList
     ImageView imgHuangguan2;
     @BindView(R.id.img_huangguan3)
     ImageView imgHuangguan3;
+    @BindView(R.id.con_dibu)
+    ConstraintLayout conDibu;
+    @BindView(R.id.progress_bar)
+    ProgressBar progressBar;
 
     private MultiTypeAdapter mAdapter;
     private boolean mCanLoadMore = true;
@@ -85,7 +91,7 @@ public class _PKFragment03 extends BaseFragment implements OnRefreshLoadMoreList
     private Items mItems;
     private MineViewModel mViewModel;
     private UserInfo mUserInfo;
-
+    private ProgressDialog mProgressDialog;
 
     public static _PKFragment03 newInstance(String type) {
         Bundle args = new Bundle();
@@ -124,13 +130,40 @@ public class _PKFragment03 extends BaseFragment implements OnRefreshLoadMoreList
         mAdapter.setItems(mItems);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         mAdapter.register(PKbean3.DataBean.ListBean.class, new ItemPKViewBinder(this));
-        BrandItemDecoration mDecoration = new BrandItemDecoration(mActivity, 0,0);
+        BrandItemDecoration mDecoration = new BrandItemDecoration(mActivity, 0, 0);
         recyclerView.addItemDecoration(mDecoration);
         mLayoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(mAdapter);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                switch (newState) {
+                    case RecyclerView.SCROLL_STATE_IDLE:
 
+                        if (mLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
 
+                        }
+                        break;
+                    case RecyclerView.SCROLL_STATE_DRAGGING:
+
+                        break;
+                    case RecyclerView.SCROLL_STATE_SETTLING:
+
+                        break;
+                }
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+            }
+        });
+        mProgressDialog = new ProgressDialog(mActivity);
+        mProgressDialog.setMessage("正在加载...");
+        mProgressDialog.setCancelable(false);
     }
 
     private void load() {
@@ -142,13 +175,13 @@ public class _PKFragment03 extends BaseFragment implements OnRefreshLoadMoreList
 
         switch (status.status) {
             case Status.SUCCESS:
+                ViewUtils.hideView(progressBar);
                 statusView.showContent();
-
                 ResponseBody body = status.content;
                 opera1(body, status);
                 break;
             case Status.ERROR:
-
+                ViewUtils.hideView(progressBar);
                 if (status.loadType == Status.LOAD_MORE) {
                     mCanLoadMore = true;
                     refreshLayout.finishLoadMore();
@@ -187,7 +220,7 @@ public class _PKFragment03 extends BaseFragment implements OnRefreshLoadMoreList
                 imgHuangguan2.setVisibility(View.GONE);
                 imgHuangguan3.setVisibility(View.VISIBLE);
                 textNum.setBackgroundResource(R.drawable.num_3);
-            }else {
+            } else {
                 imgHuangguan1.setVisibility(View.GONE);
                 imgHuangguan2.setVisibility(View.GONE);
                 imgHuangguan3.setVisibility(View.GONE);
@@ -196,9 +229,9 @@ public class _PKFragment03 extends BaseFragment implements OnRefreshLoadMoreList
             textNum.setText("" + ranking);
             ImageLoader.loadPlaceholder1(headimg, imgTuxiang);
             textWenzi1.setText(nickname);
-            textShuliang.setText(teams+"人");
+            textShuliang.setText(teams + "人");
             //传送数据
-            Constant.PK3=teams;
+            Constant.PK3 = teams;
             EventBus.getDefault().post(new PKEvent(teams, headimg, nickname));
             List<PKbean3.DataBean.ListBean> item = mPKbean1.getData().getList();
             if (item == null || item.size() == 0) {
@@ -247,6 +280,7 @@ public class _PKFragment03 extends BaseFragment implements OnRefreshLoadMoreList
         if (mCanLoadMore) {
             mCanLoadMore = false;
             mViewModel.pk3(mUserInfo.getToken(), "" + mUserInfo.getId(), "2", "" + page, Status.LOAD_MORE).observe(this, mObserver);
+            ViewUtils.showView(progressBar);
         } else {
             refreshLayout.finishLoadMore();
         }

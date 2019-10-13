@@ -16,6 +16,7 @@ import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 
 import com.cuci.enticement.event.LoginOutEvent;
+import com.cuci.enticement.plate.common.HuanBindActivity;
 import com.cuci.enticement.plate.common.popup.TipsPopup;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.AppUtils;
@@ -73,7 +74,7 @@ public class SettingsActivity extends BaseActivity {
                 startActivity(new Intent(this,InfoActivity.class));
                 break;
             case R.id.ll_phone:
-
+                startActivity(new Intent(this, HuanBindActivity.class));
                 break;
             case R.id.ll_wechat:
 

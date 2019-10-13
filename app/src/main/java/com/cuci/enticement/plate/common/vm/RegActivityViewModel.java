@@ -162,4 +162,5 @@ public class RegActivityViewModel extends ViewModel {
                 });
         return liveData;
     }
+
 }
