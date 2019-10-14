@@ -97,6 +97,13 @@ public class YinshimeiActivity extends BaseActivity {
 
             }
         });
+
+        conZhongjian1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     /**

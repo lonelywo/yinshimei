@@ -133,6 +133,16 @@ public class MyTeamlbBean implements Serializable {
             private int teams;
             private int teams_total;
             private int daily_teams;
+
+            public int getDaily_teams_total() {
+                return daily_teams_total;
+            }
+
+            public void setDaily_teams_total(int daily_teams_total) {
+                this.daily_teams_total = daily_teams_total;
+            }
+
+            private int daily_teams_total;
             private String headimg;
             private String nickname;
             private String vip_date;

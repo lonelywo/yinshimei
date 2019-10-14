@@ -33,6 +33,7 @@ public class UserInfo implements Serializable {
     private String area="";
     private String black_state;
     private String is_binding;
+    private String is_bindingwx;
 
 
     private int bid;

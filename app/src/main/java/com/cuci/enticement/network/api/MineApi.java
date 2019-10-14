@@ -198,5 +198,16 @@ public interface MineApi {
             @Field("token") String token,
             @Field("sign") String sign
     );
+    /**
+     * 当前用户信息
+     */
+    @FormUrlEncoded
+    @POST("store/api.member.center/member")
+    Call<ResponseBody> dataUserinfo(
+            @Field("from_type") String from_type,
+            @Field("mid") String mid,
+            @Field("token") String token,
+            @Field("sign") String sign
+    );
 }
 

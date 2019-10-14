@@ -15,6 +15,7 @@ import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.Bag499Bean;
 import com.cuci.enticement.bean.Base;
+import com.cuci.enticement.bean.GuoJiaBean;
 import com.cuci.enticement.bean.ModifyInfo;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
@@ -27,6 +28,8 @@ import com.cuci.enticement.widget.ClearEditText;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
@@ -74,12 +77,16 @@ public class HuanBindActivity extends BaseActivity {
     ConstraintLayout conZhongjian;
     private Handler mTimeHandler = new Handler();
     private RegActivityViewModel mViewModel;
-    private String guojiacode;
+    private Integer guojiacode=86;
     private int mQrCodeChoice = 0;
 
-    private String[] mQrItems = new String[]{"中国", "马来西亚"};
+    //private String[] mQrItems = new String[]{"中国", "马来西亚"};
     private UserInfo mUserInfo;
-
+    private GuoJiaBean mGuoJiaBean;
+    private String[] mQrItems ;
+    private Integer[] mQrItems2 ;
+    private List<Integer> list1 = new ArrayList<Integer>();
+    private  List<String> list2 = new ArrayList<String>();
     @Override
     public int getLayoutId() {
         return R.layout.activity_bianbind;
@@ -89,6 +96,15 @@ public class HuanBindActivity extends BaseActivity {
     public void initViews(Bundle savedInstanceState) {
         mViewModel = ViewModelProviders.of(this).get(RegActivityViewModel.class);
         mUserInfo= SharedPrefUtils.get(UserInfo.class);
+        mGuoJiaBean = SharedPrefUtils.get(GuoJiaBean.class);
+        if(mGuoJiaBean.getData()!=null){
+            for (int i = 0; i < mGuoJiaBean.getData().size() ; i++) {
+                list1.add(mGuoJiaBean.getData().get(i).getCode());
+                list2.add(mGuoJiaBean.getData().get(i).getTitle());
+            }
+            mQrItems = list2.toArray(new String[list2.size()]);
+            mQrItems2 = list1.toArray(new Integer[list1.size()]);
+        }
     }
 
 
@@ -176,13 +192,8 @@ public class HuanBindActivity extends BaseActivity {
             FToast.warning("请填写手机号");
             return;
         }
-        if (guojia.equals("中国")) {
-            guojiacode = "86";
-        } else {
-            guojiacode = "60";
-        }
 
-        mViewModel.getSmsCode(phone, "cuci", guojiacode, "4").observe(this, mSmsCodeObserver);
+        mViewModel.getSmsCode(phone, "cuci", ""+guojiacode, "4").observe(this, mSmsCodeObserver);
 
     }
 
@@ -241,23 +252,14 @@ public class HuanBindActivity extends BaseActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(false);
         builder.setTitle("选择");
-        if (mQrCodeChoice == 0) {
-            mQrCodeChoice = 0;
-        } else if (mQrCodeChoice == 1) {
-            mQrCodeChoice = 1;
-        }
-        builder.setSingleChoiceItems(mQrItems, mQrCodeChoice, (dialog, which) ->
+
+        builder.setSingleChoiceItems(mQrItems, list1.size(), (dialog, which) ->
                 mQrCodeChoice = which);
 
-        builder.setPositiveButton("保存", (dialog, which) -> {
-            if (mQrCodeChoice == 0) {
-                SharedPrefUtils.saveShowquyuCode(86);
-                textGuojia.setText("中国");
-            } else if (mQrCodeChoice == 1) {
-                SharedPrefUtils.saveShowquyuCode(60);
-                textGuojia.setText("马来西亚");
-            }
-            FToast.success("保存成功");
+        builder.setPositiveButton("确定", (dialog, which) -> {
+
+            textGuojia.setText(mQrItems[mQrCodeChoice]);
+            guojiacode=mQrItems2[mQrCodeChoice];
         });
 
         builder.setNegativeButton("取消", null);

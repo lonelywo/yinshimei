@@ -16,8 +16,10 @@ import com.cuci.enticement.R;
 import com.cuci.enticement.BasicApp;
 
 import com.cuci.enticement.bean.Base;
+import com.cuci.enticement.bean.GuoJiaBean;
 import com.cuci.enticement.bean.MyTeamslBean;
 import com.cuci.enticement.bean.Status;
+import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.bean.Version;
 import com.cuci.enticement.event.LoginOutEvent;
 import com.cuci.enticement.event.LoginSucceedEvent;
@@ -26,6 +28,7 @@ import com.cuci.enticement.plate.common.adapter.MainPagerAdapter;
 import com.cuci.enticement.plate.common.popup.UpdatePopup;
 import com.cuci.enticement.plate.common.popup.UpdateProgressPopup;
 import com.cuci.enticement.plate.common.vm.MainViewModel;
+import com.cuci.enticement.plate.common.vm.RegActivityViewModel;
 import com.cuci.enticement.plate.home.fragment._HomeFragment;
 import com.cuci.enticement.plate.mall.fragment._MallFragment;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
@@ -193,6 +196,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }*/
 
+        mViewModel.getGuoJiaCode("2").observe(this, guojiamObserver);
 
 
        MainActivityPermissionsDispatcher.needsPermissionWithPermissionCheck(this);
@@ -328,6 +332,43 @@ public class MainActivity extends AppCompatActivity {
         if (item.getText() == null) return null;
         return item.getText().toString();
     }
+
+
+    private Observer<Status<ResponseBody>> guojiamObserver = status -> {
+
+        switch (status.status) {
+            case Status.SUCCESS:
+                ResponseBody body = status.content;
+                opera1( body);
+                break;
+            case Status.ERROR:
+
+                FToast.error("网络错误");
+                break;
+            case Status.LOADING:
+
+                break;
+        }
+
+
+    };
+    private void opera1(ResponseBody body) {
+        try {
+            String b = body.string();
+            GuoJiaBean mGuoJiaBean = new Gson().fromJson(b, GuoJiaBean.class);
+            if (mGuoJiaBean.getCode() == 1) {
+                SharedPrefUtils.save(mGuoJiaBean, GuoJiaBean.class);
+            } else {
+                FToast.error(mGuoJiaBean.getInfo());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            FToast.error("数据错误");
+        }
+    }
+
+
+
 
     private Observer<Status<ResponseBody>> mUpdateObserver = status -> {
 

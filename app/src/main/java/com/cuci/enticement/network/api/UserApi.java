@@ -217,7 +217,14 @@ public interface UserApi {
                                   @Field("code") String code,
                                   @Field("sign") String sign);
 
+    /**
+     * 地域编号
+     */
+    @FormUrlEncoded
+    @POST("store/api.page/getRegionCompile")
+    Call<ResponseBody> getGuoJiaCode(@Field("from_type") String fromType,
 
+                                     @Field("sign") String sign);
 
 
 

@@ -70,7 +70,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@+id/text_suosu"
-            android:text="中国"
+            android:text="中国 大陆"
             android:textSize="15sp"
             android:layout_marginLeft="24dp"
             app:layout_constraintEnd_toEndOf="@+id/img_youjiantou"

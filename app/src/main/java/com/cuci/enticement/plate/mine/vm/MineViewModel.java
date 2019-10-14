@@ -760,4 +760,40 @@ public class MineViewModel extends ViewModel {
 
     }
 
+    /**
+     * 获取当前用户信息
+     * @param from_type
+     * @param token
+     * @param mid
+     * @return
+     */
+    public MutableLiveData<Status<ResponseBody>> dataUserinfo(String from_type, String mid, String token) {
+
+        final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
+        liveData.setValue(Status.loading(null));
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("from_type",from_type);
+        params.put("token",token);
+        params.put("mid",mid);
+        String signs = SignUtils.signParam(params);
+        mCreator.create(MineApi.class)
+                .dataUserinfo(from_type,mid,token,signs)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(@NonNull Call<ResponseBody> call,
+                                           @NonNull Response<ResponseBody> response) {
+                        liveData.setValue(Status.success(response.body()));
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<ResponseBody> call,
+                                          @NonNull Throwable t) {
+                        liveData.setValue(Status.error(null, t.getMessage() == null ? "网络错误" : t.getMessage()));
+                    }
+                });
+        return liveData;
+
+    }
+
+
 }

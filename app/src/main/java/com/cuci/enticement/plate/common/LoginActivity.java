@@ -18,6 +18,7 @@ import com.cuci.enticement.Constant;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.Base;
+import com.cuci.enticement.bean.GuoJiaBean;
 import com.cuci.enticement.bean.LoginBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
@@ -42,7 +43,9 @@ import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
@@ -97,13 +100,18 @@ public class LoginActivity extends BaseActivity {
     private LocalBroadcastManager mBroadcastManager;
     private static final String TAG = LoginActivity.class.getSimpleName();
     private LoginViewModel mViewModel;
-    private String guojiacode;
+    private Integer guojiacode=86;
     private Handler mTimeHandler = new Handler();
     private boolean mShowContract = false;
     private String mUnionId = "";
     private WxInfo minfo;
     private int mQrCodeChoice=0;
-    private String[] mQrItems = new String[]{"中国", "马来西亚"};
+    //private String[] mQrItems = new String[]{"中国", "马来西亚"};
+    private GuoJiaBean mGuoJiaBean;
+    private String[] mQrItems ;
+    private Integer[] mQrItems2 ;
+    private List<Integer> list1 = new ArrayList<Integer>();
+    private  List<String> list2 = new ArrayList<String>();
     public interface OnLoginListener {
         void onLoginSucceed(UserInfo userInfo, boolean showContract);
     }
@@ -122,7 +130,15 @@ public class LoginActivity extends BaseActivity {
     @Override
     public void initViews(Bundle savedInstanceState) {
         mViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
-
+        mGuoJiaBean = SharedPrefUtils.get(GuoJiaBean.class);
+        if(mGuoJiaBean.getData()!=null){
+            for (int i = 0; i < mGuoJiaBean.getData().size() ; i++) {
+                list1.add(mGuoJiaBean.getData().get(i).getCode());
+                list2.add(mGuoJiaBean.getData().get(i).getTitle());
+            }
+            mQrItems = list2.toArray(new String[list2.size()]);
+            mQrItems2 = list1.toArray(new Integer[list1.size()]);
+        }
         mBroadcastManager = LocalBroadcastManager.getInstance(this);
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ACTION_WX_LOGIN_SUCCEED);
@@ -262,13 +278,8 @@ public class LoginActivity extends BaseActivity {
             FToast.warning("请填写手机号");
             return;
         }
-      //  int showquyuCode = SharedPrefUtils.getShowquyuCode();
-        if(guojia.equals("中国")){
-            guojiacode ="86";
-        }else {
-            guojiacode ="60";
-        }
-        mViewModel.getSmsCodelogin(phone, "cuci", guojiacode).observe(this, mSmsCodeObserver);
+
+        mViewModel.getSmsCodelogin(phone, "cuci", ""+guojiacode).observe(this, mSmsCodeObserver);
     }
 
     private Observer<Status<Base>> mSmsCodeObserver = new Observer<Status<Base>>() {
@@ -507,23 +518,14 @@ public class LoginActivity extends BaseActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(false);
         builder.setTitle("选择");
-        if (mQrCodeChoice == 0) {
-            mQrCodeChoice = 0;
-        } else if (mQrCodeChoice == 1) {
-            mQrCodeChoice = 1;
-        }
-        builder.setSingleChoiceItems(mQrItems, mQrCodeChoice, (dialog, which) ->
+
+        builder.setSingleChoiceItems(mQrItems, list1.size(), (dialog, which) ->
                 mQrCodeChoice = which);
 
-        builder.setPositiveButton("保存", (dialog, which) -> {
-            if (mQrCodeChoice == 0) {
-                SharedPrefUtils.saveShowquyuCode(86);
-                textGuojia.setText("中国");
-            } else if (mQrCodeChoice == 1) {
-                SharedPrefUtils.saveShowquyuCode(60);
-                textGuojia.setText("马来西亚");
-            }
-            FToast.success("保存成功");
+        builder.setPositiveButton("确定", (dialog, which) -> {
+
+            textGuojia.setText(mQrItems[mQrCodeChoice]);
+            guojiacode=mQrItems2[mQrCodeChoice];
         });
 
         builder.setNegativeButton("取消", null);
