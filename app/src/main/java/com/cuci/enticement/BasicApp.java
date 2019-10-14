@@ -1,14 +1,17 @@
 package com.cuci.enticement;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.StrictMode;
 import android.text.TextUtils;
+import android.widget.ImageView;
 
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.bumptech.glide.Glide;
 import com.cuci.enticement.bean.WxPayBean;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.hyphenate.chat.ChatClient;
@@ -18,9 +21,11 @@ import com.hyphenate.chat.Message;
 import com.hyphenate.helpdesk.easeui.UIProvider;
 import com.hyphenate.helpdesk.model.MessageHelper;
 import com.hyphenate.helpdesk.util.Log;
+import com.hyphenate.helpdesk.easeui.UIProvider;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+
 
 import org.json.JSONObject;
 import org.litepal.LitePal;
@@ -36,6 +41,8 @@ public class BasicApp extends Application {
     private static AppExecutors mAppExecutors;
 
     private static IWXAPI mIWXAPI;
+
+
     /**
      * kefuChat.MessageListener
      */
@@ -141,7 +148,7 @@ public class BasicApp extends Application {
     }
     /**
      * 获取EventName
-     * @param message
+     * @param
      * @return
      */
     public String getEventNameByNotification(Message message){

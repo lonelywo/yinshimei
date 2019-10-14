@@ -135,6 +135,23 @@ public class SettingsActivity extends BaseActivity {
         FToast.success("退出登录");
         SharedPrefUtils.exit();
         EventBus.getDefault().postSticky(new LoginOutEvent());
+        //第一个参数为是否解绑推送的devicetoken
+        ChatClient.getInstance().logout(true, new Callback() {
+            @Override
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onError(int code, String error) {
+
+            }
+
+            @Override
+            public void onProgress(int progress, String status) {
+
+            }
+        });
         finish();
     }
 

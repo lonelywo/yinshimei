@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="b2345738-ed0c-49dc-9cc9-5c96a481578c" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/java/com/cuci/enticement/BasicApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/../app/src/main/java/com/cuci/enticement/BasicApp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/java/com/cuci/enticement/plate/mine/activity/InfoActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../app/src/main/java/com/cuci/enticement/plate/mine/activity/InfoActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/java/com/cuci/enticement/plate/mine/activity/SettingsActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../app/src/main/java/com/cuci/enticement/plate/mine/activity/SettingsActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/java/com/cuci/enticement/plate/mine/fragment/_MineFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/../app/src/main/java/com/cuci/enticement/plate/mine/fragment/_MineFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/res/xml/file_paths.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../app/src/main/res/xml/file_paths.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jcenter.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/jcenter.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/proguard-rules.pro" beforeDir="false" afterPath="$PROJECT_DIR$/proguard-rules.pro" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/Constant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/Constant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/ImageCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/ImageCache.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/Notifier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/Notifier.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/UIProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/UIProvider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/VoiceRecorder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/VoiceRecorder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/adapter/EmojiconGridAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/adapter/EmojiconGridAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/adapter/EmojiconPagerAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/adapter/EmojiconPagerAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/adapter/MessageAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/adapter/MessageAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/domain/VideoEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/domain/VideoEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/emojicon/DefaultEmojiconDatas.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/emojicon/DefaultEmojiconDatas.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/emojicon/EmojiconGroupEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/emojicon/EmojiconGroupEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/emojicon/EmojiconIndicatorView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/emojicon/EmojiconIndicatorView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/emojicon/EmojiconMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/emojicon/EmojiconMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/emojicon/EmojiconMenuBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/emojicon/EmojiconMenuBase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/emojicon/EmojiconPagerView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/emojicon/EmojiconPagerView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/emojicon/EmojiconScrollTabBar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/emojicon/EmojiconScrollTabBar.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/photoview/Compat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/photoview/Compat.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/photoview/IPhotoView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/photoview/IPhotoView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/photoview/PhotoView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/photoview/PhotoView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/photoview/PhotoViewAttacher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/photoview/PhotoViewAttacher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/photoview/SDK16.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/photoview/SDK16.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/photoview/ScrollerProxy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/photoview/ScrollerProxy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/photoview/VersionedGestureDetector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/photoview/VersionedGestureDetector.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/provider/CustomChatRowProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/provider/CustomChatRowProvider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/recorder/AudioManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/recorder/AudioManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/recorder/DialogManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/recorder/DialogManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/recorder/MediaManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/recorder/MediaManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/runtimepermission/Permissions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/runtimepermission/Permissions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/runtimepermission/PermissionsManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/runtimepermission/PermissionsManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/runtimepermission/PermissionsResultAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/runtimepermission/PermissionsResultAction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/ui/BaseActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/ui/BaseActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/ui/BaseChatActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/ui/BaseChatActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/ui/BaseFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/ui/BaseFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/ui/ChatFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/ui/ChatFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/ui/ImageGridActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/ui/ImageGridActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/ui/ImageGridFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/ui/ImageGridFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/ui/RecorderVideoActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/ui/RecorderVideoActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/ui/ShowBigImageActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/ui/ShowBigImageActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/ui/ShowNormalFileActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/ui/ShowNormalFileActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/ui/ShowVideoActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/ui/ShowVideoActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/util/CommonUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/util/CommonUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/util/Config.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/util/Config.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/util/EaseFileProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/util/EaseFileProvider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/util/ImageCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/util/ImageCache.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/util/ImageResizer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/util/ImageResizer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/util/ImageWorker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/util/ImageWorker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/util/IntentBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/util/IntentBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/util/LoadLocalBigImgTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/util/LoadLocalBigImgTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/util/RecyclingBitmapDrawable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/util/RecyclingBitmapDrawable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/util/SmileUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/util/SmileUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/util/UserUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/util/UserUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/util/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/util/Utils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/AlertDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/AlertDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/AlertDialogFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/AlertDialogFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/BubbleImageView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/BubbleImageView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/CircularImage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/CircularImage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/EaseChatInputMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/EaseChatInputMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/EaseChatPrimaryMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/EaseChatPrimaryMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/EaseChatPrimaryMenuBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/EaseChatPrimaryMenuBase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/ExtendMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/ExtendMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/MaskedImage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/MaskedImage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/MessageList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/MessageList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/RecorderButton.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/RecorderButton.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/RecorderMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/RecorderMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/RecyclingImageView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/RecyclingImageView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/TitleBar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/TitleBar.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/ToastHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/ToastHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/chatrow/ChatRow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/chatrow/ChatRow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/chatrow/ChatRowArticle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/chatrow/ChatRowArticle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/chatrow/ChatRowBigExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/chatrow/ChatRowBigExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/chatrow/ChatRowCustomEmoji.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/chatrow/ChatRowCustomEmoji.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/chatrow/ChatRowFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/chatrow/ChatRowFile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/chatrow/ChatRowImage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/chatrow/ChatRowImage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/chatrow/ChatRowRobotMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/chatrow/ChatRowRobotMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/chatrow/ChatRowText.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/chatrow/ChatRowText.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/chatrow/ChatRowTransferGuideMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/chatrow/ChatRowTransferGuideMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/chatrow/ChatRowTransferToKefu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/chatrow/ChatRowTransferToKefu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/chatrow/ChatRowVideo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/chatrow/ChatRowVideo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/chatrow/ChatRowVoice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hyphenate/helpdesk/easeui/widget/chatrow/ChatRowVoice.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/anim/hd_fade_in.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/anim/hd_fade_in.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/anim/hd_fade_out.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/anim/hd_fade_out.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/anim/hd_head_in.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/anim/hd_head_in.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/anim/hd_head_out.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/anim/hd_head_out.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/anim/hd_hold.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/anim/hd_hold.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/anim/hd_push_bottom_in.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/anim/hd_push_bottom_in.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/anim/hd_push_bottom_out.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/anim/hd_push_bottom_out.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/anim/hd_push_top_in.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/anim/hd_push_top_in.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/anim/hd_push_top_in2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/anim/hd_push_top_in2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/anim/hd_push_top_out.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/anim/hd_push_top_out.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/anim/hd_push_top_out2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/anim/hd_push_top_out2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/anim/hd_slide_in_from_left.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/anim/hd_slide_in_from_left.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/anim/hd_slide_in_from_right.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/anim/hd_slide_in_from_right.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/anim/hd_slide_out_to_left.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/anim/hd_slide_out_to_left.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/anim/hd_slide_out_to_right.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/anim/hd_slide_out_to_right.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/color/hd_menu_msg_text_color.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/color/hd_menu_msg_text_color.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/drawable/ease_common_tab_bg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/drawable/ease_common_tab_bg.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/drawable/hd_bg_button_satisfaction.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/drawable/hd_bg_button_satisfaction.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/drawable/hd_bg_sumbit_button.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/drawable/hd_bg_sumbit_button.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/drawable/hd_btn_blue_normal_shape.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/drawable/hd_btn_blue_normal_shape.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/drawable/hd_btn_blue_pressed_shape.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/drawable/hd_btn_blue_pressed_shape.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/drawable/hd_btn_blue_selector.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/drawable/hd_btn_blue_selector.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/drawable/hd_btn_cancel_bj.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/drawable/hd_btn_cancel_bj.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/drawable/hd_btn_cancel_normal_shape.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/drawable/hd_btn_cancel_normal_shape.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/drawable/hd_btn_cancel_pressed_shape.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/drawable/hd_btn_cancel_pressed_shape.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/drawable/hd_btn_recorder_normal.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/drawable/hd_btn_recorder_normal.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/drawable/hd_btn_recorder_recording.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/drawable/hd_btn_recorder_recording.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/drawable/hd_camera_switch_selector.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/drawable/hd_camera_switch_selector.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/drawable/hd_chat_file_selector.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/drawable/hd_chat_file_selector.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/drawable/hd_chat_image_selector.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/drawable/hd_chat_image_selector.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/drawable/hd_chat_location_selector.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/drawable/hd_chat_location_selector.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/drawable/hd_chat_press_speak_btn.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/drawable/hd_chat_press_speak_btn.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/drawable/hd_chat_send_btn_selector.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/drawable/hd_chat_send_btn_selector.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/drawable/hd_chat_takepic_selector.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/drawable/hd_chat_takepic_selector.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/drawable/hd_chat_video_selector.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/drawable/hd_chat_video_selector.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/drawable/hd_chatfrom_bg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/drawable/hd_chatfrom_bg.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/drawable/hd_chatting_setmode_keyboard_btn.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/drawable/hd_chatting_setmode_keyboard_btn.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/drawable/hd_chatting_setmode_voice_btn.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/drawable/hd_chatting_setmode_voice_btn.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/drawable/hd_chatto_bg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/drawable/hd_chatto_bg.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/drawable/hd_common_tab_bg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/drawable/hd_common_tab_bg.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/drawable/hd_edit_text_bg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/drawable/hd_edit_text_bg.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/drawable/hd_msg_state_failed_resend.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/drawable/hd_msg_state_failed_resend.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/drawable/hd_photogrid_list_selector.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/drawable/hd_photogrid_list_selector.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/drawable/hd_ratingbar_drawable.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/drawable/hd_ratingbar_drawable.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/drawable/hd_recording_hint_bg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/drawable/hd_recording_hint_bg.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/drawable/hd_recording_text_hint_bg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/drawable/hd_recording_text_hint_bg.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/drawable/hd_timestampe_bg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/drawable/hd_timestampe_bg.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/drawable/hd_type_select_btn.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/drawable/hd_type_select_btn.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/drawable/hd_voice_from_icon.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/drawable/hd_voice_from_icon.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/drawable/hd_voice_to_icon.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/drawable/hd_voice_to_icon.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_activity_chat.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_activity_chat.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_activity_show_big_image.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_activity_show_big_image.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_activity_show_file.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_activity_show_file.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_alert_dialog.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_alert_dialog.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_chat_menu_item.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_chat_menu_item.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_chat_message_list.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_chat_message_list.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_choose_griditem.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_choose_griditem.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_commom_back_btn.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_commom_back_btn.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_expression_gridview.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_expression_gridview.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_fragment_alert_dialog_layout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_fragment_alert_dialog_layout.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_fragment_chat.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_fragment_chat.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_image_grid_fragment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_image_grid_fragment.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_layout_chat_primary_menu.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_layout_chat_primary_menu.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_layout_emojicon_menu.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_layout_emojicon_menu.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_recorder_activity.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_recorder_activity.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_row_article_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_row_article_main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_row_article_single_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_row_article_single_main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_row_article_sub_view.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_row_article_sub_view.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_row_big_expression.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_row_big_expression.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_row_expression.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_row_expression.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_row_received_articles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_row_received_articles.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_row_received_bigexpression.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_row_received_bigexpression.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_row_received_custom_emoji.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_row_received_custom_emoji.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_row_received_file.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_row_received_file.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_row_received_location.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_row_received_location.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_row_received_menu.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_row_received_menu.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_row_received_message.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_row_received_message.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_row_received_picture.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_row_received_picture.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_row_received_transfertokefu.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_row_received_transfertokefu.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_row_received_video.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_row_received_video.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_row_received_voice.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_row_received_voice.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_row_sent_bigexpression.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_row_sent_bigexpression.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_row_sent_custom_emoji.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_row_sent_custom_emoji.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_row_sent_file.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_row_sent_file.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_row_sent_location.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_row_sent_location.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_row_sent_message.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_row_sent_message.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_row_sent_picture.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_row_sent_picture.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_row_sent_picture_new.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_row_sent_picture_new.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_row_sent_transfertokefu.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_row_sent_transfertokefu.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_row_sent_video.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_row_sent_video.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_row_sent_voice.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_row_sent_voice.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_scroll_tab_item.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_scroll_tab_item.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_scroll_tab_text_item.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_scroll_tab_text_item.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_showvideo_activity.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_showvideo_activity.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_widget_chat_input_menu.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_widget_chat_input_menu.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_widget_chat_primary_menu.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_widget_chat_primary_menu.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_widget_emojicon.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_widget_emojicon.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_widget_emojicon_tab_bar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_widget_emojicon_tab_bar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_widget_recorder_menu.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_widget_recorder_menu.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_widget_title_bar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_widget_title_bar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/hd_widget_voice_recorder.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/hd_widget_voice_recorder.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/values-hdpi/hd_dimens.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/values-hdpi/hd_dimens.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/values-v11/hd_styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/values-v11/hd_styles.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/values-xhdpi/hd_dimens.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/values-xhdpi/hd_dimens.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/values-zh-rCN/hd_strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/values-zh-rCN/hd_strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/values/hd_attrs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/values/hd_attrs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/values/hd_biv_attrs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/values/hd_biv_attrs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/values/hd_colors.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/values/hd_colors.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/values/hd_dimens.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/values/hd_dimens.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/values/hd_strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/values/hd_strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/values/hd_styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/values/hd_styles.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/values/hd_texts.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/values/hd_texts.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/values/ids.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/values/ids.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/xml/file_ease_paths.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/xml/file_ease_paths.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../settings.gradle" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DefaultGradleProjectSettings">
+    <option name="testRunner" value="GRADLE" />
+    <option name="delegatedBuild" value="true" />
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view />
+      </state>
+    </system>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1382" />
+    <option name="height" value="754" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane" />
+      <pane id="PackagesPane" />
+      <pane id="AndroidView" />
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="android.sdk.path" value="F:/Android1603/Day01/android-sdk-windows/android-sdk-windows" />
+    <property name="last_opened_file_path" value="G:/Program Files/yinshimei" />
+    <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <envs />
+      <patterns />
+      <method />
+    </configuration>
+    <configuration name="&lt;template&gt;" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" default="true" selected="false">
+      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
+    </configuration>
+    <configuration default="true" type="Applet">
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="TestNG">
+      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b2345738-ed0c-49dc-9cc9-5c96a481578c" name="Default Changelist" comment="" />
+      <created>1571019108454</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1571019108454</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1382" height="754" extended-state="0" />
+    <layout>
+      <window_info content_ui="combo" id="Project" visible="true" weight="0.32980332" />
+      <window_info id="Structure" side_tool="true" />
+      <window_info id="Build Variants" side_tool="true" />
+      <window_info id="Image Layers" />
+      <window_info id="Designer" />
+      <window_info id="Resources Explorer" />
+      <window_info id="Capture Tool" />
+      <window_info id="Favorites" side_tool="true" />
+      <window_info id="Captures" order="0" weight="0.25" />
+      <window_info anchor="bottom" id="Version Control" />
+      <window_info anchor="bottom" id="TODO" />
+      <window_info anchor="bottom" id="Terminal" />
+      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info active="true" anchor="bottom" id="Build" visible="true" weight="0.32998326" />
+      <window_info anchor="right" id="Capture Analysis" />
+      <window_info anchor="right" id="Gradle" />
+      <window_info anchor="right" id="Theme Preview" />
+      <window_info anchor="right" id="Palette&#9;" />
+    </layout>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>

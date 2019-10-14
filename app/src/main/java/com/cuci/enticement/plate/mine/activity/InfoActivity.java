@@ -1,12 +1,17 @@
 package com.cuci.enticement.plate.mine.activity;
 
 import android.Manifest;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
+
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -15,6 +20,7 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -28,6 +34,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
+import com.bumptech.glide.Glide;
 import com.caimuhao.rxpicker.RxPicker;
 import com.caimuhao.rxpicker.bean.ImageItem;
 import com.caimuhao.rxpicker.ui.fragment.PickerFragment;
@@ -46,6 +53,7 @@ import com.cuci.enticement.plate.common.vm.CommonViewModel;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.GetJsonDataUtil;
+
 import com.cuci.enticement.utils.ImageLoader;
 import com.cuci.enticement.utils.ImageUtils;
 import com.cuci.enticement.utils.RxImageLoader;
@@ -55,10 +63,14 @@ import com.google.gson.Gson;
 import com.lxj.xpopup.XPopup;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 
+
+
 import org.json.JSONArray;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -155,6 +167,7 @@ public class InfoActivity extends BaseActivity {
 
         mViewModel = ViewModelProviders.of(this).get(CommonViewModel.class);
         RxPicker.init(new RxImageLoader());
+
         InfoActivityPermissionsDispatcher.needsPermissionWithPermissionCheck(this);
         initJsonData();
 
@@ -179,7 +192,8 @@ public class InfoActivity extends BaseActivity {
                                 case 1:
 
 
-                                    setIcon(true);
+                                    getPicFromCamera();
+
                                     break;
                                 case 2:
                                     setIcon(true);
@@ -232,7 +246,30 @@ public class InfoActivity extends BaseActivity {
                     }
 
                      mImagePath = imageItem.getPath();
-                   CodeUtils.analyzeBitmap(mImagePath, mAnalyzeCallback);
+                  // CodeUtils.analyzeBitmap(mImagePath, mAnalyzeCallback);
+
+                    runOnUiThread(new Runnable() {
+                                      @Override
+                                      public void run() {
+
+                                          Bitmap mBitmap = null;
+                                          try {
+                                              mBitmap = analyzeBitmap(mImagePath);
+                                          } catch (Exception e) {
+                                              e.printStackTrace();
+                                          }
+                                          String base64Str = ImageUtils.bitmapToBase64(mBitmap);
+
+                                          mPostType=CHANGE_HEAD_IMAG;
+                                          mViewModel.modifyInfo(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),mUserInfo.getOpenid(),
+                                                  mUserInfo.getHeadimg(),base64Str,mUserInfo.getNickname(),mUserInfo.getSex(),mUserInfo.getUnionid()
+                                                  ,mUserInfo.getProvince(),mUserInfo.getCity(),mUserInfo.getArea())
+                                                  .observe(InfoActivity.this, mObserver);
+                                      }
+                                  });
+
+
+
 
 
                 });
@@ -255,14 +292,14 @@ public class InfoActivity extends BaseActivity {
         //判断版本
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {   //如果在Android7.0以上,使用FileProvider获取Uri
             intent.setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            Uri contentUri = FileProvider.getUriForFile(this, "com.hansion.chosehead", tempFile);
+            Uri contentUri = FileProvider.getUriForFile(this, BasicApp.getContext().getPackageName() + ".fileprovider", tempFile);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, contentUri);
         } else {    //否则使用Uri.fromFile(file)方法获取Uri
             intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempFile));
         }
         startActivityForResult(intent, CAMERA_REQUEST_CODE);
-    }
 
+    }
 
 
     CodeUtils.AnalyzeCallback mAnalyzeCallback = new CodeUtils.AnalyzeCallback() {
@@ -506,32 +543,78 @@ public class InfoActivity extends BaseActivity {
             // 调用相机后返回
             case CAMERA_REQUEST_CODE:
                 if (resultCode == RESULT_OK) {
-                    //用相机返回的照片去调用剪裁也需要对Uri进行处理
+
+                   /* Bitmap image = BitmapFactory.decodeFile(tempFile.getPath());
+                    //处理图片旋转问题
+                    ExifInterface exif = null;
+
+                    try {
+                        exif = new ExifInterface(tempFile.getPath());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        return;
+                    }
+                    int orientation = exif.getAttributeInt(
+                            ExifInterface.TAG_ORIENTATION, 0);
+                    Matrix matrix = new Matrix();
+                    if (orientation == ExifInterface.ORIENTATION_ROTATE_90) {
+                        matrix.postRotate(90);
+                    } else if (orientation == ExifInterface.ORIENTATION_ROTATE_180) {
+                        matrix.postRotate(180);
+                    } else if (orientation == ExifInterface.ORIENTATION_ROTATE_270) {
+                        matrix.postRotate(270);
+                    }
+
+                    image = Bitmap.createBitmap(image, 0, 0,
+                            image.getWidth(), image.getHeight(), matrix, true);
+                    MediaStore.Images.Media.insertImage(getContentResolver(), image, "", "");*/
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            Bitmap mBitmap = null;
+                            try {
+                                mBitmap = analyzeBitmap(tempFile.getPath());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                return;
+                            }
+                            String base64Str = ImageUtils.bitmapToBase64(mBitmap);
+
+                            mPostType=CHANGE_HEAD_IMAG;
+                            mViewModel.modifyInfo(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),mUserInfo.getOpenid(),
+                                    mUserInfo.getHeadimg(),base64Str,mUserInfo.getNickname(),mUserInfo.getSex(),mUserInfo.getUnionid()
+                                    ,mUserInfo.getProvince(),mUserInfo.getCity(),mUserInfo.getArea())
+                                    .observe(InfoActivity.this, mObserver);
+                        }
+                    });
+
+                   /* //用相机返回的照片去调用剪裁也需要对Uri进行处理
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        Uri contentUri = FileProvider.getUriForFile(this, "com.hansion.chosehead", tempFile);
+                        Uri contentUri = FileProvider.getUriForFile(this, BasicApp.getContext().getPackageName() + ".fileprovider", tempFile);
                         cropPhoto(contentUri);//裁剪图片
                     } else {
                         cropPhoto(Uri.fromFile(tempFile));//裁剪图片
-                    }
+                    }*/
                 }
                 break;
 
             case CROP_REQUEST_CODE:
-                Bundle bundle = data.getExtras();
+               /* Bundle bundle = data.getExtras();
                 if (bundle != null) {
                     //在这里获得了剪裁后的Bitmap对象，可以用于上传
                     Bitmap image = bundle.getParcelable("data");
                     String base64Str = ImageUtils.bitmapToBase64(image);
-                    /*
+                    *//*
                      *上传文件的额操作
-                     */
+                     *//*
                     mPostType=CHANGE_HEAD_IMAG;
                     mViewModel.modifyInfo(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),mUserInfo.getOpenid(),
                             mUserInfo.getHeadimg(),base64Str,mUserInfo.getNickname(),mUserInfo.getSex(),mUserInfo.getUnionid()
                             ,mUserInfo.getProvince(),mUserInfo.getCity(),mUserInfo.getArea())
                             .observe(InfoActivity.this, mObserver);
 
-                }
+                }*/
                 break;
 
         }
@@ -630,5 +713,69 @@ public class InfoActivity extends BaseActivity {
 
 
 
+    /**
+     * yasuo
+     */
+    public Bitmap analyzeBitmap(String path) throws Exception{
+
+        /**
+         * 首先判断图片的大小,若图片过大,则执行图片的裁剪操作,防止OOM
+         */
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true; // 先获取原大小
+        Bitmap mBitmap = BitmapFactory.decodeFile(path, options);
+        options.inJustDecodeBounds = false; // 获取新的大小
+
+        int sampleSize = (int) (options.outHeight / (float) 400);
+
+        if (sampleSize <= 0)
+            sampleSize = 1;
+        options.inSampleSize = sampleSize;
+        mBitmap = BitmapFactory.decodeFile(path, options);
+
+        //处理图片旋转问题
+        ExifInterface exif = null;
+
+            exif = new ExifInterface(path);
+            int orientation = exif.getAttributeInt(
+                    ExifInterface.TAG_ORIENTATION, 0);
+            Matrix matrix = new Matrix();
+            if (orientation == ExifInterface.ORIENTATION_ROTATE_90) {
+                matrix.postRotate(90);
+            } else if (orientation == ExifInterface.ORIENTATION_ROTATE_180) {
+                matrix.postRotate(180);
+            } else if (orientation == ExifInterface.ORIENTATION_ROTATE_270) {
+                matrix.postRotate(270);
+            }
+
+            mBitmap = Bitmap.createBitmap(mBitmap, 0, 0,
+                    mBitmap.getWidth(), mBitmap.getHeight(), matrix, true);
+
+        return mBitmap;
+
+
+
+
+    }
+    public byte[] readStream(InputStream inStream) throws Exception {
+        byte[] buffer = new byte[1024];
+        int len = -1;
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        while ((len = inStream.read(buffer)) != -1) {
+            outStream.write(buffer, 0, len);
+        }
+        byte[] data = outStream.toByteArray();
+        outStream.close();
+        inStream.close();
+        return data;
+    }
+    public  Bitmap getPicFromBytes(byte[] bytes, BitmapFactory.Options opts) {
+        if (bytes != null)
+            if (opts != null)
+                return BitmapFactory.decodeByteArray(bytes, 0, bytes.length,opts);
+            else
+                return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        return null;
+    }
 
 }

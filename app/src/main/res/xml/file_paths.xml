@@ -14,5 +14,5 @@
     -->
 
     <external-path name="cache" path="ysm_cache/"/>
-
+    <root-path path="" name="camera_photos" />
 </paths>
