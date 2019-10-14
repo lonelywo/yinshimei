@@ -161,5 +161,42 @@ public interface MineApi {
             @Field("mid") String mid,
             @Field("sign") String sign
     );
+    /**
+     * 绑定微信
+     */
+    @FormUrlEncoded
+    @POST("store/api.member.center/wxBingingInfo")
+    Call<ResponseBody> bindwx(
+            @Field("from_type") String from_type,
+            @Field("mid") String mid,
+            @Field("token") String token,
+            @Field("unionId") String unionId,
+            @Field("openId") String openId,
+            @Field("avatarUrl") String avatarUrl,
+            @Field("nickname") String nickname,
+            @Field("sign") String sign
+    );
+    /**
+     * 解绑微信
+     */
+    @FormUrlEncoded
+    @POST("store/api.member.center/wxUntied")
+    Call<ResponseBody> jiebindwx(
+            @Field("from_type") String from_type,
+            @Field("mid") String mid,
+            @Field("token") String token,
+            @Field("sign") String sign
+    );
+    /**
+     * 关于因诗美
+     */
+    @FormUrlEncoded
+    @POST("store/api.page/about")
+    Call<ResponseBody> ysm(
+            @Field("from_type") String from_type,
+            @Field("mid") String mid,
+            @Field("token") String token,
+            @Field("sign") String sign
+    );
 }
 

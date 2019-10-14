@@ -205,7 +205,17 @@ public interface UserApi {
                                @Field("city") String city,
                                @Field("area") String area,
                                @Field("sign") String sign);
-
+    /**
+     * 换绑手机
+     */
+    @FormUrlEncoded
+    @POST("store/api.member.center/tiePhone")
+    Call<ResponseBody> huanBindPhone(@Field("from_type") String fromType,
+                                  @Field("mid") String mid,
+                                  @Field("token") String token,
+                                  @Field("phone") String phone,
+                                  @Field("code") String code,
+                                  @Field("sign") String sign);
 
 
 

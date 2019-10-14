@@ -163,4 +163,35 @@ public class RegActivityViewModel extends ViewModel {
         return liveData;
     }
 
+    public MutableLiveData<Status<ResponseBody>> huanBindPhone(String from_type, String mid, String token,String phone,String code) {
+
+        final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
+
+        liveData.setValue(Status.loading(null));
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("from_type",from_type);
+        params.put("mid",mid);
+        params.put("token",token);
+        params.put("phone",phone);
+        params.put("code",code);
+        String signs = SignUtils.signParam(params);
+
+        mCreator.create(UserApi.class)
+                .huanBindPhone(from_type, mid, token,phone,code,signs)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(@NonNull Call<ResponseBody> call,
+                                           @NonNull Response<ResponseBody> response) {
+                        liveData.setValue(Status.success(response.body()));
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<ResponseBody> call,
+                                          @NonNull Throwable t) {
+                        liveData.setValue(Status.error(null, t.getMessage() == null ? "网络错误" : t.getMessage()));
+                    }
+                });
+        return liveData;
+    }
+
 }

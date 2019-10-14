@@ -5,27 +5,30 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-
 import com.cuci.enticement.R;
 import com.lxj.xpopup.core.CenterPopupView;
 import com.tencent.smtt.sdk.WebView;
 
+import androidx.annotation.NonNull;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class TipsPopupxieyi extends CenterPopupView {
+public class TipsPopupxieyi1 extends CenterPopupView {
 
 
     @BindView(R.id.web_context)
     WebView webContext;
     @BindView(R.id.cancel)
     ImageView cancel;
-
-    public TipsPopupxieyi(@NonNull Context context, OnExitListener listener) {
+    @BindView(R.id.text_xieyi)
+    TextView textXieyi;
+    private String murl;
+    private String mtext;
+    public TipsPopupxieyi1(@NonNull Context context,String url,String text, OnExitListener listener) {
         super(context);
         mOnExitListener = listener;
-
+        murl=url;
+        mtext= text;
     }
 
     @Override
@@ -37,7 +40,9 @@ public class TipsPopupxieyi extends CenterPopupView {
     protected void onCreate() {
         super.onCreate();
         ButterKnife.bind(this);
-       webContext.loadUrl("http://www.enticementchina.com/user_agreement.html");
+        textXieyi.setText(mtext);
+        webContext.loadUrl(murl);
+
         cancel.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {

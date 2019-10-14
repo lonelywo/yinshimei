@@ -1,6 +1,8 @@
 package com.cuci.enticement.plate.common;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -11,14 +13,20 @@ import android.widget.TextView;
 
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
+import com.cuci.enticement.bean.Bag499Bean;
 import com.cuci.enticement.bean.Base;
+import com.cuci.enticement.bean.ModifyInfo;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.plate.common.vm.RegActivityViewModel;
+import com.cuci.enticement.plate.mine.activity.SettingsActivity;
 import com.cuci.enticement.utils.FLog;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.widget.ClearEditText;
+import com.google.gson.Gson;
+
+import java.io.IOException;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
@@ -27,6 +35,7 @@ import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.ResponseBody;
 
 public class HuanBindActivity extends BaseActivity {
 
@@ -69,6 +78,7 @@ public class HuanBindActivity extends BaseActivity {
     private int mQrCodeChoice = 0;
 
     private String[] mQrItems = new String[]{"中国", "马来西亚"};
+    private UserInfo mUserInfo;
 
     @Override
     public int getLayoutId() {
@@ -78,6 +88,7 @@ public class HuanBindActivity extends BaseActivity {
     @Override
     public void initViews(Bundle savedInstanceState) {
         mViewModel = ViewModelProviders.of(this).get(RegActivityViewModel.class);
+        mUserInfo= SharedPrefUtils.get(UserInfo.class);
     }
 
 
@@ -113,36 +124,49 @@ public class HuanBindActivity extends BaseActivity {
             return;
         }
 
-     //   mViewModel.register(smsCode, phone, inviteCode, "", "", "", "", "").observe(this, mObserver);
+        mViewModel.huanBindPhone("2", ""+mUserInfo.getId(), mUserInfo.getToken(), phone, smsCode).observe(this, mObserver);
 
     }
 
-    private Observer<Status<Base<UserInfo>>> mObserver = new Observer<Status<Base<UserInfo>>>() {
-        @Override
-        public void onChanged(Status<Base<UserInfo>> baseStatus) {
-            switch (baseStatus.status) {
-                case Status.LOADING:
-                    HuanBindActivity.this.showLoading();
-                    break;
-                case Status.ERROR:
-                    HuanBindActivity.this.dismissLoading();
-                    break;
-                case Status.SUCCESS:
-                    HuanBindActivity.this.dismissLoading();
-                    if (baseStatus.content == null) {
-                        FToast.error("请求错误，请稍后再试。");
-                        return;
-                    }
-                    if (baseStatus.content.code == 1) {
-                        FToast.success("注册成功，请登录");
-                        finish();
-                    } else {
-                        FToast.error(baseStatus.content.info);
-                    }
-                    break;
-            }
+    private Observer<Status<ResponseBody>> mObserver = status -> {
+
+        switch (status.status) {
+            case Status.SUCCESS:
+                dismissLoading();
+                ResponseBody body = status.content;
+                opera(body);
+                break;
+            case Status.ERROR:
+                dismissLoading();
+                FToast.error("网络错误");
+                break;
+            case Status.LOADING:
+                showLoading();
+                break;
         }
+
     };
+
+    private void opera(ResponseBody body) {
+        try {
+            String b = body.string();
+            ModifyInfo mModifyInfo = new Gson().fromJson(b, ModifyInfo.class);
+            if (mModifyInfo.getCode() == 1) {
+                UserInfo userInfo = mModifyInfo.getData();
+                SharedPrefUtils.save(userInfo,UserInfo.class);
+                Intent intent = new Intent();
+                intent.putExtra(SettingsActivity.DATA_USER_INFO, userInfo);
+                setResult(Activity.RESULT_OK, intent);
+                finish();
+            }else {
+                FToast.error(mModifyInfo.getInfo());
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            FToast.error("数据错误");
+        }
+    }
 
     private void sendSmsCode() {
 
@@ -158,7 +182,7 @@ public class HuanBindActivity extends BaseActivity {
             guojiacode = "60";
         }
 
-        mViewModel.getSmsCode(phone, "cuci", guojiacode, "1").observe(this, mSmsCodeObserver);
+        mViewModel.getSmsCode(phone, "cuci", guojiacode, "4").observe(this, mSmsCodeObserver);
 
     }
 
