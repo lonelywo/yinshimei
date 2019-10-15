@@ -245,9 +245,9 @@ public class LoginActivity extends BaseActivity {
                         FToast.success("登录成功");
                         SharedPrefUtils.save(userInfo, UserInfo.class);
                         //登录成功后发广播刷新，此次改成eventbus，原先的先不删除
-                        Intent intent = new Intent(_MineFragment.ACTION_LOGIN_SUCCEED);
+                      /*  Intent intent = new Intent(_MineFragment.ACTION_LOGIN_SUCCEED);
                         intent.putExtra(_MineFragment.DATA_USER_INFO, userInfo);
-                        LocalBroadcastManager.getInstance(LoginActivity.this).sendBroadcast(intent);
+                        LocalBroadcastManager.getInstance(LoginActivity.this).sendBroadcast(intent);*/
                         //eventbus  刷新视图  四个fragment重新载入
 
                         EventBus.getDefault().post(new LoginSucceedEvent());
@@ -467,9 +467,9 @@ public class LoginActivity extends BaseActivity {
             } else {
                 FLog.e(TAG, "用户信息保存失败");
             }
-            Intent intent = new Intent(_MineFragment.ACTION_LOGIN_SUCCEED);
+         /*   Intent intent = new Intent(_MineFragment.ACTION_LOGIN_SUCCEED);
             intent.putExtra(_MineFragment.DATA_USER_INFO, userInfo);
-            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);*/
             finish();
         }
     }

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -379,8 +380,15 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
         for (int i = 0; i < mItems.size(); i++) {
             OrderGoods item = (OrderGoods) mItems.get(i);
             if (item.isCheck()) {
-                double itemMoeny = Double.parseDouble(item.getGoods_price_selling());
-                totalF = totalF + item.getGoods_num() * itemMoeny;
+                String with499VIP = SharedPrefUtils.getWith499VIP();
+              if(TextUtils.equals(with499VIP,"1")){
+                  double itemMoeny = Double.parseDouble(item.getGoods_price_selling());
+                  totalF = totalF + item.getGoods_num() * itemMoeny;
+              }  else {
+                  double itemMoeny = Double.parseDouble(item.getGoods_price_market());
+                  totalF = totalF + item.getGoods_num() * itemMoeny;
+              }
+
             }
         }
         return totalF;

@@ -1,6 +1,7 @@
 package com.cuci.enticement.plate.cart.adapter;
 
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import com.cuci.enticement.bean.CartDataBean;
 import com.cuci.enticement.bean.OrderGoods;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.ImageLoader;
+import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.UtilsForClick;
 import com.google.gson.Gson;
 
@@ -74,7 +76,13 @@ public class ItemCartViewBinder extends ItemViewBinder<OrderGoods, ItemCartViewB
 
         holder.textBiaoti.setText(item.getGoods_title());
         holder.textNeirong.setText(item.getGoods_spec());
-        holder.textJiage.setText(String.format(Locale.CHINA,"%s",item.getGoods_price_selling()));
+        String with499VIP = SharedPrefUtils.getWith499VIP();
+        if(TextUtils.equals(with499VIP,"1")){
+            holder.textJiage.setText(String.format(Locale.CHINA,"%s",item.getGoods_price_selling()));
+        }else {
+            holder.textJiage.setText(String.format(Locale.CHINA,"%s",item.getGoods_price_market()));
+        }
+
 
         holder.tvNum.setText(String.valueOf(item.getGoods_num()));
         ImageLoader.loadPlaceholder(item.getGoods_logo(),holder.imgTuxiang);

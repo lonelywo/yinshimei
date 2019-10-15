@@ -20,9 +20,9 @@ public class ServiceCreator {
     private volatile static ServiceCreator mInstance;
 
 
-    private static final String BASE_URL = "https://test.enticementchina.com/";
-    // private static final String BASE_URL = "https://app.enticementchina.com/";
-    //private static final String BASE_URL = "http://192.168.2.152:809/";
+    //  private static final String BASE_URL = "https://test.enticementchina.com/";
+     private static final String BASE_URL = "https://app.enticementchina.com/";
+    // //private static final String BASE_URL = "http://192.168.2.152:809/";
 
     private final Retrofit mRetrofit;
 

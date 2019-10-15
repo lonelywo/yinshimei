@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -22,7 +23,6 @@ import com.cuci.enticement.plate.mine.vm.OrderViewModel;
 import com.cuci.enticement.utils.DimensionUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.ImageLoader;
-import com.cuci.enticement.utils.ImageUtils;
 import com.cuci.enticement.utils.ViewUtils;
 import com.lxj.xpopup.core.BottomPopupView;
 
@@ -62,6 +62,22 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
     TextView textFenzu2;
     @BindView(R.id.sku2_ll)
     LinearLayout sku2Ll;
+    @BindView(R.id.text_home_money_vip)
+    TextView textHomeMoneyVip;
+    @BindView(R.id.line)
+    View line;
+    @BindView(R.id.img_jia)
+    ImageView imgJia;
+    @BindView(R.id.line1)
+    View line1;
+    @BindView(R.id.line2)
+    View line2;
+    @BindView(R.id.img_jian)
+    ImageView imgJian;
+    @BindView(R.id.con_jiajian)
+    ConstraintLayout conJiajian;
+    @BindView(R.id.tv_commit)
+    Button tvCommit;
     private OrderViewModel mViewModel;
     private HomeDetailsBean.DataBean mItem;
 
@@ -69,7 +85,7 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
     private Context mContext;
     //code用来区分是购物车还是立即购买
     private int mCode;
-    private int mCount=1;//商品数量默认为1
+    private int mCount = 1;//商品数量默认为1
     @BindView(R.id.container)
     ConstraintLayout mContainer;
 
@@ -113,7 +129,7 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
             List<HomeDetailsBean.DataBean.SpecsBean.ListBean> list = specsBean.getList();
             textFenzu2.setText(specsBean.getName());
             addview(txRadioGroup, list);
-            mSpec2 =specsBean.getName() + ":" + list.get(0).getName();
+            mSpec2 = specsBean.getName() + ":" + list.get(0).getName();
             radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(RadioGroup radioGroup, int i) {
@@ -121,7 +137,7 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
                         int id = radioGroup.getChildAt(j).getId();
                         if (id == i) {
                             selectedTv.setText(list.get(j).getName());
-                            mSpec2 =specsBean.getName() + ":" + list.get(j).getName();
+                            mSpec2 = specsBean.getName() + ":" + list.get(j).getName();
                             mID = id;
                             break;
                         }
@@ -131,13 +147,15 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
         }
         HomeDetailsBean.DataBean.SpecsBean specsBean = specs.get(0);
         List<HomeDetailsBean.DataBean.SpecsBean.ListBean> list = specsBean.getList();
-        text_money.setText("¥"+mItem.getList().get(0).getPrice_selling());
-        ImageLoader.loadPlaceholder(mItem.getLogo(),imgTuxiang);
-        stockTv.setText("库存"+mItem.getNumber_stock()+"件");
+        text_money.setText("原价¥" + mItem.getInitial_price_market());
+        textHomeMoneyVip.setText("会员价¥" + mItem.getInitial_price_selling());
+
+        ImageLoader.loadPlaceholder(mItem.getLogo(), imgTuxiang);
+        stockTv.setText("库存" + mItem.getNumber_stock() + "件");
         textFenzu.setText(specsBean.getName());
 
         addview(radioGroup, list);
-        mSpec=specsBean.getName() + ":" + list.get(0).getName();
+        mSpec = specsBean.getName() + ":" + list.get(0).getName();
         selectedTv.setText(list.get(0).getName());
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -146,7 +164,7 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
                     int id = radioGroup.getChildAt(j).getId();
                     if (id == i) {
                         selectedTv.setText(list.get(j).getName());
-                        mSpec =specsBean.getName() + ":" + list.get(j).getName();
+                        mSpec = specsBean.getName() + ":" + list.get(j).getName();
                         mID = id;
                         break;
                     }
@@ -173,7 +191,7 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
             setRaidBtnAttribute(button, sku.getName(), index);
 
             radiogroup.addView(button);
-            if(i==0){
+            if (i == 0) {
 
                 button.setChecked(true);
             }
@@ -214,19 +232,19 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
 
     @OnClick(R.id.tv_commit)
     public void onViewClicked() {
-        if(mCount==0){
+        if (mCount == 0) {
             FToast.error("请先选择商品数量");
             return;
         }
         if (mOnCommitClickListener != null) {
-            String spec=null;
-            if(TextUtils.isEmpty(mSpec2)){
-                 spec=mSpec;
-            }else {
-                 spec=mSpec+";"+mSpec2;
+            String spec = null;
+            if (TextUtils.isEmpty(mSpec2)) {
+                spec = mSpec;
+            } else {
+                spec = mSpec + ";" + mSpec2;
             }
 
-            mOnCommitClickListener.onCommitClick(spec , mCount, mCode);
+            mOnCommitClickListener.onCommitClick(spec, mCount, mCode);
             dismiss();
         }
     }
@@ -241,11 +259,11 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
 
                 break;
             case R.id.img_jian:
-                if(mCount<=1){
+                if (mCount <= 1) {
                     FToast.warning("不能再少了");
                     return;
 
-                }else {
+                } else {
                     mCount--;
                     textShuzi.setText(String.valueOf(mCount));
                 }

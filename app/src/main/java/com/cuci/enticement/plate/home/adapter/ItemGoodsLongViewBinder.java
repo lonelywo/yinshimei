@@ -1,7 +1,6 @@
 package com.cuci.enticement.plate.home.adapter;
 
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -10,15 +9,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.cuci.enticement.R;
 import com.cuci.enticement.bean.GoodsItem;
 import com.cuci.enticement.plate.home.activity.ProdActivity;
 import com.cuci.enticement.utils.ImageLoader;
+import com.cuci.enticement.utils.UtilsForClick;
 
-
-import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.drakeet.multitype.ItemViewBinder;
@@ -27,9 +27,10 @@ public class ItemGoodsLongViewBinder extends ItemViewBinder<GoodsItem, ItemGoods
 
     private final Context mContext;
 
-        public ItemGoodsLongViewBinder(Context context){
-              mContext=context;
-          }
+
+    public ItemGoodsLongViewBinder(Context context) {
+        mContext = context;
+    }
 
     @NonNull
     @Override
@@ -40,15 +41,21 @@ public class ItemGoodsLongViewBinder extends ItemViewBinder<GoodsItem, ItemGoods
 
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull GoodsItem item) {
-        ImageLoader.loadPlaceholder(item.getLogo(),holder.image_home);
-        holder.text_home_goodsname.setText(item.getTitle());
-        holder.text_home_money.setText("¥" + item.getLists().get(0).get(0).getSelling());
+        ImageLoader.loadPlaceholder(item.getLogo(), holder.imageHome);
+        holder.textHomeGoodsname.setText(item.getTitle());
+        holder.textHomeMoney.setText("原价¥" + item.getInitial_price_market());
+        holder.textHomeMoneyVip.setText("会员价¥" + item.getInitial_price_selling());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intentProd = new Intent(mContext, ProdActivity.class);
-                intentProd.putExtra("bannerData",String.valueOf(item.getId()));
-                mContext.startActivity(intentProd);
+                if (UtilsForClick.isFastClick()) {
+
+                    Intent intentProd = new Intent(mContext, ProdActivity.class);
+                    intentProd.putExtra("bannerData", String.valueOf(item.getId()));
+                    mContext.startActivity(intentProd);
+
+                }
+
             }
         });
 
@@ -58,13 +65,15 @@ public class ItemGoodsLongViewBinder extends ItemViewBinder<GoodsItem, ItemGoods
 
 
         @BindView(R.id.image_home)
-        ImageView image_home;
-        @BindView(R.id.text_home_money)
-        TextView text_home_money;
+        ImageView imageHome;
         @BindView(R.id.text_home_goodsname)
-        TextView text_home_goodsname;
+        TextView textHomeGoodsname;
+        @BindView(R.id.text_home_money)
+        TextView textHomeMoney;
+        @BindView(R.id.text_home_money_vip)
+        TextView textHomeMoneyVip;
         @BindView(R.id.card_view)
-        CardView mCardView;
+        CardView cardView;
 
         ViewHolder(View itemView) {
             super(itemView);

@@ -34,13 +34,24 @@
             android:id="@+id/text_money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="3660.00"
-            android:textColor="@color/orange"
-            android:textSize="20sp"
+            android:text="原价"
+            android:textColor="@color/hei"
+            android:textSize="18sp"
             app:layout_constraintTop_toTopOf="@+id/img_tuxiang"
             app:layout_constraintLeft_toRightOf="@+id/img_tuxiang"
             android:layout_marginLeft="10dp"
             />
+        <TextView
+            android:id="@+id/text_home_money_vip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="会员价"
+        android:textColor="@color/orange"
+        android:textSize="18sp"
+        app:layout_constraintTop_toTopOf="@+id/img_tuxiang"
+        app:layout_constraintLeft_toRightOf="@+id/text_money"
+        android:layout_marginLeft="10dp"
+        />
         <TextView
             android:id="@+id/stock_tv"
             android:layout_width="wrap_content"

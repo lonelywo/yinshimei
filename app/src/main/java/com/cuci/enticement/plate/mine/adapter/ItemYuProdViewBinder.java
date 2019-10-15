@@ -1,6 +1,7 @@
 package com.cuci.enticement.plate.mine.adapter;
 
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import com.cuci.enticement.R;
 import com.cuci.enticement.bean.OrderGoods;
 import com.cuci.enticement.utils.ImageLoader;
+import com.cuci.enticement.utils.SharedPrefUtils;
 
 import java.util.Locale;
 
@@ -58,7 +60,13 @@ public class ItemYuProdViewBinder extends ItemViewBinder<OrderGoods, ItemYuProdV
         ImageLoader.loadPlaceholder(item.getGoods_logo(),holder.imgTupian);
         holder.textBiaoti.setText(item.getGoods_title());
         holder.textNeirong.setText(item.getGoods_spec());
-        holder.textQian.setText(String.format(Locale.CHINA,"%s",item.getGoods_price_selling()));
+        String with499VIP = SharedPrefUtils.getWith499VIP();
+        if(TextUtils.equals(with499VIP,"1")){
+            holder.textQian.setText(String.format(Locale.CHINA,"%s",item.getGoods_price_selling()));
+        }else {
+            holder.textQian.setText(String.format(Locale.CHINA,"%s",item.getGoods_price_market()));
+        }
+
         holder.textNum.setText(String.format(Locale.CHINA,"x%s",item.getGoods_num()));
         holder.itemView.setOnClickListener(position -> {
             if (mOnProdClickListener != null) {

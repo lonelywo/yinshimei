@@ -33,20 +33,44 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/image_home"
-        />
 
-    <TextView
-        android:id="@+id/text_home_money"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="¥3660.00"
-        app:layout_constraintTop_toBottomOf="@+id/text_home_goodsname"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="10dp"
-        android:textSize="12sp"
-        android:textColor="@color/orange"
-        android:paddingBottom="10dp"
         />
+ <androidx.constraintlayout.widget.ConstraintLayout
+     android:id="@+id/con_dibu"
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     app:layout_constraintTop_toBottomOf="@+id/text_home_goodsname"
+     app:layout_constraintStart_toStartOf="parent"
+     app:layout_constraintEnd_toEndOf="parent"
+     android:layout_marginTop="10dp"
+     >
+
+     <TextView
+         android:id="@+id/text_home_money"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="原价"
+         app:layout_constraintTop_toTopOf="parent"
+         app:layout_constraintStart_toStartOf="parent"
+         android:textSize="12sp"
+         android:textColor="@color/hei"
+         android:paddingBottom="10dp"
+         />
+     <TextView
+         android:id="@+id/text_home_money_vip"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="会员价"
+         app:layout_constraintTop_toTopOf="parent"
+         app:layout_constraintLeft_toRightOf="@+id/text_home_money"
+         android:textSize="12sp"
+         android:textColor="@color/orange"
+         android:paddingBottom="10dp"
+         android:layout_marginLeft="10dp"
+         />
+
+
+ </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

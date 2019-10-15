@@ -454,8 +454,10 @@ public class _MineFragment extends BaseFragment {
             Bag499Bean mMyTeamslBean = new Gson().fromJson(b, Bag499Bean.class);
             if (mMyTeamslBean.getCode() == 1) {
                 bag = true;
+                SharedPrefUtils.saveWith499VIP("1");
             } else {
                 bag = false;
+                SharedPrefUtils.saveWith499VIP("0");
                 // FToast.error(mMyTeamslBean.getInfo());
             }
         } catch (IOException e) {
@@ -559,7 +561,7 @@ public class _MineFragment extends BaseFragment {
                     dot1Hx.setVisibility(View.GONE);
                 } else {
                     //未登录，需要登录后，再进入会话界面
-                    FToast.error("未登录环信");
+                    FToast.error("环信登录失败");
                 }
                 break;
         }

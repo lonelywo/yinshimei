@@ -305,9 +305,9 @@ public class SharedPrefUtils {
     }
 
     /**
-     * 保存分享商品带APP下载 1开0关
+     * 499礼包判断是否会员 1是0不是
      */
-    public static void saveWithApp(String s) {
+    public static void saveWith499VIP(String s) {
         SharedPreferences sp = BasicApp.getContext().getSharedPreferences(NAME_SETTINGS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(SETTINGS_WITH_APP, s);
@@ -315,11 +315,11 @@ public class SharedPrefUtils {
     }
 
     /**
-     * 获取分享商品带APP下载 1开0关
+     * 499礼包判断是否会员 1是0不是
      */
-    public static String getWithApp() {
+    public static String getWith499VIP() {
         SharedPreferences sp = BasicApp.getContext().getSharedPreferences(NAME_SETTINGS, Context.MODE_PRIVATE);
-        return sp.getString(SETTINGS_WITH_APP, "1");
+        return sp.getString(SETTINGS_WITH_APP, "0");
     }
 
     /**

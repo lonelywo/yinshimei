@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,9 +20,10 @@ import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.AllOrderList;
+import com.cuci.enticement.bean.Bag499Bean;
+import com.cuci.enticement.bean.CartChange;
 import com.cuci.enticement.bean.CartNum;
 import com.cuci.enticement.bean.HomeDetailsBean;
-import com.cuci.enticement.bean.CartChange;
 import com.cuci.enticement.bean.OrderGoods;
 import com.cuci.enticement.bean.OrderResult;
 import com.cuci.enticement.bean.Status;
@@ -29,10 +31,10 @@ import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.plate.cart.activity.OrderActivity;
 import com.cuci.enticement.plate.cart.vm.CartViewModel;
 import com.cuci.enticement.plate.common.GlideImageLoader;
-import com.cuci.enticement.plate.common.eventbus.AddressEvent;
 import com.cuci.enticement.plate.common.eventbus.CartEvent;
 import com.cuci.enticement.plate.common.popup.ShareBottom2TopProdPopup;
 import com.cuci.enticement.plate.home.vm.HomeViewModel;
+import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.MathExtend;
@@ -57,11 +59,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.ResponseBody;
 
 import static androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance;
-
 import static com.cuci.enticement.plate.common.MainActivity.ACTION_GO_TO_CART;
 
 public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPopup.OnCommitClickListener {
@@ -108,12 +110,15 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
     TextView textXiajia;
     @BindView(R.id.con_xiajiabuju)
     ConstraintLayout conXiajiabuju;
+    @BindView(R.id.text_jiage1)
+    TextView textJiage1;
     private String url;
     private HomeDetailsBean.DataBean mProData;
     private HomeViewModel mHomeViewModel;
     private int mCode;
     private long id;
     private int status;
+    private boolean bag = false;
 
     @Override
     public int getLayoutId() {
@@ -189,14 +194,51 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
 
         //进入页面先请求小脚本数字
         CartViewModel viewModel = ViewModelProviders.of(ProdActivity.this).get(CartViewModel.class);
-       if(mUserInfo!=null){
-           viewModel.cartNum(mUserInfo.getToken(), String.valueOf(mUserInfo.getId())).observe(ProdActivity.this, mNumObserver);
-       }
+        if (mUserInfo != null) {
+            viewModel.cartNum(mUserInfo.getToken(), String.valueOf(mUserInfo.getId())).observe(ProdActivity.this, mNumObserver);
+        }
+    /*    MineViewModel mViewModel = ViewModelProviders.of(this).get(MineViewModel.class);
+        if (mUserInfo != null) {
+            mViewModel.bag499(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2").observe(this, mbagObserver);
+        }*/
 
 
     }
 
+    private Observer<Status<ResponseBody>> mbagObserver = status -> {
 
+        switch (status.status) {
+            case Status.SUCCESS:
+
+                ResponseBody body = status.content;
+                opera(body);
+                break;
+            case Status.ERROR:
+
+                FToast.error("网络错误");
+                break;
+            case Status.LOADING:
+
+                break;
+        }
+
+    };
+
+    private void opera(ResponseBody body) {
+        try {
+            String b = body.string();
+            Bag499Bean mMyTeamslBean = new Gson().fromJson(b, Bag499Bean.class);
+            if (mMyTeamslBean.getCode() == 1) {
+                bag = true;
+            } else {
+                bag = false;
+                // FToast.error(mMyTeamslBean.getInfo());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            FToast.error("数据错误");
+        }
+    }
 
     private String getHtmlData(String bodyHTML) {
         String head = "<head>" +
@@ -223,9 +265,9 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                     if (content.getCode() == 1) {
                         mProData = content.getData();
                         status = mProData.getList().get(0).getStatus();
-                        if(status==1){
+                        if (status == 1) {
                             ViewUtils.hideView(conXiajiabuju);
-                        }else {
+                        } else {
                             ViewUtils.showView(conXiajiabuju);
                         }
                         //   String s = new Gson().toJson(mProData);
@@ -234,7 +276,8 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                         banner.start();
                         String htmlContent = content.getData().getContent();
                         homeDetailGoodsname.setText(content.getData().getTitle());
-                        text_jiage.setText("¥"+content.getData().getList().get(0).getPrice_selling());
+                        text_jiage.setText("原价¥" + content.getData().getInitial_price_market());
+                        textJiage1.setText("会员价¥" + content.getData().getInitial_price_selling());
                         webDetails.loadDataWithBaseURL(null,
                                 getHtmlData(htmlContent), "text/html", "utf-8", null);
 
@@ -262,11 +305,17 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
             case R.id.text_cart:
                 if (AppUtils.isAllowPermission(ProdActivity.this)) {
                     if (status == 1) {
-                        new XPopup.Builder(ProdActivity.this)
-                                .dismissOnTouchOutside(true)
-                                .dismissOnBackPressed(true)
-                                .asCustom(new ShareBottom2TopProdPopup(ProdActivity.this, mProData, PUT_IN_CART, this))
-                                .show();
+                       /* String with499VIP = SharedPrefUtils.getWith499VIP();
+                        if (TextUtils.equals(with499VIP,"1")) {*/
+                            new XPopup.Builder(ProdActivity.this)
+                                    .dismissOnTouchOutside(true)
+                                    .dismissOnBackPressed(true)
+                                    .asCustom(new ShareBottom2TopProdPopup(ProdActivity.this, mProData, PUT_IN_CART, this))
+                                    .show();
+
+                      /*  } else {
+                            FToast.warning("请先购买新零售礼包！");
+                        }*/
 
 
                     } else {
@@ -280,11 +329,11 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
             case R.id.text_buy:
                 if (AppUtils.isAllowPermission(ProdActivity.this)) {
                     if (status == 1) {
-                        new XPopup.Builder(ProdActivity.this)
-                                .dismissOnTouchOutside(true)
-                                .dismissOnBackPressed(true)
-                                .asCustom(new ShareBottom2TopProdPopup(ProdActivity.this, mProData, QUICK_BUY, this))
-                                .show();
+                            new XPopup.Builder(ProdActivity.this)
+                                    .dismissOnTouchOutside(true)
+                                    .dismissOnBackPressed(true)
+                                    .asCustom(new ShareBottom2TopProdPopup(ProdActivity.this, mProData, QUICK_BUY, this))
+                                    .show();
 
                     } else {
                         FToast.warning("商品已经下架啦~");
@@ -386,7 +435,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                             cartIntentInfo.setOrder_no(Long.parseLong(orderResult.getData().getOrder().getOrder_no()));
                             cartIntentInfo.setList(items);
                             cartIntentInfo.setGoods_count(items.size());
-                            double goodsPrice=MathExtend.multiply(mProData.getInitial_price_selling(),String.valueOf(mNum));
+                            double goodsPrice = MathExtend.multiply(mProData.getInitial_price_selling(), String.valueOf(mNum));
                             cartIntentInfo.setPrice_goods(String.valueOf(goodsPrice));
                             Intent intent = new Intent(ProdActivity.this, OrderActivity.class);
                             intent.putExtra("intentInfo", cartIntentInfo);
@@ -445,7 +494,6 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                     }
 
 
-
                     break;
                 case Status.ERROR:
 
@@ -474,9 +522,9 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                         CartNum numResult = new Gson().fromJson(result, CartNum.class);
                         if (numResult.getCode() == 1) {
                             int c_num = numResult.getData().getC_num();
-                            if(c_num==0){
+                            if (c_num == 0) {
                                 ViewUtils.hideView(cartNumTv);
-                            }else {
+                            } else {
                                 ViewUtils.showView(cartNumTv);
                                 cartNumTv.setText(String.valueOf(numResult.getData().getC_num()));
                             }
@@ -500,4 +548,10 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
     };
 
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 }
