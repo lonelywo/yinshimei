@@ -27,6 +27,7 @@ import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseFragment;
 import com.cuci.enticement.bean.Bag499Bean;
 import com.cuci.enticement.bean.Base;
+import com.cuci.enticement.bean.DataUserInfo;
 import com.cuci.enticement.bean.HxBean;
 import com.cuci.enticement.bean.MyTeamslBean;
 import com.cuci.enticement.bean.OrderStatistics;
@@ -226,7 +227,7 @@ public class _MineFragment extends BaseFragment {
                                 "http://web.enticementchina.com/register.html?phone=" + mUserInfo.getPhone(), mActivity.getString(R.string.app_name_test),
                                 "因诗美，我的质感美学", bitmap);
                     }else {
-                        FToast.warning("请先购买礼包");
+                        FToast.warning("请先购买新零售礼包！");
                     }
 
                 }
@@ -262,7 +263,41 @@ public class _MineFragment extends BaseFragment {
 
     }
 
+    private Observer<Status<ResponseBody>> mdataObserver = status -> {
 
+        switch (status.status) {
+            case Status.SUCCESS:
+
+                ResponseBody body = status.content;
+                dataUserinfo(body);
+                break;
+            case Status.ERROR:
+
+                FToast.error("网络错误");
+                break;
+            case Status.LOADING:
+
+                break;
+        }
+
+    };
+
+    private void dataUserinfo(ResponseBody body) {
+        try {
+            String b = body.string();
+            DataUserInfo mDataUserInfo = new Gson().fromJson(b, DataUserInfo.class);
+            if (mDataUserInfo.getCode() == 1) {
+                DataUserInfo.DataBean data = mDataUserInfo.getData();
+
+            } else {
+
+                 FToast.error(mDataUserInfo.getInfo());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            FToast.error("数据错误");
+        }
+    }
     private void load() {
 
 
@@ -380,7 +415,8 @@ public class _MineFragment extends BaseFragment {
         OrderViewModel orderViewModel = ViewModelProviders.of(this).get(OrderViewModel.class);
         orderViewModel.getStatisticsOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()))
                 .observe(mActivity, mTotalOrderObserver);
-      //  mViewModel.bag499(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"2").observe(this, mbagObserver);
+        mViewModel.bag499(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"2").observe(this, mbagObserver);
+        mViewModel.dataUserinfo( "2", String.valueOf(mUserInfo.getId()),mUserInfo.getToken() ).observe(this, mdataObserver);
     }
     private Observer<Status<ResponseBody>> mbagObserver = status -> {
 

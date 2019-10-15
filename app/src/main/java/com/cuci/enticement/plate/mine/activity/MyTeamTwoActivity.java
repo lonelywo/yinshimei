@@ -306,6 +306,11 @@ public class MyTeamTwoActivity extends BaseActivity implements OnRefreshLoadMore
 
     @Override
     public void onProdClick(MyTeamlbBean.DataBean.ListBean item) {
+        if(item.getId()==2&&item.getTeams()!=0){
+            Intent intentProd = new Intent(this, MyTeamTwoActivity.class);
+            intentProd.putExtra("Data", item);
+            startActivity(intentProd);
+        }
 
     }
 

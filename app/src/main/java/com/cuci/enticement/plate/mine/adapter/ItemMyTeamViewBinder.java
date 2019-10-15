@@ -50,9 +50,13 @@ public class ItemMyTeamViewBinder extends ItemViewBinder<MyTeamlbBean.DataBean.L
         ImageLoader.loadPlaceholder1(item.getHeadimg(), holder.imgTuxiang);
         holder.textTime.setText(item.getCreate_at());
         holder.textWenzi1.setText(item.getNickname());
-        holder.textShuliang.setText(item.getTeams()+"人");
-        holder.textRzeng.setText("日新增：" + item.getDaily_teams()+"人");
-
+        if(item.getId()==2){
+            holder.textShuliang.setText(item.getTeams_total()+"人");
+            holder.textRzeng.setText("日新增：" + item.getDaily_teams_total()+"人");
+        }else {
+            holder.textShuliang.setText(item.getTeams()+"人");
+            holder.textRzeng.setText("日新增：" + item.getDaily_teams()+"人");
+        }
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

@@ -7,6 +7,7 @@ import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.Version;
 import com.cuci.enticement.network.ServiceCreator;
 import com.cuci.enticement.network.api.CommonApi;
+import com.cuci.enticement.network.api.UserApi;
 import com.cuci.enticement.utils.EncryptUtils;
 import com.cuci.enticement.utils.SignUtils;
 
@@ -58,7 +59,32 @@ public class MainViewModel extends ViewModel {
         return data;
     }
 
+    public MutableLiveData<Status<ResponseBody>> getGuoJiaCode(String from_type) {
 
+        final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
+
+        liveData.setValue(Status.loading(null));
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("from_type",from_type);
+        String signs = SignUtils.signParam(params);
+
+        mCreator.create(UserApi.class)
+                .getGuoJiaCode(from_type, signs)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(@NonNull Call<ResponseBody> call,
+                                           @NonNull Response<ResponseBody> response) {
+                        liveData.setValue(Status.success(response.body()));
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<ResponseBody> call,
+                                          @NonNull Throwable t) {
+                        liveData.setValue(Status.error(null, t.getMessage() == null ? "网络错误" : t.getMessage()));
+                    }
+                });
+        return liveData;
+    }
 
 
 }
