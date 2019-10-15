@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,7 +30,6 @@ import com.cuci.enticement.bean.Bag499Bean;
 import com.cuci.enticement.bean.Base;
 import com.cuci.enticement.bean.DataUserInfo;
 import com.cuci.enticement.bean.HxBean;
-import com.cuci.enticement.bean.MyTeamslBean;
 import com.cuci.enticement.bean.OrderStatistics;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
@@ -177,13 +177,16 @@ public class _MineFragment extends BaseFragment {
     TextView textPk;
     @BindView(R.id.text_wodeshezhi)
     TextView textWodeshezhi;
+    @BindView(R.id.img_headwear)
+    ImageView imgHeadwear;
     private boolean mCouldChange = true;
     private LocalBroadcastManager mBroadcastManager;
     private UserInfo mUserInfo;
     private MineViewModel mViewModel;
     private static final int THUMB_SIZE = 500;
     private static final int THUMB_SIZE1 = 400;
-    private boolean bag=false;
+    private boolean bag = false;
+
     @Override
     protected void onLazyLoad() {
         load();
@@ -221,12 +224,12 @@ public class _MineFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 if (AppUtils.isAllowPermission(mActivity)) {
-                    if(bag){
+                    if (bag) {
                         Bitmap bitmap = BitmapFactory.decodeResource(BasicApp.getContext().getResources(), R.drawable.tuxiang);
                         WxShareUtils.shareToWX(WxShareUtils.WX_SCENE_SESSION,
                                 "http://web.enticementchina.com/register.html?phone=" + mUserInfo.getPhone(), mActivity.getString(R.string.app_name_test),
                                 "因诗美，我的质感美学", bitmap);
-                    }else {
+                    } else {
                         FToast.warning("请先购买新零售礼包！");
                     }
 
@@ -287,17 +290,20 @@ public class _MineFragment extends BaseFragment {
             String b = body.string();
             DataUserInfo mDataUserInfo = new Gson().fromJson(b, DataUserInfo.class);
             if (mDataUserInfo.getCode() == 1) {
-                DataUserInfo.DataBean data = mDataUserInfo.getData();
+                UserInfo userInfo = mDataUserInfo.getData();
+                mUserInfo = userInfo;
+                SharedPrefUtils.save(userInfo, UserInfo.class);
 
             } else {
 
-                 FToast.error(mDataUserInfo.getInfo());
+                FToast.error(mDataUserInfo.getInfo());
             }
         } catch (IOException e) {
             e.printStackTrace();
             FToast.error("数据错误");
         }
     }
+
     private void load() {
 
 
@@ -361,6 +367,7 @@ public class _MineFragment extends BaseFragment {
             ViewUtils.hideView(dot3Tv);
             ViewUtils.hideView(dot4Tv);
             conYingchang.setVisibility(View.GONE);
+            imgHeadwear.setVisibility(View.GONE);
             return;
         }
         if (mUserInfo.getVip_level() == 0) {
@@ -374,6 +381,7 @@ public class _MineFragment extends BaseFragment {
             textHuiyuan1.setVisibility(View.GONE);
             textHuiyuan2.setVisibility(View.GONE);
             btnShengji.setVisibility(View.GONE);
+            imgHeadwear.setVisibility(View.VISIBLE);
         }
         conYingchang.setVisibility(View.VISIBLE);
         ImageLoader.loadPlaceholder1(mUserInfo.getHeadimg(), imgTuxiang);
@@ -382,27 +390,30 @@ public class _MineFragment extends BaseFragment {
         if (SharedPrefUtils.getShowhxCode() == 0) {
             mViewModel.hxreg(mUserInfo.getPhone(), "2", mUserInfo.getToken(), String.valueOf(mUserInfo.getId())).observe(this, mhxregObserver);
         } else {
-            ChatClient.getInstance().login(mUserInfo.getPhone(), "ysm6j351r6", new Callback() {
-                @Override
-                public void onSuccess() {
-                    Log.d("Success_hx", "环信登录成功");
-                }
+            if(!TextUtils.isEmpty(mUserInfo.getPhone())){
+                ChatClient.getInstance().login(mUserInfo.getPhone(), "ysm6j351r6", new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        Log.d("Success_hx", "环信登录成功");
+                    }
 
-                @Override
-                public void onError(int code, String error) {
-                    Log.d("error_hx", error);
-                }
+                    @Override
+                    public void onError(int code, String error) {
+                        Log.d("error_hx", error);
+                    }
 
-                @Override
-                public void onProgress(int progress, String status) {
+                    @Override
+                    public void onProgress(int progress, String status) {
 
-                }
-            });
+                    }
+                });
+            }
+
         }
         if (ChatClient.getInstance().isLoggedInBefore()) {
             Conversation conversation = ChatClient.getInstance().chatManager().getConversation("kefuchannelimid_269943");
             int i = conversation.unreadMessagesCount();
-            FLog.e("shuangliang",""+i);
+            FLog.e("shuangliang", "" + i);
             if (i == 0) {
                 dot1Hx.setVisibility(View.GONE);
             } else {
@@ -411,13 +422,13 @@ public class _MineFragment extends BaseFragment {
         }
 
 
-
         OrderViewModel orderViewModel = ViewModelProviders.of(this).get(OrderViewModel.class);
         orderViewModel.getStatisticsOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()))
                 .observe(mActivity, mTotalOrderObserver);
-        mViewModel.bag499(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"2").observe(this, mbagObserver);
-        mViewModel.dataUserinfo( "2", String.valueOf(mUserInfo.getId()),mUserInfo.getToken() ).observe(this, mdataObserver);
+        mViewModel.bag499(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2").observe(this, mbagObserver);
+        mViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);
     }
+
     private Observer<Status<ResponseBody>> mbagObserver = status -> {
 
         switch (status.status) {
@@ -442,10 +453,10 @@ public class _MineFragment extends BaseFragment {
             String b = body.string();
             Bag499Bean mMyTeamslBean = new Gson().fromJson(b, Bag499Bean.class);
             if (mMyTeamslBean.getCode() == 1) {
-                bag=true;
+                bag = true;
             } else {
-                bag=false;
-               // FToast.error(mMyTeamslBean.getInfo());
+                bag = false;
+                // FToast.error(mMyTeamslBean.getInfo());
             }
         } catch (IOException e) {
             e.printStackTrace();

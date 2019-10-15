@@ -69,6 +69,7 @@ public class SettingsActivity extends BaseActivity {
     private static final String TAG = SettingsActivity.class.getSimpleName();
     private LocalBroadcastManager mBroadcastManager;
 
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_settings;
@@ -79,8 +80,8 @@ public class SettingsActivity extends BaseActivity {
         mViewModel = ViewModelProviders.of(this).get(MineViewModel.class);
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
         phoneTv.setText(mUserInfo.getPhone());
-        String is_binding = mUserInfo.getIs_binding();
-        if("1".equals(is_binding)){
+        String is_bindingwx = mUserInfo.getIs_bindingwx();
+        if("1".equals(is_bindingwx)){
             //todo   这里换成微信号显示   不要用昵称
          //   bindStatusTv.setText(mUserInfo.getNickname());
             bindStatusTv.setText("已绑定");
@@ -109,7 +110,7 @@ public class SettingsActivity extends BaseActivity {
                 startActivityForResult(intent, 10010);
                 break;
             case R.id.ll_wechat:
-             if(TextUtils.equals(mUserInfo.getIs_binding(),"1")){
+             if(TextUtils.equals(mUserInfo.getIs_bindingwx(),"1")){
                  new XPopup.Builder(this)
                          .dismissOnBackPressed(false)
                          .dismissOnTouchOutside(false)
@@ -352,11 +353,10 @@ public class SettingsActivity extends BaseActivity {
             String b = body.string();
             ModifyInfo mModifyInfo = new Gson().fromJson(b, ModifyInfo.class);
             if (mModifyInfo.getCode() == 1) {
-                UserInfo userInfo = mModifyInfo.getData();
-                mUserInfo=userInfo;
-                SharedPrefUtils.save(userInfo,UserInfo.class);
                 FToast.success("绑定成功");
                 bindStatusTv.setText("已绑定");
+                mUserInfo.setIs_bindingwx("1");
+                SharedPrefUtils.save(mUserInfo,UserInfo.class);
             }else {
                 FToast.error(mModifyInfo.getInfo());
             }
@@ -385,11 +385,10 @@ public class SettingsActivity extends BaseActivity {
             String b = body.string();
             ModifyInfo mModifyInfo = new Gson().fromJson(b, ModifyInfo.class);
             if (mModifyInfo.getCode() == 1) {
-                UserInfo userInfo = mModifyInfo.getData();
-                mUserInfo=userInfo;
-                SharedPrefUtils.save(userInfo,UserInfo.class);
                 FToast.success("解绑成功");
                 bindStatusTv.setText("未绑定");
+                mUserInfo.setIs_bindingwx("0");
+                SharedPrefUtils.save(mUserInfo,UserInfo.class);
             }else {
                 FToast.error(mModifyInfo.getInfo());
             }

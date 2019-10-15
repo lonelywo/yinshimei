@@ -33,6 +33,9 @@ public class UserInfo implements Serializable {
     private String area="";
     private String black_state;
     private String is_binding;
+
+
+
     private String is_bindingwx;
 
 
@@ -60,7 +63,22 @@ public class UserInfo implements Serializable {
 
 
 
+    private String kf_status;
+    public String getKf_status() {
+        return kf_status;
+    }
 
+    public void setKf_status(String kf_status) {
+        this.kf_status = kf_status;
+    }
+
+    public String getIs_bindingwx() {
+        return is_bindingwx;
+    }
+
+    public void setIs_bindingwx(String is_bindingwx) {
+        this.is_bindingwx = is_bindingwx;
+    }
 
     public String getUnionid() {
         return unionid;

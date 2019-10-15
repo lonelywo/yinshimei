@@ -101,6 +101,7 @@
           app:layout_constraintStart_toStartOf="@+id/img_tuxiang"
           android:layout_marginTop="10dp"
           android:layout_marginLeft="8dp"
+          android:visibility="gone"
           />
      <de.hdodenhof.circleimageview.CircleImageView
          android:id="@+id/img_tuxiang"
