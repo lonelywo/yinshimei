@@ -60,7 +60,15 @@
          android:textColor="@color/hei"
          android:layout_marginTop="10dp"
          />
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/text_banbenhao"
+        android:layout_marginTop="90dp"
+
+        />
+   <!-- <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/con_zhongjian"
         android:layout_width="match_parent"
         android:layout_height="65dp"
@@ -129,7 +137,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginRight="20dp"
             />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>-->
     <TextView
         android:id="@+id/text_1"
         android:layout_width="wrap_content"

@@ -10,29 +10,38 @@ import android.widget.TextView;
 
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
-import com.cuci.enticement.bean.ModifyInfo;
+import com.cuci.enticement.bean.MyTeamlbBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.bean.YsmBean;
-import com.cuci.enticement.plate.common.popup.TipsPopupxieyi;
 import com.cuci.enticement.plate.common.popup.TipsPopupxieyi1;
+import com.cuci.enticement.plate.mine.adapter.ItemMyTeamViewBinder;
+import com.cuci.enticement.plate.mine.adapter.ItemYsmViewBinder;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.SharedPrefUtils;
+import com.cuci.enticement.widget.BrandItemDecoration;
 import com.google.gson.Gson;
 import com.lxj.xpopup.XPopup;
 
 import java.io.IOException;
+import java.util.List;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import me.drakeet.multitype.Items;
+import me.drakeet.multitype.MultiTypeAdapter;
 import okhttp3.ResponseBody;
 
-public class YinshimeiActivity extends BaseActivity {
+public class YinshimeiActivity extends BaseActivity implements ItemYsmViewBinder.OnProdClickListener {
+
     @BindView(R.id.image_top)
     TextView imageTop;
     @BindView(R.id.image_back)
@@ -43,20 +52,8 @@ public class YinshimeiActivity extends BaseActivity {
     ImageView imgLogo;
     @BindView(R.id.text_banbenhao)
     TextView textBanbenhao;
-    @BindView(R.id.text_xieyi)
-    TextView textXieyi;
-    @BindView(R.id.img_youjiantou)
-    ImageView imgYoujiantou;
-    @BindView(R.id.con_zhongjian)
-    ConstraintLayout conZhongjian;
-    @BindView(R.id.viem_line)
-    View viemLine;
-    @BindView(R.id.text_yingye)
-    TextView textYingye;
-    @BindView(R.id.img_youjiantou1)
-    ImageView imgYoujiantou1;
-    @BindView(R.id.con_zhongjian1)
-    ConstraintLayout conZhongjian1;
+    @BindView(R.id.recycler_view)
+    RecyclerView recyclerView;
     @BindView(R.id.text_1)
     TextView text1;
     @BindView(R.id.text_2)
@@ -65,6 +62,9 @@ public class YinshimeiActivity extends BaseActivity {
     private UserInfo mUserInfo;
     private String title;
     private String url;
+    private MultiTypeAdapter mAdapter;
+    private Items mItems;
+    private LinearLayoutManager mLayoutManager;
 
     @Override
     public int getLayoutId() {
@@ -76,27 +76,22 @@ public class YinshimeiActivity extends BaseActivity {
         mViewModel = ViewModelProviders.of(this).get(MineViewModel.class);
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
         String versionName = getVerName(this);
-        textBanbenhao.setText("版本号v"+versionName);
+        textBanbenhao.setText("版本号v" + versionName);
 
-        mViewModel.ysm("2", ""+mUserInfo.getId(), mUserInfo.getToken()).observe(this, mjiebindwxObserver);
-        conZhongjian.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(!TextUtils.isEmpty(url)){
+        mViewModel.ysm("2", "" + mUserInfo.getId(), mUserInfo.getToken()).observe(this, mjiebindwxObserver);
 
-                    new XPopup.Builder(YinshimeiActivity.this)
-                            .dismissOnBackPressed(false)
-                            .dismissOnTouchOutside(false)
-                            .asCustom(new TipsPopupxieyi1(YinshimeiActivity.this,
-                                    url,title,  () -> {
 
-                            }))
-                            .show();
+        mAdapter = new MultiTypeAdapter();
+        mItems = new Items();
+        mAdapter.setItems(mItems);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        mAdapter.register(YsmBean.DataBean.class, new ItemYsmViewBinder(this));
+        BrandItemDecoration mDecoration = new BrandItemDecoration(this, 0,4);
+        recyclerView.addItemDecoration(mDecoration);
+        mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setAdapter(mAdapter);
 
-                }
-
-            }
-        });
     }
 
     /**
@@ -128,6 +123,7 @@ public class YinshimeiActivity extends BaseActivity {
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
     }
+
     private Observer<Status<ResponseBody>> mjiebindwxObserver = status -> {
         switch (status.status) {
             case Status.SUCCESS:
@@ -147,10 +143,13 @@ public class YinshimeiActivity extends BaseActivity {
             String b = body.string();
             YsmBean mModifyInfo = new Gson().fromJson(b, YsmBean.class);
             if (mModifyInfo.getCode() == 1) {
-                 title = mModifyInfo.getData().get(0).getTitle();
-                url = mModifyInfo.getData().get(0).getUrl();
-
-            }else {
+            //    title = mModifyInfo.getData().get(0).getTitle();
+           //     url = mModifyInfo.getData().get(0).getUrl();
+                List<YsmBean.DataBean> data = mModifyInfo.getData();
+                mItems.clear();
+                mItems.addAll(data);
+                mAdapter.notifyDataSetChanged();
+            } else {
                 FToast.error(mModifyInfo.getInfo());
             }
         } catch (IOException e) {
@@ -160,4 +159,23 @@ public class YinshimeiActivity extends BaseActivity {
         }
     }
 
+
+
+    @Override
+    public void onProdClick(YsmBean.DataBean item) {
+        title = item.getTitle();
+        url = item.getUrl();
+        if (!TextUtils.isEmpty(url)) {
+
+            new XPopup.Builder(YinshimeiActivity.this)
+                    .dismissOnBackPressed(false)
+                    .dismissOnTouchOutside(false)
+                    .asCustom(new TipsPopupxieyi1(YinshimeiActivity.this,
+                            url, title, () -> {
+
+                    }))
+                    .show();
+
+        }
+    }
 }

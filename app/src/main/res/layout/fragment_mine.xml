@@ -92,7 +92,16 @@
          app:layout_constraintRight_toRightOf="@+id/img_shape_bai"
          app:layout_constraintTop_toTopOf="@+id/img_shape_bai"
          />
-
+      <ImageView
+          android:id="@+id/img_headwear"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:src="@drawable/headwear"
+          app:layout_constraintTop_toTopOf="@+id/img_shape_bai"
+          app:layout_constraintStart_toStartOf="@+id/img_tuxiang"
+          android:layout_marginTop="10dp"
+          android:layout_marginLeft="8dp"
+          />
      <de.hdodenhof.circleimageview.CircleImageView
          android:id="@+id/img_tuxiang"
          android:layout_width="60dp"
