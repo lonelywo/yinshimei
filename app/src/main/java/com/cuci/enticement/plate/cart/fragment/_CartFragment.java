@@ -188,7 +188,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
 
 
-   private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent != null && intent.getAction() != null) {
@@ -293,7 +293,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
                     ViewUtils.showView(bottomLyaout);
                     mPage=data.getPage().getCurrent()+1;
                     List<OrderGoods> list = data.getList();
-                   if (status.content.code == 1) {
+                    if (status.content.code == 1) {
                         mCanLoadMore = true;
                         if (status.loadType == Status.LOAD_REFRESH) {
                             mItems.clear();
@@ -337,7 +337,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
 
     private void checkAll(boolean checkAll) {
-      if(isItemCheck&&!checkAll){
+        if(isItemCheck&&!checkAll){
             isItemCheck=false;
             return;
         }
@@ -381,13 +381,13 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
             OrderGoods item = (OrderGoods) mItems.get(i);
             if (item.isCheck()) {
                 String with499VIP = SharedPrefUtils.getWith499VIP();
-              if(TextUtils.equals(with499VIP,"1")){
-                  double itemMoeny = Double.parseDouble(item.getGoods_price_selling());
-                  totalF = totalF + item.getGoods_num() * itemMoeny;
-              }  else {
-                  double itemMoeny = Double.parseDouble(item.getGoods_price_market());
-                  totalF = totalF + item.getGoods_num() * itemMoeny;
-              }
+                if(TextUtils.equals(with499VIP,"1")){
+                    double itemMoeny = Double.parseDouble(item.getGoods_price_selling());
+                    totalF = totalF + item.getGoods_num() * itemMoeny;
+                }  else {
+                    double itemMoeny = Double.parseDouble(item.getGoods_price_market());
+                    totalF = totalF + item.getGoods_num() * itemMoeny;
+                }
 
             }
         }
@@ -436,7 +436,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
             mTvTotal.setText(String.format(Locale.CHINA, "%s", getCheckedsMoeny()));
             mViewModel.cartChange(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),
                     goods_id,goods_spec,String.valueOf(bean.getGoods_num())).observe(this, mChangeObserver);
-           Log.d("east", "onAddClick: "+bean.getGoods_num());
+            Log.d("east", "onAddClick: "+bean.getGoods_num());
         }
     }
 
@@ -459,7 +459,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
             mTvTotal.setText(String.format(Locale.CHINA, "%s", getCheckedsMoeny()));
             mViewModel.cartChange(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), goods_id,
                     goods_spec, String.valueOf(bean.getGoods_num())).observe(this, mChangeObserver);
-          Log.d("east", "onMinusClick: "+bean.getGoods_num());
+            Log.d("east", "onMinusClick: "+bean.getGoods_num());
         }
 
     }
@@ -472,7 +472,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
     @Override
     public void onDelete(OrderGoods b,int position) {
         Log.d("east", "ondelete: "+new Gson().toJson(b));
-       OrderGoods bean = (OrderGoods)mItems.get(position);
+        OrderGoods bean = (OrderGoods)mItems.get(position);
         new XPopup.Builder(mActivity)
                 .dismissOnBackPressed(false)
                 .dismissOnTouchOutside(false)
@@ -519,12 +519,12 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
                         String result = content.string();
                         CartDelete cartDelete = new Gson().fromJson(result, CartDelete.class);
                         if(cartDelete.code==1){
-                           // mItems.remove(mPosition);
+                            // mItems.remove(mPosition);
                             // mRefreshLayout.autoRefresh();
                             mViewModel.getCartList(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "1", Status.LOAD_REFRESH)
                                     .observe(mActivity, mObserver);
 
-                        //    mAdapter.notifyItemRemoved(mPosition);
+                            //    mAdapter.notifyItemRemoved(mPosition);
 
                             FToast.success(cartDelete.info);
                             if(mAdapter.getItemCount()==0){
@@ -601,7 +601,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
     @OnClick(R.id.tv_commit)
     public void onViewClicked() {
         List<OrderGoods> checkeds = getCheckeds();
-      //  List<OrderGoods> items = (List<OrderGoods>) mAdapter.getItems();
+        //  List<OrderGoods> items = (List<OrderGoods>) mAdapter.getItems();
 
         if(checkeds.size()==0){
             FToast.warning("请先选择要结算的商品");
@@ -618,9 +618,9 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
             }
 
         }
-      //  String s = sb.toString();
-       mViewModel.commitOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), sb.toString(),"")
-               .observe(this, mCommitObserver);
+        //  String s = sb.toString();
+        mViewModel.commitOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), sb.toString(),"")
+                .observe(this, mCommitObserver);
 
 
     }
