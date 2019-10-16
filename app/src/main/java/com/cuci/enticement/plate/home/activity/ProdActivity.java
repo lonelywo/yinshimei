@@ -308,17 +308,17 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
             case R.id.text_cart:
                 if (AppUtils.isAllowPermission(ProdActivity.this)) {
                     if (status == 1) {
-                       /* String with499VIP = SharedPrefUtils.getWith499VIP();
-                        if (TextUtils.equals(with499VIP,"1")) {*/
+                        String with499VIP = SharedPrefUtils.getWith499VIP();
+                        if (TextUtils.equals(with499VIP,"1")) {
                             new XPopup.Builder(ProdActivity.this)
                                     .dismissOnTouchOutside(true)
                                     .dismissOnBackPressed(true)
                                     .asCustom(new ShareBottom2TopProdPopup(ProdActivity.this, mProData, PUT_IN_CART, this))
                                     .show();
 
-                      /*  } else {
+                       } else {
                             FToast.warning("请先购买新零售礼包！");
-                        }*/
+                        }
 
 
                     } else {
@@ -383,9 +383,15 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
             sb.append(mProData.getId()).append("@")
                     .append(spec).append("@")
                     .append(num);
+            String with499VIP = SharedPrefUtils.getWith499VIP();
+            if(TextUtils.equals(with499VIP,"1")){
+                String price = mProData.getInitial_price_selling();
+                mTotalMoeny = MathExtend.multiply(price, String.valueOf(num));
+            }else {
+                String price = mProData.getInitial_price_market();
+                mTotalMoeny = MathExtend.multiply(price, String.valueOf(num));
+            }
 
-            String price = mProData.getInitial_price_market();
-            mTotalMoeny = MathExtend.multiply(price, String.valueOf(num));
             String rule = sb.toString();
             mViewModel.commitOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), rule, "").observe(this, mCommitObserver);
 
@@ -429,8 +435,12 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                             orderGoods.setGoods_title(mProData.getTitle());
                             orderGoods.setGoods_num(mNum);
                             orderGoods.setGoods_spec(mSpec);
-                            orderGoods.setGoods_price_selling(mProData.getInitial_price_selling());
-
+                            String with499VIP = SharedPrefUtils.getWith499VIP();
+                            if(TextUtils.equals(with499VIP,"1")){
+                                orderGoods.setGoods_price_selling(mProData.getInitial_price_selling());
+                            }else {
+                                orderGoods.setGoods_price_selling(mProData.getInitial_price_market());
+                            }
                             items.add(orderGoods);
 
                             AllOrderList.DataBean.ListBeanX cartIntentInfo = new AllOrderList.DataBean.ListBeanX();

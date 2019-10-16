@@ -102,6 +102,9 @@ public class MainActivity extends AppCompatActivity {
     private LocalBroadcastManager mLocalBroadcastManager;
     private List<Fragment> mFragments;
     private  MainPagerAdapter mPagerAdapter;
+    private int localVersion;
+    private int serverVersion;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -409,8 +412,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         int ignoreVersion = SharedPrefUtils.getIgnoreVersion();
-        int localVersion = AppUtils.getVersionCode(this);
-        int serverVersion = version.getData().getVersionName();
+         localVersion = AppUtils.getVersionCode(this);
+         serverVersion = version.getData().getVersionName();
 
         if (serverVersion == ignoreVersion) {
             return;
@@ -439,7 +442,7 @@ public class MainActivity extends AppCompatActivity {
     @NeedsPermission({Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE})
     public void needsPermission() {
-       if (mData != null) {
+       if (mData != null&&serverVersion > localVersion) {
             new XPopup.Builder(this)
                     .dismissOnBackPressed(false)
                     .dismissOnTouchOutside(false)

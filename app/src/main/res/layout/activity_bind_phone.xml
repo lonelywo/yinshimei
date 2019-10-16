@@ -50,6 +50,51 @@
         android:layout_marginTop="24dp"
         android:background="@color/colorWhite"
         >
+        <TextView
+            android:id="@+id/text_suosu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="所属国家"
+            android:layout_marginTop="24dp"
+            android:textSize="16sp"
+            android:layout_marginLeft="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/viem_line0"
+            />
+        <TextView
+            android:id="@+id/text_guojia"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@+id/text_suosu"
+            app:layout_constraintStart_toEndOf="@+id/text_suosu"
+            android:text="中国 大陆"
+            android:textSize="16sp"
+            android:layout_marginLeft="24dp"
+            app:layout_constraintEnd_toEndOf="@+id/img_youjiantou"
+
+            />
+        <ImageView
+            android:id="@+id/img_youjiantou"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/youjiantou"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/text_guojia"
+            app:layout_constraintBottom_toBottomOf="@+id/text_guojia"
+            android:layout_marginRight="20dp"
+            />
+        <View
+            android:id="@+id/viem_line0"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@drawable/shape_login_edit_bottom_line"
+            app:layout_constraintTop_toBottomOf="@+id/text_suosu"
+            android:layout_marginTop="14dp"
+            />
+
+
+
 
         <com.cuci.enticement.widget.ClearEditText
             android:id="@+id/edt_phone"
@@ -61,11 +106,11 @@
             android:maxLength="11"
             android:singleLine="true"
             android:textColor="#C6C6C6"
-            android:textSize="15sp"
+            android:textSize="16sp"
             android:layout_marginLeft="40dp"
             android:layout_marginTop="24dp"
             android:layout_marginRight="20dp"
-            app:layout_constraintTop_toTopOf="parent"
+           app:layout_constraintTop_toBottomOf="@+id/viem_line0"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/text_shoujihao"
 
@@ -87,7 +132,7 @@
             android:layout_marginTop="24dp"
             android:textSize="16sp"
             android:layout_marginLeft="10dp"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/viem_line0"
             app:layout_constraintStart_toStartOf="parent"
             />
         <TextView
@@ -113,7 +158,7 @@
             android:inputType="number"
             android:singleLine="true"
             android:textColor="#C6C6C6"
-            android:textSize="15sp"
+            android:textSize="16sp"
             android:layout_marginLeft="40dp"
             app:layout_constraintEnd_toStartOf="@+id/tv_code"
             app:layout_constraintStart_toEndOf="@id/text_shoujihao"
@@ -166,7 +211,7 @@
             android:maxLength="11"
             android:singleLine="true"
             android:textColor="#C6C6C6"
-            android:textSize="15sp"
+            android:textSize="16sp"
             android:layout_marginLeft="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/text_shoujihao"

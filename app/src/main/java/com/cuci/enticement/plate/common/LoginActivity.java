@@ -374,7 +374,9 @@ public class LoginActivity extends BaseActivity {
             if (b.contains("errcode")) {
                 dismissLoading();
                 WxError error = new Gson().fromJson(b, WxError.class);
+              //  finish();
                 FToast.error(error.getErrMsg() + "->" + error.getErrCode());
+              //  FToast.error("请再登录");
             } else {
                 WxToken token = new Gson().fromJson(b, WxToken.class);
 

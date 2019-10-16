@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -31,6 +32,7 @@ import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.ImageLoader;
 import com.cuci.enticement.utils.SharedPrefUtils;
+import com.cuci.enticement.utils.ViewUtils;
 import com.cuci.enticement.widget.BrandItemDecoration;
 import com.cuci.enticement.widget.CartItemDecoration;
 import com.cuci.enticement.widget.CustomRefreshHeader;
@@ -78,7 +80,8 @@ public class _PKFragment01 extends BaseFragment implements OnRefreshLoadMoreList
     ImageView imgHuangguan2;
     @BindView(R.id.img_huangguan3)
     ImageView imgHuangguan3;
-
+    @BindView(R.id.progress_bar)
+    ProgressBar progressBar;
     private MultiTypeAdapter mAdapter;
     private boolean mCanLoadMore = true;
     private int page = 1;
@@ -146,12 +149,12 @@ public class _PKFragment01 extends BaseFragment implements OnRefreshLoadMoreList
         switch (status.status) {
             case Status.SUCCESS:
                 statusView.showContent();
-
+                ViewUtils.hideView(progressBar);
                 ResponseBody body = status.content;
                 opera1(body, status);
                 break;
             case Status.ERROR:
-
+                ViewUtils.hideView(progressBar);
                 if (status.loadType == Status.LOAD_MORE) {
                     mCanLoadMore = true;
                     refreshLayout.finishLoadMore();
@@ -250,6 +253,7 @@ public class _PKFragment01 extends BaseFragment implements OnRefreshLoadMoreList
         if (mCanLoadMore) {
             mCanLoadMore = false;
             mViewModel.pk1(mUserInfo.getToken(), "" + mUserInfo.getId(), "2", "" + page, Status.LOAD_MORE).observe(this, mObserver);
+            ViewUtils.showView(progressBar);
         } else {
             refreshLayout.finishLoadMore();
         }

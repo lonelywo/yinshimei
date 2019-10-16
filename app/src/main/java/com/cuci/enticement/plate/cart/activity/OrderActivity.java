@@ -766,8 +766,7 @@ public class OrderActivity extends BaseActivity {
     private  void sendReq2WX(WxPayBean wxPayBean) {
 
         //这里的appid，替换成自己的即可
-        IWXAPI api = WXAPIFactory.createWXAPI(BasicApp.getContext(), Constant.WX_APP_ID);
-        api.registerApp(Constant.WX_APP_ID);
+
 
         //这里的bean，是服务器返回的json生成的bean
         PayReq payRequest = new PayReq();
@@ -780,7 +779,7 @@ public class OrderActivity extends BaseActivity {
         payRequest.sign = wxPayBean.getPaySign();
 
         //发起请求，调起微信前去支付
-        api.sendReq(payRequest);
+        BasicApp.getIWXAPI().sendReq(payRequest);
     }
 
 
