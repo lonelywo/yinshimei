@@ -224,12 +224,14 @@ public class _MineFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 if (AppUtils.isAllowPermission(mActivity)) {
-                    if (bag) {
+
+                    if (SharedPrefUtils.getWith499VIP()=="1") {
                         Bitmap bitmap = BitmapFactory.decodeResource(BasicApp.getContext().getResources(), R.drawable.tuxiang);
                         WxShareUtils.shareToWX(WxShareUtils.WX_SCENE_SESSION,
                                 "http://web.enticementchina.com/register.html?phone=" + mUserInfo.getPhone(), mActivity.getString(R.string.app_name_test),
                                 "因诗美，我的质感美学", bitmap);
                     } else {
+                        mViewModel.bag499(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2").observe(_MineFragment.this, mbagObserver);
                         FToast.warning("请先购买新零售礼包！");
                     }
 
@@ -342,6 +344,10 @@ public class _MineFragment extends BaseFragment {
                     OrderViewModel orderViewModel = ViewModelProviders.of(_MineFragment.this).get(OrderViewModel.class);
                     orderViewModel.getStatisticsOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()))
                             .observe(mActivity, mTotalOrderObserver);
+                    //刷新是否为会员
+                    if (SharedPrefUtils.getWith499VIP()!="1") {
+                        mViewModel.bag499(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2").observe(_MineFragment.this, mbagObserver);
+                    }
                 } else if (ACTION_REFRESH_HX.equals(intent.getAction())) {
                     int data = intent.getIntExtra("data", 0);
                    /* Conversation conversation = ChatClient.getInstance().chatManager().getConversation("kefuchannelimid_269943");
@@ -425,7 +431,9 @@ public class _MineFragment extends BaseFragment {
         OrderViewModel orderViewModel = ViewModelProviders.of(this).get(OrderViewModel.class);
         orderViewModel.getStatisticsOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()))
                 .observe(mActivity, mTotalOrderObserver);
-        mViewModel.bag499(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2").observe(this, mbagObserver);
+        if (SharedPrefUtils.getWith499VIP()!="1") {
+            mViewModel.bag499(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2").observe(_MineFragment.this, mbagObserver);
+        }
         mViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);
     }
 
@@ -453,10 +461,8 @@ public class _MineFragment extends BaseFragment {
             String b = body.string();
             Bag499Bean mMyTeamslBean = new Gson().fromJson(b, Bag499Bean.class);
             if (mMyTeamslBean.getCode() == 1) {
-                bag = true;
                 SharedPrefUtils.saveWith499VIP("1");
             } else {
-                bag = false;
                 SharedPrefUtils.saveWith499VIP("0");
                 // FToast.error(mMyTeamslBean.getInfo());
             }

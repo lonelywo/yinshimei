@@ -118,7 +118,6 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
     private int mCode;
     private long id;
     private int status;
-    private boolean bag = false;
 
     @Override
     public int getLayoutId() {
@@ -197,10 +196,14 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
         if (mUserInfo != null) {
             viewModel.cartNum(mUserInfo.getToken(), String.valueOf(mUserInfo.getId())).observe(ProdActivity.this, mNumObserver);
         }
-    /*    MineViewModel mViewModel = ViewModelProviders.of(this).get(MineViewModel.class);
+        //进入页面先请求是否会员
+        MineViewModel mViewModel = ViewModelProviders.of(this).get(MineViewModel.class);
         if (mUserInfo != null) {
-            mViewModel.bag499(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2").observe(this, mbagObserver);
-        }*/
+            if(SharedPrefUtils.getWith499VIP()!="1"){
+                mViewModel.bag499(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2").observe(this, mbagObserver);
+            }
+
+        }
 
 
     }
@@ -229,9 +232,9 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
             String b = body.string();
             Bag499Bean mMyTeamslBean = new Gson().fromJson(b, Bag499Bean.class);
             if (mMyTeamslBean.getCode() == 1) {
-                bag = true;
+                SharedPrefUtils.saveWith499VIP("1");
             } else {
-                bag = false;
+                SharedPrefUtils.saveWith499VIP("0");
                 // FToast.error(mMyTeamslBean.getInfo());
             }
         } catch (IOException e) {
