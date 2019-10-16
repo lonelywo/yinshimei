@@ -420,4 +420,11 @@ public class SettingsActivity extends BaseActivity {
 
         return false;
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mBroadcastManager.unregisterReceiver(mReceiver);
+    }
+
+
 }

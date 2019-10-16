@@ -199,10 +199,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
         //进入页面先请求是否会员
         MineViewModel mViewModel = ViewModelProviders.of(this).get(MineViewModel.class);
         if (mUserInfo != null) {
-            if(SharedPrefUtils.getWith499VIP()!="1"){
                 mViewModel.bag499(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2").observe(this, mbagObserver);
-            }
-
         }
 
 
@@ -308,19 +305,11 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
             case R.id.text_cart:
                 if (AppUtils.isAllowPermission(ProdActivity.this)) {
                     if (status == 1) {
-                        String with499VIP = SharedPrefUtils.getWith499VIP();
-                        if (TextUtils.equals(with499VIP,"1")) {
                             new XPopup.Builder(ProdActivity.this)
                                     .dismissOnTouchOutside(true)
                                     .dismissOnBackPressed(true)
                                     .asCustom(new ShareBottom2TopProdPopup(ProdActivity.this, mProData, PUT_IN_CART, this))
                                     .show();
-
-                       } else {
-                            FToast.warning("请先购买新零售礼包！");
-                        }
-
-
                     } else {
                         FToast.warning("商品已经下架啦~");
 

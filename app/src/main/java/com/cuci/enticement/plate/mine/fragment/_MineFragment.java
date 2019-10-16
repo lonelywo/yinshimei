@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -73,6 +76,7 @@ import okhttp3.ResponseBody;
 
 import static androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance;
 import static com.cuci.enticement.plate.common.MainActivity.ACTION_GO_TO_HOME;
+import static com.superrtc.ContextUtils.getApplicationContext;
 
 
 /**
@@ -345,11 +349,14 @@ public class _MineFragment extends BaseFragment {
                     orderViewModel.getStatisticsOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()))
                             .observe(mActivity, mTotalOrderObserver);
                     //刷新是否为会员
-                    if (SharedPrefUtils.getWith499VIP()!="1") {
+
                         mViewModel.bag499(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2").observe(_MineFragment.this, mbagObserver);
-                    }
+
                 } else if (ACTION_REFRESH_HX.equals(intent.getAction())) {
                     int data = intent.getIntExtra("data", 0);
+                    Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                    Ringtone rt = RingtoneManager.getRingtone(getApplicationContext(), uri);
+                    rt.play();
                    /* Conversation conversation = ChatClient.getInstance().chatManager().getConversation("kefuchannelimid_269943");
                     int i = conversation.unreadMessagesCount();
                     FLog.e("shuangliang",""+i);
@@ -431,9 +438,9 @@ public class _MineFragment extends BaseFragment {
         OrderViewModel orderViewModel = ViewModelProviders.of(this).get(OrderViewModel.class);
         orderViewModel.getStatisticsOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()))
                 .observe(mActivity, mTotalOrderObserver);
-        if (SharedPrefUtils.getWith499VIP()!="1") {
+
             mViewModel.bag499(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2").observe(_MineFragment.this, mbagObserver);
-        }
+
         mViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);
     }
 
