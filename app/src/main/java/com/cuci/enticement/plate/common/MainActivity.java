@@ -424,7 +424,15 @@ public class MainActivity extends AppCompatActivity {
                     .dismissOnTouchOutside(false)
                     .dismissOnBackPressed(false)
                     .asCustom(new UpdatePopup(this, version,
-                            () -> MainActivityPermissionsDispatcher.needsPermissionWithPermissionCheck(this)))
+                            () -> {
+                                if (mData != null) {
+                                    new XPopup.Builder(this)
+                                            .dismissOnBackPressed(false)
+                                            .dismissOnTouchOutside(false)
+                                            .asCustom(new UpdateProgressPopup(this, mData))
+                                            .show();
+                                }
+                            }))
                     .show();
         }
     }
@@ -442,13 +450,7 @@ public class MainActivity extends AppCompatActivity {
     @NeedsPermission({Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE})
     public void needsPermission() {
-       if (mData != null&&serverVersion > localVersion) {
-            new XPopup.Builder(this)
-                    .dismissOnBackPressed(false)
-                    .dismissOnTouchOutside(false)
-                    .asCustom(new UpdateProgressPopup(this, mData))
-                    .show();
-        }
+
     }
 
     /**

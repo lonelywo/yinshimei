@@ -67,7 +67,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
                     //支付成功后，1刷新订单列表页和  2个人中心状态  3并关闭  订单详情或者预定单页面
 
                     //1 刷新外层
-                    EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.REFRESH_OUTSIDE));
+                    EventBus.getDefault().post(new OrderEvent(OrderEvent.REFRESH_OUTSIDE));
 
                     //2  刷新小角标状态
 
@@ -80,7 +80,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 
                     //4  关闭页面
 
-                    EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.FINISH_ACTIVITY));
+                    EventBus.getDefault().post(new OrderEvent(OrderEvent.FINISH_ACTIVITY));
 
 
 
@@ -90,7 +90,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
                 case -1://错误，可能的原因：签名错误、未注册APPID、项目设置APPID不正确、注册的APPID与设置的不匹配、其他异常等
                     FToast.error("支付失败");
                     Log.d(TAG, "onResp: resp.errCode = -1  支付失败");
-                    EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.FINISH_ACTIVITY));
+                    EventBus.getDefault().post(new OrderEvent(OrderEvent.FINISH_ACTIVITY));
 
                     break;
                 case -2://用户取消，无需处理。发生场景：用户不支付了，点击取消，返回APP。
@@ -103,7 +103,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
                     startActivity(new Intent(WXPayEntryActivity.this, MyOrderActivity.class));
 
                     //关闭预定单或订单详情页
-                    EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.FINISH_ACTIVITY));
+                    EventBus.getDefault().post(new OrderEvent(OrderEvent.FINISH_ACTIVITY));
 
 
                     break;

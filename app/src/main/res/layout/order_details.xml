@@ -19,11 +19,12 @@
     <ImageView
         android:id="@+id/image_back"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="65dp"
         android:paddingLeft="12dp"
         android:paddingTop="16dp"
         android:paddingRight="12dp"
         android:paddingBottom="16dp"
+        android:layout_marginLeft="10dp"
         android:src="@drawable/icon_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>

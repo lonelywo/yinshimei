@@ -228,16 +228,7 @@ public class _MineFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 if (AppUtils.isAllowPermission(mActivity)) {
-
-                    if (SharedPrefUtils.getWith499VIP()=="1") {
-                        Bitmap bitmap = BitmapFactory.decodeResource(BasicApp.getContext().getResources(), R.drawable.tuxiang);
-                        WxShareUtils.shareToWX(WxShareUtils.WX_SCENE_SESSION,
-                                "http://web.enticementchina.com/register.html?phone=" + mUserInfo.getPhone(), mActivity.getString(R.string.app_name_test),
-                                "因诗美，我的质感美学", bitmap);
-                    } else {
-                        mViewModel.bag499(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2").observe(_MineFragment.this, mbagObserver);
-                        FToast.warning("请先购买新零售礼包！");
-                    }
+                    mViewModel.bag499(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2").observe(_MineFragment.this, mbagObserver);
 
                 }
             }
@@ -348,10 +339,6 @@ public class _MineFragment extends BaseFragment {
                     OrderViewModel orderViewModel = ViewModelProviders.of(_MineFragment.this).get(OrderViewModel.class);
                     orderViewModel.getStatisticsOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()))
                             .observe(mActivity, mTotalOrderObserver);
-                    //刷新是否为会员
-
-                        mViewModel.bag499(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2").observe(_MineFragment.this, mbagObserver);
-
                 } else if (ACTION_REFRESH_HX.equals(intent.getAction())) {
                     int data = intent.getIntExtra("data", 0);
                     Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -439,7 +426,7 @@ public class _MineFragment extends BaseFragment {
         orderViewModel.getStatisticsOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()))
                 .observe(mActivity, mTotalOrderObserver);
 
-            mViewModel.bag499(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2").observe(_MineFragment.this, mbagObserver);
+         //   mViewModel.bag499(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2").observe(_MineFragment.this, mbagObserver);
 
         mViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);
     }
@@ -468,10 +455,13 @@ public class _MineFragment extends BaseFragment {
             String b = body.string();
             Bag499Bean mMyTeamslBean = new Gson().fromJson(b, Bag499Bean.class);
             if (mMyTeamslBean.getCode() == 1) {
-                SharedPrefUtils.saveWith499VIP("1");
+                Bitmap bitmap = BitmapFactory.decodeResource(BasicApp.getContext().getResources(), R.drawable.tuxiang);
+                WxShareUtils.shareToWX(WxShareUtils.WX_SCENE_SESSION,
+                        "http://web.enticementchina.com/register.html?phone=" + mUserInfo.getPhone(), mActivity.getString(R.string.app_name_test),
+                        "因诗美，我的质感美学", bitmap);
             } else {
-                SharedPrefUtils.saveWith499VIP("0");
-                // FToast.error(mMyTeamslBean.getInfo());
+
+                 FToast.error(mMyTeamslBean.getInfo());
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -734,7 +724,7 @@ public class _MineFragment extends BaseFragment {
         FToast.success("退出登录");
         SharedPrefUtils.exit();
         mUserInfo = null;
-        EventBus.getDefault().postSticky(new LoginOutEvent());
+        EventBus.getDefault().post(new LoginOutEvent());
         // refreshLayout();
         //第一个参数为是否解绑推送的devicetoken
         ChatClient.getInstance().logout(true, new Callback() {

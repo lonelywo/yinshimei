@@ -133,7 +133,7 @@ public class OrderDetailsActivity extends BaseActivity {
         EventBus.getDefault().unregister(this);
     }
 
-    @Subscribe(threadMode = ThreadMode.POSTING, sticky = true)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onOrderEventMessage(OrderEvent event) {
         if(event.getCode()==OrderEvent.FINISH_ACTIVITY){
             finish();
@@ -429,7 +429,7 @@ public class OrderDetailsActivity extends BaseActivity {
                         initViewStatus(HAS_FINISH);
 
                         //刷新外层
-                        EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.REFRESH_OUTSIDE));
+                        EventBus.getDefault().post(new OrderEvent(OrderEvent.REFRESH_OUTSIDE));
 
                         //刷新小角标状态
                         Intent intent = new Intent(_MineFragment.ACTION_REFRESH_STATUS);
@@ -480,7 +480,7 @@ public class OrderDetailsActivity extends BaseActivity {
                     OrderCancel orderCancel = new Gson().fromJson(result, OrderCancel.class);
                     if (orderCancel.getCode() == 1) {
                         //刷新外层
-                        EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.REFRESH_OUTSIDE));
+                        EventBus.getDefault().post(new OrderEvent(OrderEvent.REFRESH_OUTSIDE));
 
                         //刷新小角标状态
                         Intent intent = new Intent(_MineFragment.ACTION_REFRESH_STATUS);
@@ -572,8 +572,8 @@ public class OrderDetailsActivity extends BaseActivity {
         //这里的bean，是服务器返回的json生成的bean
         PayReq payRequest = new PayReq();
         payRequest.appId = wxPayBean.getAppId();
-        //  payRequest.partnerId = wxPayBean.getPartnerid();//这里参数也需要，目前没有就屏蔽了
-        //  payRequest.prepayId = wxPayBean.getPrepayid();//这里参数也需要，目前没有就屏蔽了
+        payRequest.partnerId = wxPayBean.getPartnerId();//这里参数也需要，目前没有就屏蔽了
+        payRequest.prepayId = wxPayBean.getPrepayId();//这里参数也需要，目前没有就屏蔽了
         payRequest.packageValue = "Sign=WXPay";//固定值
         payRequest.nonceStr = wxPayBean.getNonceStr();
         payRequest.timeStamp = wxPayBean.getTimestamp();
@@ -602,7 +602,7 @@ public class OrderDetailsActivity extends BaseActivity {
 
 
                         //刷新外层
-                        EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.REFRESH_OUTSIDE));
+                        EventBus.getDefault().post(new OrderEvent(OrderEvent.REFRESH_OUTSIDE));
 
                         //刷新小角标状态
                         Intent intent = new Intent(_MineFragment.ACTION_REFRESH_STATUS);

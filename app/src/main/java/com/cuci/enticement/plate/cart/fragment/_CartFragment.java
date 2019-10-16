@@ -373,22 +373,14 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
         return items;
     }
 
-
     private double getCheckedsMoeny() {
 
         double totalF = 0;
         for (int i = 0; i < mItems.size(); i++) {
             OrderGoods item = (OrderGoods) mItems.get(i);
             if (item.isCheck()) {
-                String with499VIP = SharedPrefUtils.getWith499VIP();
-                if(TextUtils.equals(with499VIP,"1")){
                     double itemMoeny = Double.parseDouble(item.getGoods_price_selling());
                     totalF = totalF + item.getGoods_num() * itemMoeny;
-                }  else {
-                    double itemMoeny = Double.parseDouble(item.getGoods_price_market());
-                    totalF = totalF + item.getGoods_num() * itemMoeny;
-                }
-
             }
         }
         return totalF;
@@ -653,7 +645,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
 
                         }else {
-                            FToast.warning(orderResult.getInfo());
+                            FToast.error(orderResult.getInfo());
                         }
 
                     } catch (IOException e) {

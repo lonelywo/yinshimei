@@ -76,14 +76,7 @@ public class ItemCartViewBinder extends ItemViewBinder<OrderGoods, ItemCartViewB
 
         holder.textBiaoti.setText(item.getGoods_title());
         holder.textNeirong.setText(item.getGoods_spec());
-        String with499VIP = SharedPrefUtils.getWith499VIP();
-        if(TextUtils.equals(with499VIP,"1")){
-            holder.textJiage.setText(String.format(Locale.CHINA,"%s",item.getGoods_price_selling()));
-        }else {
-            holder.textJiage.setText(String.format(Locale.CHINA,"%s",item.getGoods_price_market()));
-        }
-
-
+        holder.textJiage.setText(String.format(Locale.CHINA,"%s",item.getGoods_price_selling()));
         holder.tvNum.setText(String.valueOf(item.getGoods_num()));
         ImageLoader.loadPlaceholder(item.getGoods_logo(),holder.imgTuxiang);
 

@@ -132,7 +132,7 @@ public class OrderActivity extends BaseActivity {
                         FToast.success("支付成功");
                         //支付成功后，刷新个人中心状态
                         //刷新外层
-                        EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.REFRESH_OUTSIDE));
+                        EventBus.getDefault().post(new OrderEvent(OrderEvent.REFRESH_OUTSIDE));
 
                         //刷新小角标状态
                         Intent intent = new Intent(_MineFragment.ACTION_REFRESH_STATUS);

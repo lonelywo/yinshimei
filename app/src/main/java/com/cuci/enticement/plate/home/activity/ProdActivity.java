@@ -372,14 +372,8 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
             sb.append(mProData.getId()).append("@")
                     .append(spec).append("@")
                     .append(num);
-            String with499VIP = SharedPrefUtils.getWith499VIP();
-            if(TextUtils.equals(with499VIP,"1")){
-                String price = mProData.getInitial_price_selling();
-                mTotalMoeny = MathExtend.multiply(price, String.valueOf(num));
-            }else {
-                String price = mProData.getInitial_price_market();
-                mTotalMoeny = MathExtend.multiply(price, String.valueOf(num));
-            }
+            String price = mProData.getInitial_price_selling();
+            mTotalMoeny = MathExtend.multiply(price, String.valueOf(num));
 
             String rule = sb.toString();
             mViewModel.commitOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), rule, "").observe(this, mCommitObserver);
@@ -424,12 +418,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                             orderGoods.setGoods_title(mProData.getTitle());
                             orderGoods.setGoods_num(mNum);
                             orderGoods.setGoods_spec(mSpec);
-                            String with499VIP = SharedPrefUtils.getWith499VIP();
-                            if(TextUtils.equals(with499VIP,"1")){
-                                orderGoods.setGoods_price_selling(mProData.getInitial_price_selling());
-                            }else {
-                                orderGoods.setGoods_price_selling(mProData.getInitial_price_market());
-                            }
+                            orderGoods.setGoods_price_selling(mProData.getInitial_price_selling());
                             items.add(orderGoods);
 
                             AllOrderList.DataBean.ListBeanX cartIntentInfo = new AllOrderList.DataBean.ListBeanX();

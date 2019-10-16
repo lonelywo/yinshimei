@@ -162,7 +162,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                         FToast.success("支付成功");
 
                         //刷新列表
-                        EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.REFRESH_OUTSIDE));
+                        EventBus.getDefault().post(new OrderEvent(OrderEvent.REFRESH_OUTSIDE));
 
                         //刷新小角标状态
                         Intent intent = new Intent(_MineFragment.ACTION_REFRESH_STATUS);
@@ -502,7 +502,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
         startActivity(intent);
     }
 
-    @Subscribe(threadMode = ThreadMode.POSTING, sticky = true)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onOrderEventMessage(OrderEvent event) {
         if(event.getCode()==OrderEvent.CANCEL_ORDER){
             if(mtype.equals("")||mtype.equals("2")||mtype.equals("3")){
@@ -547,7 +547,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
 
 
                         //刷新外层
-                        EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.REFRESH_OUTSIDE));
+                        EventBus.getDefault().post(new OrderEvent(OrderEvent.REFRESH_OUTSIDE));
 
                         //刷新小角标状态
                         Intent intent = new Intent(_MineFragment.ACTION_REFRESH_STATUS);
@@ -604,7 +604,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
 
                            // mAdapter.notifyItemRemoved();
 
-                            EventBus.getDefault().postSticky(new OrderEvent(OrderEvent.CANCEL_ORDER));
+                            EventBus.getDefault().post(new OrderEvent(OrderEvent.CANCEL_ORDER));
 
                             /* mViewModel.getOrderList(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"1",mtype,"",Status.LOAD_REFRESH)
                                 .observe(this, mObserver);*/
