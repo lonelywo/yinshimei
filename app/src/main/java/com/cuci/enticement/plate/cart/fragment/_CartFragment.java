@@ -306,9 +306,9 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
                             int c = mItems.size();
                             mAdapter.notifyItemRangeInserted(o, c);
                             mRefreshLayout.finishLoadMore();
-
-
                         }
+                        //删除商品刷新视图和底部总价
+                        mTvTotal.setText(String.format(Locale.CHINA, "%s", getCheckedsMoeny()));
                     } else {
                         if (status.loadType == Status.LOAD_MORE) {
                             mCanLoadMore = true;
@@ -476,7 +476,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
                         Log.d("east", "onDelete: "+mPosition);
                         int cart_id = bean.getCart_id();
                         Log.d("east", "cart_id: "+cart_id);
-                        mTvTotal.setText(String.format(Locale.CHINA, "%s", getCheckedsMoeny()));
+
                         mViewModel.cartDelete(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),String.valueOf(cart_id) )
                                 .observe(mActivity, mDeleteObserver);
                     }
