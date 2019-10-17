@@ -82,7 +82,8 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 
                     EventBus.getDefault().post(new OrderEvent(OrderEvent.FINISH_ACTIVITY));
 
-
+                    //切换全部订单
+                    EventBus.getDefault().post(new OrderEvent(OrderEvent.INTENT_MY_ORDER));
 
 
                     Log.d(TAG, "onResp: resp.errCode = 0   支付成功");
@@ -105,7 +106,8 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
                     //关闭预定单或订单详情页
                     EventBus.getDefault().post(new OrderEvent(OrderEvent.FINISH_ACTIVITY));
 
-
+                    //切换全部订单
+                    EventBus.getDefault().post(new OrderEvent(OrderEvent.INTENT_MY_ORDER));
                     break;
 
             }
