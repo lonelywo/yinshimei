@@ -371,10 +371,10 @@ public class _MineFragment extends BaseFragment {
             return;
         }
         if (mUserInfo.getVip_level() == 0) {
-            textHuiyuan.setText("会员");
-            textHuiyuan1.setText("升级经销商");
+            textHuiyuan.setText("用户");
+            textHuiyuan1.setText("升级会员");
         } else if (mUserInfo.getVip_level() == 1) {
-            textHuiyuan.setText("经销商");
+            textHuiyuan.setText("会员");
             textHuiyuan1.setText("升级服务商");
         } else if (mUserInfo.getVip_level() == 2) {
             textHuiyuan.setText("服务商");
@@ -497,7 +497,7 @@ public class _MineFragment extends BaseFragment {
                                 .dismissOnBackPressed(false)
                                 .dismissOnTouchOutside(false)
                                 .asCustom(new TipsPopup(mActivity,
-                                        "购买入会礼包即可升级成为经销商", "关闭", "去购买", () -> {
+                                        "购买入会礼包即可升级成为会员", "关闭", "去购买", () -> {
                                     LocalBroadcastManager broadcastManager = getInstance(mActivity);
                                     broadcastManager.sendBroadcast(new Intent(ACTION_GO_TO_HOME));
                                 }))
@@ -507,7 +507,7 @@ public class _MineFragment extends BaseFragment {
                                 .dismissOnBackPressed(false)
                                 .dismissOnTouchOutside(false)
                                 .asCustom(new TipsPopup1(mActivity,
-                                        "团队满50人即可成为服务商", "关闭", () -> {
+                                        "团队满200人即可成为服务商", "关闭", () -> {
                                 }))
                                 .show();
                     } else if (mUserInfo.getVip_level() == 2) {
