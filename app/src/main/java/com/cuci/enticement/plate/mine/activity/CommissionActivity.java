@@ -21,6 +21,7 @@ import com.cuci.enticement.bean.CommissionjlBean;
 import com.cuci.enticement.bean.CommissiontjBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
+import com.cuci.enticement.event.PKEvent3;
 import com.cuci.enticement.plate.mine.adapter.ItemCommissionJLViewBinder;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.FToast;
@@ -49,6 +50,9 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.greenrobot.eventbus.EventBus;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -56,7 +60,7 @@ import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 import okhttp3.ResponseBody;
 
-public class CommissionActivity extends BaseActivity implements OnRefreshLoadMoreListener {
+public class CommissionActivity extends BaseActivity  {
 
     @BindView(R.id.img_back)
     ImageView imageBack;
@@ -88,8 +92,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
     ConstraintLayout conHui;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
-    @BindView(R.id.refresh_layout)
-    SmartRefreshLayout refreshLayout;
+
     @BindView(R.id.status_view)
     MultipleStatusView statusView;
     @BindView(R.id.text_biaoti)
@@ -120,7 +123,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
     private TimePickerView pvTime;
     private FrameLayout mFrameLayout;
     private String formatStart;
-
+    private boolean ishand = false;
     @Override
     public int getLayoutId() {
         return R.layout.activity_commisson;
@@ -135,8 +138,9 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
         CustomRefreshHeader header = new CustomRefreshHeader(this);
         header.setBackground(0xFFF3F4F6);
         //mRefreshLayout.setRefreshHeader(header);
+       /* refreshLayout.setEnableRefresh(false);
         refreshLayout.setEnableFooterFollowWhenNoMoreData(true);
-        refreshLayout.setOnRefreshLoadMoreListener(this);
+        refreshLayout.setOnRefreshLoadMoreListener(this);*/
         mAdapter = new MultiTypeAdapter();
         mItems = new Items();
         mAdapter.setItems(mItems);
@@ -147,7 +151,39 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
         mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(mAdapter);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                switch (newState) {
+                    case RecyclerView.SCROLL_STATE_IDLE:
+                        if (mLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                            ViewUtils.showView(conHuang);
+                        }
+                        break;
+                    case RecyclerView.SCROLL_STATE_DRAGGING:
+                        ishand=false;
+                        break;
+                    case RecyclerView.SCROLL_STATE_SETTLING:
+                        ishand=true;
+                        break;
+                }
+            }
 
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy>0) {
+                   ViewUtils.hideView(conHuang);
+                }
+               /* if (dy<0&&mLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                    EventBus.getDefault().post(new PKEvent3("1"));
+
+
+                }*/
+
+            }
+        });
         mViewModel.hqcommissiontj(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2")
                 .observe(this, mObserver);
 
@@ -162,7 +198,8 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
         String nian = format.split("-")[0];
         String yue = format.split("-")[1];
 
-        refreshLayout.autoRefresh();
+        //refreshLayout.autoRefresh();
+        load();
         if (d.equals(a)) {
             textXiageyue.setEnabled(false);
         } else {
@@ -319,7 +356,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
 
     private void load() {
         if (mUserInfo == null) {
-            refreshLayout.finishRefresh();
+         //   refreshLayout.finishRefresh();
             return;
         }
         mViewModel.hqcommissiontj(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", format, Status.LOAD_REFRESH)
@@ -340,9 +377,9 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
                 ViewUtils.hideView(progressBar);
                 if (status.loadType == Status.LOAD_MORE) {
                     mCanLoadMore = true;
-                    refreshLayout.finishLoadMore();
+                //    refreshLayout.finishLoadMore();
                 } else {
-                    refreshLayout.finishRefresh();
+               //     refreshLayout.finishRefresh();
                 }
                 //   dismissLoading();
                 FToast.error("网络错误");
@@ -363,10 +400,10 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
 
                 if (status.loadType == Status.LOAD_REFRESH) {
                     statusView.showEmpty();
-                    refreshLayout.finishRefresh();
+                //    refreshLayout.finishRefresh();
                 } else {
 
-                    refreshLayout.finishLoadMore();
+               //     refreshLayout.finishLoadMore();
                 }
                 return;
             }
@@ -376,19 +413,19 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
                     mItems.clear();
                     mItems.addAll(item);
                     mAdapter.notifyDataSetChanged();
-                    refreshLayout.finishRefresh();
+               //     refreshLayout.finishRefresh();
                 } else {
                     mItems.addAll(item);
                     mAdapter.notifyDataSetChanged();
-                    refreshLayout.finishLoadMore();
+               //     refreshLayout.finishLoadMore();
                 }
             } else {
                 if (status.loadType == Status.LOAD_MORE) {
                     mCanLoadMore = true;
-                    refreshLayout.finishLoadMore();
+               //     refreshLayout.finishLoadMore();
                 } else {
 
-                    refreshLayout.finishRefresh();
+               //     refreshLayout.finishRefresh();
                 }
                 FToast.error(mCommissionjlBean.getInfo());
             }
@@ -437,7 +474,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
     }
 
 
-    @Override
+   /* @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
 
         refreshLayout.finishLoadMore();
@@ -448,7 +485,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
         mCanLoadMore = false;
         load();
 
-    }
+    }*/
 
 
     @Override

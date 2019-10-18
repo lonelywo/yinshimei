@@ -364,15 +364,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <com.scwang.smartrefresh.layout.SmartRefreshLayout
-                    android:id="@+id/refresh_layout"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:focusableInTouchMode="true"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recycler_view"
@@ -383,16 +375,7 @@
                         android:background="@color/colorWhite"
                         />
 
-                    <com.scwang.smartrefresh.layout.footer.ClassicsFooter
-                        android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        app:srlAccentColor="#888"
-                        app:srlClassicsSpinnerStyle="Translate"
-                        app:srlDrawableProgress="@drawable/ic_index_dashboard"
-                        app:srlTextSizeTitle="12sp"
-                        />
 
-                </com.scwang.smartrefresh.layout.SmartRefreshLayout>
                 <ProgressBar
                     android:id="@+id/progress_bar"
                     android:layout_width="wrap_content"

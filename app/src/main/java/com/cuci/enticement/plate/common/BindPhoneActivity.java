@@ -218,8 +218,8 @@ public class BindPhoneActivity extends BaseActivity {
     private void sendSmsCode(String type) {
 
         String phone = edtPhone.getText().toString().trim();
-        if (TextUtils.isEmpty(phone) || !Re.is11Number(phone)) {
-            FToast.warning("请填写正确的手机号");
+        if (TextUtils.isEmpty(phone)) {
+            FToast.warning("请填写完整");
             return;
         }
 

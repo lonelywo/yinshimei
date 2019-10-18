@@ -139,7 +139,8 @@ public class _PKFragment02 extends BaseFragment implements OnRefreshLoadMoreList
                 super.onScrollStateChanged(recyclerView, newState);
                 switch (newState) {
                     case RecyclerView.SCROLL_STATE_IDLE:
-
+                        if (mLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                            EventBus.getDefault().post(new PKEvent3("1"));}
                         break;
                     case RecyclerView.SCROLL_STATE_DRAGGING:
                         ishand=true;
@@ -153,14 +154,14 @@ public class _PKFragment02 extends BaseFragment implements OnRefreshLoadMoreList
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if (dy>0&&ishand) {
+                if (dy>0) {
                     EventBus.getDefault().post(new PKEvent3("0"));
                 }
-                if (dy<0&&mLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+               /* if (dy<0&&mLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
                     EventBus.getDefault().post(new PKEvent3("1"));
 
 
-                }
+                }*/
 
             }
         });
