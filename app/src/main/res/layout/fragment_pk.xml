@@ -69,11 +69,12 @@
          >
          <TextView
              android:id="@+id/text_num"
-             android:layout_width="35dp"
-             android:layout_height="35dp"
+             android:layout_width="25dp"
+             android:layout_height="25dp"
              app:layout_constraintBottom_toTopOf="@+id/text_num1"
-             app:layout_constraintStart_toStartOf="@+id/text_num1"
-             app:layout_constraintEnd_toEndOf="@+id/text_num1"
+             app:layout_constraintLeft_toLeftOf="@+id/text_num1"
+             app:layout_constraintRight_toRightOf="@+id/text_num1"
+             app:layout_constraintTop_toTopOf="@+id/img_tuxiang"
              android:text="1"
              android:textColor="@color/hei"
              android:gravity="center"
@@ -146,11 +147,10 @@
              android:text="美美"
              app:layout_constraintRight_toLeftOf="@+id/text_shuliang"
              android:textColor="@color/hei"
-             android:textSize="20sp"
              android:layout_marginLeft="30dp"
              android:gravity="left"
-             android:ellipsize = "marquee"
-
+             android:ellipsize = "end"
+             android:singleLine="true"
              />
 
          <TextView
@@ -161,7 +161,6 @@
              app:layout_constraintBottom_toBottomOf="parent"
              app:layout_constraintRight_toRightOf="parent"
              tools:text="20000"
-             android:textSize="20sp"
              android:textColor="@color/orange"
              android:layout_marginRight="10dp"
              />

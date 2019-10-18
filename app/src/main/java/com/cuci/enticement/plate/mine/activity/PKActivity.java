@@ -3,6 +3,7 @@ package com.cuci.enticement.plate.mine.activity;
 
 import android.os.Bundle;
 
+import android.text.TextUtils;
 import android.view.View;
 
 import android.widget.ImageView;
@@ -20,12 +21,12 @@ import com.cuci.enticement.Constant;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 
-import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 
 import com.cuci.enticement.event.PKEvent;
 import com.cuci.enticement.event.PKEvent1;
 import com.cuci.enticement.event.PKEvent2;
+import com.cuci.enticement.event.PKEvent3;
 import com.cuci.enticement.plate.common.adapter.MainPagerAdapter;
 
 import com.cuci.enticement.plate.mine.fragment._PKFragment01;
@@ -35,6 +36,7 @@ import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.ImageLoader;
 import com.cuci.enticement.utils.SharedPrefUtils;
 
+import com.cuci.enticement.utils.ViewUtils;
 import com.flyco.tablayout.SlidingTabLayout;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 
@@ -195,6 +197,15 @@ public class PKActivity extends BaseActivity {
         textYongjing.setText("¥"+code);
         textName.setText(Nickname);
         textWenzi.setText("我今日的总业绩");
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPKEventMessage(PKEvent3 event) {
+        String code = event.getCode();
+        if(TextUtils.equals(code,"1")){
+            ViewUtils.showView(conHuang);
+        }else {
+            ViewUtils.hideView(conHuang);
+        }
     }
 
 }

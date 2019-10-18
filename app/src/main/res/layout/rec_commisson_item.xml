@@ -24,7 +24,7 @@
         />
      <TextView
           android:id="@+id/text_wenzi1"
-         android:layout_width="wrap_content"
+         android:layout_width="0dp"
          android:layout_height="wrap_content"
          app:layout_constraintLeft_toRightOf="@+id/img_tuxiang"
           app:layout_constraintTop_toTopOf="@+id/img_tuxiang"
@@ -34,6 +34,9 @@
          android:textSize="20sp"
          android:layout_marginBottom="25dp"
          android:layout_marginLeft="10dp"
+         app:layout_constraintRight_toLeftOf="@+id/text_money"
+         android:singleLine="true"
+         android:ellipsize = "end"
          />
     <TextView
         android:id="@+id/text_wenzi2"

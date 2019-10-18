@@ -66,7 +66,7 @@
             />
         <TextView
             android:id="@+id/text_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             tools:text="美美"
             android:textSize="20sp"
@@ -75,6 +75,9 @@
             app:layout_constraintLeft_toRightOf="@+id/civ_tuxiang"
             android:layout_marginLeft="10dp"
             android:textColor="@color/colorWhite"
+            app:layout_constraintRight_toRightOf="parent"
+            android:singleLine="true"
+            android:ellipsize = "end"
             />
         <LinearLayout
             android:id="@+id/ll_shuzi"

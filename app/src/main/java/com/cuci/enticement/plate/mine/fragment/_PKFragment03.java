@@ -18,6 +18,7 @@ import com.cuci.enticement.bean.PKbean3;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.event.PKEvent;
+import com.cuci.enticement.event.PKEvent3;
 import com.cuci.enticement.plate.mine.adapter.ItemPKViewBinder;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.FToast;
@@ -92,7 +93,7 @@ public class _PKFragment03 extends BaseFragment implements OnRefreshLoadMoreList
     private MineViewModel mViewModel;
     private UserInfo mUserInfo;
     private ProgressDialog mProgressDialog;
-
+    private boolean ishand = false;
     public static _PKFragment03 newInstance(String type) {
         Bundle args = new Bundle();
         args.putString("type", type);
@@ -104,8 +105,8 @@ public class _PKFragment03 extends BaseFragment implements OnRefreshLoadMoreList
 
     @Override
     protected void onLazyLoad() {
-        refreshLayout.autoRefresh();
-
+       // refreshLayout.autoRefresh();
+     load();
     }
 
     @Override
@@ -123,6 +124,7 @@ public class _PKFragment03 extends BaseFragment implements OnRefreshLoadMoreList
         CustomRefreshHeader header = new CustomRefreshHeader(mActivity);
         header.setBackground(0xFFF3F4F6);
         //mRefreshLayout.setRefreshHeader(header);
+        refreshLayout.setEnableRefresh(false);
         refreshLayout.setEnableFooterFollowWhenNoMoreData(true);
         refreshLayout.setOnRefreshLoadMoreListener(this);
         mAdapter = new MultiTypeAdapter();
@@ -142,15 +144,13 @@ public class _PKFragment03 extends BaseFragment implements OnRefreshLoadMoreList
                 switch (newState) {
                     case RecyclerView.SCROLL_STATE_IDLE:
 
-                        if (mLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
 
-                        }
                         break;
                     case RecyclerView.SCROLL_STATE_DRAGGING:
-
+                     ishand=false;
                         break;
                     case RecyclerView.SCROLL_STATE_SETTLING:
-
+                     ishand=true;
                         break;
                 }
             }
@@ -158,6 +158,14 @@ public class _PKFragment03 extends BaseFragment implements OnRefreshLoadMoreList
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+                if (dy>0&&ishand) {
+                    EventBus.getDefault().post(new PKEvent3("0"));
+                }
+                if (dy<0&&mLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                    EventBus.getDefault().post(new PKEvent3("1"));
+
+
+                }
 
             }
         });
@@ -169,6 +177,7 @@ public class _PKFragment03 extends BaseFragment implements OnRefreshLoadMoreList
     private void load() {
         page = 1;
         mViewModel.pk3(mUserInfo.getToken(), "" + mUserInfo.getId(), "2", "" + page, Status.LOAD_REFRESH).observe(this, mObserver);
+        ViewUtils.showView(progressBar);
     }
 
     private Observer<Status<ResponseBody>> mObserver = status -> {
@@ -225,6 +234,11 @@ public class _PKFragment03 extends BaseFragment implements OnRefreshLoadMoreList
                 imgHuangguan2.setVisibility(View.GONE);
                 imgHuangguan3.setVisibility(View.GONE);
                 textNum.setBackgroundColor(Color.WHITE);
+                ViewGroup.LayoutParams para1;
+                para1 = textNum.getLayoutParams();
+                para1.height= ViewGroup.LayoutParams.WRAP_CONTENT;
+                para1.width= ViewGroup.LayoutParams.WRAP_CONTENT;
+                textNum.setLayoutParams(para1);
             }
             textNum.setText("" + ranking);
             ImageLoader.loadPlaceholder1(headimg, imgTuxiang);
