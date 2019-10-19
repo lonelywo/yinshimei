@@ -104,13 +104,14 @@ public class RegActivityViewModel extends ViewModel {
                 });
         return liveData;
     }
-    public MutableLiveData<Status<Base<UserInfo>>> wxBindPhone(String phone, String unionId, String openId, String avatarUrl, String nickname, String from_type, String gender) {
+    public MutableLiveData<Status<Base<UserInfo>>> wxBindPhone(String phone,String code, String unionId, String openId, String avatarUrl, String nickname, String from_type, String gender) {
 
         final MutableLiveData<Status<Base<UserInfo>>> liveData = new MutableLiveData<>();
 
         liveData.setValue(Status.loading(null));
         Map<String, String> params = new HashMap<String, String>();
         params.put("phone",phone);
+        params.put("code",code);
         params.put("unionId",unionId);
         params.put("openId",openId);
         params.put("avatarUrl",avatarUrl);
@@ -120,7 +121,7 @@ public class RegActivityViewModel extends ViewModel {
         String signs = SignUtils.signParam(params);
 
         mCreator.create(UserApi.class)
-                .wxBindPhone(phone,unionId,openId,avatarUrl,nickname,from_type,gender,signs)
+                .wxBindPhone(phone,code,unionId,openId,avatarUrl,nickname,from_type,gender,signs)
                 .enqueue(new Callback<Base<UserInfo>>() {
                     @Override
                     public void onResponse(@NonNull Call<Base<UserInfo>> call,

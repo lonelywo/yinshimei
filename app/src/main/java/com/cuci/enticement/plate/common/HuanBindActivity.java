@@ -16,6 +16,7 @@ import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.Bag499Bean;
 import com.cuci.enticement.bean.Base;
 import com.cuci.enticement.bean.GuoJiaBean;
+import com.cuci.enticement.bean.HuanbindBean;
 import com.cuci.enticement.bean.ModifyInfo;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
@@ -87,6 +88,8 @@ public class HuanBindActivity extends BaseActivity {
     private Integer[] mQrItems2 ;
     private List<Integer> list1 = new ArrayList<Integer>();
     private  List<String> list2 = new ArrayList<String>();
+    private String phone;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_bianbind;
@@ -131,7 +134,7 @@ public class HuanBindActivity extends BaseActivity {
 
     private void register() {
 
-        String phone = edtPhone.getText().toString().trim();
+        phone = edtPhone.getText().toString().trim();
         String smsCode = edtCode.getText().toString().trim();
 
         if ( TextUtils.isEmpty(phone)
@@ -166,12 +169,11 @@ public class HuanBindActivity extends BaseActivity {
     private void opera(ResponseBody body) {
         try {
             String b = body.string();
-            ModifyInfo mModifyInfo = new Gson().fromJson(b, ModifyInfo.class);
+            HuanbindBean mModifyInfo = new Gson().fromJson(b, HuanbindBean.class);
             if (mModifyInfo.getCode() == 1) {
-                UserInfo userInfo = mModifyInfo.getData();
-                SharedPrefUtils.save(userInfo,UserInfo.class);
+                FToast.success(mModifyInfo.getInfo());
                 Intent intent = new Intent();
-                intent.putExtra(SettingsActivity.DATA_USER_INFO, userInfo);
+                intent.putExtra(SettingsActivity.DATA_USER_INFO, phone);
                 setResult(Activity.RESULT_OK, intent);
                 finish();
             }else {

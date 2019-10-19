@@ -357,7 +357,7 @@ public class BindPhoneActivity extends BaseActivity {
             FToast.warning("请填写完整");
             return;
         }
-        mViewModel.wxBindPhone(phone, minfo.getUnionId(), minfo.getOpenId(), minfo.getHeadImgUrl(), minfo.getNickName(), "2", String.valueOf(minfo.getSex())
+        mViewModel.wxBindPhone(phone,smsCode, minfo.getUnionId(), minfo.getOpenId(), minfo.getHeadImgUrl(), minfo.getNickName(), "2", String.valueOf(minfo.getSex())
         ).observe(this, mObservercheck1);
 
     }

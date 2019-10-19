@@ -26,6 +26,7 @@ import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.bean.WxError;
 import com.cuci.enticement.bean.WxInfo;
 import com.cuci.enticement.bean.WxToken;
+import com.cuci.enticement.bean.WxbindBean;
 import com.cuci.enticement.event.LoginOutEvent;
 import com.cuci.enticement.event.LoginSucceedEvent;
 import com.cuci.enticement.plate.common.BindPhoneActivity;
@@ -70,6 +71,7 @@ public class SettingsActivity extends BaseActivity {
     private LocalBroadcastManager mBroadcastManager;
 
 
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_settings;
@@ -80,8 +82,8 @@ public class SettingsActivity extends BaseActivity {
         mViewModel = ViewModelProviders.of(this).get(MineViewModel.class);
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
         phoneTv.setText(mUserInfo.getPhone());
-        String is_bindingwx = mUserInfo.getIs_bindingwx();
-        if("1".equals(is_bindingwx)){
+        int  wxBind = SharedPrefUtils.getWXBind();
+        if(wxBind==1){
             //todo   这里换成微信号显示   不要用昵称
          //   bindStatusTv.setText(mUserInfo.getNickname());
             bindStatusTv.setText("已绑定");
@@ -110,7 +112,7 @@ public class SettingsActivity extends BaseActivity {
                 startActivityForResult(intent, 10010);
                 break;
             case R.id.ll_wechat:
-             if(TextUtils.equals(mUserInfo.getIs_bindingwx(),"1")){
+             if(SharedPrefUtils.getWXBind()==1){
                  new XPopup.Builder(this)
                          .dismissOnBackPressed(false)
                          .dismissOnTouchOutside(false)
@@ -209,8 +211,8 @@ public class SettingsActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK && data != null) {
             if (requestCode == 10010 ) {
-                UserInfo userInfo = (UserInfo) data.getSerializableExtra(SettingsActivity.DATA_USER_INFO);
-                phoneTv.setText(userInfo.getPhone());
+                String phone = data.getStringExtra(SettingsActivity.DATA_USER_INFO);
+                phoneTv.setText(phone);
                /* Intent intent = new Intent(_MineFragment.ACTION_LOGIN_SUCCEED);
                 intent.putExtra(_MineFragment.DATA_USER_INFO, userInfo);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(intent);*/
@@ -352,12 +354,11 @@ public class SettingsActivity extends BaseActivity {
     private void operaBindWxInfo(ResponseBody body) {
         try {
             String b = body.string();
-            ModifyInfo mModifyInfo = new Gson().fromJson(b, ModifyInfo.class);
+            WxbindBean mModifyInfo = new Gson().fromJson(b, WxbindBean.class);
             if (mModifyInfo.getCode() == 1) {
-                FToast.success("绑定成功");
+                FToast.success(mModifyInfo.getInfo());
                 bindStatusTv.setText("已绑定");
-                mUserInfo.setIs_bindingwx("1");
-                SharedPrefUtils.save(mUserInfo,UserInfo.class);
+                SharedPrefUtils.saveWXBind(1);
             }else {
                 FToast.error(mModifyInfo.getInfo());
             }
@@ -384,13 +385,14 @@ public class SettingsActivity extends BaseActivity {
     private void operajieBindWxInfo(ResponseBody body) {
         try {
             String b = body.string();
-            ModifyInfo mModifyInfo = new Gson().fromJson(b, ModifyInfo.class);
+            WxbindBean mModifyInfo = new Gson().fromJson(b, WxbindBean.class);
             if (mModifyInfo.getCode() == 1) {
-                FToast.success("解绑成功");
+                FToast.success(mModifyInfo.getInfo());
                 bindStatusTv.setText("未绑定");
-                mUserInfo.setIs_bindingwx("0");
-                SharedPrefUtils.save(mUserInfo,UserInfo.class);
+
+                SharedPrefUtils.saveWXBind(0);
             }else {
+
                 FToast.error(mModifyInfo.getInfo());
             }
         } catch (IOException e) {

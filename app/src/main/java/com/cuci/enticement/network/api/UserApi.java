@@ -175,6 +175,7 @@ public interface UserApi {
     @POST("store/api.user/wxbinging")
     Call<Base<UserInfo>> wxBindPhone(
             @Field("phone") String phone,
+            @Field("code") String code,
             @Field("unionId") String sunionIdign,
             @Field("openId") String openId,
             @Field("avatarUrl") String avatarUrl,

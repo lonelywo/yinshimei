@@ -36,12 +36,21 @@
             app:layout_constraintBottom_toBottomOf="parent"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/con_shangmian"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintTop_toBottomOf="@id/con_toubu"
+
+    >
+
+
 
   <androidx.constraintlayout.widget.ConstraintLayout
       android:id="@+id/con_huang"
       android:layout_width="match_parent"
       android:layout_height="250dp"
-      app:layout_constraintTop_toBottomOf="@id/con_toubu"
+      app:layout_constraintTop_toTopOf="parent"
       android:background="@color/orange"
       >
       <ImageView
@@ -298,13 +307,13 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
+</androidx.constraintlayout.widget.ConstraintLayout>
 
  <androidx.constraintlayout.widget.ConstraintLayout
      android:id="@+id/con_hui"
      android:layout_width="match_parent"
      android:layout_height="wrap_content"
-     app:layout_constraintTop_toBottomOf="@+id/con_money"
+     app:layout_constraintTop_toBottomOf="@+id/con_shangmian"
      android:padding="10dp"
      android:background="@color/black"
      >

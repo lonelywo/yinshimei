@@ -287,9 +287,17 @@ public class _MineFragment extends BaseFragment {
             String b = body.string();
             DataUserInfo mDataUserInfo = new Gson().fromJson(b, DataUserInfo.class);
             if (mDataUserInfo.getCode() == 1) {
-                UserInfo userInfo = mDataUserInfo.getData();
-                mUserInfo = userInfo;
-                SharedPrefUtils.save(userInfo, UserInfo.class);
+                mUserInfo.setArea(mDataUserInfo.getData().getArea());
+                mUserInfo.setCity(mDataUserInfo.getData().getCity());
+                mUserInfo.setProvince(mDataUserInfo.getData().getProvince());
+                mUserInfo.setSex(mDataUserInfo.getData().getSex());
+                SharedPrefUtils.save(mUserInfo,UserInfo.class);
+                int is_bindingwx = mDataUserInfo.getData().getIs_bindingwx();
+                if(is_bindingwx==1){
+                    SharedPrefUtils.saveWXBind(1);
+                }else {
+                    SharedPrefUtils.saveWXBind(0);
+                }
 
             } else {
 

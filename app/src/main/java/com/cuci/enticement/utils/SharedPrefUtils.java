@@ -196,21 +196,21 @@ public class SharedPrefUtils {
     }
 
     /**
-     * 保存是否启用商品标题识别弹窗
+     * 设置里面微信绑定是否绑定
      */
-    public static void saveTitlePopup(boolean flag) {
+    public static void saveWXBind(int flag) {
         SharedPreferences sp = BasicApp.getContext().getSharedPreferences(NAME_SETTINGS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
-        editor.putBoolean(SETTINGS_TITLE_POPUP, flag);
+        editor.putInt(SETTINGS_TITLE_POPUP, flag);
         editor.apply();
     }
 
     /**
-     * 获取是否启用商品标题识别弹窗
+     * 设置里面微信绑定是否绑定
      */
-    public static boolean getTitlePopup() {
+    public static int getWXBind() {
         SharedPreferences sp = BasicApp.getContext().getSharedPreferences(NAME_SETTINGS, Context.MODE_PRIVATE);
-        return sp.getBoolean(SETTINGS_TITLE_POPUP, true);
+        return sp.getInt(SETTINGS_TITLE_POPUP, 0);
     }
 
 

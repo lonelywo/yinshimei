@@ -10,6 +10,14 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.CustomListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
@@ -21,7 +29,6 @@ import com.cuci.enticement.bean.CommissionjlBean;
 import com.cuci.enticement.bean.CommissiontjBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
-import com.cuci.enticement.event.PKEvent3;
 import com.cuci.enticement.plate.mine.adapter.ItemCommissionJLViewBinder;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.FToast;
@@ -32,9 +39,6 @@ import com.cuci.enticement.utils.ViewUtils;
 import com.cuci.enticement.widget.BrandItemDecoration;
 import com.cuci.enticement.widget.CustomRefreshHeader;
 import com.google.gson.Gson;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -43,16 +47,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import org.greenrobot.eventbus.EventBus;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -60,7 +54,7 @@ import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 import okhttp3.ResponseBody;
 
-public class CommissionActivity extends BaseActivity  {
+public class CommissionActivity extends BaseActivity {
 
     @BindView(R.id.img_back)
     ImageView imageBack;
@@ -111,6 +105,8 @@ public class CommissionActivity extends BaseActivity  {
     View viewBeijing2;
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
+    @BindView(R.id.con_shangmian)
+    ConstraintLayout conShangmian;
     private MineViewModel mViewModel;
     private UserInfo mUserInfo;
     private Items mItems;
@@ -124,6 +120,7 @@ public class CommissionActivity extends BaseActivity  {
     private FrameLayout mFrameLayout;
     private String formatStart;
     private boolean ishand = false;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_commisson;
@@ -158,14 +155,14 @@ public class CommissionActivity extends BaseActivity  {
                 switch (newState) {
                     case RecyclerView.SCROLL_STATE_IDLE:
                         if (mLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
-                            ViewUtils.showView(conHuang);
+                            ViewUtils.showView(conShangmian);
                         }
                         break;
                     case RecyclerView.SCROLL_STATE_DRAGGING:
-                        ishand=false;
+                        ishand = false;
                         break;
                     case RecyclerView.SCROLL_STATE_SETTLING:
-                        ishand=true;
+                        ishand = true;
                         break;
                 }
             }
@@ -173,8 +170,8 @@ public class CommissionActivity extends BaseActivity  {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if (dy>0) {
-                   ViewUtils.hideView(conHuang);
+                if (dy > 0) {
+                    ViewUtils.hideView(conShangmian);
                 }
                /* if (dy<0&&mLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
                     EventBus.getDefault().post(new PKEvent3("1"));
@@ -356,11 +353,12 @@ public class CommissionActivity extends BaseActivity  {
 
     private void load() {
         if (mUserInfo == null) {
-         //   refreshLayout.finishRefresh();
+            //   refreshLayout.finishRefresh();
             return;
         }
         mViewModel.hqcommissiontj(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", format, Status.LOAD_REFRESH)
                 .observe(this, mObserver1);
+        ViewUtils.showView(progressBar);
     }
 
     private Observer<Status<ResponseBody>> mObserver1 = status -> {
@@ -377,9 +375,9 @@ public class CommissionActivity extends BaseActivity  {
                 ViewUtils.hideView(progressBar);
                 if (status.loadType == Status.LOAD_MORE) {
                     mCanLoadMore = true;
-                //    refreshLayout.finishLoadMore();
+                    //    refreshLayout.finishLoadMore();
                 } else {
-               //     refreshLayout.finishRefresh();
+                    //     refreshLayout.finishRefresh();
                 }
                 //   dismissLoading();
                 FToast.error("网络错误");
@@ -400,10 +398,10 @@ public class CommissionActivity extends BaseActivity  {
 
                 if (status.loadType == Status.LOAD_REFRESH) {
                     statusView.showEmpty();
-                //    refreshLayout.finishRefresh();
+                    //    refreshLayout.finishRefresh();
                 } else {
 
-               //     refreshLayout.finishLoadMore();
+                    //     refreshLayout.finishLoadMore();
                 }
                 return;
             }
@@ -413,19 +411,19 @@ public class CommissionActivity extends BaseActivity  {
                     mItems.clear();
                     mItems.addAll(item);
                     mAdapter.notifyDataSetChanged();
-               //     refreshLayout.finishRefresh();
+                    //     refreshLayout.finishRefresh();
                 } else {
                     mItems.addAll(item);
                     mAdapter.notifyDataSetChanged();
-               //     refreshLayout.finishLoadMore();
+                    //     refreshLayout.finishLoadMore();
                 }
             } else {
                 if (status.loadType == Status.LOAD_MORE) {
                     mCanLoadMore = true;
-               //     refreshLayout.finishLoadMore();
+                    //     refreshLayout.finishLoadMore();
                 } else {
 
-               //     refreshLayout.finishRefresh();
+                    //     refreshLayout.finishRefresh();
                 }
                 FToast.error(mCommissionjlBean.getInfo());
             }
