@@ -191,6 +191,7 @@ public class _MineFragment extends BaseFragment {
     private static final int THUMB_SIZE1 = 400;
     private boolean bag = false;
 
+
     @Override
     protected void onLazyLoad() {
         load();
@@ -285,8 +286,23 @@ public class _MineFragment extends BaseFragment {
     private void dataUserinfo(ResponseBody body) {
         try {
             String b = body.string();
-            DataUserInfo mDataUserInfo = new Gson().fromJson(b, DataUserInfo.class);
+            DataUserInfo  mDataUserInfo = new Gson().fromJson(b, DataUserInfo.class);
             if (mDataUserInfo.getCode() == 1) {
+                if (mDataUserInfo.getData().getVip_level() == 0) {
+                    textHuiyuan.setText("用户");
+                    textHuiyuan1.setText("升级会员");
+                } else if (mDataUserInfo.getData().getVip_level() == 1) {
+                    textHuiyuan.setText("会员");
+                    textHuiyuan1.setText("升级服务商");
+                } else if (mDataUserInfo.getData().getVip_level() == 2) {
+                    textHuiyuan.setText("服务商");
+                    textHuiyuan1.setVisibility(View.GONE);
+                    textHuiyuan2.setVisibility(View.GONE);
+                    btnShengji.setVisibility(View.GONE);
+                    imgHeadwear.setVisibility(View.VISIBLE);
+                }
+
+                mUserInfo.setVip_level(mDataUserInfo.getData().getVip_level());
                 mUserInfo.setArea(mDataUserInfo.getData().getArea());
                 mUserInfo.setCity(mDataUserInfo.getData().getCity());
                 mUserInfo.setProvince(mDataUserInfo.getData().getProvince());
@@ -347,6 +363,8 @@ public class _MineFragment extends BaseFragment {
                     OrderViewModel orderViewModel = ViewModelProviders.of(_MineFragment.this).get(OrderViewModel.class);
                     orderViewModel.getStatisticsOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()))
                             .observe(mActivity, mTotalOrderObserver);
+                    //刷新当前用户信息
+                    mViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(mActivity, mdataObserver);
                 } else if (ACTION_REFRESH_HX.equals(intent.getAction())) {
                     int data = intent.getIntExtra("data", 0);
                     Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -378,19 +396,7 @@ public class _MineFragment extends BaseFragment {
             imgHeadwear.setVisibility(View.GONE);
             return;
         }
-        if (mUserInfo.getVip_level() == 0) {
-            textHuiyuan.setText("用户");
-            textHuiyuan1.setText("升级会员");
-        } else if (mUserInfo.getVip_level() == 1) {
-            textHuiyuan.setText("会员");
-            textHuiyuan1.setText("升级服务商");
-        } else if (mUserInfo.getVip_level() == 2) {
-            textHuiyuan.setText("服务商");
-            textHuiyuan1.setVisibility(View.GONE);
-            textHuiyuan2.setVisibility(View.GONE);
-            btnShengji.setVisibility(View.GONE);
-            imgHeadwear.setVisibility(View.VISIBLE);
-        }
+
         conYingchang.setVisibility(View.VISIBLE);
         ImageLoader.loadPlaceholder1(mUserInfo.getHeadimg(), imgTuxiang);
         textName.setText(mUserInfo.getNickname());
