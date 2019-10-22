@@ -109,7 +109,7 @@ public class BindPhoneActivity extends BaseActivity {
         mViewModel = ViewModelProviders.of(this).get(RegActivityViewModel.class);
 
         mGuoJiaBean = SharedPrefUtils.get(GuoJiaBean.class);
-        if(mGuoJiaBean.getData()!=null){
+        if(mGuoJiaBean!=null){
             for (int i = 0; i < mGuoJiaBean.getData().size() ; i++) {
                 list1.add(mGuoJiaBean.getData().get(i).getCode());
                 list2.add(mGuoJiaBean.getData().get(i).getTitle());
