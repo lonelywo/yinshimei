@@ -13,7 +13,7 @@
             android:id="@+id/img_tuxiang"
             android:layout_width="95dp"
             android:layout_height="95dp"
-            android:src="@drawable/ic_launcher"
+            tools:src="@mipmap/ic_launcher"
             app:layout_constraintLeft_toLeftOf="@+id/container"
             app:layout_constraintTop_toTopOf="@+id/container"
             android:layout_marginTop="20dp"

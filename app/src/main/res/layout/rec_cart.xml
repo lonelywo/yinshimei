@@ -35,7 +35,7 @@
         android:id="@+id/img_tuxiang"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:src="@drawable/ic_launcher"
+        tools:src="@mipmap/ic_launcher"
         app:layout_constraintStart_toEndOf="@+id/image_check"
         app:layout_constraintTop_toTopOf="parent"
 

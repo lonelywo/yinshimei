@@ -154,7 +154,7 @@ public class LogisticsActivity extends BaseActivity implements OnRefreshLoadMore
             String b = body.string();
             ExpressInfo mExpressInfo = new Gson().fromJson(b, ExpressInfo.class);
             textWuliugongsi.setText(String.format(Locale.CHINA,"物流公司:%s",express_company_title));
-            textYundanbianhao.setText(String.format(Locale.CHINA,"运单编号：%s",mExpressInfo.getData().getNu()));
+            textYundanbianhao.setText(String.format(Locale.CHINA,"运单编号:%s",mExpressInfo.getData().getNu()));
             List<ExpressInfo.DataBeanX.DataBean> item = mExpressInfo.getData().getData();
             if (item == null || item.size() == 0) {
 
