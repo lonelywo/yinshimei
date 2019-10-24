@@ -18,17 +18,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
+        <ImageView
+            android:id="@+id/img_tupian"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
-            android:ellipsize="end"
-            android:maxLines="3"
-            android:text="分享到"
-            android:textColor="#333333"
-            android:textSize="18sp"/>
+            tools:src="@drawable/img_placeholder"
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -61,26 +59,14 @@
                 android:textSize="12sp"/>
 
             <TextView
-                android:id="@+id/tv_share_qq"
+                android:id="@+id/icon_share_save"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/icon_share_qq"
+                android:drawableTop="@drawable/icon_share_save"
                 android:drawablePadding="6dp"
                 android:gravity="center_horizontal"
-                android:text="QQ"
-                android:textColor="#666666"
-                android:textSize="12sp"/>
-
-            <TextView
-                android:id="@+id/tv_share_qzone"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawableTop="@drawable/icon_share_qzone"
-                android:drawablePadding="6dp"
-                android:gravity="center_horizontal"
-                android:text="QQ空间"
+                android:text="保存"
                 android:textColor="#666666"
                 android:textSize="12sp"/>
 

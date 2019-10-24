@@ -99,8 +99,10 @@ public class ZengAddressActivity extends BaseActivity {
             int is_default = addressBean.getIs_default();
             if(is_default==1){
                 checkbox.setChecked(true);
+                mIsDefault = "1";
             }else {
                 checkbox.setChecked(false);
+                mIsDefault = "0";
             }
 
         }
