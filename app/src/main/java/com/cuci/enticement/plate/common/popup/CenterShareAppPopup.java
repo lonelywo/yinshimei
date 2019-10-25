@@ -3,6 +3,7 @@ package com.cuci.enticement.plate.common.popup;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -68,7 +69,7 @@ public class CenterShareAppPopup extends CenterPopupView {
         ImageLoader.loadPlaceholder(R.drawable.poster, imgTupian);
 
         //bmp = returnBitMap("https://qiniu.cdn.enticementchina.com/f1e185e12cfacf56/e35fda95344b6830.jpg");
-        bmp = BitmapFactory.decodeResource(getResources(),R.drawable.poster );
+        bmp = getBitmap(BasicApp.getContext(),R.drawable.poster );
     }
 
     @OnClick({R.id.tv_share_wx, R.id.tv_share_moment,
@@ -127,5 +128,16 @@ public class CenterShareAppPopup extends CenterPopupView {
 
         return bmp;
     }
+
+
+    public static Bitmap getBitmap(Context context, int resId) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        TypedValue value = new TypedValue();
+        context.getResources().openRawResource(resId, value);
+        options.inTargetDensity = value.density;
+        options.inScaled=false;//不缩放
+        return BitmapFactory.decodeResource(context.getResources(), resId, options);
+    }
+
 
 }
