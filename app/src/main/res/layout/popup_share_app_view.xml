@@ -3,86 +3,100 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content">
-
+ <androidx.constraintlayout.widget.ConstraintLayout
+     android:id="@+id/con_back"
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     app:layout_constraintTop_toTopOf="parent"
+     app:layout_constraintStart_toStartOf="parent"
+     android:background="@drawable/shape_share_popup_bg"
+     >
     <LinearLayout
         android:id="@+id/ll"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/shape_share_popup_bg"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:paddingBottom="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/img_tupian"
+        >
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            tools:src="@drawable/img_placeholder"
+            android:text="分享海报"
+            android:textColor="@color/hei"
+            android:layout_marginTop="8dp"
             />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/tv_share_wx"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawableTop="@drawable/icon_share_wx"
-                android:drawablePadding="6dp"
-                android:gravity="center_horizontal"
-                android:text="微信"
-                android:textColor="#666666"
-                android:textSize="12sp"/>
-
-            <TextView
-                android:id="@+id/tv_share_moment"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawableTop="@drawable/icon_share_moment"
-                android:drawablePadding="6dp"
-                android:gravity="center_horizontal"
-                android:text="朋友圈"
-                android:textColor="#666666"
-                android:textSize="12sp"/>
-
-            <TextView
-                android:id="@+id/icon_share_save"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawableTop="@drawable/icon_share_save"
-                android:drawablePadding="6dp"
-                android:gravity="center_horizontal"
-                android:text="保存"
-                android:textColor="#666666"
-                android:textSize="12sp"/>
-
-        </LinearLayout>
-
+        <ImageView
+            android:id="@+id/img_tupian"
+            android:layout_width="300dp"
+            android:layout_height="500dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            tools:src="@drawable/poster"
+            android:scaleType="centerCrop"
+            />
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_tupian"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/ll"
+        app:layout_constraintLeft_toLeftOf="@+id/ll"
+        app:layout_constraintRight_toRightOf="@+id/ll"
+        android:paddingBottom="16dp"
+        >
 
+        <TextView
+            android:id="@+id/tv_share_wx"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/icon_share_wx"
+            android:drawablePadding="6dp"
+            android:gravity="center_horizontal"
+            android:text="微信"
+            android:textColor="#666666"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/tv_share_moment"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/icon_share_moment"
+            android:drawablePadding="6dp"
+            android:gravity="center_horizontal"
+            android:text="朋友圈"
+            android:textColor="#666666"
+            android:textSize="12sp"/>
+        <TextView
+            android:id="@+id/icon_share_save"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/icon_share_save"
+            android:drawablePadding="6dp"
+            android:gravity="center_horizontal"
+            android:text="保存"
+            android:textColor="#666666"
+            android:textSize="12sp"/>
+    </LinearLayout>
+ </androidx.constraintlayout.widget.ConstraintLayout>
     <ImageView
         android:id="@+id/close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:src="@drawable/icon_close_transparent"
-        app:layout_constraintEnd_toEndOf="@+id/ll"
-        app:layout_constraintStart_toStartOf="@+id/ll"
-        app:layout_constraintTop_toBottomOf="@+id/ll"/>
+        app:layout_constraintEnd_toEndOf="@+id/con_back"
+        app:layout_constraintStart_toStartOf="@+id/con_back"
+        app:layout_constraintTop_toBottomOf="@+id/con_back"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
