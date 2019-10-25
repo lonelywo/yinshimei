@@ -67,8 +67,8 @@ public class CenterShareAppPopup extends CenterPopupView {
         ButterKnife.bind(this);
         ImageLoader.loadPlaceholder(R.drawable.poster, imgTupian);
 
-        bmp = returnBitMap("https://qiniu.cdn.enticementchina.com/f1e185e12cfacf56/e35fda95344b6830.jpg");
-
+        //bmp = returnBitMap("https://qiniu.cdn.enticementchina.com/f1e185e12cfacf56/e35fda95344b6830.jpg");
+        bmp = BitmapFactory.decodeResource(getResources(),R.drawable.poster );
     }
 
     @OnClick({R.id.tv_share_wx, R.id.tv_share_moment,
