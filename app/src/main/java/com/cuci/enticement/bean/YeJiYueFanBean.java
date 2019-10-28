@@ -8,7 +8,7 @@ public class YeJiYueFanBean implements Serializable {
     /**
      * code : 1
      * info : 查询成功
-     * data : {"amount":"","gift_name":"","status":"","explain":"<p>\r\n规则说明：<\/p>\r\n\r\n<p>\r\n经销商补货达到指定的业绩后，公司按月返零售价产品给到经销商，系统自动核算。以月为单位，到期清零不累计。<\/p>\r\n\r\n<p>\r\n5000 返 价值600元产品<\/p>\r\n\r\n<p>\r\n8000 返 价值1200元产品<\/p>\r\n\r\n<p>\r\n10000 返 价值1500元产品<\/p>\r\n\r\n<p>\r\n15000 返 价值2400元产品<\/p>\r\n\r\n<p>\r\n20000 返 价值3400元产品<\/p>\r\n"}
+     * data : {"amount":"5300.00","gift_name":"价值600元产品","express_company_title":"","express_code":"","express_no":"","status":1,"explain":"","address":{"province":"北京市","city":"北京市","area":"东城区","address":"技术测试技术测试技术测试技术测试技术测试技术测试技术测试技术测试技术测试技术测试技术测试技术","name":"测试","phone":"18574477777"}}
      */
 
     private int code;
@@ -39,38 +39,26 @@ public class YeJiYueFanBean implements Serializable {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable{
         /**
-         * amount :
-         * gift_name :
-         * status :
-         * explain : <p>
-         规则说明：</p>
-
-         <p>
-         经销商补货达到指定的业绩后，公司按月返零售价产品给到经销商，系统自动核算。以月为单位，到期清零不累计。</p>
-
-         <p>
-         5000 返 价值600元产品</p>
-
-         <p>
-         8000 返 价值1200元产品</p>
-
-         <p>
-         10000 返 价值1500元产品</p>
-
-         <p>
-         15000 返 价值2400元产品</p>
-
-         <p>
-         20000 返 价值3400元产品</p>
-
+         * amount : 5300.00
+         * gift_name : 价值600元产品
+         * express_company_title :
+         * express_code :
+         * express_no :
+         * status : 1
+         * explain :
+         * address : {"province":"北京市","city":"北京市","area":"东城区","address":"技术测试技术测试技术测试技术测试技术测试技术测试技术测试技术测试技术测试技术测试技术测试技术","name":"测试","phone":"18574477777"}
          */
 
         private String amount;
         private String gift_name;
+        private String express_company_title;
+        private String express_code;
+        private String express_no;
         private String status;
         private String explain;
+        private AddressBean address;
 
         public String getAmount() {
             return amount;
@@ -88,6 +76,30 @@ public class YeJiYueFanBean implements Serializable {
             this.gift_name = gift_name;
         }
 
+        public String getExpress_company_title() {
+            return express_company_title;
+        }
+
+        public void setExpress_company_title(String express_company_title) {
+            this.express_company_title = express_company_title;
+        }
+
+        public String getExpress_code() {
+            return express_code;
+        }
+
+        public void setExpress_code(String express_code) {
+            this.express_code = express_code;
+        }
+
+        public String getExpress_no() {
+            return express_no;
+        }
+
+        public void setExpress_no(String express_no) {
+            this.express_no = express_no;
+        }
+
         public String getStatus() {
             return status;
         }
@@ -102,6 +114,80 @@ public class YeJiYueFanBean implements Serializable {
 
         public void setExplain(String explain) {
             this.explain = explain;
+        }
+
+        public AddressBean getAddress() {
+            return address;
+        }
+
+        public void setAddress(AddressBean address) {
+            this.address = address;
+        }
+
+        public static class AddressBean implements Serializable{
+            /**
+             * province : 北京市
+             * city : 北京市
+             * area : 东城区
+             * address : 技术测试技术测试技术测试技术测试技术测试技术测试技术测试技术测试技术测试技术测试技术测试技术
+             * name : 测试
+             * phone : 18574477777
+             */
+
+            private String province;
+            private String city;
+            private String area;
+            private String address;
+            private String name;
+            private String phone;
+
+            public String getProvince() {
+                return province;
+            }
+
+            public void setProvince(String province) {
+                this.province = province;
+            }
+
+            public String getCity() {
+                return city;
+            }
+
+            public void setCity(String city) {
+                this.city = city;
+            }
+
+            public String getArea() {
+                return area;
+            }
+
+            public void setArea(String area) {
+                this.area = area;
+            }
+
+            public String getAddress() {
+                return address;
+            }
+
+            public void setAddress(String address) {
+                this.address = address;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public String getPhone() {
+                return phone;
+            }
+
+            public void setPhone(String phone) {
+                this.phone = phone;
+            }
         }
     }
 }

@@ -190,6 +190,7 @@ public class _MineFragment extends BaseFragment {
     private static final int THUMB_SIZE = 500;
     private static final int THUMB_SIZE1 = 400;
     private boolean bag = false;
+    private int is_month;
 
 
     @Override
@@ -313,6 +314,19 @@ public class _MineFragment extends BaseFragment {
                     SharedPrefUtils.saveWXBind(1);
                 }else {
                     SharedPrefUtils.saveWXBind(0);
+                }
+               is_month = mDataUserInfo.getData().getIs_month();
+                if(mDataUserInfo.getData().getIs_month()==1){
+                    new XPopup.Builder(mActivity)
+                            .dismissOnBackPressed(false)
+                            .dismissOnTouchOutside(false)
+                            .asCustom(new TipsPopup(mActivity,
+                                    "请设置福利收货地址，领取奖励哦", "关闭", "去设置", () -> {
+                                Intent intentProd = new Intent(mActivity, AchievementActivity.class);
+                                intentProd.putExtra("Data", is_month);
+                                mActivity.startActivity(intentProd);
+                            }))
+                            .show();
                 }
 
             } else {
@@ -561,7 +575,7 @@ public class _MineFragment extends BaseFragment {
             case R.id.text_yejiyuefan:
                 if (AppUtils.isAllowPermission(mActivity)) {
                     Intent intentProd = new Intent(mActivity, AchievementActivity.class);
-                    intentProd.putExtra("Data", "");
+                    intentProd.putExtra("Data", is_month);
                     mActivity.startActivity(intentProd);
                 }
                 break;

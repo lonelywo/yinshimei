@@ -209,5 +209,17 @@ public interface MineApi {
             @Field("token") String token,
             @Field("sign") String sign
     );
+    /**
+     * 消费月返提交地址
+     */
+    @FormUrlEncoded
+    @POST("store/api.member.month/monthaddress")
+    Call<ResponseBody> monbackdizi(
+            @Field("from_type") String from_type,
+            @Field("mid") String mid,
+            @Field("token") String token,
+            @Field("address_id") String address_id,
+            @Field("sign") String sign
+    );
 }
 

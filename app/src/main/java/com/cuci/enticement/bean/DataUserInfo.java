@@ -117,7 +117,14 @@ public class DataUserInfo implements Serializable {
         private int is_bindingwx;
         private OrdertotalBean ordertotal;
         private String kf_status;
+        private int is_month;
+        public int getIs_month() {
+            return is_month;
+        }
 
+        public void setIs_month(int is_month) {
+            this.is_month = is_month;
+        }
         public int getId() {
             return id;
         }

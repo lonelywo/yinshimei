@@ -155,58 +155,88 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
         imgShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new XPopup.Builder(ProdActivity.this)
-                        .dismissOnBackPressed(false)
-                        .dismissOnTouchOutside(false)
-                        .asCustom(new ShareImgTipsPopup(ProdActivity.this, "取消", new ShareImgTipsPopup.OnExitListener() {
-                            @Override
-                            public void onPositive1() {
-                                if (mProData != null) {
-                                    BasicApp.getAppExecutors()
-                                            .networkIO()
-                                            .execute(() -> {
-                                                try {
-                                                    WXMiniProgramObject miniProgramObj = new WXMiniProgramObject();
-                                                    miniProgramObj.webpageUrl = "https://test.enticementchina.com/pages/goods/detail?id=" + mProData.getId(); // 兼容低版本的网页链接
-                                                    miniProgramObj.miniprogramType = WXMiniProgramObject.MINIPTOGRAM_TYPE_RELEASE;// 正式版:0，测试版:1，体验版:2
-                                                    miniProgramObj.userName = "gh_f19e5dd49f49";     // 小程序原始id
-                                                    miniProgramObj.path = "pages/goods/detail?id=" + mProData.getId();            //小程序页面路径；对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"
-                                                    // miniProgramObj.path = "";            //小程序页面路径；对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"
-                                                    WXMediaMessage msg = new WXMediaMessage(miniProgramObj);
-                                                    msg.title = mProData.getTitle();                    // 小程序消息title
-                                                    msg.description = "因诗美，因你而美";               // 小程序消息desc
-                                                    Bitmap bmp = BitmapFactory.decodeStream(new URL(mProData.getLogo()).openStream());
-                                                    Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, THUMB_SIZE1, THUMB_SIZE, true);
-                                                    bmp.recycle();
-                                                    msg.thumbData = WxShareUtils.bmpToByteArray(thumbBmp, true); // 小程序消息封面图片，小于128k
-                                                    SendMessageToWX.Req req = new SendMessageToWX.Req();
-                                                    req.transaction = String.valueOf(System.currentTimeMillis());
-                                                    req.message = msg;
-                                                    req.scene = SendMessageToWX.Req.WXSceneSession;  // 目前只支持会话
-                                                    BasicApp.getIWXAPI().sendReq(req);
-                                                } catch (IOException e) {
-                                                    e.printStackTrace();
-                                                }
-                                            });
+                if (AppUtils.isAllowPermission(ProdActivity.this)) {
+                    if (mProData != null) {
+                    if (mProData.getVip_mod() != 1) {
+                        BasicApp.getAppExecutors()
+                                    .networkIO()
+                                    .execute(() -> {
+                                        try {
+                                            WXMiniProgramObject miniProgramObj = new WXMiniProgramObject();
+                                            miniProgramObj.webpageUrl = "https://test.enticementchina.com/pages/goods/detail?id=" + mProData.getId(); // 兼容低版本的网页链接
+                                            miniProgramObj.miniprogramType = WXMiniProgramObject.MINIPTOGRAM_TYPE_RELEASE;// 正式版:0，测试版:1，体验版:2
+                                            miniProgramObj.userName = "gh_f19e5dd49f49";     // 小程序原始id
+                                            miniProgramObj.path = "pages/goods/detail?g=" + mProData.getId();            //小程序页面路径；对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"
+                                            // miniProgramObj.path = "";            //小程序页面路径；对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"
+                                            WXMediaMessage msg = new WXMediaMessage(miniProgramObj);
+                                            msg.title = mProData.getTitle();                    // 小程序消息title
+                                            msg.description = "因诗美，因你而美";               // 小程序消息desc
+                                            Bitmap bmp = BitmapFactory.decodeStream(new URL(mProData.getLogo()).openStream());
+                                            Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, THUMB_SIZE1, THUMB_SIZE, true);
+                                            bmp.recycle();
+                                            msg.thumbData = WxShareUtils.bmpToByteArray(thumbBmp, true); // 小程序消息封面图片，小于128k
+                                            SendMessageToWX.Req req = new SendMessageToWX.Req();
+                                            req.transaction = String.valueOf(System.currentTimeMillis());
+                                            req.message = msg;
+                                            req.scene = SendMessageToWX.Req.WXSceneSession;  // 目前只支持会话
+                                            BasicApp.getIWXAPI().sendReq(req);
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                    });
+                    } else {
+                        new XPopup.Builder(ProdActivity.this)
+                                .dismissOnBackPressed(false)
+                                .dismissOnTouchOutside(false)
+                                .asCustom(new ShareImgTipsPopup(ProdActivity.this, "取消", new ShareImgTipsPopup.OnExitListener() {
+                                    @Override
+                                    public void onPositive1() {
+                                            BasicApp.getAppExecutors()
+                                                    .networkIO()
+                                                    .execute(() -> {
+                                                        try {
+                                                            WXMiniProgramObject miniProgramObj = new WXMiniProgramObject();
+                                                            miniProgramObj.webpageUrl = "https://test.enticementchina.com/pages/goods/detail?g=" + mProData.getId(); // 兼容低版本的网页链接
+                                                            miniProgramObj.miniprogramType = WXMiniProgramObject.MINIPTOGRAM_TYPE_RELEASE;// 正式版:0，测试版:1，体验版:2
+                                                            miniProgramObj.userName = "gh_f19e5dd49f49";     // 小程序原始id
+                                                            miniProgramObj.path = "pages/goods/detail?g=" + mProData.getId() + "&p=" + mUserInfo.getPhone();            //小程序页面路径；对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"
+                                                            // miniProgramObj.path = "";            //小程序页面路径；对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"
+                                                            WXMediaMessage msg = new WXMediaMessage(miniProgramObj);
+                                                            msg.title = mProData.getTitle();                    // 小程序消息title
+                                                            msg.description = "因诗美，因你而美";               // 小程序消息desc
+                                                            Bitmap bmp = BitmapFactory.decodeStream(new URL(mProData.getLogo()).openStream());
+                                                            Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, THUMB_SIZE1, THUMB_SIZE, true);
+                                                            bmp.recycle();
+                                                            msg.thumbData = WxShareUtils.bmpToByteArray(thumbBmp, true); // 小程序消息封面图片，小于128k
+                                                            SendMessageToWX.Req req = new SendMessageToWX.Req();
+                                                            req.transaction = String.valueOf(System.currentTimeMillis());
+                                                            req.message = msg;
+                                                            req.scene = SendMessageToWX.Req.WXSceneSession;  // 目前只支持会话
+                                                            BasicApp.getIWXAPI().sendReq(req);
+                                                        } catch (IOException e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                    });
+                                    }
 
-                                }
-                            }
+                                    @Override
+                                    public void onPositive2() {
+                                        new XPopup.Builder(ProdActivity.this)
+                                                .dismissOnTouchOutside(false)
+                                                .dismissOnBackPressed(false)
+                                                .asCustom(new CenterShareAppPopup(ProdActivity.this, mUserInfo))
+                                                .show();
+                                    }
 
-                            @Override
-                            public void onPositive2() {
-                                new XPopup.Builder(ProdActivity.this)
-                                        .dismissOnTouchOutside(false)
-                                        .dismissOnBackPressed(false)
-                                        .asCustom(new CenterShareAppPopup(ProdActivity.this, mUserInfo))
-                                        .show();
-                            }
+                                    @Override
+                                    public void onCancel() {
 
-                            @Override
-                            public void onCancel() {
-
-                            }
-                        }))
-                        .show();
+                                    }
+                                }))
+                                .show();
+                    }
+                }
+                }
             }
         });
 

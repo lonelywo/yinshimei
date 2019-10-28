@@ -69,7 +69,8 @@ public class CenterShareAppPopup extends CenterPopupView {
         ImageLoader.loadPlaceholder(R.drawable.poster, imgTupian);
 
         //bmp = returnBitMap("https://qiniu.cdn.enticementchina.com/f1e185e12cfacf56/e35fda95344b6830.jpg");
-        bmp = getBitmap(BasicApp.getContext(),R.drawable.poster );
+        // bmp = getBitmap(BasicApp.getContext(),R.drawable.poster );
+        bmp = BitmapFactory.decodeResource(getResources(),R.drawable.poster );
     }
 
     @OnClick({R.id.tv_share_wx, R.id.tv_share_moment,
@@ -79,6 +80,7 @@ public class CenterShareAppPopup extends CenterPopupView {
             FToast.error("数据错误");
             return;
         }
+
         switch (view.getId()) {
             case R.id.tv_share_wx:
                 WxShareUtils.shareImageToWX(WxShareUtils.WX_SCENE_SESSION, bmp);
@@ -89,8 +91,9 @@ public class CenterShareAppPopup extends CenterPopupView {
                 dismiss();
                 break;
             case R.id.icon_share_save:
+                Bitmap bmp1 = getBitmap(BasicApp.getContext(),R.drawable.poster );
                 File file = ImageUtils.saveBitmap(BasicApp.getContext(),
-                        FileUtils.FOLDER_NAME_SAVE, String.valueOf(System.currentTimeMillis()), bmp, true);
+                        FileUtils.FOLDER_NAME_SAVE, String.valueOf(System.currentTimeMillis()), bmp1, true);
                 if (file != null) {
                     FToast.success("图片成功保存到：" + file.getAbsolutePath());
                 }
@@ -130,13 +133,13 @@ public class CenterShareAppPopup extends CenterPopupView {
     }
 
 
-    public static Bitmap getBitmap(Context context, int resId) {
+    public  Bitmap getBitmap(Context context, int resId) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         TypedValue value = new TypedValue();
         context.getResources().openRawResource(resId, value);
         options.inTargetDensity = value.density;
         options.inScaled=false;//不缩放
-        return BitmapFactory.decodeResource(context.getResources(), resId, options);
+        return BitmapFactory.decodeResource(getResources(), resId, options);
     }
 
 
