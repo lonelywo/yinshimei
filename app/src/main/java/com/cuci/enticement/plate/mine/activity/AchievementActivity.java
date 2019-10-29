@@ -103,14 +103,14 @@ public class AchievementActivity extends BaseActivity {
             FToast.error("数据错误");
             return;
         }
-        int is_month = intent.getIntExtra("Data", 0);
+       /* int is_month = intent.getIntExtra("Data", 0);
         if (is_month == 1) {
             ViewUtils.showView(conDibu);
 
         }else {
             ViewUtils.hideView(conDibu);
 
-        }
+        }*/
 
         mViewModel = ViewModelProviders.of(this).get(MineViewModel.class);
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
@@ -170,10 +170,23 @@ public class AchievementActivity extends BaseActivity {
                 if (!TextUtils.isEmpty(item.getGift_name())) {
                     textWeidabiao1.setText(item.getGift_name());
                 }
-                if (item.getStatus().equals(1)) {
+                if (item.getStatus().equals("2")) {
                     textWeidabiao2.setText("已发放");
+
                     ViewUtils.showView(textShanchu);
                     ViewUtils.hideView(editTv);
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(item.getAddress().getName()).append(" ")
+                            .append(item.getAddress().getPhone()).append(" ").append("\n")
+                            .append(item.getAddress().getProvince()).append(" ")
+                            .append(item.getAddress().getCity()).append(" ")
+                            .append(item.getAddress().getArea()).append(" ")
+                            .append(item.getAddress().getAddress());
+                    String adress = sb.toString();
+                    ViewUtils.hideView(textDizi);
+                    ViewUtils.showView(textAddress);
+                    textAddress.setText(adress);
+
                 } else {
                     textWeidabiao2.setText("-");
                     ViewUtils.hideView(textShanchu);
@@ -182,6 +195,7 @@ public class AchievementActivity extends BaseActivity {
                         ViewUtils.hideView(textAddress);
                         textAddress.setText("");
                         ViewUtils.showView(editTv);
+
                     } else {
                         StringBuilder sb = new StringBuilder();
                         sb.append(item.getAddress().getName()).append(" ")
@@ -195,6 +209,7 @@ public class AchievementActivity extends BaseActivity {
                         ViewUtils.showView(textAddress);
                         textAddress.setText(adress);
                         ViewUtils.hideView(editTv);
+                     
                     }
                 }
 
