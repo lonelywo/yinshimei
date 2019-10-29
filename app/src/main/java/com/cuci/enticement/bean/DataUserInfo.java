@@ -41,7 +41,7 @@ public class DataUserInfo implements Serializable {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable{
         /**
          * id : 21045
          * bid : 1
@@ -413,7 +413,7 @@ public class DataUserInfo implements Serializable {
             this.kf_status = kf_status;
         }
 
-        public static class OrdertotalBean {
+        public static class OrdertotalBean implements Serializable{
             /**
              * 2 : 0
              * 3 : 0

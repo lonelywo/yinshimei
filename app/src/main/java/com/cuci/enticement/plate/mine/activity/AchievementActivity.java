@@ -103,11 +103,13 @@ public class AchievementActivity extends BaseActivity {
             FToast.error("数据错误");
             return;
         }
-        int is_month = intent.getIntExtra("data", 0);
+        int is_month = intent.getIntExtra("Data", 0);
         if (is_month == 1) {
             ViewUtils.showView(conDibu);
+
         }else {
             ViewUtils.hideView(conDibu);
+
         }
 
         mViewModel = ViewModelProviders.of(this).get(MineViewModel.class);
@@ -171,29 +173,30 @@ public class AchievementActivity extends BaseActivity {
                 if (item.getStatus().equals(1)) {
                     textWeidabiao2.setText("已发放");
                     ViewUtils.showView(textShanchu);
+                    ViewUtils.hideView(editTv);
                 } else {
                     textWeidabiao2.setText("-");
                     ViewUtils.hideView(textShanchu);
-
+                    if (TextUtils.isEmpty(item.getAddress().getProvince())) {
+                        ViewUtils.showView(textDizi);
+                        ViewUtils.hideView(textAddress);
+                        textAddress.setText("");
+                        ViewUtils.showView(editTv);
+                    } else {
+                        StringBuilder sb = new StringBuilder();
+                        sb.append(item.getAddress().getName()).append(" ")
+                                .append(item.getAddress().getPhone()).append(" ").append("\n")
+                                .append(item.getAddress().getProvince()).append(" ")
+                                .append(item.getAddress().getCity()).append(" ")
+                                .append(item.getAddress().getArea()).append(" ")
+                                .append(item.getAddress().getAddress());
+                        String adress = sb.toString();
+                        ViewUtils.hideView(textDizi);
+                        ViewUtils.showView(textAddress);
+                        textAddress.setText(adress);
+                        ViewUtils.hideView(editTv);
+                    }
                 }
-                if (TextUtils.isEmpty(item.getAddress().getProvince())) {
-                    ViewUtils.showView(textDizi);
-                    ViewUtils.hideView(textAddress);
-                    textAddress.setText("");
-                } else {
-                    StringBuilder sb = new StringBuilder();
-                    sb.append(item.getAddress().getName()).append(" ")
-                            .append(item.getAddress().getPhone()).append(" ").append("\n")
-                            .append(item.getAddress().getProvince()).append(" ")
-                            .append(item.getAddress().getCity()).append(" ")
-                            .append(item.getAddress().getArea()).append(" ")
-                            .append(item.getAddress().getAddress());
-                    String adress = sb.toString();
-                    ViewUtils.hideView(textDizi);
-                    ViewUtils.showView(textAddress);
-                    textAddress.setText(adress);
-                }
-
 
             } else {
                 FToast.error(mYeJiYueFanBean.getInfo());
@@ -284,7 +287,9 @@ public class AchievementActivity extends BaseActivity {
                     String result = body.string();
                     MonBackBean commitOrder = new Gson().fromJson(result, MonBackBean.class);
                     if (commitOrder.getCode() == 1) {
-
+                        ViewUtils.hideView(editTv);
+                        mViewModel.achievement(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2")
+                                .observe(this, mObserver);
                         FToast.success("保存地址成功");
 
                     } else {

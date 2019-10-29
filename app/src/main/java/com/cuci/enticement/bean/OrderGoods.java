@@ -32,6 +32,16 @@ public class OrderGoods implements Serializable {
 
 
     private String price_real;
+
+    public String getPrice_sales() {
+        return price_sales;
+    }
+
+    public void setPrice_sales(String price_sales) {
+        this.price_sales = price_sales;
+    }
+
+    private String price_sales;
     private String price_selling;
     private String price_market;
     private String price_express;

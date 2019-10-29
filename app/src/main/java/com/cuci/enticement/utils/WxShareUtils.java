@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Parcelable;
 
 
+
 import com.cuci.enticement.R;
 import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.Constant;
@@ -27,6 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+
+
 public class WxShareUtils {
 
     private static final String TAG = WxShareUtils.class.getSimpleName();
@@ -36,6 +39,7 @@ public class WxShareUtils {
     public static final int WX_SCENE_FAVORITE = 2;
 
     private static final int THUMB_SIZE = 150;
+    private static WxShareUtils Util;
 
     /**
      * 打开微信
@@ -288,9 +292,7 @@ public class WxShareUtils {
                 req.scene = SendMessageToWX.Req.WXSceneFavorite;
                 break;
         }
-
         BasicApp.getIWXAPI().sendReq(req);
-
     }
 
     /**
@@ -330,7 +332,6 @@ public class WxShareUtils {
 
         BasicApp.getIWXAPI().sendReq(req);
     }
-
     /**
      * 分享单张图片到微信
      *
@@ -388,7 +389,7 @@ public class WxShareUtils {
             if (paramBoolean)
                 bitmap.recycle();
             ByteArrayOutputStream localByteArrayOutputStream = new ByteArrayOutputStream();
-            localBitmap.compress(Bitmap.CompressFormat.PNG, 100,
+            localBitmap.compress(Bitmap.CompressFormat.JPEG, 100,
                     localByteArrayOutputStream);
             localBitmap.recycle();
             byte[] arrayOfByte = localByteArrayOutputStream.toByteArray();
@@ -437,6 +438,5 @@ public class WxShareUtils {
             j = bmp.getHeight();
         }
     }
-
 
 }

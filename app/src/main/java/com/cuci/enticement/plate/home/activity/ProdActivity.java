@@ -166,7 +166,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                                             miniProgramObj.webpageUrl = "https://test.enticementchina.com/pages/goods/detail?id=" + mProData.getId(); // 兼容低版本的网页链接
                                             miniProgramObj.miniprogramType = WXMiniProgramObject.MINIPTOGRAM_TYPE_RELEASE;// 正式版:0，测试版:1，体验版:2
                                             miniProgramObj.userName = "gh_f19e5dd49f49";     // 小程序原始id
-                                            miniProgramObj.path = "pages/goods/detail?g=" + mProData.getId();            //小程序页面路径；对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"
+                                            miniProgramObj.path = "pages/goods/detail?g=" + mProData.getId()+ "&p=" + mUserInfo.getPhone();            //小程序页面路径；对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"
                                             // miniProgramObj.path = "";            //小程序页面路径；对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"
                                             WXMediaMessage msg = new WXMediaMessage(miniProgramObj);
                                             msg.title = mProData.getTitle();                    // 小程序消息title

@@ -1,5 +1,6 @@
 package com.cuci.enticement.plate.home.vm;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -12,8 +13,14 @@ import com.cuci.enticement.bean.HomeDetailsBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.network.ServiceCreator;
 import com.cuci.enticement.network.api.HomeApi;
+import com.cuci.enticement.network.api.MineApi;
 import com.cuci.enticement.utils.EncryptUtils;
+import com.cuci.enticement.utils.SignUtils;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -101,6 +108,40 @@ public class HomeViewModel extends ViewModel {
                     }
                 });
         return data;
+    }
+    /**
+     * 分享海报
+     * @param from_type
+     * @param token
+     * @param mid
+     * @return
+     */
+    public MutableLiveData<Status<ResponseBody>> shareimg(String from_type, String mid, String token) {
+
+        final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
+        liveData.setValue(Status.loading(null));
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("from_type",from_type);
+        params.put("token",token);
+        params.put("mid",mid);
+        String signs = SignUtils.signParam(params);
+        mCreator.create(HomeApi.class)
+                .shareimg(from_type,mid,token,signs)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(@NonNull Call<ResponseBody> call,
+                                           @NonNull Response<ResponseBody> response) {
+                        liveData.setValue(Status.success(response.body()));
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<ResponseBody> call,
+                                          @NonNull Throwable t) {
+                        liveData.setValue(Status.error(null, t.getMessage() == null ? "网络错误" : t.getMessage()));
+                    }
+                });
+        return liveData;
+
     }
 
 
