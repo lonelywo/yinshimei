@@ -53,6 +53,7 @@ public class CashActivity extends BaseActivity {
     TextView textMingxi;
     private MineViewModel mViewModel;
     private UserInfo mUserInfo;
+    private boolean isclick=true;
 
 
     @Override
@@ -73,7 +74,7 @@ public class CashActivity extends BaseActivity {
                         .dismissOnTouchOutside(false)
                         .asCustom(new TipsPopup(CashActivity.this,
                                 "亲，确定要提现吗？","取消","确定" ,() -> {
-                            load();
+                               load();
                         }))
                         .show();
 
@@ -103,21 +104,29 @@ public class CashActivity extends BaseActivity {
             FToast.warning("请填写金额");
             return;
         }
-        mViewModel.txcommissionsq(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", meony)
-                .observe(this, mObserver);
+        if(isclick){
+            isclick=false;
+            mViewModel.txcommissionsq(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", meony)
+                    .observe(this, mObserver);
+        }
+
+
     }
 
     private Observer<Status<ResponseBody>> mObserver = status -> {
 
         switch (status.status) {
             case Status.SUCCESS:
+                isclick=true;
                 ResponseBody body = status.content;
                 opera(body);
                 break;
             case Status.ERROR:
+                isclick=true;
                 FToast.error("网络错误");
                 break;
             case Status.LOADING:
+
                 break;
         }
 
