@@ -21,6 +21,8 @@ import com.cuci.enticement.bean.MyTeamslBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.bean.Version;
+import com.cuci.enticement.event.ClickCatEvent;
+import com.cuci.enticement.event.ClickMyEvent;
 import com.cuci.enticement.event.LoginOutEvent;
 import com.cuci.enticement.event.LoginSucceedEvent;
 import com.cuci.enticement.plate.cart.fragment._CartFragment;
@@ -152,6 +154,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 mBottomLayout.setSelected(position);
+                if(position==2){
+                    EventBus.getDefault().post(new ClickCatEvent());
+                }
+                if(position==3){
+                    EventBus.getDefault().post(new ClickMyEvent());
+                }
             }
 
             @Override

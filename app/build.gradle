@@ -6,8 +6,8 @@ android {
         applicationId "com.cuci.enticement"
         minSdkVersion 22
         targetSdkVersion 29
-        versionCode 188
-        versionName "1.8.8"
+        versionCode 189
+        versionName "1.8.9"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         ndk {

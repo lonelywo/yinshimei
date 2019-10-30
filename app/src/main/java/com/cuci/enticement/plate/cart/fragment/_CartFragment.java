@@ -32,10 +32,13 @@ import com.cuci.enticement.bean.CartChange;
 import com.cuci.enticement.bean.CartDataBean;
 import com.cuci.enticement.bean.CartDelete;
 import com.cuci.enticement.bean.CartIntentInfo;
+import com.cuci.enticement.bean.DataUserInfo;
 import com.cuci.enticement.bean.OrderGoods;
 import com.cuci.enticement.bean.OrderResult;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
+import com.cuci.enticement.event.ClickCatEvent;
+import com.cuci.enticement.event.LoginOutEvent;
 import com.cuci.enticement.plate.cart.activity.OrderActivity;
 import com.cuci.enticement.plate.cart.adapter.ItemCartViewBinder;
 import com.cuci.enticement.plate.cart.vm.CartViewModel;
@@ -44,6 +47,11 @@ import com.cuci.enticement.plate.common.eventbus.CartEvent;
 import com.cuci.enticement.plate.common.popup.CartTipsPopup;
 import com.cuci.enticement.plate.common.popup.TipsPopup;
 import com.cuci.enticement.plate.home.activity.ProdActivity;
+import com.cuci.enticement.plate.home.fragment._HomeFragment;
+import com.cuci.enticement.plate.mall.fragment._MallFragment;
+import com.cuci.enticement.plate.mine.activity.AchievementActivity;
+import com.cuci.enticement.plate.mine.fragment._MineFragment;
+import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.ViewUtils;
@@ -108,6 +116,8 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
     private UserInfo mUserInfo;
     private int mPage=1;
     private int mPosition;
+    private int is_new;
+
     @Override
     protected void onLazyLoad() {
         if(mUserInfo==null){
@@ -666,6 +676,48 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
             }
         }
     };
+    //请求当前用户信息
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onClickCatEvent(ClickCatEvent event) {
+        if(mUserInfo!=null){
+          /*  MineViewModel mViewModel1 = ViewModelProviders.of(this).get(MineViewModel.class);
+            mViewModel1.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);*/
+        }
 
+        }
+    private Observer<Status<ResponseBody>> mdataObserver = status -> {
+
+        switch (status.status) {
+            case Status.SUCCESS:
+
+                ResponseBody body = status.content;
+                dataUserinfo(body);
+                break;
+            case Status.ERROR:
+
+                FToast.error("网络错误");
+                break;
+            case Status.LOADING:
+
+                break;
+        }
+
+    };
+
+    private void dataUserinfo(ResponseBody body) {
+        try {
+            String b = body.string();
+            DataUserInfo mDataUserInfo = new Gson().fromJson(b, DataUserInfo.class);
+            if (mDataUserInfo.getCode() == 1) {
+                 is_new = mDataUserInfo.getData().getIs_new();
+            } else {
+
+                FToast.error(mDataUserInfo.getInfo());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            FToast.error("数据错误");
+        }
+    }
 
 }

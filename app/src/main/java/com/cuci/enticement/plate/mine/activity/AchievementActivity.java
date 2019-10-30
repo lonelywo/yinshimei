@@ -90,6 +90,7 @@ public class AchievementActivity extends BaseActivity {
     private String express_no;
     private String express_code;
     private String express_company_title;
+    private int num=1;
 
     @Override
     public int getLayoutId() {
@@ -165,10 +166,17 @@ public class AchievementActivity extends BaseActivity {
                 webGuize.loadDataWithBaseURL(null,
                         getHtmlData(htmlContent), "text/html", "utf-8", null);
                 if (!TextUtils.isEmpty(item.getAmount())) {
+
                     textWeidabiao.setText(item.getAmount());
+                    ViewUtils.showView(conDibu);
+                }else {
+                    textWeidabiao.setText("未达标");
+                    ViewUtils.hideView(conDibu);
                 }
                 if (!TextUtils.isEmpty(item.getGift_name())) {
                     textWeidabiao1.setText(item.getGift_name());
+                }else {
+                    textWeidabiao1.setText("-");
                 }
                 if (item.getStatus().equals("2")) {
                     textWeidabiao2.setText("已发放");
@@ -186,7 +194,7 @@ public class AchievementActivity extends BaseActivity {
                     ViewUtils.hideView(textDizi);
                     ViewUtils.showView(textAddress);
                     textAddress.setText(adress);
-
+                    num=2;
                 } else {
                     textWeidabiao2.setText("-");
                     ViewUtils.hideView(textShanchu);
@@ -195,7 +203,7 @@ public class AchievementActivity extends BaseActivity {
                         ViewUtils.hideView(textAddress);
                         textAddress.setText("");
                         ViewUtils.showView(editTv);
-
+                        num=1;
                     } else {
                         StringBuilder sb = new StringBuilder();
                         sb.append(item.getAddress().getName()).append(" ")
@@ -209,7 +217,7 @@ public class AchievementActivity extends BaseActivity {
                         ViewUtils.showView(textAddress);
                         textAddress.setText(adress);
                         ViewUtils.hideView(editTv);
-                     
+                        num=2;
                     }
                 }
 
@@ -235,9 +243,12 @@ public class AchievementActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.text_dizi:
             case R.id.text_address:
-                Intent intent = new Intent(AchievementActivity.this, RecAddressActivity.class);
-                intent.putExtra("code", 100);
-                startActivityForResult(intent, 100);
+                if(num==1){
+                    Intent intent = new Intent(AchievementActivity.this, RecAddressActivity.class);
+                    intent.putExtra("code", 100);
+                    startActivityForResult(intent, 100);
+                }
+
                 break;
             case R.id.text_shanchu:
                 //查看物流  intent
@@ -305,6 +316,7 @@ public class AchievementActivity extends BaseActivity {
                         ViewUtils.hideView(editTv);
                         mViewModel.achievement(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2")
                                 .observe(this, mObserver);
+                        num=2;
                         FToast.success("保存地址成功");
 
                     } else {

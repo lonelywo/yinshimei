@@ -36,6 +36,7 @@ import com.cuci.enticement.bean.HxBean;
 import com.cuci.enticement.bean.OrderStatistics;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
+import com.cuci.enticement.event.ClickMyEvent;
 import com.cuci.enticement.event.LoginOutEvent;
 import com.cuci.enticement.plate.common.LoginActivity;
 import com.cuci.enticement.plate.common.popup.TipsPopup;
@@ -64,6 +65,8 @@ import com.hyphenate.helpdesk.easeui.util.IntentBuilder;
 import com.lxj.xpopup.XPopup;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
 import java.util.Date;
@@ -214,7 +217,7 @@ public class _MineFragment extends BaseFragment {
         intentFilter.addAction(ACTION_REFRESH_STATUS);
         intentFilter.addAction(ACTION_REFRESH_HX);
         mBroadcastManager.registerReceiver(mReceiver, intentFilter);
-
+        EventBus.getDefault().register(this);
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
         if (mUserInfo == null) {
             conYingchang.setVisibility(View.GONE);
@@ -378,7 +381,7 @@ public class _MineFragment extends BaseFragment {
                     orderViewModel.getStatisticsOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()))
                             .observe(mActivity, mTotalOrderObserver);
                     //刷新当前用户信息
-                    mViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(mActivity, mdataObserver);
+                   // mViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(mActivity, mdataObserver);
                 } else if (ACTION_REFRESH_HX.equals(intent.getAction())) {
                     int data = intent.getIntExtra("data", 0);
                     Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -672,6 +675,7 @@ public class _MineFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
         mBroadcastManager.unregisterReceiver(mReceiver);
     }
 
@@ -850,6 +854,11 @@ public class _MineFragment extends BaseFragment {
             }
         }
     };
-
-
+    //请求当前用户信息
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onClickMyEvent(ClickMyEvent event) {
+        if (mUserInfo != null) {
+            mViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);
+        }
+    }
 }
