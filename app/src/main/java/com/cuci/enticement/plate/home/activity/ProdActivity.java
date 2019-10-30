@@ -156,6 +156,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
             @Override
             public void onClick(View view) {
                 if (AppUtils.isAllowPermission(ProdActivity.this)) {
+                    mUserInfo = SharedPrefUtils.get(UserInfo.class);
                     if (mProData != null) {
                     if (mProData.getVip_mod() != 1) {
                         BasicApp.getAppExecutors()
