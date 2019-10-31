@@ -303,8 +303,11 @@ public class CenterShareAppPopup extends CenterPopupView {
               if (!appDir.exists()) {
                       appDir.mkdir();
                   }
-              String fileName = System.currentTimeMillis() + ".jpg";
+              String fileName =  "poster.jpg";
               File file = new File(appDir, fileName);
+              if(file.exists()){
+                  return storePath + "/" + fileName;
+              }
               try {
                       FileOutputStream fos = new FileOutputStream(file);
                       //通过io流的方式来压缩保存图片
