@@ -312,7 +312,9 @@ public class ZengAddressActivity extends BaseActivity {
             mPicker.showCityPicker();
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             View v = getCurrentFocus();
-            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);//从控件所在的窗口中隐藏
+            if(v!=null){
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);//从控件所在的窗口中隐藏
+            }
       /*  } else {
             FToast.warning("城市数据正在解析，请稍等。");
         }*/
