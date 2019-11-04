@@ -13,6 +13,8 @@ import com.cuci.enticement.base.BaseFragment;
 import com.cuci.enticement.bean.MallSourceBean;
 import com.cuci.enticement.bean.Status;
 
+import com.cuci.enticement.event.ClickMallpopEvent;
+import com.cuci.enticement.event.ClickMyEvent;
 import com.cuci.enticement.plate.common.eventbus.MessageEvent;
 import com.cuci.enticement.plate.common.eventbus.MessageEvent1;
 import com.cuci.enticement.plate.mall.adapter.NineAdapter;
@@ -35,6 +37,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 
@@ -85,7 +89,7 @@ public class _MallFragment01 extends BaseFragment implements OnRefreshLoadMoreLi
         mViewModel = ViewModelProviders.of(this).get(MallViewModel.class);
         Bundle bundle = getArguments();
         mtype = bundle.getString("type");
-
+        EventBus.getDefault().register(this);
         CustomRefreshHeader header = new CustomRefreshHeader(mActivity);
         header.setBackground(0xFFF3F4F6);
         //mRefreshLayout.setRefreshHeader(header);
@@ -231,5 +235,16 @@ public class _MallFragment01 extends BaseFragment implements OnRefreshLoadMoreLi
     @Override
     public void onItemClick(View view, int position) {
 
+    }
+    //滑动到中间加载更多
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onClickMyEvent(ClickMallpopEvent event) {
+            mViewModel.getSource01(mtype, String.valueOf(page),PAGE_SIZE,
+                    Status.LOAD_MORE).observe(this, mObserver);
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

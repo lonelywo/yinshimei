@@ -76,7 +76,7 @@ public class NineAdapter extends RecyclerView.Adapter<NineAdapter.ViewHolder> {
              return;
          }
         MallSourceBean.DataBean.ListBean bean = mList.get(position);
-
+        String type = bean.getType();
         ImageLoader.loadPlaceholder(bean.getImage()+"-dealwith",holder.img_source);
         List<String>  list=new  ArrayList<String>();
         for (int i = 0; i <mList.size() ; i++) {
@@ -88,7 +88,7 @@ public class NineAdapter extends RecyclerView.Adapter<NineAdapter.ViewHolder> {
 
                 new XPopup.Builder(mcontext)
                         .dismissOnTouchOutside(false)
-                        .asCustom(new ImageViewerPopup(mcontext,list,position))
+                        .asCustom(new ImageViewerPopup(mcontext,list,position,type))
                         .show();
             }
         });

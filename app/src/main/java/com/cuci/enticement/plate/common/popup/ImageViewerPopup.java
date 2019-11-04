@@ -5,14 +5,26 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
 
+import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
+import com.cuci.enticement.bean.MallSourceBean;
+import com.cuci.enticement.bean.Status;
+import com.cuci.enticement.event.ClickMallpopEvent;
 import com.cuci.enticement.plate.common.adapter.ImageViewerPagerAdapter;
+import com.cuci.enticement.plate.mall.vm.MallViewModel;
+import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.widget.ViewPagerFixed;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.impl.FullScreenPopupView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -32,14 +44,18 @@ public class ImageViewerPopup extends FullScreenPopupView {
     private List<String> mList;
     private int mPosition;
     private Context mContext;
+    private int page=1;
+    private String mtype;
+    private boolean move=true;
+    private ImageViewerPagerAdapter pagerAdapter;
 
 
-
-    public ImageViewerPopup(@NonNull Context context, List<String> list, int position) {
+    public ImageViewerPopup(@NonNull Context context, List<String> list, int position,String type) {
         super(context);
         mContext = context;
         mPosition = position;
         mList = list;
+        mtype = type;
     }
 
     @Override
@@ -52,7 +68,7 @@ public class ImageViewerPopup extends FullScreenPopupView {
         super.onCreate();
         ButterKnife.bind(this);
 
-        ImageViewerPagerAdapter pagerAdapter = new ImageViewerPagerAdapter(mContext, mList);
+         pagerAdapter = new ImageViewerPagerAdapter(mContext, mList);
         mViewPager.setAdapter(pagerAdapter);
         mViewPager.setCurrentItem(mPosition);
         mTv.setText((mPosition + 1) + "/" + mList.size());
@@ -61,6 +77,13 @@ public class ImageViewerPopup extends FullScreenPopupView {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 mTv.setText((position + 1) + "/" + mList.size());
+                if(position==mList.size()/2&&move){
+                    move=false;
+                   // EventBus.getDefault().post(new ClickMallpopEvent());
+                    MallViewModel  mViewModel = ViewModelProviders.of((FragmentActivity) mContext).get(MallViewModel.class);
+                    mViewModel.getSource01(mtype, ""+page,"20",
+                            Status.LOAD_MORE).observe((LifecycleOwner) mContext, mObserver);
+                }
             }
 
             @Override
@@ -96,5 +119,63 @@ public class ImageViewerPopup extends FullScreenPopupView {
                         DownloadPopup.DATA_TYPE_IMAGE, false))
                 .show();
     }
+
+
+    private Observer<Status<MallSourceBean>> mObserver = status -> {
+        switch (status.status) {
+            case Status.SUCCESS:
+
+                MallSourceBean item = status.content;
+
+                if (item.getCode() == 1) {
+
+                    List<MallSourceBean.DataBean.ListBean> items = item.getData().getList();
+                    if (items == null || items.size() == 0) {
+                        if (status.loadType == Status.LOAD_REFRESH) {
+
+                        } else {
+
+                        }
+
+                        return;
+                    }
+
+                    page = status.content.getData().getPage().getCurrent()+1;
+
+                    if (status.loadType == Status.LOAD_REFRESH) {
+
+                    } else {
+                        for (int i = 0; i <items.size() ; i++) {
+                            mList.add(items.get(i).getImage());
+                        }
+                        pagerAdapter = new ImageViewerPagerAdapter(mContext,mList );
+                        mViewPager.setAdapter(pagerAdapter);
+                        pagerAdapter.notifyDataSetChanged();
+                        mViewPager.setCurrentItem(mPosition);
+                        move=true;
+
+                    }
+
+                } else {
+                    if (status.loadType == Status.LOAD_MORE) {
+
+                    } else {
+
+                    }
+                    FToast.error(item.getInfo());
+                }
+                break;
+            case Status.LOADING:
+
+                break;
+            case Status.ERROR:
+                move=true;
+                FToast.error("网络请求错误");
+                if (status.loadType == Status.LOAD_MORE) {
+                } else {
+                }
+                break;
+        }
+    };
 
 }
