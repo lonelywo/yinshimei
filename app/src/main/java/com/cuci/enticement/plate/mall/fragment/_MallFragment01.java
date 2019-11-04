@@ -158,7 +158,7 @@ public class _MallFragment01 extends BaseFragment implements OnRefreshLoadMoreLi
 
                 if (item.getCode() == 1) {
 
-                    List<MallSourceBean.DataBean.ListBean> items = item.getData().getList();
+                    List<MallSourceBean.DataBean> items = (List<MallSourceBean.DataBean>) item.getData();
                     if (items == null || items.size() == 0) {
                         if (status.loadType == Status.LOAD_REFRESH) {
 

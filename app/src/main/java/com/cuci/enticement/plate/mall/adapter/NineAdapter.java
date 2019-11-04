@@ -27,7 +27,7 @@ public class NineAdapter extends RecyclerView.Adapter<NineAdapter.ViewHolder> {
     private static final int VIEW_TYPE_H = 2;
 
 
-    List<MallSourceBean.DataBean.ListBean> mList;
+    List<MallSourceBean.DataBean> mList;
 
     private GridLayoutManager mLayoutManager;
     private Context mcontext;
@@ -36,18 +36,18 @@ public class NineAdapter extends RecyclerView.Adapter<NineAdapter.ViewHolder> {
         mcontext = context;
     }
 
-    public void setList(List<MallSourceBean.DataBean.ListBean> list) {
+    public void setList(List<MallSourceBean.DataBean> list) {
         mList = list;
     }
 
-    public void addList(List<MallSourceBean.DataBean.ListBean> list) {
+    public void addList(List<MallSourceBean.DataBean> list) {
         int oldCount = mList.size();
         mList.addAll(list);
         int newCount = mList.size();
         notifyItemRangeInserted(oldCount, newCount);
     }
 
-    public List<MallSourceBean.DataBean.ListBean> getList() {
+    public List<MallSourceBean.DataBean> getList() {
         return mList;
     }
 
@@ -75,12 +75,13 @@ public class NineAdapter extends RecyclerView.Adapter<NineAdapter.ViewHolder> {
          if(mList==null){
              return;
          }
-        MallSourceBean.DataBean.ListBean bean = mList.get(position);
-        String type = bean.getType();
-        ImageLoader.loadPlaceholder(bean.getImage()+"-dealwith",holder.img_source);
+        MallSourceBean.DataBean bean = mList.get(position);
+        String type = bean.getList().get(position).getType();
+        int total = bean.getPage().getTotal();
+        ImageLoader.loadPlaceholder( bean.getList().get(position).getImage()+"-dealwith",holder.img_source);
         List<String>  list=new  ArrayList<String>();
-        for (int i = 0; i <mList.size() ; i++) {
-            list.add(mList.get(i).getImage());
+        for (int i = 0; i <bean.getList().size() ; i++) {
+            list.add(bean.getList().get(i).getImage());
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,7 +89,7 @@ public class NineAdapter extends RecyclerView.Adapter<NineAdapter.ViewHolder> {
 
                 new XPopup.Builder(mcontext)
                         .dismissOnTouchOutside(false)
-                        .asCustom(new ImageViewerPopup(mcontext,list,position,type))
+                        .asCustom(new ImageViewerPopup(mcontext,list,position,type,total))
                         .show();
             }
         });

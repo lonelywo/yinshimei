@@ -45,17 +45,19 @@ public class ImageViewerPopup extends FullScreenPopupView {
     private int mPosition;
     private Context mContext;
     private int page=1;
+    private int mtotal;
     private String mtype;
     private boolean move=true;
     private ImageViewerPagerAdapter pagerAdapter;
 
 
-    public ImageViewerPopup(@NonNull Context context, List<String> list, int position,String type) {
+    public ImageViewerPopup(@NonNull Context context, List<String> list, int position,String type,int total) {
         super(context);
         mContext = context;
         mPosition = position;
         mList = list;
         mtype = type;
+        mtotal = total;
     }
 
     @Override
@@ -71,13 +73,13 @@ public class ImageViewerPopup extends FullScreenPopupView {
          pagerAdapter = new ImageViewerPagerAdapter(mContext, mList);
         mViewPager.setAdapter(pagerAdapter);
         mViewPager.setCurrentItem(mPosition);
-        mTv.setText((mPosition + 1) + "/" + mList.size());
+        mTv.setText((mPosition + 1) + "/" + mtotal);
 
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                mTv.setText((position + 1) + "/" + mList.size());
-                if(position==mList.size()/2&&move){
+                mTv.setText((position + 1) + "/" +mtotal);
+                if(position==mList.size()-1&&move){
                     move=false;
                    // EventBus.getDefault().post(new ClickMallpopEvent());
                     MallViewModel  mViewModel = ViewModelProviders.of((FragmentActivity) mContext).get(MallViewModel.class);
@@ -148,8 +150,8 @@ public class ImageViewerPopup extends FullScreenPopupView {
                         for (int i = 0; i <items.size() ; i++) {
                             mList.add(items.get(i).getImage());
                         }
-                        pagerAdapter = new ImageViewerPagerAdapter(mContext,mList );
-                        mViewPager.setAdapter(pagerAdapter);
+                       /* pagerAdapter = new ImageViewerPagerAdapter(mContext,mList );
+                        mViewPager.setAdapter(pagerAdapter);*/
                         pagerAdapter.notifyDataSetChanged();
                         mViewPager.setCurrentItem(mPosition);
                         move=true;
