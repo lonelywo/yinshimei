@@ -114,16 +114,16 @@ public class _MallFragment01 extends BaseFragment implements OnRefreshLoadMoreLi
                 super.onScrollStateChanged(recyclerView, newState);
                 switch (newState) {
                     case RecyclerView.SCROLL_STATE_IDLE:
-                        Glide.with(BasicApp.getContext()).resumeRequests();
+                      //  Glide.with(BasicApp.getContext()).resumeRequests();
                         if (mLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
                             ViewUtils.hideView(mIvTop);
                         }
                         break;
                     case RecyclerView.SCROLL_STATE_DRAGGING:
-                        Glide.with(BasicApp.getContext()).pauseRequests();
+                      //  Glide.with(BasicApp.getContext()).pauseRequests();
                         break;
                     case RecyclerView.SCROLL_STATE_SETTLING:
-                        Glide.with(BasicApp.getContext()).resumeRequests();
+                      //  Glide.with(BasicApp.getContext()).resumeRequests();
                         break;
                 }
             }

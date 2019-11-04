@@ -60,6 +60,12 @@ import com.cuci.enticement.utils.RxImageLoader;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.ViewUtils;
 import com.google.gson.Gson;
+import com.lljjcoder.Interface.OnCityItemClickListener;
+import com.lljjcoder.bean.CityBean;
+import com.lljjcoder.bean.DistrictBean;
+import com.lljjcoder.bean.ProvinceBean;
+import com.lljjcoder.citywheel.CityConfig;
+import com.lljjcoder.style.citypickerview.CityPickerView;
 import com.lxj.xpopup.XPopup;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 
@@ -117,6 +123,8 @@ public class InfoActivity extends BaseActivity {
     private  UserInfo mUserInfo;
     private CommonViewModel mViewModel;
     private String mImagePath;
+    private CityPickerView mPicker;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_info;
@@ -169,8 +177,47 @@ public class InfoActivity extends BaseActivity {
         RxPicker.init(new RxImageLoader());
 
         InfoActivityPermissionsDispatcher.needsPermissionWithPermissionCheck(this);
-        initJsonData();
+        //initJsonData();
+        mPicker = new CityPickerView();
+        mPicker.init(this);
+        CityConfig cityConfig = new CityConfig.Builder()
+                .cancelTextSize(20)//取消按钮文字大小
+                .confirmTextSize(20)//确认按钮文字大小
+                .titleTextSize(20)
+                .setLineColor("#000000")//中间横线的颜色
+                .setCustomItemLayout(R.layout.custom_picker_text)//自定义item的布局
+                .setCustomItemTextViewId(R.id.item_city_name_tv)//自定义item布局里面的textViewid
+                .confirTextColor("#BF9964")//确认按钮文字颜色
+                .province("")//默认显示的省份
+                .city("")//默认显示省份下面的城市
+                .district("")//默认显示省市下面的区县数据
+                .provinceCyclic(false)//省份滚轮是否可以循环滚动
+                .cityCyclic(false)//城市滚轮是否可以循环滚动
+                .districtCyclic(false)//区县滚轮是否循环滚动
+                .setShowGAT(true)//是否显示港澳台数据，默认不显示
+                .build();
 
+        mPicker.setConfig(cityConfig);
+
+        mPicker.setOnCityItemClickListener(new OnCityItemClickListener() {
+            @Override
+            public void onSelected(ProvinceBean province, CityBean city, DistrictBean district) {
+                mProvince = province.getName();
+                mCity = city.getName();
+                mArea = district.getName();
+                mAddress = province.getName() + " " + city.getName() + " " + district.getName();
+                mPostType=CHANGE_ADDRESS;
+                mViewModel.modifyInfo(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),mUserInfo.getOpenid(),
+                        mUserInfo.getHeadimg(),"",mUserInfo.getNickname(),mUserInfo.getSex(),mUserInfo.getUnionid()
+                        ,mProvince,mCity,mArea)
+                        .observe(InfoActivity.this, mObserver);
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+        });
 
     }
 
@@ -220,14 +267,18 @@ public class InfoActivity extends BaseActivity {
                         .show();
                 break;
             case R.id.ll_address:
-                if (isLoaded) {
+              /*  if (isLoaded) {
                     showPickerView();
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     View v = getCurrentFocus();
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);//从控件所在的窗口中隐藏
                 } else {
                     FToast.warning("城市数据正在解析，请稍等。");
-                }
+                }*/
+                mPicker.showCityPicker();
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                View v = getCurrentFocus();
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);//从控件所在的窗口中隐藏
                 break;
         }
     }

@@ -158,10 +158,9 @@
         android:layout_height="40dp"
         android:text="请选择 省份 市县 区域"
         android:textSize="15sp"
-        android:layout_marginRight="20dp"
         app:layout_constraintStart_toStartOf="@+id/edt_name"
         app:layout_constraintTop_toBottomOf="@+id/viem_line1"
-       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintEnd_toStartOf="@+id/img_youjiantou"
         app:layout_constraintBottom_toTopOf="@+id/view_line"
         android:gravity="center_vertical"
         />

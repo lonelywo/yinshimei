@@ -78,13 +78,14 @@ public class NineAdapter extends RecyclerView.Adapter<NineAdapter.ViewHolder> {
         MallSourceBean.DataBean.ListBean bean = mList.get(position);
 
         ImageLoader.loadPlaceholder(bean.getImage()+"-dealwith",holder.img_source);
+        List<String>  list=new  ArrayList<String>();
+        for (int i = 0; i <mList.size() ; i++) {
+            list.add(mList.get(i).getImage());
+        }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                List<String>  list=new  ArrayList<String>();
-                for (int i = 0; i <mList.size() ; i++) {
-                    list.add(mList.get(i).getImage());
-                }
+
                 new XPopup.Builder(mcontext)
                         .dismissOnTouchOutside(false)
                         .asCustom(new ImageViewerPopup(mcontext,list,position))
