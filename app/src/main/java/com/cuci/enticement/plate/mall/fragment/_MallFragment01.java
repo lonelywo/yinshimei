@@ -17,16 +17,19 @@ import com.cuci.enticement.event.ClickMallpopEvent;
 import com.cuci.enticement.event.ClickMyEvent;
 import com.cuci.enticement.plate.common.eventbus.MessageEvent;
 import com.cuci.enticement.plate.common.eventbus.MessageEvent1;
+import com.cuci.enticement.plate.common.popup.ImageViewerPopup;
 import com.cuci.enticement.plate.mall.adapter.NineAdapter;
 import com.cuci.enticement.plate.mall.vm.MallViewModel;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.ViewUtils;
 import com.cuci.enticement.widget.CustomRefreshHeader;
 import com.cuci.enticement.widget.GridItemDecoration;
+import com.lxj.xpopup.XPopup;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -63,7 +66,7 @@ public class _MallFragment01 extends BaseFragment implements OnRefreshLoadMoreLi
     ImageView mIvTop;
     private GridItemDecoration mDecoration;
     private GridLayoutManager mLayoutManager;
-
+    private int total;
     public static _MallFragment01 newInstance(String type) {
         Bundle args = new Bundle();
         args.putString("type", type);
@@ -150,6 +153,8 @@ public class _MallFragment01 extends BaseFragment implements OnRefreshLoadMoreLi
 
         mViewModel.getSource01(mtype,"1",PAGE_SIZE,Status.LOAD_REFRESH).observe(this, mObserver);
     }
+
+
     private Observer<Status<MallSourceBean>> mObserver = status -> {
         switch (status.status) {
             case Status.SUCCESS:
@@ -158,7 +163,7 @@ public class _MallFragment01 extends BaseFragment implements OnRefreshLoadMoreLi
 
                 if (item.getCode() == 1) {
 
-                    List<MallSourceBean.DataBean> items = (List<MallSourceBean.DataBean>) item.getData();
+                    List<MallSourceBean.DataBean.ListBean> items = item.getData().getList();
                     if (items == null || items.size() == 0) {
                         if (status.loadType == Status.LOAD_REFRESH) {
 
@@ -170,7 +175,7 @@ public class _MallFragment01 extends BaseFragment implements OnRefreshLoadMoreLi
 
                         return;
                     }
-
+                     total = item.getData().getPage().getTotal();
                     page = status.content.getData().getPage().getCurrent()+1;
                     mCanLoadMore = true;
 
@@ -230,12 +235,10 @@ public class _MallFragment01 extends BaseFragment implements OnRefreshLoadMoreLi
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         load();
-    }
-
-    @Override
-    public void onItemClick(View view, int position) {
 
     }
+
+
     //滑动到中间加载更多
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onClickMyEvent(ClickMallpopEvent event) {
@@ -246,5 +249,19 @@ public class _MallFragment01 extends BaseFragment implements OnRefreshLoadMoreLi
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+
+
+    @Override
+    public void onItemClick(List<MallSourceBean.DataBean.ListBean> mList,int position) {
+        String type = mList.get(position).getType();
+        List<String>  list=new ArrayList<String>();
+        for (int i = 0; i <mList.size() ; i++) {
+            list.add(mList.get(i).getImage());
+        }
+        new XPopup.Builder(mActivity)
+                .dismissOnTouchOutside(false)
+                .asCustom(new ImageViewerPopup(mActivity,list,position,type,page,total))
+                .show();
     }
 }

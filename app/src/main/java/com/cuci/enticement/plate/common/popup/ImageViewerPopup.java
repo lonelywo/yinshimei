@@ -44,19 +44,20 @@ public class ImageViewerPopup extends FullScreenPopupView {
     private List<String> mList;
     private int mPosition;
     private Context mContext;
-    private int page=1;
+    private int mpage;
     private int mtotal;
     private String mtype;
     private boolean move=true;
     private ImageViewerPagerAdapter pagerAdapter;
 
 
-    public ImageViewerPopup(@NonNull Context context, List<String> list, int position,String type,int total) {
+    public ImageViewerPopup(@NonNull Context context, List<String> list, int position,String type,int page,int total) {
         super(context);
         mContext = context;
         mPosition = position;
         mList = list;
         mtype = type;
+        mpage = page;
         mtotal = total;
     }
 
@@ -73,17 +74,17 @@ public class ImageViewerPopup extends FullScreenPopupView {
          pagerAdapter = new ImageViewerPagerAdapter(mContext, mList);
         mViewPager.setAdapter(pagerAdapter);
         mViewPager.setCurrentItem(mPosition);
-        mTv.setText((mPosition + 1) + "/" + mtotal);
+        mTv.setText((mPosition + 1) + "/" +mtotal);
 
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 mTv.setText((position + 1) + "/" +mtotal);
-                if(position==mList.size()-1&&move){
+                if(position==mList.size()-3&&move){
                     move=false;
                    // EventBus.getDefault().post(new ClickMallpopEvent());
                     MallViewModel  mViewModel = ViewModelProviders.of((FragmentActivity) mContext).get(MallViewModel.class);
-                    mViewModel.getSource01(mtype, ""+page,"20",
+                    mViewModel.getSource01(mtype, ""+mpage,"20",
                             Status.LOAD_MORE).observe((LifecycleOwner) mContext, mObserver);
                 }
             }
@@ -142,7 +143,7 @@ public class ImageViewerPopup extends FullScreenPopupView {
                         return;
                     }
 
-                    page = status.content.getData().getPage().getCurrent()+1;
+                    mpage = status.content.getData().getPage().getCurrent()+1;
 
                     if (status.loadType == Status.LOAD_REFRESH) {
 

@@ -23,6 +23,7 @@ import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.plate.common.eventbus.MessageEvent;
 import com.cuci.enticement.plate.common.eventbus.MessageEvent1;
+import com.cuci.enticement.plate.common.popup.ImageViewerPopup;
 import com.cuci.enticement.plate.mall.adapter.NineAdapter;
 import com.cuci.enticement.plate.mall.vm.MallViewModel;
 import com.cuci.enticement.utils.FToast;
@@ -30,6 +31,7 @@ import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.ViewUtils;
 import com.cuci.enticement.widget.CustomRefreshHeader;
 import com.cuci.enticement.widget.GridItemDecoration;
+import com.lxj.xpopup.XPopup;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
@@ -38,13 +40,14 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class YuLanActivity extends BaseActivity implements OnRefreshLoadMoreListener {
+public class YuLanActivity extends BaseActivity implements OnRefreshLoadMoreListener,NineAdapter.OnItemClickListener {
     @BindView(R.id.img_back)
     ImageView imgBack;
     @BindView(R.id.text_biaoti)
@@ -65,7 +68,7 @@ public class YuLanActivity extends BaseActivity implements OnRefreshLoadMoreList
     private boolean mCanLoadMore=true;
     private int page=1;
     private String type;
-
+    private int total;
     @Override
     public int getLayoutId() {
         return R.layout.fragment_source02;
@@ -186,6 +189,7 @@ public class YuLanActivity extends BaseActivity implements OnRefreshLoadMoreList
         mViewModel.getSource02(type,"1",PAGE_SIZE, Status.LOAD_REFRESH).observe(this, mObserver);
     }
 
+
     private Observer<Status<MallSourceBean>> mObserver = status -> {
         switch (status.status) {
             case Status.SUCCESS:
@@ -206,7 +210,7 @@ public class YuLanActivity extends BaseActivity implements OnRefreshLoadMoreList
 
                         return;
                     }
-
+                    total = item.getData().getPage().getTotal();
                     page = status.content.getData().getPage().getCurrent()+1;
                     mCanLoadMore = true;
 
@@ -268,5 +272,18 @@ public class YuLanActivity extends BaseActivity implements OnRefreshLoadMoreList
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         load();
+    }
+
+    @Override
+    public void onItemClick(List<MallSourceBean.DataBean.ListBean> mList, int position) {
+        String type = mList.get(position).getType();
+        List<String>  list=new ArrayList<String>();
+        for (int i = 0; i <mList.size() ; i++) {
+            list.add(mList.get(i).getImage());
+        }
+        new XPopup.Builder(this)
+                .dismissOnTouchOutside(false)
+                .asCustom(new ImageViewerPopup(this,list,position,type,page,total))
+                .show();
     }
 }

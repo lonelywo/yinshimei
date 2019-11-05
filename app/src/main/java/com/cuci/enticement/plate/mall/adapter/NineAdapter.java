@@ -27,7 +27,7 @@ public class NineAdapter extends RecyclerView.Adapter<NineAdapter.ViewHolder> {
     private static final int VIEW_TYPE_H = 2;
 
 
-    List<MallSourceBean.DataBean> mList;
+    List<MallSourceBean.DataBean.ListBean> mList;
 
     private GridLayoutManager mLayoutManager;
     private Context mcontext;
@@ -36,18 +36,18 @@ public class NineAdapter extends RecyclerView.Adapter<NineAdapter.ViewHolder> {
         mcontext = context;
     }
 
-    public void setList(List<MallSourceBean.DataBean> list) {
+    public void setList(List<MallSourceBean.DataBean.ListBean> list) {
         mList = list;
     }
 
-    public void addList(List<MallSourceBean.DataBean> list) {
+    public void addList(List<MallSourceBean.DataBean.ListBean> list) {
         int oldCount = mList.size();
         mList.addAll(list);
         int newCount = mList.size();
         notifyItemRangeInserted(oldCount, newCount);
     }
 
-    public List<MallSourceBean.DataBean> getList() {
+    public List<MallSourceBean.DataBean.ListBean> getList() {
         return mList;
     }
 
@@ -75,22 +75,17 @@ public class NineAdapter extends RecyclerView.Adapter<NineAdapter.ViewHolder> {
          if(mList==null){
              return;
          }
-        MallSourceBean.DataBean bean = mList.get(position);
-        String type = bean.getList().get(position).getType();
-        int total = bean.getPage().getTotal();
-        ImageLoader.loadPlaceholder( bean.getList().get(position).getImage()+"-dealwith",holder.img_source);
-        List<String>  list=new  ArrayList<String>();
-        for (int i = 0; i <bean.getList().size() ; i++) {
-            list.add(bean.getList().get(i).getImage());
-        }
+        MallSourceBean.DataBean.ListBean bean = mList.get(position);
+        String type = bean.getType();
+        ImageLoader.loadPlaceholder(bean.getImage()+"-dealwith",holder.img_source);
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (mOnItemClickListener != null) {
+                    mOnItemClickListener.onItemClick(mList,position);
+                }
 
-                new XPopup.Builder(mcontext)
-                        .dismissOnTouchOutside(false)
-                        .asCustom(new ImageViewerPopup(mcontext,list,position,type,total))
-                        .show();
             }
         });
 
@@ -122,16 +117,15 @@ public class NineAdapter extends RecyclerView.Adapter<NineAdapter.ViewHolder> {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
-            itemView.setOnClickListener(v -> {
-                if (mOnItemClickListener != null) {
-                    mOnItemClickListener.onItemClick(v, getAdapterPosition());
-                }
-            });
+           /* itemView.setOnClickListener(v -> {
+
+            });*/
         }
     }
 
     public interface OnItemClickListener {
-        void onItemClick(View view, int position);
+        void onItemClick( List<MallSourceBean.DataBean.ListBean> mList,int position);
+
     }
 
     private OnItemClickListener mOnItemClickListener;
