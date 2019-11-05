@@ -117,9 +117,11 @@ public class NineAdapter extends RecyclerView.Adapter<NineAdapter.ViewHolder> {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
-           /* itemView.setOnClickListener(v -> {
-
-            });*/
+            itemView.setOnClickListener(v -> {
+               if (mOnItemClickListener != null) {
+                    mOnItemClickListener.onItemClick(mList,1);
+                }
+            });
         }
     }
 

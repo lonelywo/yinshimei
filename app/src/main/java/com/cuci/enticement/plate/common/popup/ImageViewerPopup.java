@@ -47,11 +47,12 @@ public class ImageViewerPopup extends FullScreenPopupView {
     private int mpage;
     private int mtotal;
     private String mtype;
+    private String mPAGE_SIZE;
     private boolean move=true;
     private ImageViewerPagerAdapter pagerAdapter;
 
 
-    public ImageViewerPopup(@NonNull Context context, List<String> list, int position,String type,int page,int total) {
+    public ImageViewerPopup(@NonNull Context context, List<String> list, int position,String type,int page,int total,String PAGE_SIZE) {
         super(context);
         mContext = context;
         mPosition = position;
@@ -59,6 +60,7 @@ public class ImageViewerPopup extends FullScreenPopupView {
         mtype = type;
         mpage = page;
         mtotal = total;
+        mPAGE_SIZE = PAGE_SIZE;
     }
 
     @Override
@@ -84,7 +86,7 @@ public class ImageViewerPopup extends FullScreenPopupView {
                     move=false;
                    // EventBus.getDefault().post(new ClickMallpopEvent());
                     MallViewModel  mViewModel = ViewModelProviders.of((FragmentActivity) mContext).get(MallViewModel.class);
-                    mViewModel.getSource01(mtype, ""+mpage,"20",
+                    mViewModel.getSource01(mtype, ""+mpage,mPAGE_SIZE,
                             Status.LOAD_MORE).observe((LifecycleOwner) mContext, mObserver);
                 }
             }

@@ -98,6 +98,7 @@ public class YuLanActivity extends BaseActivity implements OnRefreshLoadMoreList
         // mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         mLayoutManager = new GridLayoutManager(this, 3);
         mAdapter = new NineAdapter(this,mLayoutManager);
+        mAdapter.setOnItemClickListener(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mDecoration = new GridItemDecoration(this, 3, 12, true);
@@ -116,16 +117,16 @@ public class YuLanActivity extends BaseActivity implements OnRefreshLoadMoreList
                 super.onScrollStateChanged(recyclerView, newState);
                 switch (newState) {
                     case RecyclerView.SCROLL_STATE_IDLE:
-                        Glide.with(BasicApp.getContext()).resumeRequests();
+                        //Glide.with(BasicApp.getContext()).resumeRequests();
                         if (mLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
                             ViewUtils.hideView(mIvTop);
                         }
                         break;
                     case RecyclerView.SCROLL_STATE_DRAGGING:
-                        Glide.with(BasicApp.getContext()).pauseRequests();
+                       // Glide.with(BasicApp.getContext()).pauseRequests();
                         break;
                     case RecyclerView.SCROLL_STATE_SETTLING:
-                        Glide.with(BasicApp.getContext()).resumeRequests();
+                       // Glide.with(BasicApp.getContext()).resumeRequests();
                         break;
                 }
             }
@@ -283,7 +284,7 @@ public class YuLanActivity extends BaseActivity implements OnRefreshLoadMoreList
         }
         new XPopup.Builder(this)
                 .dismissOnTouchOutside(false)
-                .asCustom(new ImageViewerPopup(this,list,position,type,page,total))
+                .asCustom(new ImageViewerPopup(this,list,position,type,page,total,PAGE_SIZE))
                 .show();
     }
 }

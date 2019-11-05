@@ -261,7 +261,7 @@ public class _MallFragment01 extends BaseFragment implements OnRefreshLoadMoreLi
         }
         new XPopup.Builder(mActivity)
                 .dismissOnTouchOutside(false)
-                .asCustom(new ImageViewerPopup(mActivity,list,position,type,page,total))
+                .asCustom(new ImageViewerPopup(mActivity,list,position,type,page,total,PAGE_SIZE))
                 .show();
     }
 }
