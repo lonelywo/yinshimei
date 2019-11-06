@@ -28,7 +28,8 @@ allprojects {
         maven { url 'https://jitpack.io' }
         //FlycoTabLayout_Lib 支持Androidx
         maven { url "https://dl.bintray.com/relish-wang/maven/" }
-
+        //个推
+        maven { url "http://mvn.gt.igexin.com/nexus/content/repositories/releases/" }
     }
 
 }

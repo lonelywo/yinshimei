@@ -9,6 +9,11 @@ android {
         versionCode 190
         versionName "1.9.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders = [
+                GETUI_APP_ID : "Cn2PZHiD5N6MpOYVrd9N95",
+                GETUI_APP_KEY : "0Ljjfxxr6276BNZEjswc95",
+                GETUI_APP_SECRET : "fMAzkvEfoO9hBnn4cmXOS7"
+        ]
 
         ndk {
             abiFilters "armeabi", "armeabi-v7a", "mips", "x86",'arm64-v8a'
@@ -144,5 +149,6 @@ dependencies {
    //环信客服SDK
    // implementation 'com.hyphenate:kefu-easeui-android:latest.release'
     api project(':kefu-easeui')
-
+   //个推
+    implementation 'com.getui:sdk:2.13.3.0'
 }

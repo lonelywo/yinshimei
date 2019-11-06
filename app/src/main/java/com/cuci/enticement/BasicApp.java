@@ -14,6 +14,8 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.bumptech.glide.Glide;
 import com.cuci.enticement.bean.WxPayBean;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
+import com.cuci.enticement.push.DemoIntentService;
+import com.cuci.enticement.push.DemoPushService;
 import com.hyphenate.chat.ChatClient;
 import com.hyphenate.chat.ChatManager;
 import com.hyphenate.chat.EMCmdMessageBody;
@@ -22,6 +24,7 @@ import com.hyphenate.helpdesk.easeui.UIProvider;
 import com.hyphenate.helpdesk.model.MessageHelper;
 import com.hyphenate.helpdesk.util.Log;
 import com.hyphenate.helpdesk.easeui.UIProvider;
+import com.igexin.sdk.PushManager;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -54,7 +57,9 @@ public class BasicApp extends Application {
         mAppExecutors = new AppExecutors();
         //数据库LitePal初始化
         LitePal.initialize(this);
-
+        //个推
+        PushManager.getInstance().initialize(this, DemoPushService.class);
+        PushManager.getInstance().registerPushIntentService(this, DemoIntentService.class);
 
         //注册微信分享，第三个参数为是否检查signature，正式发布改为true
         mIWXAPI = WXAPIFactory.createWXAPI(this, Constant.WX_APP_ID, !BuildConfig.DEBUG);
