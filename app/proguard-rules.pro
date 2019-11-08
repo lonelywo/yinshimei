@@ -47,3 +47,10 @@
 -keep class net.sourceforge.pinyin4j.**{*;}
 -keep class net.sourceforge.pinyin4j.format.**{*;}
 -keep class net.sourceforge.pinyin4j.format.exception.**{*;}
+#个推
+-dontwarn com.igexin.**
+-keep class com.igexin.** { *; }
+-keep class org.json.** { *; }
+
+-keep class android.support.v4.app.NotificationCompat { *; }
+-keep class android.support.v4.app.NotificationCompat$Builder { *; }

@@ -10,11 +10,23 @@ android {
         versionName "1.9.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [
-                GETUI_APP_ID : "Cn2PZHiD5N6MpOYVrd9N95",
-                GETUI_APP_KEY : "0Ljjfxxr6276BNZEjswc95",
-                GETUI_APP_SECRET : "fMAzkvEfoO9hBnn4cmXOS7"
-        ]
+                GETUI_APP_ID    : "Cn2PZHiD5N6MpOYVrd9N95",
+                GETUI_APP_KEY   : "0Ljjfxxr6276BNZEjswc95",
+                GETUI_APP_SECRET: "fMAzkvEfoO9hBnn4cmXOS7",
 
+                OPPO_APP_KEY   : "59pENgqeflGcSc8So8cc4oGKC",
+                OPPO_APP_SECRET  : "Faf36501249fdabd2Aa83d1De194D007",
+                VIVO_APP_ID   : "VI_APP_ID",
+                VIVO_APP_KEY  : "VI_APP_KEY",
+
+                XIAOMI_APP_ID   : "2882303761517705682",
+                XIAOMI_APP_KEY  : "5741770599682",
+
+                MEIZU_APP_ID    : "125631",
+                MEIZU_APP_KEY   : "6686ae6e47424bddbcab92c93cded167",
+
+                HUAWEI_APP_ID   : "100176753"
+        ]
         ndk {
             abiFilters "armeabi", "armeabi-v7a", "mips", "x86",'arm64-v8a'
         }
@@ -102,8 +114,8 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
     implementation 'com.github.hotchemi:permissionsdispatcher:3.2.0'
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:3.2.0'
-    implementation 'com.github.bumptech.glide:glide:4.7.1'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
     implementation 'org.litepal.android:java:3.0.0'
     //https://github.com/youth5201314/banner
@@ -147,8 +159,14 @@ dependencies {
     //支付宝
     implementation(name: 'alipaySdk-15.6.5-20190718211159-noUtdid', ext: 'aar')
    //环信客服SDK
-   // implementation 'com.hyphenate:kefu-easeui-android:latest.release'
+    // implementation 'com.hyphenate:kefu-easeui-android:latest.release'
     api project(':kefu-easeui')
    //个推
     implementation 'com.getui:sdk:2.13.3.0'
+    implementation 'com.assist:oppo:1.0.3'
+    implementation 'com.assist:vivo:1.0.3'
+    implementation 'com.getui:hwp:1.0.6'
+    implementation 'com.getui:mzp:1.0.7'
+    implementation 'com.getui:xmp:1.0.5'
+
 }
