@@ -245,7 +245,9 @@
         app:layout_constraintBottom_toBottomOf="@+id/img_shape_bai2"
         app:layout_constraintStart_toStartOf="@+id/img_shape_bai2"
       app:layout_constraintEnd_toEndOf="@+id/img_shape_bai2"
-        android:padding="10dp">
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        >
 
 
       <androidx.constraintlayout.widget.ConstraintLayout
