@@ -6,8 +6,8 @@ android {
         applicationId "com.cuci.enticement"
         minSdkVersion 22
         targetSdkVersion 29
-        versionCode 190
-        versionName "1.9.0"
+        versionCode 191
+        versionName "1.9.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [
                 GETUI_APP_ID    : "Cn2PZHiD5N6MpOYVrd9N95",
@@ -16,8 +16,8 @@ android {
 
                 OPPO_APP_KEY   : "59pENgqeflGcSc8So8cc4oGKC",
                 OPPO_APP_SECRET  : "Faf36501249fdabd2Aa83d1De194D007",
-                VIVO_APP_ID   : "VI_APP_ID",
-                VIVO_APP_KEY  : "VI_APP_KEY",
+                VIVO_APP_ID   : "16812",
+                VIVO_APP_KEY  : "fc059579-37e6-4928-92f2-8b3171d003ac",
 
                 XIAOMI_APP_ID   : "2882303761517705682",
                 XIAOMI_APP_KEY  : "5741770599682",
