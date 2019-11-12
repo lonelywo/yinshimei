@@ -23,6 +23,11 @@
             android:screenOrientation="portrait"
             >
         </activity>
+        <activity
+            android:name=".plate.mine.activity.ApplyTuiActivity"
+            android:screenOrientation="portrait"
+            >
+        </activity>
         <activity android:name=".plate.mine.activity.MyOrderActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleTask"

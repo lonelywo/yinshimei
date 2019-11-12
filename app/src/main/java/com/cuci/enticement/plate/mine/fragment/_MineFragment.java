@@ -21,11 +21,6 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
 import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseFragment;
@@ -42,6 +37,7 @@ import com.cuci.enticement.plate.common.LoginActivity;
 import com.cuci.enticement.plate.common.popup.TipsPopup;
 import com.cuci.enticement.plate.common.popup.TipsPopup1;
 import com.cuci.enticement.plate.mine.activity.AchievementActivity;
+import com.cuci.enticement.plate.mine.activity.ApplyTuiActivity;
 import com.cuci.enticement.plate.mine.activity.CommissionActivity;
 import com.cuci.enticement.plate.mine.activity.MyOrderActivity;
 import com.cuci.enticement.plate.mine.activity.MyTeamActivity;
@@ -72,6 +68,10 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import butterknife.BindView;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -186,6 +186,14 @@ public class _MineFragment extends BaseFragment {
     TextView textWodeshezhi;
     @BindView(R.id.img_headwear)
     ImageView imgHeadwear;
+    @BindView(R.id.text_tui)
+    TextView textTui;
+    @BindView(R.id.dot5_tv)
+    TextView dot5Tv;
+    @BindView(R.id.tui_ll)
+    ConstraintLayout tuiLl;
+    @BindView(R.id.text_wodegonggao)
+    TextView textWodegonggao;
     private boolean mCouldChange = true;
     private LocalBroadcastManager mBroadcastManager;
     private UserInfo mUserInfo;
@@ -265,6 +273,14 @@ public class _MineFragment extends BaseFragment {
                 }
             }
         });
+        textWodegonggao.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (AppUtils.isAllowPermission(mActivity)) {
+                    startActivity(new Intent(mActivity, ApplyTuiActivity.class));
+                }
+            }
+        });
 
     }
 
@@ -290,7 +306,7 @@ public class _MineFragment extends BaseFragment {
     private void dataUserinfo(ResponseBody body) {
         try {
             String b = body.string();
-            DataUserInfo  mDataUserInfo = new Gson().fromJson(b, DataUserInfo.class);
+            DataUserInfo mDataUserInfo = new Gson().fromJson(b, DataUserInfo.class);
             if (mDataUserInfo.getCode() == 1) {
                 if (mDataUserInfo.getData().getVip_level() == 0) {
                     textHuiyuan.setText("用户");
@@ -311,15 +327,15 @@ public class _MineFragment extends BaseFragment {
                 mUserInfo.setCity(mDataUserInfo.getData().getCity());
                 mUserInfo.setProvince(mDataUserInfo.getData().getProvince());
                 mUserInfo.setSex(mDataUserInfo.getData().getSex());
-                SharedPrefUtils.save(mUserInfo,UserInfo.class);
+                SharedPrefUtils.save(mUserInfo, UserInfo.class);
                 int is_bindingwx = mDataUserInfo.getData().getIs_bindingwx();
-                if(is_bindingwx==1){
+                if (is_bindingwx == 1) {
                     SharedPrefUtils.saveWXBind(1);
-                }else {
+                } else {
                     SharedPrefUtils.saveWXBind(0);
                 }
-               is_month = mDataUserInfo.getData().getIs_month();
-                if(mDataUserInfo.getData().getIs_month()==1){
+                is_month = mDataUserInfo.getData().getIs_month();
+                if (mDataUserInfo.getData().getIs_month() == 1) {
                     new XPopup.Builder(mActivity)
                             .dismissOnBackPressed(false)
                             .dismissOnTouchOutside(false)
@@ -381,7 +397,7 @@ public class _MineFragment extends BaseFragment {
                     orderViewModel.getStatisticsOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()))
                             .observe(mActivity, mTotalOrderObserver);
                     //刷新当前用户信息
-                   // mViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(mActivity, mdataObserver);
+                    // mViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(mActivity, mdataObserver);
                 } else if (ACTION_REFRESH_HX.equals(intent.getAction())) {
                     int data = intent.getIntExtra("data", 0);
                     Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -421,7 +437,7 @@ public class _MineFragment extends BaseFragment {
         if (SharedPrefUtils.getShowhxCode() == 0) {
             mViewModel.hxreg(mUserInfo.getPhone(), "2", mUserInfo.getToken(), String.valueOf(mUserInfo.getId())).observe(this, mhxregObserver);
         } else {
-            if(!TextUtils.isEmpty(mUserInfo.getPhone())){
+            if (!TextUtils.isEmpty(mUserInfo.getPhone())) {
                 ChatClient.getInstance().login(mUserInfo.getPhone(), "ysm6j351r6", new Callback() {
                     @Override
                     public void onSuccess() {
@@ -457,7 +473,7 @@ public class _MineFragment extends BaseFragment {
         orderViewModel.getStatisticsOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()))
                 .observe(mActivity, mTotalOrderObserver);
 
-         //   mViewModel.bag499(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2").observe(_MineFragment.this, mbagObserver);
+        //   mViewModel.bag499(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2").observe(_MineFragment.this, mbagObserver);
 
         mViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);
     }
@@ -492,7 +508,7 @@ public class _MineFragment extends BaseFragment {
                         "因诗美，我的质感美学", bitmap);
             } else {
 
-                 FToast.error(mMyTeamslBean.getInfo());
+                FToast.error(mMyTeamslBean.getInfo());
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -854,6 +870,7 @@ public class _MineFragment extends BaseFragment {
             }
         }
     };
+
     //请求当前用户信息
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onClickMyEvent(ClickMyEvent event) {
