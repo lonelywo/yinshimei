@@ -195,6 +195,8 @@
         android:padding="10dp"
         android:background="@color/colorWhite"
         android:layout_marginTop="10dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         >
         <TextView
             android:id="@+id/text_wenzi1"
@@ -221,13 +223,10 @@
             android:layout_height="wrap_content"
             android:background="@null"
             android:hint="选填"
-            android:singleLine="true"
             android:textSize="13sp"
             app:layout_constraintStart_toEndOf="@id/text_wenzi2"
             app:layout_constraintTop_toTopOf="@+id/text_wenzi2"
-            app:layout_constraintBottom_toBottomOf="@+id/text_wenzi2"
             app:layout_constraintEnd_toEndOf="parent"
-            android:paddingRight="20dp"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
     <androidx.constraintlayout.widget.ConstraintLayout
