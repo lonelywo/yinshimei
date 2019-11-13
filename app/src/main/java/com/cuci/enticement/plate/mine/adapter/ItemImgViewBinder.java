@@ -5,15 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.cuci.enticement.R;
-import com.cuci.enticement.bean.OrderGoods;
-import com.cuci.enticement.bean.TuiImgBean;
-import com.cuci.enticement.utils.ImageLoader;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.cuci.enticement.R;
+import com.cuci.enticement.bean.TuiImgBean;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.drakeet.multitype.ItemViewBinder;
@@ -26,7 +24,7 @@ public class ItemImgViewBinder extends ItemViewBinder<TuiImgBean, ItemImgViewBin
     public interface OnProdClickListener2 {
 
         void onProdClick2(TuiImgBean item);
-
+        void onProdClick3(int position);
 
     }
 
@@ -49,7 +47,16 @@ public class ItemImgViewBinder extends ItemViewBinder<TuiImgBean, ItemImgViewBin
 
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull TuiImgBean item) {
+        int position1 = getPosition(holder);
         holder.imgTuxiang.setImageBitmap(item.getImg());
+        holder.imgClean.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mOnProdClickListener != null) {
+                    mOnProdClickListener.onProdClick3(position1);
+                }
+            }
+        });
         holder.itemView.setOnClickListener(position -> {
             if (mOnProdClickListener != null) {
                 mOnProdClickListener.onProdClick2(item);
@@ -62,6 +69,8 @@ public class ItemImgViewBinder extends ItemViewBinder<TuiImgBean, ItemImgViewBin
     static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.img_tuxiang)
         ImageView imgTuxiang;
+        @BindView(R.id.img_clean)
+        ImageView imgClean;
 
         ViewHolder(View itemView) {
             super(itemView);

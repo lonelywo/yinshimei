@@ -41,6 +41,7 @@ import com.cuci.enticement.plate.mine.activity.ApplyTuiActivity;
 import com.cuci.enticement.plate.mine.activity.CommissionActivity;
 import com.cuci.enticement.plate.mine.activity.MyOrderActivity;
 import com.cuci.enticement.plate.mine.activity.MyTeamActivity;
+import com.cuci.enticement.plate.mine.activity.NoticeActivity;
 import com.cuci.enticement.plate.mine.activity.PKActivity;
 import com.cuci.enticement.plate.mine.activity.RecAddressActivity;
 import com.cuci.enticement.plate.mine.activity.SettingsActivity;
@@ -186,12 +187,6 @@ public class _MineFragment extends BaseFragment {
     TextView textWodeshezhi;
     @BindView(R.id.img_headwear)
     ImageView imgHeadwear;
-    @BindView(R.id.text_tui)
-    TextView textTui;
-    @BindView(R.id.dot5_tv)
-    TextView dot5Tv;
-    @BindView(R.id.tui_ll)
-    ConstraintLayout tuiLl;
     @BindView(R.id.text_wodegonggao)
     TextView textWodegonggao;
     private boolean mCouldChange = true;
@@ -277,7 +272,7 @@ public class _MineFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 if (AppUtils.isAllowPermission(mActivity)) {
-                    startActivity(new Intent(mActivity, ApplyTuiActivity.class));
+                    startActivity(new Intent(mActivity, NoticeActivity.class));
                 }
             }
         });

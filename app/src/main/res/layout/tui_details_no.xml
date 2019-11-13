@@ -125,21 +125,92 @@
               android:padding="10dp"
               />
      </androidx.constraintlayout.widget.ConstraintLayout>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/con_buju1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:padding="10dp"
-        />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/con_buju"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/con_buju1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:padding="10dp"
+            android:background="@color/colorWhite"
+            android:layout_marginTop="10dp"
+            >
+            <ImageView
+                android:id="@+id/img_tupian"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                app:layout_constraintDimensionRatio="1:1"
+                tools:src="@mipmap/ic_launcher"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:paddingRight="5dp"
+                />
+
+            <TextView
+                android:id="@+id/text_biaoti"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="新零售礼包A方案"
+                android:textColor="@color/hei"
+                app:layout_constraintStart_toEndOf="@+id/img_tupian"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginStart="6dp"
+                />
+
+            <TextView
+                android:id="@+id/text_neirong"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                tools:text="油纸*10，标贴*10，手提袋*10油纸*10，标贴*10，手提袋*10油纸*10，标贴*10，手提袋*10油纸*10，标贴*10，手提袋*10"
+                android:maxLines="3"
+                android:ellipsize="end"
+                android:textSize="11sp"
+                app:layout_constraintLeft_toLeftOf="@+id/text_biaoti"
+                app:layout_constraintTop_toTopOf="@id/img_tupian"
+                app:layout_constraintBottom_toBottomOf="@id/img_tupian"
+                app:layout_constraintRight_toRightOf="parent"
+                />
+            <TextView
+                android:id="@+id/tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="¥"
+                android:textColor="@color/orange"
+                android:textSize="11sp"
+                app:layout_constraintBottom_toBottomOf="@+id/img_tupian"
+                app:layout_constraintStart_toStartOf="@+id/text_biaoti"
+                />
+            <TextView
+                android:id="@+id/text_qian"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="3600"
+                android:textSize="16sp"
+                android:layout_marginStart="1dp"
+                android:textColor="@color/orange"
+                app:layout_constraintBottom_toBottomOf="@+id/img_tupian"
+                app:layout_constraintStart_toEndOf="@id/tv"
+                />
+
+            <TextView
+                android:id="@+id/text_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="x1"
+                app:layout_constraintBottom_toBottomOf="@+id/img_tupian"
+
+                app:layout_constraintEnd_toEndOf="parent"
+
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/con_buju3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/recycler_view"
+        app:layout_constraintTop_toBottomOf="@id/con_buju"
         android:padding="10dp"
         android:background="@color/colorWhite"
         android:layout_marginTop="10dp"

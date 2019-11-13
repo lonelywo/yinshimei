@@ -245,8 +245,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/img_shape_bai2"
         app:layout_constraintStart_toStartOf="@+id/img_shape_bai2"
       app:layout_constraintEnd_toEndOf="@+id/img_shape_bai2"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+        android:padding="10dp"
         >
 
 
@@ -380,7 +379,7 @@
           android:layout_height="wrap_content"
           android:drawableTop="@drawable/yiwancheng"
           android:drawablePadding="6dp"
-          android:text="已完成"
+          android:text="退款/售后"
           android:textColor="#646262"
           android:gravity="center"
           app:layout_constraintTop_toTopOf="parent"
@@ -404,44 +403,6 @@
           app:layout_constraintEnd_toEndOf="@+id/text_yiwancheng"
           />
       </androidx.constraintlayout.widget.ConstraintLayout>
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/tui_ll"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            >
-            <TextView
-                android:id="@+id/text_tui"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableTop="@drawable/tui_money"
-                android:drawablePadding="5dp"
-                android:text="退款/售后"
-                android:textColor="#646262"
-                android:gravity="center"
-                app:layout_constraintTop_toTopOf="parent"
-
-
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                />
-            <TextView
-                android:id="@+id/dot5_tv"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:background="@drawable/shape_mine_order_status_num"
-                tools:text="3"
-                android:gravity="center"
-                android:textSize="11dp"
-                android:visibility="gone"
-                android:textColor="@color/orange"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/text_tui"
-                />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     </LinearLayout>
 <androidx.constraintlayout.widget.ConstraintLayout
@@ -626,7 +587,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:drawableTop="@drawable/setup"
+            android:drawableTop="@drawable/notice"
             android:drawablePadding="6dp"
             android:text="最新公告"
             android:textColor="#646262"

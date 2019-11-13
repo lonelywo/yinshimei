@@ -24,6 +24,33 @@
             >
         </activity>
         <activity
+            android:name=".plate.mine.activity.TuiTypeActivity"
+            android:screenOrientation="portrait"
+            >
+        </activity>
+        <activity
+        android:name=".plate.mine.activity.NoticeActivity"
+        android:screenOrientation="portrait"
+        >
+        </activity>
+        <activity
+            android:name=".plate.mine.activity.TuiDetailsNOActivity"
+            android:screenOrientation="portrait"
+            >
+        </activity>
+        <activity
+            android:name=".plate.mine.activity.TuiDetailsYesActivity"
+            android:screenOrientation="portrait"
+            >
+        </activity>
+        <activity
+            android:name=".plate.mine.activity.TuiLogisticsActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
+            >
+        </activity>
+
+        <activity
             android:name=".plate.mine.activity.ApplyTuiActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan"

@@ -118,10 +118,11 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/con_tuikuan1"
         android:layout_width="match_parent"
-        android:layout_height="35dp"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/con_buju"
         android:layout_marginTop="10dp"
         android:background="@color/colorWhite"
+        android:padding="10dp"
         >
     <ImageView
         android:id="@+id/img_tuxiang"
@@ -181,9 +182,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/con_tuikuan2"
         android:layout_width="match_parent"
-        android:layout_height="35dp"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/line"
         android:background="@color/colorWhite"
+        android:padding="10dp"
         >
         <ImageView
             android:id="@+id/img_tuxiang1"
@@ -208,7 +210,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="退款退货"
+                android:text="退货退款"
                 android:textSize="12sp"
                 android:textColor="@color/hei"
                 android:layout_marginLeft="10dp"

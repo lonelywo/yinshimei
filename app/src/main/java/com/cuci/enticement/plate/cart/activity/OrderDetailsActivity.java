@@ -31,7 +31,9 @@ import com.cuci.enticement.bean.ZFBBean;
 import com.cuci.enticement.plate.common.eventbus.OrderEvent;
 import com.cuci.enticement.plate.common.popup.PayBottom2TopProdPopup;
 import com.cuci.enticement.plate.common.popup.TipsPopup;
+import com.cuci.enticement.plate.mine.activity.TuiTypeActivity;
 import com.cuci.enticement.plate.mine.adapter.ItemBottomViewBinder;
+import com.cuci.enticement.plate.mine.adapter.ItemProdDetailsViewBinder;
 import com.cuci.enticement.plate.mine.adapter.ItemProdViewBinder;
 import com.cuci.enticement.plate.mine.adapter.ItemTitleViewBinder;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
@@ -75,7 +77,7 @@ import okhttp3.ResponseBody;
 /**
  * 订单详情页
  */
-public class OrderDetailsActivity extends BaseActivity {
+public class OrderDetailsActivity extends BaseActivity implements ItemProdDetailsViewBinder.OnProdClickListener {
 
 
     @BindView(R.id.text_zhuangtai)
@@ -177,7 +179,7 @@ public class OrderDetailsActivity extends BaseActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        mAdapter.register(OrderGoods.class, new ItemProdViewBinder());
+        mAdapter.register(OrderGoods.class, new ItemProdDetailsViewBinder(this,mStatus));
 
 
         OrderItemDecoration mDecoration = new OrderItemDecoration(this, 4);
@@ -640,5 +642,10 @@ public class OrderDetailsActivity extends BaseActivity {
     };
 
 
-
+    @Override
+    public void onProdClick(OrderGoods item) {
+        Intent intent = new Intent(this, TuiTypeActivity.class);
+        intent.putExtra("intentInfo",item);
+        startActivity(intent);
+    }
 }
