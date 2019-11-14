@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FFFFFF"
+    >
+  <LinearLayout
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    >
+    <TextView
+      android:id="@+id/text_1"
+      android:layout_width="match_parent"
+      android:layout_height="48dp"
+      android:gravity="center"
+      android:background="@color/colorWhite"
+      android:text="7天无理由退换货"
+      />
+    <View
+      android:layout_width="match_parent"
+      android:layout_height="1dp"
+      android:background="@color/line_gray"
+      />
+    <TextView
+      android:id="@+id/text_2"
+      android:layout_width="match_parent"
+      android:layout_height="48dp"
+      android:gravity="center"
+      android:background="@color/colorWhite"
+      android:text="少件"
+
+      />
+      <View
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:background="@color/line_gray"
+          />
+      <TextView
+          android:id="@+id/text_3"
+          android:layout_width="match_parent"
+          android:layout_height="48dp"
+          android:gravity="center"
+          android:background="@color/colorWhite"
+          android:text="收到商品时有破损/污渍/变形"
+
+          />
+      <View
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:background="@color/line_gray"
+          />
+      <TextView
+          android:id="@+id/text_4"
+          android:layout_width="match_parent"
+          android:layout_height="48dp"
+          android:gravity="center"
+          android:background="@color/colorWhite"
+          android:text="大小尺寸与商品描述不符"
+
+          />
+      <View
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:background="@color/line_gray"
+          />
+      <TextView
+          android:id="@+id/text_5"
+          android:layout_width="match_parent"
+          android:layout_height="48dp"
+          android:gravity="center"
+          android:background="@color/colorWhite"
+          android:text="卖家发错货"
+
+          />
+    <View
+      android:layout_width="match_parent"
+      android:layout_height="10dp"
+      android:background="@color/line_gray"
+      />
+    <TextView
+      android:id="@+id/cancel_tv"
+      android:layout_width="match_parent"
+      android:layout_height="48dp"
+      android:gravity="center"
+      android:background="@color/colorWhite"
+      android:text="取消"
+
+      />
+  </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

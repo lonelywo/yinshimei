@@ -72,7 +72,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:tl_indicator_height="4dp"
             app:tl_indicator_width="25dp"
-            app:tl_tab_padding="3dp"
+            app:tl_tab_padding="1dp"
             app:tl_tab_space_equal="true"
             app:tl_textsize="15sp"
             app:tl_indicator_color="@color/orange"

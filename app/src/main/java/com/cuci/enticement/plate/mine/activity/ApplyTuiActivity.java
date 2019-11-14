@@ -8,11 +8,13 @@ import android.media.ExifInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.caimuhao.rxpicker.RxPicker;
@@ -22,14 +24,18 @@ import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.OrderGoods;
 import com.cuci.enticement.bean.TuiImgBean;
 import com.cuci.enticement.bean.TuiImgKuangBean;
+import com.cuci.enticement.plate.common.popup.SexBottom2TopProdPopup;
+import com.cuci.enticement.plate.common.popup.TuiReasonBottom2TopProdPopup;
 import com.cuci.enticement.plate.mine.adapter.ItemImgViewBinder;
 import com.cuci.enticement.plate.mine.adapter.ItemImgkuangViewBinder;
 import com.cuci.enticement.utils.ImageLoader;
 import com.cuci.enticement.utils.ImageUtils;
 import com.cuci.enticement.utils.MathExtend;
 import com.cuci.enticement.utils.RxImageLoader;
+import com.cuci.enticement.widget.BrandItemDecoration;
 import com.cuci.enticement.widget.ClearEditText;
 import com.cuci.enticement.widget.OrderItemDecoration;
+import com.lxj.xpopup.XPopup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,7 +99,7 @@ public class ApplyTuiActivity extends BaseActivity implements ItemImgkuangViewBi
     TextView textYuanyin;
     private MultiTypeAdapter mAdapter;
     private Items mItems;
-    private GridLayoutManager mLayoutManager;
+    private LinearLayoutManager mLayoutManager;
     private String mImagePath;
     private List<TuiImgBean> list = new ArrayList<TuiImgBean>();
     private OrderGoods item;
@@ -111,6 +117,7 @@ public class ApplyTuiActivity extends BaseActivity implements ItemImgkuangViewBi
         if (intent == null) {
             return;
         }
+        edtPhone.setClearIconVisible(false);
         item = (OrderGoods) intent.getSerializableExtra("intentInfo");
         type = intent.getIntExtra("type", 0);
         ImageLoader.loadPlaceholder(item.getGoods_logo(), imgTupian);
@@ -140,10 +147,10 @@ public class ApplyTuiActivity extends BaseActivity implements ItemImgkuangViewBi
         mAdapter.register(TuiImgKuangBean.class, new ItemImgkuangViewBinder(this));
         mAdapter.register(TuiImgBean.class, new ItemImgViewBinder(this));
 
-        OrderItemDecoration mDecoration = new OrderItemDecoration(this, 3);
+        BrandItemDecoration mDecoration = new BrandItemDecoration(this, 3);
 
         recyclerView.addItemDecoration(mDecoration);
-        mLayoutManager = new GridLayoutManager(this, 4);
+        mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(mLayoutManager);
 
         recyclerView.setAdapter(mAdapter);
@@ -160,7 +167,7 @@ public class ApplyTuiActivity extends BaseActivity implements ItemImgkuangViewBi
         Disposable d = RxPicker.of()
                 .single(false)
                 .camera(showCamera)
-                .limit(1, 8 - list.size())
+                .limit(1, 4 - list.size())
                 .start(this)
                 .subscribe(imageItems -> {
                     //得到结果
@@ -192,11 +199,11 @@ public class ApplyTuiActivity extends BaseActivity implements ItemImgkuangViewBi
                         });
                     }
 
-                    if (list.size() < 8) {
+                    if (list.size() < 4) {
                         mItems.clear();
                         mItems.addAll(list);
                         mItems.add(tuiImgKuangBean);
-                    } else if (list.size() == 8) {
+                    } else if (list.size() == 4) {
                         mItems.clear();
                         mItems.addAll(list);
                     }
@@ -218,11 +225,11 @@ public class ApplyTuiActivity extends BaseActivity implements ItemImgkuangViewBi
     public void onProdClick3(int position) {
         TuiImgKuangBean tuiImgKuangBean = new TuiImgKuangBean();
         list.remove(position);
-        if (list.size() < 8) {
+        if (list.size() < 4) {
             mItems.clear();
             mItems.addAll(list);
             mItems.add(tuiImgKuangBean);
-        } else if (list.size() == 8) {
+        } else if (list.size() == 4) {
             mItems.clear();
             mItems.addAll(list);
         }
@@ -279,6 +286,13 @@ public class ApplyTuiActivity extends BaseActivity implements ItemImgkuangViewBi
                 finish();
                 break;
             case R.id.con_tuikuan2:
+                new XPopup.Builder(this)
+                        .dismissOnTouchOutside(true)
+                        .dismissOnBackPressed(true)
+                        .asCustom(new TuiReasonBottom2TopProdPopup(this, sex -> {
+                            textYuanyin.setText(sex);
+                        }))
+                        .show();
                 break;
             case R.id.ok:
                 if(type==1){
