@@ -315,7 +315,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                     }
                     if (content.getCode() == 1) {
                         mProData = content.getData();
-                        status = mProData.getList().get(0).getStatus();
+                        status = mProData.getStatus();
                         if (status == 1) {
                             ViewUtils.hideView(conXiajiabuju);
                         } else {

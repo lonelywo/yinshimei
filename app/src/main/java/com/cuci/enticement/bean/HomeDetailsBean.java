@@ -58,6 +58,16 @@ public class HomeDetailsBean {
          */
 
         private long id;
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
+
+        private int status;
         private String title;
         private String logo;
         private int cate_id;
