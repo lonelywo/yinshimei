@@ -7,6 +7,7 @@ import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.Version;
 import com.cuci.enticement.network.ServiceCreator;
 import com.cuci.enticement.network.api.CommonApi;
+import com.cuci.enticement.network.api.MineApi;
 import com.cuci.enticement.network.api.UserApi;
 import com.cuci.enticement.utils.EncryptUtils;
 import com.cuci.enticement.utils.SignUtils;
@@ -85,6 +86,37 @@ public class MainViewModel extends ViewModel {
                 });
         return liveData;
     }
+    /**
+     * 消费月返提交收货地址
+     * @param from_type
+     * @param clientId
+     * @return
+     */
+    public MutableLiveData<Status<ResponseBody>> getui(String from_type, String clientId) {
 
+        final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
+        liveData.setValue(Status.loading(null));
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("from_type",from_type);
+        params.put("clientId",clientId);
+        String signs = SignUtils.signParam(params);
+        mCreator.create(MineApi.class)
+                .getui(from_type,clientId,signs)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(@NonNull Call<ResponseBody> call,
+                                           @NonNull Response<ResponseBody> response) {
+                        liveData.setValue(Status.success(response.body()));
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<ResponseBody> call,
+                                          @NonNull Throwable t) {
+                        liveData.setValue(Status.error(null, t.getMessage() == null ? "网络错误" : t.getMessage()));
+                    }
+                });
+        return liveData;
+
+    }
 
 }

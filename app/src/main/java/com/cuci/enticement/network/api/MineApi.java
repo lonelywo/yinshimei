@@ -221,5 +221,15 @@ public interface MineApi {
             @Field("address_id") String address_id,
             @Field("sign") String sign
     );
+    /**
+     * 个推
+     */
+    @FormUrlEncoded
+    @POST("store/api.push/pushMessageToSingle")
+    Call<ResponseBody> getui(
+            @Field("from_type") String from_type,
+            @Field("clientId") String clientId,
+            @Field("sign") String sign
+    );
 }
 

@@ -10,13 +10,16 @@ import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 
 
 import com.cuci.enticement.R;
 import com.cuci.enticement.BasicApp;
 
 import com.cuci.enticement.bean.Base;
+import com.cuci.enticement.bean.GeTuibean;
 import com.cuci.enticement.bean.GuoJiaBean;
+import com.cuci.enticement.bean.MonBackBean;
 import com.cuci.enticement.bean.MyTeamslBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
@@ -33,14 +36,17 @@ import com.cuci.enticement.plate.common.vm.MainViewModel;
 import com.cuci.enticement.plate.common.vm.RegActivityViewModel;
 import com.cuci.enticement.plate.home.fragment._HomeFragment;
 import com.cuci.enticement.plate.mall.fragment._MallFragment;
+import com.cuci.enticement.plate.mine.activity.AchievementActivity;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.cuci.enticement.utils.AppUtils;
+import com.cuci.enticement.utils.FLog;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.ViewUtils;
 import com.cuci.enticement.widget.BottomBarView;
 import com.cuci.enticement.widget.FitSystemWindowViewPager;
 import com.google.gson.Gson;
+import com.igexin.sdk.PushManager;
 import com.lxj.xpopup.XPopup;
 
 
@@ -208,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
         }*/
 
         mViewModel.getGuoJiaCode("2").observe(this, guojiamObserver);
-
+        getCid();
 
        MainActivityPermissionsDispatcher.needsPermissionWithPermissionCheck(this);
     }
@@ -516,5 +522,38 @@ public class MainActivity extends AppCompatActivity {
 
         builder.create().show();
     }
+    private void getCid() {
+        String cid = PushManager.getInstance().getClientid(this);
+        Log.d(TAG, "当前应用的cid=" + cid);
+        //提交个推cid
+       /* mViewModel.getui("2",cid )
+                .observe(this, mCommitObserver);*/
+    }
+    /**
+     * 提交月返地址
+     */
+    private Observer<Status<ResponseBody>> mCommitObserver = status -> {
+        switch (status.status) {
+            case Status.SUCCESS:
+                ResponseBody body = status.content;
+                try {
+                    String result = body.string();
+                    GeTuibean mbean = new Gson().fromJson(result, GeTuibean.class);
+                    if (mbean.getCode() == 1) {
+                        FLog.e(TAG,"个推cid上传成功");
+                    } else {
+                        FToast.error(mbean.getInfo());
+                    }
 
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case Status.LOADING:
+                break;
+            case Status.ERROR:
+                FToast.error(status.message);
+                break;
+        }
+    };
 }
