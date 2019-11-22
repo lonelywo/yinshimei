@@ -42,6 +42,8 @@ public class TipsPopupxieyi extends CenterPopupView {
             @Override
             public void onClick(View view) {
                 dismiss();
+                //   mOnExitListener.onPositive();
+
             }
         });
     }

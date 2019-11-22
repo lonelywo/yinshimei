@@ -377,9 +377,9 @@
           android:id="@+id/text_yiwancheng"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:drawableTop="@drawable/after_sale"
+          android:drawableTop="@drawable/yiwancheng"
           android:drawablePadding="6dp"
-          android:text="退款/售后"
+          android:text="已完成"
           android:textColor="#646262"
           android:gravity="center"
           app:layout_constraintTop_toTopOf="parent"
@@ -582,7 +582,7 @@
             android:layout_marginTop="5dp"
             android:gravity="center_horizontal"
             />
-        <TextView
+       <!-- <TextView
             android:id="@+id/text_wodegonggao"
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -590,6 +590,15 @@
             android:drawableTop="@drawable/notice"
             android:drawablePadding="6dp"
             android:text="最新公告"
+            android:textColor="#646262"
+            android:layout_marginTop="5dp"
+            android:gravity="center_horizontal"
+            />-->
+        <TextView
+            android:id="@+id/text_wodegonggao"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:textColor="#646262"
             android:layout_marginTop="5dp"
             android:gravity="center_horizontal"

@@ -85,7 +85,7 @@ import permissions.dispatcher.PermissionRequest;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.OnExitListener{
 
     private static final String TAG = MainActivity.class.getSimpleName();
     public static final String DATA_FUNCTION = "data_function";
@@ -567,4 +567,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     };
+
+    @Override
+    public void onPositive() {
+
+    }
 }

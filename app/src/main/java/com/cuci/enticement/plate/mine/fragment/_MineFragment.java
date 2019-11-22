@@ -21,6 +21,11 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseFragment;
@@ -34,10 +39,11 @@ import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.event.ClickMyEvent;
 import com.cuci.enticement.event.LoginOutEvent;
 import com.cuci.enticement.plate.common.LoginActivity;
+import com.cuci.enticement.plate.common.MainActivity;
 import com.cuci.enticement.plate.common.popup.TipsPopup;
 import com.cuci.enticement.plate.common.popup.TipsPopup1;
+import com.cuci.enticement.plate.common.popup.TipsPopupxieyi;
 import com.cuci.enticement.plate.mine.activity.AchievementActivity;
-import com.cuci.enticement.plate.mine.activity.ApplyTuiActivity;
 import com.cuci.enticement.plate.mine.activity.CommissionActivity;
 import com.cuci.enticement.plate.mine.activity.MyOrderActivity;
 import com.cuci.enticement.plate.mine.activity.MyTeamActivity;
@@ -69,10 +75,6 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import butterknife.BindView;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -87,7 +89,7 @@ import static com.superrtc.ContextUtils.getApplicationContext;
  * 首页外层Fragment
  */
 
-public class _MineFragment extends BaseFragment {
+public class _MineFragment extends BaseFragment  {
 
     private static final String TAG = _MineFragment.class.getSimpleName();
 
@@ -271,9 +273,10 @@ public class _MineFragment extends BaseFragment {
         textWodegonggao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (AppUtils.isAllowPermission(mActivity)) {
+              /* if (AppUtils.isAllowPermission(mActivity)) {
                     startActivity(new Intent(mActivity, NoticeActivity.class));
-                }
+                }*/
+
             }
         });
 
@@ -873,4 +876,6 @@ public class _MineFragment extends BaseFragment {
             mViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);
         }
     }
+
+
 }

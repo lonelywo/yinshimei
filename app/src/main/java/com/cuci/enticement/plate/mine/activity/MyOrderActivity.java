@@ -59,7 +59,8 @@ public class MyOrderActivity extends BaseActivity {
         data.add("待付款");
         data.add("待发货");
         data.add("待收货");
-        data.add("退款/售后");
+        data.add("已完成");
+      //  data.add("退款/售后");
 
         MainPagerAdapter adapter = new MainPagerAdapter(getSupportFragmentManager());
         String[] titles = new String[data.size()];
