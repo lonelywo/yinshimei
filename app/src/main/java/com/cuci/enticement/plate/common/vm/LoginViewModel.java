@@ -13,6 +13,7 @@ import com.cuci.enticement.utils.EncryptUtils;
 import com.cuci.enticement.utils.SignUtils;
 
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,6 +25,7 @@ import retrofit2.Response;
 public class LoginViewModel extends ViewModel {
 
     private ServiceCreator mCreator;
+    private String sign;
 
     public LoginViewModel() {
         mCreator = ServiceCreator.getInstance();
@@ -118,7 +120,11 @@ public class LoginViewModel extends ViewModel {
 
         liveData.setValue(Status.loading(null));
         String stringA ="data="+data;
-        String sign = EncryptUtils.md5Encrypt(stringA+"&key=A8sUd9bqis3sN5GK6aF9JDFl5I9skPkd");
+        if(ServiceCreator.ConstantA==0){
+             sign = EncryptUtils.md5Encrypt(stringA+"&key=O65dGdgf5Hf5GK6aF9JDFl5I9skPkd");
+        }else {
+             sign = EncryptUtils.md5Encrypt(stringA+"&key=A8sUd9bqis3sN5GK6aF9JDFl5I9skPkd");
+        }
         String signs = sign.toUpperCase();
         mCreator.create(UserApi.class)
                 .login(data,signs)

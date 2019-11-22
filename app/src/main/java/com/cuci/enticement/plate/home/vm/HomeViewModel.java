@@ -29,6 +29,7 @@ import retrofit2.Response;
 public class HomeViewModel extends ViewModel {
 
     private ServiceCreator mCreator;
+    private String sign;
 
     public HomeViewModel() {
         mCreator = ServiceCreator.getInstance();
@@ -36,7 +37,11 @@ public class HomeViewModel extends ViewModel {
     public MutableLiveData<Status<BaseList<BannerDataBean>>> getBanner() {
 
         final MutableLiveData<Status<BaseList<BannerDataBean>>> data = new MutableLiveData<>();
-        String sign = EncryptUtils.md5Encrypt("&key=A8sUd9bqis3sN5GK6aF9JDFl5I9skPkd");
+        if(ServiceCreator.ConstantA==0){
+            sign = EncryptUtils.md5Encrypt("&key=O65dGdgf5Hf5GK6aF9JDFl5I9skPkd");
+        }else {
+            sign = EncryptUtils.md5Encrypt("&key=A8sUd9bqis3sN5GK6aF9JDFl5I9skPkd");
+        }
         String signs = sign.toUpperCase();
         mCreator.create(HomeApi.class)
                 .getBanner(signs)
@@ -58,7 +63,12 @@ public class HomeViewModel extends ViewModel {
     public MutableLiveData<Status<GeneralGoods>> getGeneralGoods(int minId, int loadType) {
 
         final MutableLiveData<Status<GeneralGoods>> liveData = new MutableLiveData<>();
-        String sign = EncryptUtils.md5Encrypt("&key=A8sUd9bqis3sN5GK6aF9JDFl5I9skPkd");
+        if(ServiceCreator.ConstantA==0){
+            sign = EncryptUtils.md5Encrypt("&key=O65dGdgf5Hf5GK6aF9JDFl5I9skPkd");
+        }else {
+            sign = EncryptUtils.md5Encrypt("&key=A8sUd9bqis3sN5GK6aF9JDFl5I9skPkd");
+        }
+      //  String sign = EncryptUtils.md5Encrypt("&key=A8sUd9bqis3sN5GK6aF9JDFl5I9skPkd");
         String signs = sign.toUpperCase();
         mCreator.create(HomeApi.class)
                 .getGeneralGoods(signs)
@@ -90,7 +100,12 @@ public class HomeViewModel extends ViewModel {
 
         final MutableLiveData<Status<HomeDetailsBean>> data = new MutableLiveData<>();
         String  stringA = "goods_id="+goods_id;
-        String sign = EncryptUtils.md5Encrypt(stringA+"&key=A8sUd9bqis3sN5GK6aF9JDFl5I9skPkd");
+        if(ServiceCreator.ConstantA==0){
+            sign = EncryptUtils.md5Encrypt(stringA+"&key=O65dGdgf5Hf5GK6aF9JDFl5I9skPkd");
+        }else {
+            sign = EncryptUtils.md5Encrypt(stringA+"&key=A8sUd9bqis3sN5GK6aF9JDFl5I9skPkd");
+        }
+       // String sign = EncryptUtils.md5Encrypt(stringA+"&key=A8sUd9bqis3sN5GK6aF9JDFl5I9skPkd");
         String signs = sign.toUpperCase();
         mCreator.create(HomeApi.class)
                 .getHomeDetails(goods_id,signs)

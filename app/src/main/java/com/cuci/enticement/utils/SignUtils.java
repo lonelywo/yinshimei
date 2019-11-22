@@ -2,6 +2,9 @@ package com.cuci.enticement.utils;
 
 import android.text.TextUtils;
 
+import com.cuci.enticement.network.ServiceCreator;
+
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +29,11 @@ public class SignUtils {
         if(keys.length==0){
             strBuilder.append("&");
         }
-        strBuilder.append("key=A8sUd9bqis3sN5GK6aF9JDFl5I9skPkd");
+        if(ServiceCreator.ConstantA==0){
+            strBuilder.append("key=O65dGdgf5Hf5GK6aF9JDFl5I9skPkd");
+        }else {
+            strBuilder.append("key=A8sUd9bqis3sN5GK6aF9JDFl5I9skPkd");
+        }
 
         result = EncryptUtils.md5Encrypt(strBuilder.toString()).toUpperCase();
         return result;
@@ -60,7 +67,11 @@ public class SignUtils {
         if(keys.length==0){
             strBuilder.append("&");
         }
-        strBuilder.append("key=A8sUd9bqis3sN5GK6aF9JDFl5I9skPkd");
+        if(ServiceCreator.ConstantA==0){
+            strBuilder.append("key=O65dGdgf5Hf5GK6aF9JDFl5I9skPkd");
+        }else {
+            strBuilder.append("key=A8sUd9bqis3sN5GK6aF9JDFl5I9skPkd");
+        }
 
         result = EncryptUtils.md5Encrypt(strBuilder.toString()).toUpperCase();
         return result;

@@ -3,6 +3,8 @@ package com.cuci.enticement.network;
 
 
 
+import android.text.TextUtils;
+
 import com.cuci.enticement.BuildConfig;
 
 import java.util.concurrent.TimeUnit;
@@ -18,10 +20,10 @@ public class ServiceCreator {
     private static final String TAG = ServiceCreator.class.getSimpleName();
 
     private volatile static ServiceCreator mInstance;
+    public static  int ConstantA = 0;
 
-
-    //  private static final String BASE_URL = "https://test.enticementchina.com/";
-     private static final String BASE_URL = "https://app.enticementchina.com/";
+     private static final String BASE_URL = "https://test.enticementchina.com/";
+    // private static final String BASE_URL = "https://app.enticementchina.com/";
     // //private static final String BASE_URL = "http://192.168.2.152:809/";
 
     private final Retrofit mRetrofit;
@@ -63,7 +65,11 @@ public class ServiceCreator {
                 .client(mClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-
+    if(TextUtils.equals(BASE_URL,"https://test.enticementchina.com/")){
+        ConstantA=0;
+    }else {
+        ConstantA=1;
+    }
     }
 
     public OkHttpClient getClient() {
