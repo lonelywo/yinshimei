@@ -85,12 +85,11 @@
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            tools:text="x1"
-           app:layout_constraintBottom_toBottomOf="@+id/img_tupian"
-           app:layout_constraintTop_toTopOf="@+id/img_tupian"
+           app:layout_constraintBottom_toBottomOf="@+id/text_qian"
            app:layout_constraintEnd_toEndOf="parent"
 
            />
-       <TextView
+      <!-- <TextView
            android:id="@+id/text_tuikuan"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
@@ -104,7 +103,7 @@
            android:paddingRight="20dp"
            android:paddingTop="5dp"
            android:paddingBottom="5dp"
-           />
+           />-->
      </androidx.constraintlayout.widget.ConstraintLayout>
 
 

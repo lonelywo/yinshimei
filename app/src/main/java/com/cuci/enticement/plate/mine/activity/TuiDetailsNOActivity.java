@@ -2,24 +2,32 @@ package com.cuci.enticement.plate.mine.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
+import com.cuci.enticement.bean.AllOrderList;
 import com.cuci.enticement.bean.OrderGoods;
-import com.cuci.enticement.utils.ImageLoader;
+import com.cuci.enticement.plate.mine.adapter.ItemProdDetailsViewBinder;
+import com.cuci.enticement.widget.OrderItemDecoration;
 
-import java.util.Locale;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import me.drakeet.multitype.Items;
+import me.drakeet.multitype.MultiTypeAdapter;
 
-public class TuiDetailsNOActivity extends BaseActivity {
+public class TuiDetailsNOActivity extends BaseActivity implements ItemProdDetailsViewBinder.OnProdClickListener {
+
+
     @BindView(R.id.image_top)
     TextView imageTop;
     @BindView(R.id.image_back)
@@ -34,12 +42,12 @@ public class TuiDetailsNOActivity extends BaseActivity {
     TextView textDizi;
     @BindView(R.id.text_dizi1)
     TextView textDizi1;
-    @BindView(R.id.line)
-    View line;
-    @BindView(R.id.tv_order_no)
-    TextView tvOrderNo;
     @BindView(R.id.con_buju1)
     ConstraintLayout conBuju1;
+    @BindView(R.id.tv_order_no)
+    TextView tvOrderNo;
+    @BindView(R.id.recycler_view0)
+    RecyclerView mRecyclerView;
     @BindView(R.id.jizhun1)
     TextView jizhun1;
     @BindView(R.id.jizhun2)
@@ -48,21 +56,9 @@ public class TuiDetailsNOActivity extends BaseActivity {
     TextView jizhun3;
     @BindView(R.id.con_buju3)
     ConstraintLayout conBuju3;
-    @BindView(R.id.img_tupian)
-    ImageView imgTupian;
-    @BindView(R.id.text_biaoti)
-    TextView textBiaoti;
-    @BindView(R.id.text_neirong)
-    TextView textNeirong;
-    @BindView(R.id.tv)
-    TextView tv;
-    @BindView(R.id.text_qian)
-    TextView textQian;
-    @BindView(R.id.text_num)
-    TextView textNum;
-    @BindView(R.id.con_buju)
-    ConstraintLayout conBuju;
-    private OrderGoods item;
+    private int type;
+    private AllOrderList.DataBean.ListBeanX mInfo;
+    private int mStatus;
 
     @Override
     public int getLayoutId() {
@@ -75,12 +71,27 @@ public class TuiDetailsNOActivity extends BaseActivity {
         if (intent == null) {
             return;
         }
-        item = (OrderGoods) intent.getSerializableExtra("intentInfo");
-        ImageLoader.loadPlaceholder(item.getGoods_logo(), imgTupian);
-        textBiaoti.setText(item.getGoods_title());
-        textNeirong.setText(item.getGoods_spec());
-        textQian.setText(String.format(Locale.CHINA, "%s", item.getPrice_sales()));
-        textNum.setText(String.format(Locale.CHINA, "x%s", item.getNumber()));
+        type = intent.getIntExtra("type", 0);
+        mInfo = (AllOrderList.DataBean.ListBeanX) intent.getSerializableExtra("intentInfo");
+        List<OrderGoods> items = mInfo.getList();
+        mStatus = mInfo.getStatus();
+        MultiTypeAdapter mAdapter0 = new MultiTypeAdapter();
+        Items mItems0 = new Items();
+        mItems0.addAll(items);
+        mAdapter0.setItems(mItems0);
+
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        mAdapter0.register(OrderGoods.class, new ItemProdDetailsViewBinder(this, mStatus));
+
+
+        OrderItemDecoration mDecoration0 = new OrderItemDecoration(this, 4);
+
+        mRecyclerView.addItemDecoration(mDecoration0);
+        LinearLayoutManager mLayoutManager0 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(mLayoutManager0);
+
+        mRecyclerView.setAdapter(mAdapter0);
     }
 
     @Override
@@ -93,5 +104,10 @@ public class TuiDetailsNOActivity extends BaseActivity {
     @OnClick(R.id.image_back)
     public void onViewClicked() {
         finish();
+    }
+
+    @Override
+    public void onProdClick(OrderGoods item) {
+
     }
 }

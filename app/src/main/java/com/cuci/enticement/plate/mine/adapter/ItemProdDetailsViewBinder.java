@@ -61,12 +61,7 @@ public class ItemProdDetailsViewBinder extends ItemViewBinder<OrderGoods, ItemPr
         holder.textNeirong.setText(item.getGoods_spec());
         holder.textQian.setText(String.format(Locale.CHINA, "%s", item.getPrice_sales()));
         holder.textNum.setText(String.format(Locale.CHINA, "x%s", item.getNumber()));
-        if(mStatus==0){
-            ViewUtils.hideView(holder.textTuikuan);
-        }else {
-            ViewUtils.hideView(holder.textTuikuan);
-        }
-        holder.textTuikuan.setOnClickListener(position -> {
+        holder.itemView.setOnClickListener(position -> {
             if (mOnProdClickListener != null) {
                 mOnProdClickListener.onProdClick(item);
             }
@@ -86,8 +81,6 @@ public class ItemProdDetailsViewBinder extends ItemViewBinder<OrderGoods, ItemPr
         TextView textQian;
         @BindView(R.id.text_num)
         TextView textNum;
-        @BindView(R.id.text_tuikuan)
-        TextView textTuikuan;
         ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

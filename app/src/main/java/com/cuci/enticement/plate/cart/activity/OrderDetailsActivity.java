@@ -1,25 +1,30 @@
 package com.cuci.enticement.plate.cart.activity;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.alipay.sdk.app.PayTask;
 import com.cuci.enticement.BasicApp;
-import com.cuci.enticement.Constant;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.AllOrderList;
-import com.cuci.enticement.bean.CommitOrder;
-import com.cuci.enticement.bean.ItemOrderBottom;
-import com.cuci.enticement.bean.ItemOrderTitle;
 import com.cuci.enticement.bean.OrderCancel;
 import com.cuci.enticement.bean.OrderConfirm;
 import com.cuci.enticement.bean.OrderGoods;
@@ -32,10 +37,7 @@ import com.cuci.enticement.plate.common.eventbus.OrderEvent;
 import com.cuci.enticement.plate.common.popup.PayBottom2TopProdPopup;
 import com.cuci.enticement.plate.common.popup.TipsPopup;
 import com.cuci.enticement.plate.mine.activity.TuiTypeActivity;
-import com.cuci.enticement.plate.mine.adapter.ItemBottomViewBinder;
 import com.cuci.enticement.plate.mine.adapter.ItemProdDetailsViewBinder;
-import com.cuci.enticement.plate.mine.adapter.ItemProdViewBinder;
-import com.cuci.enticement.plate.mine.adapter.ItemTitleViewBinder;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.cuci.enticement.plate.mine.vm.OrderViewModel;
 import com.cuci.enticement.utils.FToast;
@@ -46,8 +48,6 @@ import com.cuci.enticement.widget.OrderItemDecoration;
 import com.google.gson.Gson;
 import com.lxj.xpopup.XPopup;
 import com.tencent.mm.opensdk.modelpay.PayReq;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -58,16 +58,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
@@ -102,12 +93,27 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
     @BindView(R.id.tv_right)
     TextView tvRight;
 
-    public static final int CANCEL_STATUS=0;//取消
-    public static final int NEED_PAY=2;//待支付
-    public static final int NEED_EXPRESS=3;//待发货
-    public static final int NEED_CONFIRM=4;//待收货
-    public static final int HAS_FINISH=5;//已完成
-
+    public static final int CANCEL_STATUS = 0;//取消
+    public static final int NEED_PAY = 2;//待支付
+    public static final int NEED_EXPRESS = 3;//待发货
+    public static final int NEED_CONFIRM = 4;//待收货
+    public static final int HAS_FINISH = 5;//已完成
+    @BindView(R.id.image_top)
+    TextView imageTop;
+    @BindView(R.id.image_back)
+    ImageView imageBack;
+    @BindView(R.id.line)
+    View line;
+    @BindView(R.id.tuikuan_tv)
+    TextView tuikuanTv;
+    @BindView(R.id.con_buju1)
+    ConstraintLayout conBuju1;
+    @BindView(R.id.jizhun1)
+    TextView jizhun1;
+    @BindView(R.id.con_buju3)
+    ConstraintLayout conBuju3;
+    @BindView(R.id.bottom)
+    LinearLayout bottom;
 
 
     private OrderViewModel mViewModel;
@@ -120,7 +126,6 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
     private MultiTypeAdapter mAdapter;
     private Items mItems;
     private int mStatus;
-
 
 
     @Override
@@ -137,17 +142,12 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onOrderEventMessage(OrderEvent event) {
-        if(event.getCode()==OrderEvent.FINISH_ACTIVITY){
+        if (event.getCode() == OrderEvent.FINISH_ACTIVITY) {
             finish();
         }
 
 
     }
-
-
-
-
-
 
 
     @Override
@@ -163,13 +163,13 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
             return;
         }
         mInfo = (AllOrderList.DataBean.ListBeanX) intent.getSerializableExtra("intentInfo");
-           List<OrderGoods> items = mInfo.getList();
+        List<OrderGoods> items = mInfo.getList();
 
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
         if (mUserInfo == null) {
             return;
         }
-        mStatus=mInfo.getStatus();
+        mStatus = mInfo.getStatus();
         initViewStatus(mStatus);
         initContent();
         mAdapter = new MultiTypeAdapter();
@@ -179,7 +179,7 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        mAdapter.register(OrderGoods.class, new ItemProdDetailsViewBinder(this,mStatus));
+        mAdapter.register(OrderGoods.class, new ItemProdDetailsViewBinder(this, mStatus));
 
 
         OrderItemDecoration mDecoration = new OrderItemDecoration(this, 4);
@@ -191,9 +191,15 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
         mRecyclerView.setAdapter(mAdapter);
 
 
-
-
         mViewModel = ViewModelProviders.of(this).get(OrderViewModel.class);
+        tuikuanTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                  Intent intent = new Intent(OrderDetailsActivity.this, TuiTypeActivity.class);
+                  intent.putExtra("intentInfo",mInfo);
+                  startActivity(intent);
+            }
+        });
 
     }
 
@@ -205,17 +211,16 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
                 .append(mInfo.getExpress_city()).append(" ")
                 .append(mInfo.getExpress_area()).append(" ")
                 .append(mInfo.getExpress_address());
-        tvOrderNo.setText(String.format(Locale.CHINA,"订单编号: %s",mInfo.getOrder_no()));
+        tvOrderNo.setText(String.format(Locale.CHINA, "订单编号: %s", mInfo.getOrder_no()));
         textDizi.setText(sb.toString());
-        tvGoodsMoney.setText(String.format(Locale.CHINA,"¥%s",mInfo.getPrice_goods()));
-        tvExpress.setText(String.format(Locale.CHINA,"¥%s",mInfo.getPrice_express()));
-        tvTotalMoney.setText(String.format(Locale.CHINA,"¥%s",mInfo.getPrice_total()));
+        tvGoodsMoney.setText(String.format(Locale.CHINA, "¥%s", mInfo.getPrice_goods()));
+        tvExpress.setText(String.format(Locale.CHINA, "¥%s", mInfo.getPrice_express()));
+        tvTotalMoney.setText(String.format(Locale.CHINA, "¥%s", mInfo.getPrice_total()));
         tvCreateTime.setText(mInfo.getCreate_at());
 
     }
 
     private void initViewStatus(int status) {
-
 
 
         if (status == 0) {
@@ -252,11 +257,6 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
         }
 
 
-
-
-
-
-
     }
 
 
@@ -267,7 +267,7 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
                 finish();
                 break;
             case R.id.tv_left:
-                if(mStatus==2||mStatus==3) {
+                if (mStatus == 2 || mStatus == 3) {
                     //待支付和收货  取消按钮
                     new XPopup.Builder(OrderDetailsActivity.this)
                             .dismissOnBackPressed(false)
@@ -280,38 +280,34 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
                             .show();
 
 
-
-
-                }else if(mStatus==4||mStatus==5){
+                } else if (mStatus == 4 || mStatus == 5) {
                     //查看物流  intent
                     Intent intent = new Intent(OrderDetailsActivity.this, LogisticsActivity.class);
-                    intent.putExtra("express_no",String.valueOf(mInfo.getExpress_send_no()));
-                    intent.putExtra("express_code",String.valueOf(mInfo.getExpress_company_code()));
-                    intent.putExtra("express_company_title",String.valueOf(mInfo.getExpress_company_title()));
+                    intent.putExtra("express_no", String.valueOf(mInfo.getExpress_send_no()));
+                    intent.putExtra("express_code", String.valueOf(mInfo.getExpress_company_code()));
+                    intent.putExtra("express_company_title", String.valueOf(mInfo.getExpress_company_title()));
                     startActivity(intent);
                 }
                 break;
             case R.id.tv_right:
                 //提交订单，成功后，去调用获取支付参数接口
-                if(mStatus==2){
+                if (mStatus == 2) {
                     //待支付  弹框选择支付
                     new XPopup.Builder(OrderDetailsActivity.this)
                             .dismissOnTouchOutside(true)
                             .dismissOnBackPressed(true)
-                            .asCustom(new PayBottom2TopProdPopup(OrderDetailsActivity.this,mInfo.getPrice_total(), type -> {
+                            .asCustom(new PayBottom2TopProdPopup(OrderDetailsActivity.this, mInfo.getPrice_total(), type -> {
 
-                                mPayType=type;
-                                mViewModel.getOrderPay(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),
-                                        String.valueOf(mInfo.getOrder_no()),String.valueOf(type))
-                                        .observe(this,mPayObserver);
+                                mPayType = type;
+                                mViewModel.getOrderPay(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),
+                                        String.valueOf(mInfo.getOrder_no()), String.valueOf(type))
+                                        .observe(this, mPayObserver);
 
                             }))
                             .show();
 
 
-
-
-                }else if(mStatus==5){
+                } else if (mStatus == 5) {
                     //确认收货  弹框确认收货
 
 
@@ -320,9 +316,9 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
                             .dismissOnTouchOutside(false)
                             .asCustom(new TipsPopup(OrderDetailsActivity.this,
                                     "亲，确定要确认收货吗？", "取消", "确定", () -> {
-                                mViewModel.orderConfirm(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),
+                                mViewModel.orderConfirm(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),
                                         String.valueOf(mInfo.getOrder_no()))
-                                        .observe(this,mConfirmObserver);
+                                        .observe(this, mConfirmObserver);
                             }))
                             .show();
 
@@ -333,7 +329,6 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
                 break;
         }
     }
-
 
 
     /**
@@ -348,19 +343,19 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
                 try {
                     String result = body.string();
 
-                    if(mPayType==2){
+                    if (mPayType == 2) {
                         ZFBBean orderPay = new Gson().fromJson(result, ZFBBean.class);
-                        if(orderPay.getCode()==1){
+                        if (orderPay.getCode() == 1) {
 
                             sendReq2ZFB(orderPay.getData());
 
-                        }else {
+                        } else {
                             FToast.warning(orderPay.getInfo());
                         }
 
-                    }else if(mPayType==1){
+                    } else if (mPayType == 1) {
                         OrderPay orderPay = new Gson().fromJson(result, OrderPay.class);
-                        if(orderPay.getCode()==1){
+                        if (orderPay.getCode() == 1) {
                             OrderPay.DataBean data = orderPay.getData();
                             String appid = data.getAppid();
                             String prepayid = data.getPrepayid();
@@ -381,17 +376,12 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
                             wxPayBean.setPackageX(packageX);
                             sendReq2WX(wxPayBean);
 
-                        }else {
+                        } else {
                             FToast.warning("");
                         }
 
 
-
-
-
-
                     }
-
 
 
                 } catch (IOException e) {
@@ -424,10 +414,10 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
                     String result = body.string();
                     OrderConfirm orderConfirm = new Gson().fromJson(result, OrderConfirm.class);
 
-                    if(orderConfirm.getCode()==1){
+                    if (orderConfirm.getCode() == 1) {
 
                         FToast.success(orderConfirm.getInfo());
-                        mStatus=HAS_FINISH;
+                        mStatus = HAS_FINISH;
                         initViewStatus(HAS_FINISH);
 
                         //刷新外层
@@ -439,17 +429,15 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
                         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
 
 
-
                         //切换全部订单
                         EventBus.getDefault().post(new OrderEvent(OrderEvent.INTENT_YIWANCHENG));
 
 
                         finish();
 
-                    }else {
+                    } else {
                         FToast.warning(orderConfirm.getInfo());
                     }
-
 
 
                 } catch (IOException e) {
@@ -467,10 +455,6 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
                 break;
         }
     };
-
-
-
-
 
 
     private Observer<Status<ResponseBody>> mCancelObserver = status -> {
@@ -492,7 +476,7 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
 
                         FToast.success(orderCancel.getInfo());
                         //取消订单 刷新头部详情页状态
-                        mStatus=0;
+                        mStatus = 0;
 
                         initViewStatus(CANCEL_STATUS);
 
@@ -517,16 +501,6 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
                 break;
         }
     };
-
-
-
-
-
-
-
-
-
-
 
 
     /**
@@ -557,6 +531,7 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
             }
         }).start();
     }
+
     /**
      * 调支付的方法
      * <p>
@@ -565,7 +540,7 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
      * @param wxPayBean
      */
     //这个WxPayBean以后台返回为准,这里是我手动拿接口文档里生成的
-    private  void sendReq2WX(WxPayBean wxPayBean) {
+    private void sendReq2WX(WxPayBean wxPayBean) {
 
         //这里的appid，替换成自己的即可
        /* IWXAPI api = WXAPIFactory.createWXAPI(BasicApp.getContext(), Constant.WX_APP_ID);
@@ -584,7 +559,6 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
         //发起请求，调起微信前去支付
         BasicApp.getIWXAPI().sendReq(payRequest);
     }
-
 
 
     private static final int SDK_PAY_FLAG = 1;
@@ -644,8 +618,8 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
 
     @Override
     public void onProdClick(OrderGoods item) {
-        Intent intent = new Intent(this, TuiTypeActivity.class);
+       /* Intent intent = new Intent(this, TuiTypeActivity.class);
         intent.putExtra("intentInfo",item);
-        startActivity(intent);
+        startActivity(intent);*/
     }
 }

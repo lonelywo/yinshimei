@@ -8,12 +8,10 @@ import android.media.ExifInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,13 +19,14 @@ import com.caimuhao.rxpicker.RxPicker;
 import com.caimuhao.rxpicker.bean.ImageItem;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
+import com.cuci.enticement.bean.AllOrderList;
 import com.cuci.enticement.bean.OrderGoods;
 import com.cuci.enticement.bean.TuiImgBean;
 import com.cuci.enticement.bean.TuiImgKuangBean;
-import com.cuci.enticement.plate.common.popup.SexBottom2TopProdPopup;
 import com.cuci.enticement.plate.common.popup.TuiReasonBottom2TopProdPopup;
 import com.cuci.enticement.plate.mine.adapter.ItemImgViewBinder;
 import com.cuci.enticement.plate.mine.adapter.ItemImgkuangViewBinder;
+import com.cuci.enticement.plate.mine.adapter.ItemProdDetailsViewBinder;
 import com.cuci.enticement.utils.ImageLoader;
 import com.cuci.enticement.utils.ImageUtils;
 import com.cuci.enticement.utils.MathExtend;
@@ -35,6 +34,7 @@ import com.cuci.enticement.utils.RxImageLoader;
 import com.cuci.enticement.widget.BrandItemDecoration;
 import com.cuci.enticement.widget.ClearEditText;
 import com.cuci.enticement.widget.OrderItemDecoration;
+import com.cuci.enticement.widget.SmoothScrollview;
 import com.lxj.xpopup.XPopup;
 
 import java.util.ArrayList;
@@ -48,35 +48,22 @@ import io.reactivex.disposables.Disposable;
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 
-public class ApplyTuiActivity extends BaseActivity implements ItemImgkuangViewBinder.OnProdClickListener1, ItemImgViewBinder.OnProdClickListener2 {
-    @BindView(R.id.img_back)
-    ImageView imgBack;
-    @BindView(R.id.text_content)
-    TextView textContent;
-    @BindView(R.id.con_toubu)
-    ConstraintLayout conToubu;
-    @BindView(R.id.img_tupian)
-    ImageView imgTupian;
-    @BindView(R.id.text_biaoti)
-    TextView textBiaoti;
-    @BindView(R.id.text_neirong)
-    TextView textNeirong;
-    @BindView(R.id.tv)
-    TextView tv;
-    @BindView(R.id.text_qian)
-    TextView textQian;
-    @BindView(R.id.text_num)
-    TextView textNum;
-    @BindView(R.id.con_buju)
-    ConstraintLayout conBuju;
+public class ApplyTuiActivity extends BaseActivity implements ItemImgkuangViewBinder.OnProdClickListener1, ItemImgViewBinder.OnProdClickListener2 , ItemProdDetailsViewBinder.OnProdClickListener {
+
+    @BindView(R.id.recycler_view0)
+    RecyclerView mRecyclerView;
     @BindView(R.id.img_tuxiang)
     TextView imgTuxiang;
+    @BindView(R.id.text_type)
+    TextView textType;
     @BindView(R.id.con_tuikuan1)
     ConstraintLayout conTuikuan1;
     @BindView(R.id.line)
     View line;
     @BindView(R.id.img_tuxiang1)
     TextView imgTuxiang1;
+    @BindView(R.id.text_yuanyin)
+    TextView textYuanyin;
     @BindView(R.id.con_tuikuan2)
     ConstraintLayout conTuikuan2;
     @BindView(R.id.text_wenzi1)
@@ -93,18 +80,22 @@ public class ApplyTuiActivity extends BaseActivity implements ItemImgkuangViewBi
     RecyclerView recyclerView;
     @BindView(R.id.ok)
     TextView ok;
-    @BindView(R.id.text_type)
-    TextView textType;
-    @BindView(R.id.text_yuanyin)
-    TextView textYuanyin;
+    @BindView(R.id.scroll_details)
+    SmoothScrollview scrollDetails;
+    @BindView(R.id.img_back)
+    ImageView imgBack;
+    @BindView(R.id.text_content)
+    TextView textContent;
+    @BindView(R.id.con_toubu)
+    ConstraintLayout conToubu;
     private MultiTypeAdapter mAdapter;
     private Items mItems;
     private LinearLayoutManager mLayoutManager;
     private String mImagePath;
     private List<TuiImgBean> list = new ArrayList<TuiImgBean>();
-    private OrderGoods item;
     private int type;
-
+    private AllOrderList.DataBean.ListBeanX mInfo;
+    private int mStatus;
     @Override
     public int getLayoutId() {
         return R.layout.activity_tui_apply;
@@ -118,23 +109,34 @@ public class ApplyTuiActivity extends BaseActivity implements ItemImgkuangViewBi
             return;
         }
         edtPhone.setClearIconVisible(false);
-        item = (OrderGoods) intent.getSerializableExtra("intentInfo");
         type = intent.getIntExtra("type", 0);
-        ImageLoader.loadPlaceholder(item.getGoods_logo(), imgTupian);
-        textBiaoti.setText(item.getGoods_title());
-        textNeirong.setText(item.getGoods_spec());
-        textQian.setText(String.format(Locale.CHINA, "%s", item.getPrice_sales()));
-        textNum.setText(String.format(Locale.CHINA, "x%s", item.getNumber()));
-        String price_sales = item.getPrice_sales();
-        int number = item.getNumber();
-        double multiply = MathExtend.multiply(price_sales, String.valueOf(number));
-        textWenzi1.setText("退款金额：" + multiply);
+        mInfo = (AllOrderList.DataBean.ListBeanX) intent.getSerializableExtra("intentInfo");
+        List<OrderGoods> items = mInfo.getList();
+        mStatus = mInfo.getStatus();
+        MultiTypeAdapter  mAdapter0 = new MultiTypeAdapter();
+        Items mItems0 = new Items();
+        mItems0.addAll(items);
+        mAdapter0.setItems(mItems0);
+
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        mAdapter0.register(OrderGoods.class, new ItemProdDetailsViewBinder(this, mStatus));
+
+
+        OrderItemDecoration mDecoration0 = new OrderItemDecoration(this, 4);
+
+        mRecyclerView.addItemDecoration(mDecoration0);
+        LinearLayoutManager mLayoutManager0 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(mLayoutManager0);
+
+        mRecyclerView.setAdapter(mAdapter0);
         if (type == 1) {
             textType.setText("未收到货");
         }
         if (type == 2) {
             textType.setText("已收到货");
         }
+        textWenzi1.setText("退款金额："+String.format(Locale.CHINA, "¥%s", mInfo.getPrice_total()));
         RxPicker.init(new RxImageLoader());
         mAdapter = new MultiTypeAdapter();
         mItems = new Items();
@@ -295,16 +297,21 @@ public class ApplyTuiActivity extends BaseActivity implements ItemImgkuangViewBi
                         .show();
                 break;
             case R.id.ok:
-                if(type==1){
+                if (type == 1) {
                     Intent intent2 = new Intent(this, TuiDetailsNOActivity.class);
-                    intent2.putExtra("intentInfo",item);
-                    intent2.putExtra("type",2);
+                    intent2.putExtra("intentInfo", mInfo);
+                    intent2.putExtra("type", 2);
                     startActivity(intent2);
                 }
-                if(type==2){
+                if (type == 2) {
                     startActivity(new Intent(this, TuiDetailsYesActivity.class));
                 }
                 break;
         }
+    }
+
+    @Override
+    public void onProdClick(OrderGoods item) {
+
     }
 }
