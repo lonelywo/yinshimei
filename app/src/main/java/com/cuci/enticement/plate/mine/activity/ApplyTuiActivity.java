@@ -1,5 +1,6 @@
 package com.cuci.enticement.plate.mine.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -7,6 +8,7 @@ import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -288,6 +290,11 @@ public class ApplyTuiActivity extends BaseActivity implements ItemImgkuangViewBi
                 finish();
                 break;
             case R.id.con_tuikuan2:
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                View v = getCurrentFocus();
+                if(v!=null){
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);//从控件所在的窗口中隐藏
+                }
                 new XPopup.Builder(this)
                         .dismissOnTouchOutside(true)
                         .dismissOnBackPressed(true)
