@@ -1,9 +1,21 @@
 package com.cuci.enticement.push;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import com.cuci.enticement.R;
+import com.cuci.enticement.bean.PushBean;
+import com.cuci.enticement.plate.home.activity.ProdActivity;
+import com.cuci.enticement.plate.mine.activity.MyTeamActivity;
+import com.cuci.enticement.plate.mine.activity.NoticeActivity;
+import com.cuci.enticement.utils.FToast;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.igexin.sdk.GTIntentService;
 import com.igexin.sdk.PushConsts;
 import com.igexin.sdk.PushManager;
@@ -57,6 +69,25 @@ public class DemoIntentService extends GTIntentService {
         } else {
             String data = new String(payload);
             Log.d(TAG, "receiver payload = " + data);
+            try {
+                PushBean function = new Gson().fromJson(data, PushBean.class);
+
+                if (function.getType()==1) {
+
+                } else if (function.getType()==2) {
+                    Intent intentProd = new Intent(context, ProdActivity.class);
+                    intentProd.putExtra("bannerData", function.getId());
+                    startActivity( intentProd);
+                }else if (function.getType()==3) {
+                    Intent intentProd = new Intent(context, NoticeActivity.class);
+                    startActivity( intentProd);
+                }else if (function.getType()==4) {
+                    Intent intentProd = new Intent(context, MyTeamActivity.class);
+                    startActivity( intentProd);
+                }
+            } catch (JsonSyntaxException e) {
+                FToast.error("数据有误");
+            }
         }
         Log.d(TAG, "----------------------------------------------------------------------------------------------");
     }
@@ -75,6 +106,18 @@ public class DemoIntentService extends GTIntentService {
     // 各种事件处理回执
     @Override
     public void onReceiveCommandResult(Context context, GTCmdMessage cmdMessage) {
+        Log.d(TAG, "onReceiveCommandResult -> " + cmdMessage);
+        int action = cmdMessage.getAction();
+
+        if (action == PushConsts.SET_TAG_RESULT) {
+         //   setTagResult((SetTagCmdMessage) cmdMessage);
+        } else if(action == PushConsts.BIND_ALIAS_RESULT) {
+            bindAliasResult((BindAliasCmdMessage) cmdMessage);
+        } else if (action == PushConsts.UNBIND_ALIAS_RESULT) {
+        //    unbindAliasResult((UnBindAliasCmdMessage) cmdMessage);
+        } else if ((action == PushConsts.THIRDPART_FEEDBACK)) {
+        //    feedbackResult((FeedbackCmdMessage) cmdMessage);
+        }
     }
 
     // 通知到达，只有个推通道下发的通知会回调此方法
@@ -86,4 +129,47 @@ public class DemoIntentService extends GTIntentService {
     @Override
     public void onNotificationMessageClicked(Context context, GTNotificationMessage msg) {
     }
+
+    private void bindAliasResult(BindAliasCmdMessage bindAliasCmdMessage) {
+        String sn = bindAliasCmdMessage.getSn();
+        String code = bindAliasCmdMessage.getCode();
+
+        int text = R.string.bind_alias_unknown_exception;
+        switch (Integer.valueOf(code)) {
+            case PushConsts.BIND_ALIAS_SUCCESS:
+                text = R.string.bind_alias_success;
+                break;
+            case PushConsts.ALIAS_ERROR_FREQUENCY:
+                text = R.string.bind_alias_error_frequency;
+                break;
+            case PushConsts.ALIAS_OPERATE_PARAM_ERROR:
+                text = R.string.bind_alias_error_param_error;
+                break;
+            case PushConsts.ALIAS_REQUEST_FILTER:
+                text = R.string.bind_alias_error_request_filter;
+                break;
+            case PushConsts.ALIAS_OPERATE_ALIAS_FAILED:
+                text = R.string.bind_alias_unknown_exception;
+                break;
+            case PushConsts.ALIAS_CID_LOST:
+                text = R.string.bind_alias_error_cid_lost;
+                break;
+            case PushConsts.ALIAS_CONNECT_LOST:
+                text = R.string.bind_alias_error_connect_lost;
+                break;
+            case PushConsts.ALIAS_INVALID:
+                text = R.string.bind_alias_error_alias_invalid;
+                break;
+            case PushConsts.ALIAS_SN_INVALID:
+                text = R.string.bind_alias_error_sn_invalid;
+                break;
+            default:
+                break;
+
+        }
+
+        Log.d(TAG, "bindAlias result sn = " + sn + ", code = " + code + ", text = " + getResources().getString(text));
+
+    }
+
 }

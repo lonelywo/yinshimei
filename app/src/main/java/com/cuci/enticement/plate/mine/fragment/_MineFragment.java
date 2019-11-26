@@ -65,6 +65,7 @@ import com.hyphenate.chat.ChatClient;
 import com.hyphenate.chat.Conversation;
 import com.hyphenate.helpdesk.callback.Callback;
 import com.hyphenate.helpdesk.easeui.util.IntentBuilder;
+import com.igexin.sdk.PushManager;
 import com.lxj.xpopup.XPopup;
 
 import org.greenrobot.eventbus.EventBus;
@@ -427,7 +428,7 @@ public class _MineFragment extends BaseFragment  {
             imgHeadwear.setVisibility(View.GONE);
             return;
         }
-
+        PushManager.getInstance().bindAlias(mActivity, String.valueOf(mUserInfo.getId()));
         conYingchang.setVisibility(View.VISIBLE);
         ImageLoader.loadPlaceholder1(mUserInfo.getHeadimg(), imgTuxiang);
         textName.setText(mUserInfo.getNickname());

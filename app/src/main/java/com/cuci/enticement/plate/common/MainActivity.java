@@ -85,7 +85,7 @@ import permissions.dispatcher.PermissionRequest;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
-public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.OnExitListener{
+public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.OnExitListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     public static final String DATA_FUNCTION = "data_function";
@@ -106,11 +106,11 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
     private long mExitTime = 0;
     private MainViewModel mViewModel;
     private ClipboardManager mClipboardManager;
-    private Version.DataBean  mData;
+    private Version.DataBean mData;
 
     private LocalBroadcastManager mLocalBroadcastManager;
     private List<Fragment> mFragments;
-    private  MainPagerAdapter mPagerAdapter;
+    private MainPagerAdapter mPagerAdapter;
     private int localVersion;
     private int serverVersion;
 
@@ -123,9 +123,9 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
         //小米手机状态栏字体黑色
         //MIUIStatusBarUtils.MIUISetStatusBarLightMode(this, true);
         //魅族手机状态栏字体黑色
-       // if (Rom.check(Rom.ROM_FLYME)) {
-         //   FlymeStatusBarColorUtils.setStatusBarDarkIcon(this, true);
-       // }
+        // if (Rom.check(Rom.ROM_FLYME)) {
+        //   FlymeStatusBarColorUtils.setStatusBarDarkIcon(this, true);
+        // }
 
 
         setContentView(R.layout.activity_main);
@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
         mFragments.add(new _CartFragment());
         mFragments.add(new _MineFragment());
 
-        mPagerAdapter = new MainPagerAdapter(getSupportFragmentManager(),mFragments);
+        mPagerAdapter = new MainPagerAdapter(getSupportFragmentManager(), mFragments);
 
         mViewPager.setOffscreenPageLimit(3);
         mViewPager.setAdapter(mPagerAdapter);
@@ -161,10 +161,10 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
             @Override
             public void onPageSelected(int position) {
                 mBottomLayout.setSelected(position);
-                if(position==2){
+                if (position == 2) {
                     EventBus.getDefault().post(new ClickCatEvent());
                 }
-                if(position==3){
+                if (position == 3) {
                     EventBus.getDefault().post(new ClickMyEvent());
                 }
             }
@@ -188,8 +188,8 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
         //检测APP更新
         mViewModel.getVersion("2").observe(this, mUpdateObserver);
 
-
-
+        //打印设备信息
+        FLog.e("设备信息",GetDeviceID());
         /*UserInfo userInfo = ServiceCreator.getInstance().getUserInfo();
 
         if (userInfo!=null){
@@ -217,7 +217,7 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
         mViewModel.getGuoJiaCode("2").observe(this, guojiamObserver);
         getCid();
         if (SharedPrefUtils.getFirstTime()) {
-            SharedPrefUtils.saveFirstTime(false) ;
+            SharedPrefUtils.saveFirstTime(false);
             new XPopup.Builder(this)
                     .dismissOnBackPressed(false)
                     .dismissOnTouchOutside(false)
@@ -227,7 +227,7 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
                             }))
                     .show();
         }
-       MainActivityPermissionsDispatcher.needsPermissionWithPermissionCheck(this);
+        MainActivityPermissionsDispatcher.needsPermissionWithPermissionCheck(this);
     }
 
     private void initBottomLayout() {
@@ -241,7 +241,6 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
         BottomBarView.Tab tab2 = new BottomBarView.Tab(
                 R.drawable.mall_huang,
                 R.drawable.mall_hui, false, getString(R.string.tab_material));
-
 
 
         BottomBarView.Tab tab3 = new BottomBarView.Tab(
@@ -263,7 +262,6 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
     }
 
     private int mPopupPos = 0;
-
 
 
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -293,7 +291,6 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
     };
 
 
-
     @Override
     public void onBackPressed() {
         long currentTime = System.currentTimeMillis();
@@ -317,7 +314,7 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
     //退出登录
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onLogoutEvent(LoginOutEvent event) {
-        if ( mPagerAdapter.getCount() == 4) {
+        if (mPagerAdapter.getCount() == 4) {
 
             mFragments.clear();
             mFragments.add(new _HomeFragment());
@@ -367,7 +364,7 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
         switch (status.status) {
             case Status.SUCCESS:
                 ResponseBody body = status.content;
-                opera1( body);
+                opera1(body);
                 break;
             case Status.ERROR:
 
@@ -380,6 +377,7 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
 
 
     };
+
     private void opera1(ResponseBody body) {
         try {
             String b = body.string();
@@ -396,14 +394,12 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
     }
 
 
-
-
     private Observer<Status<ResponseBody>> mUpdateObserver = status -> {
 
         switch (status.status) {
             case Status.SUCCESS:
                 ResponseBody body = status.content;
-                opera( body);
+                opera(body);
                 break;
             case Status.ERROR:
 
@@ -416,6 +412,7 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
 
 
     };
+
     private void opera(ResponseBody body) {
         try {
             String b = body.string();
@@ -437,14 +434,14 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
 
 
         int ignoreVersion = SharedPrefUtils.getIgnoreVersion();
-         localVersion = AppUtils.getVersionCode(this);
-         serverVersion = version.getData().getVersionName();
+        localVersion = AppUtils.getVersionCode(this);
+        serverVersion = version.getData().getVersionName();
 
         if (serverVersion == ignoreVersion) {
             return;
         }
 
-       if (serverVersion > localVersion) {
+        if (serverVersion > localVersion) {
             new XPopup.Builder(this)
                     .dismissOnTouchOutside(false)
                     .dismissOnBackPressed(false)
@@ -533,6 +530,7 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
 
         builder.create().show();
     }
+
     private void getCid() {
         String cid = PushManager.getInstance().getClientid(this);
         Log.d(TAG, "当前应用的cid=" + cid);
@@ -540,6 +538,7 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
        /* mViewModel.getui("2",cid )
                 .observe(this, mCommitObserver);*/
     }
+
     /**
      * 提交月返地址
      */
@@ -551,7 +550,7 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
                     String result = body.string();
                     GeTuibean mbean = new Gson().fromJson(result, GeTuibean.class);
                     if (mbean.getCode() == 1) {
-                        FLog.e(TAG,"个推cid上传成功");
+                        FLog.e(TAG, "个推cid上传成功");
                     } else {
                         FToast.error(mbean.getInfo());
                     }
@@ -570,6 +569,12 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
 
     @Override
     public void onPositive() {
+
+    }
+
+    public String GetDeviceID(){
+
+        return "设备类型："+android.os.Build.MODEL;
 
     }
 }
