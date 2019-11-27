@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -149,6 +150,8 @@ public class LoginActivity extends BaseActivity {
                 finish();
             }
         });
+        String strMsg = "登录代表您已阅读并同意"+"<font color=\"#BF9964\">"+"《因诗美APP用户服务协议》"+"</font>"+"的内容";
+        textDibuwenzi.setText(Html.fromHtml(strMsg));
     }
 
 

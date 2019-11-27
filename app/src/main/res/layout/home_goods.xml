@@ -45,7 +45,7 @@
      android:layout_marginTop="10dp"
      >
 
-     <TextView
+    <!-- <TextView
          android:id="@+id/text_home_money"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
@@ -67,8 +67,18 @@
          android:textColor="@color/orange"
          android:paddingBottom="10dp"
          android:layout_marginLeft="10dp"
+         />-->
+     <TextView
+         android:id="@+id/text_home_money"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="价格"
+         app:layout_constraintTop_toTopOf="parent"
+         app:layout_constraintStart_toStartOf="parent"
+         android:textSize="12sp"
+         android:textColor="@color/hei"
+         android:paddingBottom="10dp"
          />
-
 
  </androidx.constraintlayout.widget.ConstraintLayout>
 

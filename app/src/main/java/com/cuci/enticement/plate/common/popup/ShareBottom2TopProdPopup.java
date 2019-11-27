@@ -3,6 +3,7 @@ package com.cuci.enticement.plate.common.popup;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -62,8 +63,8 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
     TextView textFenzu2;
     @BindView(R.id.sku2_ll)
     LinearLayout sku2Ll;
-    @BindView(R.id.text_home_money_vip)
-    TextView textHomeMoneyVip;
+  /*  @BindView(R.id.text_home_money_vip)
+    TextView textHomeMoneyVip;*/
     @BindView(R.id.line)
     View line;
     @BindView(R.id.img_jia)
@@ -147,9 +148,15 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
         }
         HomeDetailsBean.DataBean.SpecsBean specsBean = specs.get(0);
         List<HomeDetailsBean.DataBean.SpecsBean.ListBean> list = specsBean.getList();
-        text_money.setText("原价¥" + mItem.getInitial_price_market());
-        textHomeMoneyVip.setText("会员价¥" + mItem.getInitial_price_selling());
-
+      /*  text_money.setText("原价¥" + mItem.getInitial_price_market());
+        textHomeMoneyVip.setText("会员价¥" + mItem.getInitial_price_selling());*/
+        if(mItem.getVip_mod()==1){
+            String strMsg = "<font color=\"#BF9964\">"+"活动价¥" + mItem.getInitial_price_selling()+"</font>";
+            text_money.setText(Html.fromHtml(strMsg));
+        }else {
+            String strMsg = "原价¥" + mItem.getInitial_price_market()+" "+"<font color=\"#BF9964\">"+"会员价¥" + mItem.getInitial_price_selling()+"</font>";
+            text_money.setText(Html.fromHtml(strMsg));
+        }
         ImageLoader.loadPlaceholder(mItem.getLogo(), imgTuxiang);
         stockTv.setText("库存" + mItem.getNumber_stock() + "件");
         textFenzu.setText(specsBean.getName());

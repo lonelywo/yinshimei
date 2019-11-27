@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -113,8 +114,8 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
     TextView textXiajia;
     @BindView(R.id.con_xiajiabuju)
     ConstraintLayout conXiajiabuju;
-    @BindView(R.id.text_jiage1)
-    TextView textJiage1;
+  /*  @BindView(R.id.text_jiage1)
+    TextView textJiage1;*/
     private String url;
     private HomeDetailsBean.DataBean mProData;
     private HomeViewModel mHomeViewModel;
@@ -158,7 +159,12 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                 if (AppUtils.isAllowPermission(ProdActivity.this)) {
                     mUserInfo = SharedPrefUtils.get(UserInfo.class);
                     if (mProData != null) {
-                    if (mProData.getVip_mod() != 1) {
+                        new XPopup.Builder(ProdActivity.this)
+                                .dismissOnTouchOutside(false)
+                                .dismissOnBackPressed(false)
+                                .asCustom(new CenterShareAppPopup(ProdActivity.this, mUserInfo))
+                                .show();
+                   /* if (mProData.getVip_mod() != 1) {
                         BasicApp.getAppExecutors()
                                     .networkIO()
                                     .execute(() -> {
@@ -235,7 +241,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                                     }
                                 }))
                                 .show();
-                    }
+                    }*/
                 }
                 }
             }
@@ -327,8 +333,15 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                         banner.start();
                         String htmlContent = content.getData().getContent();
                         homeDetailGoodsname.setText(content.getData().getTitle());
-                        text_jiage.setText("原价¥" + content.getData().getInitial_price_market());
-                        textJiage1.setText("会员价¥" + content.getData().getInitial_price_selling());
+                       /* text_jiage.setText("原价¥" + content.getData().getInitial_price_market());
+                        textJiage1.setText("会员价¥" + content.getData().getInitial_price_selling());*/
+                        if(mProData.getVip_mod()==1){
+                            String strMsg = "<font color=\"#BF9964\">"+"活动价¥" + mProData.getInitial_price_selling()+"</font>";
+                            text_jiage.setText(Html.fromHtml(strMsg));
+                        }else {
+                            String strMsg = "原价¥" + mProData.getInitial_price_market()+" "+"<font color=\"#BF9964\">"+"会员价¥" + mProData.getInitial_price_selling()+"</font>";
+                            text_jiage.setText(Html.fromHtml(strMsg));
+                        }
                         webDetails.loadDataWithBaseURL(null,
                                 getHtmlData(htmlContent), "text/html", "utf-8", null);
 

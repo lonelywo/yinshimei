@@ -31,6 +31,7 @@ import com.cuci.enticement.event.LoginSucceedEvent;
 import com.cuci.enticement.plate.cart.fragment._CartFragment;
 import com.cuci.enticement.plate.common.adapter.MainPagerAdapter;
 import com.cuci.enticement.plate.common.popup.TipsPopupxieyi;
+import com.cuci.enticement.plate.common.popup.TipsPopupxieyi2;
 import com.cuci.enticement.plate.common.popup.UpdatePopup;
 import com.cuci.enticement.plate.common.popup.UpdateProgressPopup;
 import com.cuci.enticement.plate.common.vm.MainViewModel;
@@ -221,7 +222,7 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
             new XPopup.Builder(this)
                     .dismissOnBackPressed(false)
                     .dismissOnTouchOutside(false)
-                    .asCustom(new TipsPopupxieyi(this,
+                    .asCustom(new TipsPopupxieyi2(this,
                             () -> {
 
                             }))
