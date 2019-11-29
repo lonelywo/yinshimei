@@ -441,7 +441,25 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
 
             String rule = sb.toString();
             mViewModel.commitOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), rule, "").observe(this, mCommitObserver);
+            /*List<OrderGoods> items = new ArrayList<>();
+            OrderGoods orderGoods = new OrderGoods();
+            orderGoods.setGoods_logo(mProData.getLogo());
+            orderGoods.setGoods_title(mProData.getTitle());
+            orderGoods.setGoods_num(mNum);
+            orderGoods.setGoods_spec(mSpec);
+            orderGoods.setGoods_price_selling(mProData.getInitial_price_selling());
+            items.add(orderGoods);
 
+            AllOrderList.DataBean.ListBeanX cartIntentInfo = new AllOrderList.DataBean.ListBeanX();
+
+            //cartIntentInfo.setOrder_no(Long.parseLong(orderResult.getData().getOrder().getOrder_no()));
+            cartIntentInfo.setList(items);
+            cartIntentInfo.setGoods_count(items.size());
+            double goodsPrice = MathExtend.multiply(mProData.getInitial_price_selling(), String.valueOf(mNum));
+            cartIntentInfo.setPrice_goods(String.valueOf(goodsPrice));
+            Intent intent = new Intent(ProdActivity.this, OrderActivity.class);
+            intent.putExtra("intentInfo", cartIntentInfo);
+            startActivity(intent);*/
         }
 
     }

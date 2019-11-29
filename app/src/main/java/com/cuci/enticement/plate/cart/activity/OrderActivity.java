@@ -672,7 +672,7 @@ public class OrderActivity extends BaseActivity {
                                 String.valueOf(mInfo.getOrder_no()),String.valueOf(mPayType))
                                 .observe(this,mPayObserver);
                     }else {
-                        FToast.warning("提交订单失败");
+                        FToast.error(commitOrder.getInfo());
                     }
 
 
