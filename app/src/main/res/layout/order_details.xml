@@ -118,6 +118,7 @@
              android:paddingTop="2dp"
              android:paddingBottom="2dp"
              android:layout_marginRight="@dimen/dp_10"
+             android:visibility="gone"
              />
      </androidx.constraintlayout.widget.ConstraintLayout>
     <androidx.recyclerview.widget.RecyclerView

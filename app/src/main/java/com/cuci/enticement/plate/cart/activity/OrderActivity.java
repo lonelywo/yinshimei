@@ -27,6 +27,7 @@ import com.cuci.enticement.bean.AllOrderList;
 import com.cuci.enticement.bean.CartDataBean;
 import com.cuci.enticement.bean.CartIntentInfo;
 import com.cuci.enticement.bean.CommitOrder;
+import com.cuci.enticement.bean.DataUserInfo;
 import com.cuci.enticement.bean.ExpressCost;
 import com.cuci.enticement.bean.OrderGoods;
 import com.cuci.enticement.bean.OrderPay;
@@ -45,6 +46,7 @@ import com.cuci.enticement.plate.mine.activity.RecAddressActivity;
 import com.cuci.enticement.plate.mine.adapter.ItemProdViewBinder;
 import com.cuci.enticement.plate.mine.adapter.ItemYuProdViewBinder;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
+import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.plate.mine.vm.OrderViewModel;
 import com.cuci.enticement.utils.Arith;
 import com.cuci.enticement.utils.FLog;
@@ -86,7 +88,7 @@ import okhttp3.ResponseBody;
 /**
  *
  */
-public class OrderActivity extends BaseActivity {
+public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.OnProdClickListener {
     private static final int SDK_PAY_FLAG = 1;
     private static final String TAG = OrderActivity.class.getSimpleName();
     @BindView(R.id.text_dizi)
@@ -116,7 +118,7 @@ public class OrderActivity extends BaseActivity {
     private LinearLayoutManager mLayoutManager;
     private MultiTypeAdapter mAdapter;
     private Items mItems;
-
+    private int is_new;
 
     @SuppressLint("HandlerLeak")
     private  Handler mHandler = new Handler() {
@@ -173,9 +175,6 @@ public class OrderActivity extends BaseActivity {
 
 
 
-
-
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -226,8 +225,9 @@ public class OrderActivity extends BaseActivity {
             return;
         }
         mViewModel = ViewModelProviders.of(this).get(OrderViewModel.class);
-
-
+        //请求当前用户信息
+        MineViewModel mViewModel1 = ViewModelProviders.of(this).get(MineViewModel.class);
+        mViewModel1.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);
 
 
 
@@ -268,7 +268,7 @@ public class OrderActivity extends BaseActivity {
 
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        mAdapter.register(OrderGoods.class, new ItemYuProdViewBinder());
+        mAdapter.register(OrderGoods.class, new ItemYuProdViewBinder(this,is_new));
 
 
         OrderItemDecoration mDecoration = new OrderItemDecoration(this, 6);
@@ -782,7 +782,44 @@ public class OrderActivity extends BaseActivity {
         BasicApp.getIWXAPI().sendReq(payRequest);
     }
 
+    private Observer<Status<ResponseBody>> mdataObserver = status -> {
+
+        switch (status.status) {
+            case Status.SUCCESS:
+
+                ResponseBody body = status.content;
+                dataUserinfo(body);
+                break;
+            case Status.ERROR:
+
+                FToast.error("网络错误");
+                break;
+            case Status.LOADING:
+
+                break;
+        }
+
+    };
+
+    private void dataUserinfo(ResponseBody body) {
+        try {
+            String b = body.string();
+            DataUserInfo mDataUserInfo = new Gson().fromJson(b, DataUserInfo.class);
+            if (mDataUserInfo.getCode() == 1) {
+                is_new = mDataUserInfo.getData().getIs_new();
+            } else {
+
+                FToast.error(mDataUserInfo.getInfo());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            FToast.error("数据错误");
+        }
+    }
 
 
+    @Override
+    public void onProdClick(OrderGoods item) {
 
+    }
 }

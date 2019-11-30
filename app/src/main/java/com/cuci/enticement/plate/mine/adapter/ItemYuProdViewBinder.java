@@ -37,13 +37,15 @@ public class ItemYuProdViewBinder extends ItemViewBinder<OrderGoods, ItemYuProdV
     }
 
     private OnProdClickListener mOnProdClickListener;
+    private int mis_new;
 
     public ItemYuProdViewBinder() {
 
     }
 
-    public ItemYuProdViewBinder(OnProdClickListener onProdClickListener) {
+    public ItemYuProdViewBinder(OnProdClickListener onProdClickListener,int is_new) {
         mOnProdClickListener = onProdClickListener;
+        mis_new=is_new;
     }
 
     @NonNull
@@ -60,7 +62,11 @@ public class ItemYuProdViewBinder extends ItemViewBinder<OrderGoods, ItemYuProdV
         ImageLoader.loadPlaceholder(item.getGoods_logo(),holder.imgTupian);
         holder.textBiaoti.setText(item.getGoods_title());
         holder.textNeirong.setText(item.getGoods_spec());
-        holder.textQian.setText(String.format(Locale.CHINA,"%s",item.getGoods_price_selling()));
+        if(mis_new==0){
+            holder.textQian.setText(String.format(Locale.CHINA,"%s",item.getGoods_price_market()));
+        }else {
+            holder.textQian.setText(String.format(Locale.CHINA,"%s",item.getGoods_price_selling()));
+        }
         holder.textNum.setText(String.format(Locale.CHINA,"x%s",item.getGoods_num()));
         holder.itemView.setOnClickListener(position -> {
             if (mOnProdClickListener != null) {

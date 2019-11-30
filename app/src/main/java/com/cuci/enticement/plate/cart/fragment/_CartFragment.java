@@ -146,7 +146,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
         mRefreshLayout.setEnableFooterFollowWhenNoMoreData(true);
         mRefreshLayout.setOnRefreshLoadMoreListener(this);
 
-        mAdapter.register(OrderGoods.class, new ItemCartViewBinder(this));
+        mAdapter.register(OrderGoods.class, new ItemCartViewBinder(this,is_new));
         CartItemDecoration mDecoration = new CartItemDecoration(mActivity, 10,4);
 
         mRecyclerView.addItemDecoration(mDecoration);
@@ -389,8 +389,14 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
         for (int i = 0; i < mItems.size(); i++) {
             OrderGoods item = (OrderGoods) mItems.get(i);
             if (item.isCheck()) {
+                if(is_new==0){
+                    double itemMoeny = Double.parseDouble(item.getGoods_price_market());
+                    totalF = totalF + item.getGoods_num() * itemMoeny;
+                }else {
                     double itemMoeny = Double.parseDouble(item.getGoods_price_selling());
                     totalF = totalF + item.getGoods_num() * itemMoeny;
+                }
+
             }
         }
         return totalF;
@@ -680,8 +686,8 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onClickCatEvent(ClickCatEvent event) {
         if(mUserInfo!=null){
-          /*  MineViewModel mViewModel1 = ViewModelProviders.of(this).get(MineViewModel.class);
-            mViewModel1.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);*/
+            MineViewModel mViewModel1 = ViewModelProviders.of(this).get(MineViewModel.class);
+            mViewModel1.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);
         }
 
         }

@@ -39,9 +39,11 @@ public class ItemCartViewBinder extends ItemViewBinder<OrderGoods, ItemCartViewB
     }
 
     private ItemCartViewBinder.OnItemClickListener mOnItemClickListener;
+    private int mis_new;
 
-    public ItemCartViewBinder(ItemCartViewBinder.OnItemClickListener onItemClickListener) {
+    public ItemCartViewBinder(ItemCartViewBinder.OnItemClickListener onItemClickListener,int is_new) {
         mOnItemClickListener = onItemClickListener;
+        mis_new=is_new;
     }
 
     @NonNull
@@ -76,7 +78,12 @@ public class ItemCartViewBinder extends ItemViewBinder<OrderGoods, ItemCartViewB
 
         holder.textBiaoti.setText(item.getGoods_title());
         holder.textNeirong.setText(item.getGoods_spec());
-        holder.textJiage.setText(String.format(Locale.CHINA,"%s",item.getGoods_price_selling()));
+        if(mis_new==0){
+            holder.textJiage.setText(String.format(Locale.CHINA,"%s",item.getGoods_price_market()));
+        }else {
+            holder.textJiage.setText(String.format(Locale.CHINA,"%s",item.getGoods_price_selling()));
+        }
+
         holder.tvNum.setText(String.valueOf(item.getGoods_num()));
         ImageLoader.loadPlaceholder(item.getGoods_logo(),holder.imgTuxiang);
 
