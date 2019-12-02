@@ -664,7 +664,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
 
 
                         //订单生成成功后，刷新购物车列表
-                        EventBus.getDefault().postSticky(new CartEvent(CartEvent.REFRESH_CART_LIST));
+                        EventBus.getDefault().post(new CartEvent(CartEvent.REFRESH_CART_LIST));
 
                         //订单生成成功后，刷新个人中心状态
                         Intent intent2 = new Intent(_MineFragment.ACTION_REFRESH_STATUS);

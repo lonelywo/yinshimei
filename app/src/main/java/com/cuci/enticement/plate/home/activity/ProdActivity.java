@@ -597,7 +597,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                             CartViewModel viewModel = ViewModelProviders.of(ProdActivity.this).get(CartViewModel.class);
                             viewModel.cartNum(mUserInfo.getToken(), String.valueOf(mUserInfo.getId())).observe(ProdActivity.this, mNumObserver);
                             //刷新购物车列表
-                            EventBus.getDefault().postSticky(new CartEvent(CartEvent.REFRESH_CART_LIST));
+                            EventBus.getDefault().post(new CartEvent(CartEvent.REFRESH_CART_LIST));
                            /* LocalBroadcastManager broadcastManager = getInstance(ProdActivity.this);
                             broadcastManager.sendBroadcast(new Intent(ACTION_REFRESH_DATA));*/
 

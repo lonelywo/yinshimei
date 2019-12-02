@@ -257,7 +257,7 @@ public class LoginActivity extends BaseActivity {
 
                         //刷新购物车数据
 
-                        EventBus.getDefault().postSticky(new CartEvent(CartEvent.REFRESH_CART_LIST));
+                        EventBus.getDefault().post(new CartEvent(CartEvent.REFRESH_CART_LIST));
                         /*LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(LoginActivity.this);
                         broadcastManager.sendBroadcast(new Intent(ACTION_REFRESH_DATA));*/
 

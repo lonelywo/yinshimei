@@ -147,20 +147,12 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
         intentFilter.addAction(ACTION_REFRESH_DATA);
         mLocalBroadcastManager.registerReceiver(mReceiver, intentFilter);
 
-        mAdapter = new MultiTypeAdapter();
-        mItems = new Items();
-        mAdapter.setItems(mItems);
-        mRefreshLayout.setEnableFooterFollowWhenNoMoreData(true);
-        mRefreshLayout.setOnRefreshLoadMoreListener(this);
-        mAdapter.register(OrderGoods.class, new ItemCartViewBinder(this,is_new));
-        CartItemDecoration mDecoration = new CartItemDecoration(mActivity, 10,4);
-        mRecyclerView.addItemDecoration(mDecoration);
-        mLayoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRbCheckAll.setOnCheckedChangeListener((buttonView, isChecked) -> checkAll(isChecked));
-        mRecyclerView.setAdapter(mAdapter);
 
 
+        if(mUserInfo!=null){
+            MineViewModel mViewModel1 = ViewModelProviders.of(this).get(MineViewModel.class);
+            mViewModel1.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);
+        }
     }
 
 
@@ -168,7 +160,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
 
 
-    @Subscribe(threadMode = ThreadMode.POSTING, sticky = true)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onCartEventMessage(CartEvent event) {
         if(event.getCode()==CartEvent.REFRESH_CART_LIST){
             mUserInfo = SharedPrefUtils.get(UserInfo.class);
@@ -699,10 +691,10 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
     //请求当前用户信息
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onClickCatEvent(ClickCatEvent event) {
-        if(mUserInfo!=null){
+       /* if(mUserInfo!=null){
             MineViewModel mViewModel1 = ViewModelProviders.of(this).get(MineViewModel.class);
             mViewModel1.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);
-        }
+        }*/
 
         }
     private Observer<Status<ResponseBody>> mdataObserver = status -> {
@@ -730,6 +722,18 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
             DataUserInfo mDataUserInfo = new Gson().fromJson(b, DataUserInfo.class);
             if (mDataUserInfo.getCode() == 1) {
                 is_new = mDataUserInfo.getData().getIs_new();
+                mAdapter = new MultiTypeAdapter();
+                mItems = new Items();
+                mAdapter.setItems(mItems);
+                mRefreshLayout.setEnableFooterFollowWhenNoMoreData(true);
+                mRefreshLayout.setOnRefreshLoadMoreListener(this);
+                mAdapter.register(OrderGoods.class, new ItemCartViewBinder(this,is_new));
+                CartItemDecoration mDecoration = new CartItemDecoration(mActivity, 10,4);
+                mRecyclerView.addItemDecoration(mDecoration);
+                mLayoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false);
+                mRecyclerView.setLayoutManager(mLayoutManager);
+                mRbCheckAll.setOnCheckedChangeListener((buttonView, isChecked) -> checkAll(isChecked));
+                mRecyclerView.setAdapter(mAdapter);
             } else {
 
                 FToast.error(mDataUserInfo.getInfo());
