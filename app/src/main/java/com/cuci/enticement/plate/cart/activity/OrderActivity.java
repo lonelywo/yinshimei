@@ -119,7 +119,8 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
     private MultiTypeAdapter mAdapter;
     private Items mItems;
     private int is_new;
-
+    private int number;
+    private String rule;
     @SuppressLint("HandlerLeak")
     private  Handler mHandler = new Handler() {
         @SuppressWarnings("unused")
@@ -219,15 +220,17 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
         mInfo = (AllOrderList.DataBean.ListBeanX) intent.getSerializableExtra("intentInfo");
 
         List<OrderGoods> items = mInfo.getList();
-
+        int vip = intent.getIntExtra("vip", 0);
+        number = intent.getIntExtra("num", 0);
+        rule = intent.getStringExtra("rule");
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
         if (mUserInfo == null) {
             return;
         }
         mViewModel = ViewModelProviders.of(this).get(OrderViewModel.class);
         //请求当前用户信息
-        MineViewModel mViewModel1 = ViewModelProviders.of(this).get(MineViewModel.class);
-        mViewModel1.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);
+       /* MineViewModel mViewModel1 = ViewModelProviders.of(this).get(MineViewModel.class);
+        mViewModel1.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);*/
 
 
 
@@ -247,7 +250,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
             //默认地址id，不去选中就用这个
             mAddressId = SharedPrefUtils.getDefaultAdressId();
 
-            mViewModel.getExpressCost(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),String.valueOf(mInfo.getOrder_no()),mAddressId)
+            mViewModel.getExpressCost(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),String.valueOf(number),mInfo.getPrice_goods(),mAddressId)
                     .observe(OrderActivity.this,mExpressCostObserver);
 
         }else {
@@ -268,7 +271,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
 
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        mAdapter.register(OrderGoods.class, new ItemYuProdViewBinder(this,is_new));
+        mAdapter.register(OrderGoods.class, new ItemYuProdViewBinder(this,vip));
 
 
         OrderItemDecoration mDecoration = new OrderItemDecoration(this, 6);
@@ -414,7 +417,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                     return;
                 }
                 //提交订单，成功后，去调用获取支付参数接口
-                mViewModel.udpateAdress(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(mInfo.getOrder_no()), mAddressId)
+                mViewModel.udpateAdress(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), rule, mAddressId)
                         .observe(OrderActivity.this, mCommitObserver);
                 break;
             case R.id.back_iv:
@@ -471,7 +474,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                                     .append(item.getAddress());
 
                             tvAddress.setText(sb.toString());
-                            mViewModel.getExpressCost(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),String.valueOf(mInfo.getOrder_no()),mAddressId)
+                            mViewModel.getExpressCost(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),String.valueOf(number),mInfo.getPrice_goods(),mAddressId)
                                     .observe(OrderActivity.this,mExpressCostObserver);
                         }
 
@@ -598,8 +601,8 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
             ViewUtils.hideView(textDizi);
             ViewUtils.showView(tvAddress);
             tvAddress.setText(adress);
-            mViewModel.getExpressCost(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),String.valueOf(mInfo.getOrder_no()),mAddressId)
-                    .observe(this,mExpressCostObserver);
+            mViewModel.getExpressCost(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),String.valueOf(number),mInfo.getPrice_goods(),mAddressId)
+                    .observe(OrderActivity.this,mExpressCostObserver);
         }
     }
 
@@ -669,7 +672,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                         LocalBroadcastManager.getInstance(this).sendBroadcast(intent2);
 
                         mViewModel.getOrderPay(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),
-                                String.valueOf(mInfo.getOrder_no()),String.valueOf(mPayType))
+                                commitOrder.getData().getOrder().getOrder_no(),String.valueOf(mPayType))
                                 .observe(this,mPayObserver);
                     }else {
                         FToast.error(commitOrder.getInfo());
@@ -806,7 +809,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
             String b = body.string();
             DataUserInfo mDataUserInfo = new Gson().fromJson(b, DataUserInfo.class);
             if (mDataUserInfo.getCode() == 1) {
-                is_new = mDataUserInfo.getData().getIs_new();
+             //   is_new = mDataUserInfo.getData().getIs_new();
             } else {
 
                 FToast.error(mDataUserInfo.getInfo());

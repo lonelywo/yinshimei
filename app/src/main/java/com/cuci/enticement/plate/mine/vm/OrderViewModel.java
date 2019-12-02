@@ -297,7 +297,7 @@ public class OrderViewModel extends ViewModel {
      * 快递费用
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> getExpressCost(String token,String mid,String orderNo,String adressId) {
+    public MutableLiveData<Status<ResponseBody>> getExpressCost(String token,String mid,String number,String priceGoods,String adressId) {
 
         final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
         data.setValue(Status.loading(null));
@@ -305,13 +305,14 @@ public class OrderViewModel extends ViewModel {
         Map<String, String> params = new HashMap<String, String>();
         params.put("token",token);
         params.put("mid",mid);
-        params.put("order_no",orderNo);
+        params.put("number",number);
+        params.put("priceGoods",priceGoods);
         params.put("address_id",adressId);
         params.put("from_type","2");
 
         String sign = SignUtils.signParam(params);
         mCreator.create(OrderApi.class)
-                .getExpressCost("2",token,mid,orderNo,adressId,sign)
+                .getExpressCost("2",token,mid,number,priceGoods,adressId,sign)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,
@@ -371,7 +372,7 @@ public class OrderViewModel extends ViewModel {
      * 补全或修改地址确认
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> udpateAdress(String token, String mid, String orderNo, String adressId) {
+    public MutableLiveData<Status<ResponseBody>> udpateAdress(String token, String mid, String rule, String adressId) {
 
         final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
         data.setValue(Status.loading(null));
@@ -379,13 +380,13 @@ public class OrderViewModel extends ViewModel {
         Map<String, String> params = new HashMap<String, String>();
         params.put("token",token);
         params.put("mid",mid);
-        params.put("order_no",orderNo);
+        params.put("rule",rule);
         params.put("address_id",adressId);
         params.put("from_type","2");
 
         String sign = SignUtils.signParam(params);
         mCreator.create(OrderApi.class)
-                .udpateAdress("2",token,mid,orderNo,adressId,sign)
+                .udpateAdress("2",token,mid,rule,adressId,sign)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,

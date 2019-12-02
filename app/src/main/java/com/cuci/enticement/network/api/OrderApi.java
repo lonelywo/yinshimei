@@ -82,7 +82,9 @@ public interface OrderApi {
     @POST("store/api.member.order/express")
     Call<ResponseBody> getExpressCost(@Field("from_type") String fromType,@Field("token") String token,
                                          @Field("mid") String mid,
-                                         @Field("order_no") String orderNum,
+                                        // @Field("order_no") String orderNum,
+                                         @Field("number") String number,
+                                         @Field("priceGoods") String priceGoods,
                                          @Field("address_id") String addressId,
                                           @Field("sign") String signs);
 
@@ -106,10 +108,10 @@ public interface OrderApi {
      * 补全或者修改地址确认
      */
     @FormUrlEncoded
-    @POST("store/api.member.order/perfect")
+    @POST("store/api.member.order/set")
     Call<ResponseBody> udpateAdress(@Field("from_type") String fromType, @Field("token") String token,
                                     @Field("mid") String mid,
-                                    @Field("order_no") String orderNum,
+                                    @Field("rule") String rule,
                                     @Field("address_id") String addressId,
                                     @Field("sign") String signs);
 

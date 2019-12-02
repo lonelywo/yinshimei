@@ -117,6 +117,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
     private int mPage=1;
     private int mPosition;
     private int is_new;
+    private int mgoods_num;
 
     @Override
     protected void onLazyLoad() {
@@ -140,28 +141,23 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
 
         mViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
-        mAdapter = new MultiTypeAdapter();
-        mItems = new Items();
-        mAdapter.setItems(mItems);
-        mRefreshLayout.setEnableFooterFollowWhenNoMoreData(true);
-        mRefreshLayout.setOnRefreshLoadMoreListener(this);
-
-        mAdapter.register(OrderGoods.class, new ItemCartViewBinder(this,is_new));
-        CartItemDecoration mDecoration = new CartItemDecoration(mActivity, 10,4);
-
-        mRecyclerView.addItemDecoration(mDecoration);
-        mLayoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
-        mRbCheckAll.setOnCheckedChangeListener((buttonView, isChecked) -> checkAll(isChecked));
 
         mLocalBroadcastManager = LocalBroadcastManager.getInstance(mActivity);
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ACTION_REFRESH_DATA);
         mLocalBroadcastManager.registerReceiver(mReceiver, intentFilter);
 
-
-
+        mAdapter = new MultiTypeAdapter();
+        mItems = new Items();
+        mAdapter.setItems(mItems);
+        mRefreshLayout.setEnableFooterFollowWhenNoMoreData(true);
+        mRefreshLayout.setOnRefreshLoadMoreListener(this);
+        mAdapter.register(OrderGoods.class, new ItemCartViewBinder(this,is_new));
+        CartItemDecoration mDecoration = new CartItemDecoration(mActivity, 10,4);
+        mRecyclerView.addItemDecoration(mDecoration);
+        mLayoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRbCheckAll.setOnCheckedChangeListener((buttonView, isChecked) -> checkAll(isChecked));
         mRecyclerView.setAdapter(mAdapter);
 
 
@@ -626,10 +622,27 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
             }
 
         }
+        for (int i = 0; i < checkeds.size(); i++) {
+            OrderGoods listBean = checkeds.get(i);
+            int goods_num = listBean.getGoods_num();
+            mgoods_num+=goods_num;
+        }
         //  String s = sb.toString();
-        mViewModel.commitOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), sb.toString(),"")
-                .observe(this, mCommitObserver);
+       /* mViewModel.commitOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), sb.toString(),"")
+                .observe(this, mCommitObserver);*/
+        List<OrderGoods> items = getCheckeds();
+        AllOrderList.DataBean.ListBeanX cartIntentInfo=new AllOrderList.DataBean.ListBeanX();
 
+       // cartIntentInfo.setOrder_no(Long.parseLong(orderResult.getData().getOrder().getOrder_no()));
+        cartIntentInfo.setList(items);
+        cartIntentInfo.setGoods_count(items.size());
+        cartIntentInfo.setPrice_goods(mTvTotal.getText().toString());
+        Intent intent = new Intent(mActivity, OrderActivity.class);
+        intent.putExtra("intentInfo",cartIntentInfo);
+        intent.putExtra("vip", is_new);
+        intent.putExtra("num", mgoods_num);
+        intent.putExtra("rule", sb.toString());
+        startActivity(intent);
 
     }
 
@@ -657,6 +670,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
                             cartIntentInfo.setPrice_goods(mTvTotal.getText().toString());
                             Intent intent = new Intent(mActivity, OrderActivity.class);
                             intent.putExtra("intentInfo",cartIntentInfo);
+                            intent.putExtra("vip", is_new);
                             startActivity(intent);
 
 
@@ -715,7 +729,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
             String b = body.string();
             DataUserInfo mDataUserInfo = new Gson().fromJson(b, DataUserInfo.class);
             if (mDataUserInfo.getCode() == 1) {
-                 is_new = mDataUserInfo.getData().getIs_new();
+                is_new = mDataUserInfo.getData().getIs_new();
             } else {
 
                 FToast.error(mDataUserInfo.getInfo());

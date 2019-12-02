@@ -24,6 +24,7 @@ import com.cuci.enticement.bean.AllOrderList;
 import com.cuci.enticement.bean.Bag499Bean;
 import com.cuci.enticement.bean.CartChange;
 import com.cuci.enticement.bean.CartNum;
+import com.cuci.enticement.bean.DataUserInfo;
 import com.cuci.enticement.bean.HomeDetailsBean;
 import com.cuci.enticement.bean.OrderGoods;
 import com.cuci.enticement.bean.OrderResult;
@@ -122,6 +123,8 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
     private int mCode;
     private long id;
     private int status;
+    private String rule;
+
 
     @Override
     public int getLayoutId() {
@@ -253,16 +256,12 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
         if (mUserInfo != null) {
             viewModel.cartNum(mUserInfo.getToken(), String.valueOf(mUserInfo.getId())).observe(ProdActivity.this, mNumObserver);
         }
-        //进入页面先请求是否会员
-        MineViewModel mViewModel = ViewModelProviders.of(this).get(MineViewModel.class);
-        if (mUserInfo != null) {
-                mViewModel.bag499(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2").observe(this, mbagObserver);
-        }
+
 
 
     }
 
-    private Observer<Status<ResponseBody>> mbagObserver = status -> {
+    private Observer<Status<ResponseBody>> mdataObserver = status -> {
 
         switch (status.status) {
             case Status.SUCCESS:
@@ -284,12 +283,42 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
     private void opera(ResponseBody body) {
         try {
             String b = body.string();
-            Bag499Bean mMyTeamslBean = new Gson().fromJson(b, Bag499Bean.class);
+            DataUserInfo mMyTeamslBean = new Gson().fromJson(b, DataUserInfo.class);
             if (mMyTeamslBean.getCode() == 1) {
-                SharedPrefUtils.saveWith499VIP("1");
+               int  is_new = mMyTeamslBean.getData().getIs_new();
+                List<OrderGoods> items = new ArrayList<>();
+                OrderGoods orderGoods = new OrderGoods();
+                orderGoods.setGoods_logo(mProData.getLogo());
+                orderGoods.setGoods_title(mProData.getTitle());
+                orderGoods.setGoods_num(mNum);
+                orderGoods.setGoods_spec(mSpec);
+                orderGoods.setGoods_price_selling(mProData.getInitial_price_selling());
+                orderGoods.setGoods_price_market(mProData.getInitial_price_market());
+                items.add(orderGoods);
+
+                AllOrderList.DataBean.ListBeanX cartIntentInfo = new AllOrderList.DataBean.ListBeanX();
+
+                //cartIntentInfo.setOrder_no(Long.parseLong(orderResult.getData().getOrder().getOrder_no()));
+                cartIntentInfo.setList(items);
+                cartIntentInfo.setGoods_count(items.size());
+                if(is_new==0){
+                    double goodsPrice = MathExtend.multiply(mProData.getInitial_price_market(), String.valueOf(mNum));
+                    cartIntentInfo.setPrice_goods(String.valueOf(goodsPrice));
+                }else {
+                    double goodsPrice = MathExtend.multiply(mProData.getInitial_price_selling(), String.valueOf(mNum));
+                    cartIntentInfo.setPrice_goods(String.valueOf(goodsPrice));
+                }
+
+                Intent intent = new Intent(ProdActivity.this, OrderActivity.class);
+                intent.putExtra("intentInfo", cartIntentInfo);
+                intent.putExtra("vip", is_new);
+                intent.putExtra("num", mNum);
+                intent.putExtra("rule", rule);
+                startActivity(intent);
+
+
             } else {
-                SharedPrefUtils.saveWith499VIP("0");
-                // FToast.error(mMyTeamslBean.getInfo());
+                FToast.error(mMyTeamslBean.getInfo());
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -439,15 +468,21 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
             String price = mProData.getInitial_price_selling();
             mTotalMoeny = MathExtend.multiply(price, String.valueOf(num));
 
-            String rule = sb.toString();
-            mViewModel.commitOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), rule, "").observe(this, mCommitObserver);
-            /*List<OrderGoods> items = new ArrayList<>();
+            rule = sb.toString();
+            // mViewModel.commitOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), rule, "").observe(this, mCommitObserver);
+            //进入页面先请求是否会员
+            MineViewModel mViewMode2 = ViewModelProviders.of(this).get(MineViewModel.class);
+            if (mUserInfo != null) {
+                mViewMode2.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);
+            }
+           /* List<OrderGoods> items = new ArrayList<>();
             OrderGoods orderGoods = new OrderGoods();
             orderGoods.setGoods_logo(mProData.getLogo());
             orderGoods.setGoods_title(mProData.getTitle());
             orderGoods.setGoods_num(mNum);
             orderGoods.setGoods_spec(mSpec);
             orderGoods.setGoods_price_selling(mProData.getInitial_price_selling());
+            orderGoods.setGoods_price_market(mProData.getInitial_price_market());
             items.add(orderGoods);
 
             AllOrderList.DataBean.ListBeanX cartIntentInfo = new AllOrderList.DataBean.ListBeanX();
@@ -455,10 +490,19 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
             //cartIntentInfo.setOrder_no(Long.parseLong(orderResult.getData().getOrder().getOrder_no()));
             cartIntentInfo.setList(items);
             cartIntentInfo.setGoods_count(items.size());
-            double goodsPrice = MathExtend.multiply(mProData.getInitial_price_selling(), String.valueOf(mNum));
-            cartIntentInfo.setPrice_goods(String.valueOf(goodsPrice));
+            if(is_new==0){
+                double goodsPrice = MathExtend.multiply(mProData.getInitial_price_market(), String.valueOf(mNum));
+                cartIntentInfo.setPrice_goods(String.valueOf(goodsPrice));
+            }else {
+                double goodsPrice = MathExtend.multiply(mProData.getInitial_price_selling(), String.valueOf(mNum));
+                cartIntentInfo.setPrice_goods(String.valueOf(goodsPrice));
+            }
+
             Intent intent = new Intent(ProdActivity.this, OrderActivity.class);
             intent.putExtra("intentInfo", cartIntentInfo);
+            intent.putExtra("vip", is_new);
+            intent.putExtra("num", mNum);
+            intent.putExtra("rule", rule);
             startActivity(intent);*/
         }
 
