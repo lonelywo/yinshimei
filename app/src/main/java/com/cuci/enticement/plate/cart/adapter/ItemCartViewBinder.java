@@ -41,11 +41,12 @@ public class ItemCartViewBinder extends ItemViewBinder<OrderGoods, ItemCartViewB
     private ItemCartViewBinder.OnItemClickListener mOnItemClickListener;
     private int mis_new;
 
-    public ItemCartViewBinder(ItemCartViewBinder.OnItemClickListener onItemClickListener,int is_new) {
+    public ItemCartViewBinder(ItemCartViewBinder.OnItemClickListener onItemClickListener) {
         mOnItemClickListener = onItemClickListener;
+    }
+    public void setMis_new(int is_new){
         mis_new=is_new;
     }
-
     @NonNull
     @Override
     protected ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
