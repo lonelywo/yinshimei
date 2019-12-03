@@ -525,7 +525,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                                 sendReq2ZFB(orderPay.getData());
 
                         }else {
-                            FToast.warning(orderPay.getInfo());
+                            FToast.error(orderPay.getInfo());
                         }
 
                     }else if(mPayType==1){
@@ -552,7 +552,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                                 sendReq2WX(wxPayBean);
 
                     }else {
-                            FToast.warning("");
+                            FToast.error(orderPay.getInfo());
                         }
 
 
