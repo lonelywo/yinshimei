@@ -80,7 +80,7 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
     }
 
 
-    @Subscribe(threadMode = ThreadMode.POSTING, sticky = true)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onAddressEventMessage(AddressEvent event) {
        if(event.getCode()==AddressEvent.REFRESH_ADRESS_LIST){
             mRefreshLayout.autoRefresh();

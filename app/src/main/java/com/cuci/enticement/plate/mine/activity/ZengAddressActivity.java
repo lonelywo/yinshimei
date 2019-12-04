@@ -278,7 +278,7 @@ public class ZengAddressActivity extends BaseActivity {
                     String result = body.string();
                     UpdateAddress updateAddress = new Gson().fromJson(result, UpdateAddress.class);
                     if (updateAddress.getCode() == 1) {
-                        EventBus.getDefault().postSticky(new AddressEvent(AddressEvent.REFRESH_ADRESS_LIST));
+                        EventBus.getDefault().post(new AddressEvent(AddressEvent.REFRESH_ADRESS_LIST));
                         FToast.success(updateAddress.getInfo());
                         finish();
                     } else {
