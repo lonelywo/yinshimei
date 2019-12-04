@@ -123,6 +123,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
     private int mCode;
     private long id;
     private int status;
+    private int type;
     private String rule;
 
 
@@ -161,12 +162,18 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
             public void onClick(View view) {
                 if (AppUtils.isAllowPermission(ProdActivity.this)) {
                     mUserInfo = SharedPrefUtils.get(UserInfo.class);
-                    if (mProData != null) {
+                    //进入页面先请求是否会员
+                    MineViewModel mViewMode2 = ViewModelProviders.of(ProdActivity.this).get(MineViewModel.class);
+                    if (mUserInfo != null) {
+                        type=1;
+                        mViewMode2.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(ProdActivity.this, mdataObserver);
+                    }
+                    /*if (mProData != null) {
                         new XPopup.Builder(ProdActivity.this)
                                 .dismissOnTouchOutside(false)
                                 .dismissOnBackPressed(false)
                                 .asCustom(new CenterShareAppPopup(ProdActivity.this, mUserInfo))
-                                .show();
+                                .show();*/
                    /* if (mProData.getVip_mod() != 1) {
                         BasicApp.getAppExecutors()
                                     .networkIO()
@@ -245,7 +252,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                                 }))
                                 .show();
                     }*/
-                }
+              //  }
                 }
             }
         });
@@ -267,7 +274,11 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
             case Status.SUCCESS:
 
                 ResponseBody body = status.content;
-                opera(body);
+                if(type==1){
+                    opera1(body);
+                }else if(type==2){
+                    opera2(body);
+                }
                 break;
             case Status.ERROR:
 
@@ -280,7 +291,35 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
 
     };
 
-    private void opera(ResponseBody body) {
+    private void opera1(ResponseBody body) {
+        try {
+            String b = body.string();
+            DataUserInfo mMyTeamslBean = new Gson().fromJson(b, DataUserInfo.class);
+            if (mMyTeamslBean.getCode() == 1) {
+                int  is_new = mMyTeamslBean.getData().getIs_new();
+                if(is_new==0){
+                    FToast.warning("购买任意商品成为会员，即可分享~");
+                }else {
+                    if (mProData != null) {
+                        new XPopup.Builder(ProdActivity.this)
+                                .dismissOnTouchOutside(false)
+                                .dismissOnBackPressed(false)
+                                .asCustom(new CenterShareAppPopup(ProdActivity.this, mUserInfo))
+                                .show();
+                    }
+                }
+
+            } else {
+                FToast.error(mMyTeamslBean.getInfo());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            FToast.error("数据错误");
+        }
+    }
+
+
+    private void opera2(ResponseBody body) {
         try {
             String b = body.string();
             DataUserInfo mMyTeamslBean = new Gson().fromJson(b, DataUserInfo.class);
@@ -473,6 +512,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
             //进入页面先请求是否会员
             MineViewModel mViewMode2 = ViewModelProviders.of(this).get(MineViewModel.class);
             if (mUserInfo != null) {
+                type=2;
                 mViewMode2.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);
             }
            /* List<OrderGoods> items = new ArrayList<>();
