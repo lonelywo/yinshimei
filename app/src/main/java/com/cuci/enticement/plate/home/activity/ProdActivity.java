@@ -304,7 +304,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                         new XPopup.Builder(ProdActivity.this)
                                 .dismissOnTouchOutside(false)
                                 .dismissOnBackPressed(false)
-                                .asCustom(new CenterShareAppPopup(ProdActivity.this, mUserInfo))
+                                .asCustom(new CenterShareAppPopup(ProdActivity.this, mProData))
                                 .show();
                     }
                 }

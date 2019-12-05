@@ -202,29 +202,67 @@
         android:padding="20dp"
         />
 
+  <LinearLayout
+      android:id="@+id/con_dibu"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      android:orientation="horizontal"
+      android:layout_marginLeft="5dp"
+      android:layout_marginRight="5dp"
+      android:gravity="center"
+      android:paddingBottom="10dp"
+      >
+      <CheckBox
+          android:id="@+id/checkbox"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:checked="false"
+          />
+  <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      >
+      <TextView
+          android:id="@+id/text_dibuwenzi"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="登录代表您已阅读并同意《因诗美APP用户服务协议》"
+          android:textColor="#333333"
+          android:textSize="13sp"
+          app:layout_constraintTop_toTopOf="@+id/checkbox"
+          app:layout_constraintBottom_toBottomOf="@+id/checkbox"
+          app:layout_constraintLeft_toRightOf="@+id/checkbox"
+          android:layout_gravity="center"
+          />
+      <TextView
+          android:id="@+id/text_dibuwenzi1"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="和《隐私政策》的内容"
+          android:textColor="#333333"
+          android:textSize="13sp"
+          app:layout_constraintTop_toTopOf="@+id/checkbox"
+          app:layout_constraintBottom_toBottomOf="@+id/checkbox"
+          app:layout_constraintLeft_toRightOf="@+id/checkbox"
+          android:layout_gravity="center"
+          android:visibility="gone"
+          />
+  </LinearLayout>
+  </LinearLayout>
 
-
-        <TextView
-            android:id="@+id/text_dibuwenzi"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="登录代表您已阅读并同意《因诗美APP用户服务协议》的内容"
-            android:textColor="#333333"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:paddingBottom="20dp"
-            android:paddingTop="20dp"
-            />
         <ImageView
             android:id="@+id/weixin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/weixin"
-            app:layout_constraintBottom_toTopOf="@+id/text_dibuwenzi"
+            app:layout_constraintBottom_toTopOf="@+id/con_dibu"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="20dp"
             />
 
        <androidx.constraintlayout.widget.ConstraintLayout

@@ -44,6 +44,7 @@ public interface HomeApi {
     Call<ResponseBody> shareimg(@Field("from_type") String from_type,
                                       @Field("mid") String mid,
                                       @Field("token") String token,
+                                      @Field("goods_id") String goods_id,
                                       @Field("sign") String sign
 
     );

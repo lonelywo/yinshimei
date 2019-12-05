@@ -131,7 +131,7 @@ public class HomeViewModel extends ViewModel {
      * @param mid
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> shareimg(String from_type, String mid, String token) {
+    public MutableLiveData<Status<ResponseBody>> shareimg(String from_type, String mid, String token,String goods_id) {
 
         final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
         liveData.setValue(Status.loading(null));
@@ -139,9 +139,10 @@ public class HomeViewModel extends ViewModel {
         params.put("from_type",from_type);
         params.put("token",token);
         params.put("mid",mid);
+        params.put("goods_id",goods_id);
         String signs = SignUtils.signParam(params);
         mCreator.create(HomeApi.class)
-                .shareimg(from_type,mid,token,signs)
+                .shareimg(from_type,mid,token,goods_id,signs)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,

@@ -2,8 +2,10 @@ package com.cuci.enticement.plate.common.popup;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.util.TypedValue;
@@ -20,13 +22,14 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.bumptech.glide.util.Util;
 import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
+import com.cuci.enticement.bean.HomeDetailsBean;
 import com.cuci.enticement.bean.ShareimgBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.plate.home.vm.HomeViewModel;
+import com.cuci.enticement.utils.EncryptUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.FileUtils;
 import com.cuci.enticement.utils.ImageLoader;
@@ -34,6 +37,7 @@ import com.cuci.enticement.utils.ImageUtils;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.ViewUtils;
 import com.cuci.enticement.utils.WxShareUtils;
+import com.cuci.enticement.widget.QrCodeProdView;
 import com.google.gson.Gson;
 import com.lxj.xpopup.core.CenterPopupView;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
@@ -75,18 +79,25 @@ public class CenterShareAppPopup extends CenterPopupView {
     ProgressBar progressBar;
     @BindView(R.id.con_back)
     ConstraintLayout conBack;
+    @BindView(R.id.qrcode)
+    ImageView qrcode;
+    @BindView(R.id.con_img)
+    ConstraintLayout conImg;
+    @BindView(R.id.text_name)
+    TextView textName;
     private UserInfo mFunctionModel;
     private Context mContext;
     private HomeViewModel mHomeViewModel;
     private Bitmap bmp;
     private UserInfo mUserInfo;
+    private HomeDetailsBean.DataBean mmProData;
+    private Bitmap bitmap;
 
 
-
-    public CenterShareAppPopup(@NonNull Context context, UserInfo model) {
+    public CenterShareAppPopup(@NonNull Context context, HomeDetailsBean.DataBean mProData) {
         super(context);
         mContext = context;
-        mFunctionModel = model;
+        mmProData = mProData;
     }
 
     @Override
@@ -100,13 +111,13 @@ public class CenterShareAppPopup extends CenterPopupView {
         ButterKnife.bind(this);
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
         mHomeViewModel = ViewModelProviders.of((FragmentActivity) mContext).get(HomeViewModel.class);
-        mHomeViewModel.shareimg("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe((LifecycleOwner) mContext, mObserver);
+        mHomeViewModel.shareimg("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), String.valueOf(mmProData.getId())).observe((LifecycleOwner) mContext, mObserver);
         ViewUtils.showView(progressBar);
         // ImageLoader.loadPlaceholder(R.drawable.poster, imgTupian);
 
         // bmp = returnBitMap("https://qiniu.cdn.enticementchina.com/poster%281%29.jpg");
         //  bmp = getBitmap(BasicApp.getContext(),R.drawable.poster );
-       //  bmp = BitmapFactory.decodeResource(getResources(),R.drawable.poster );
+        //  bmp = BitmapFactory.decodeResource(getResources(),R.drawable.poster );
     }
 
     /* @OnClick({R.id.tv_share_wx, R.id.tv_share_moment,
@@ -205,38 +216,50 @@ public class CenterShareAppPopup extends CenterPopupView {
             String b = body.string();
             ShareimgBean mMyTeamslBean = new Gson().fromJson(b, ShareimgBean.class);
             if (mMyTeamslBean.getCode() == 1) {
-                ImageLoader.loadPlaceholder(mMyTeamslBean.getData().getSharepic(), imgTupian);
-                String sharepic = mMyTeamslBean.getData().getSharepic();
-                bmp = returnBitMap(sharepic);
+                ImageLoader.loadPlaceholder(mMyTeamslBean.getData().getPoster(), imgTupian);
+                ImageLoader.loadPlaceholder(mMyTeamslBean.getData().getQrcode(), qrcode);
+                textName.setText(mUserInfo.getNickname());
+
+             /*   QrCodeProdView view = new QrCodeProdView(mContext);
+                view.setImageMain(mMyTeamslBean.getData().getPoster());
+                view.setImageQrCode(mMyTeamslBean.getData().getQrcode());
+                view.setDesc(mUserInfo.getNickname());*/
+
+                // String sharepic = mMyTeamslBean.getData().getSharepic();
+                //  bmp = returnBitMap(sharepic);
+
+                bitmap = ImageUtils.getViewBitmap(conImg, 750, 1334);
 
                 tvShareWx.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                      //  Bitmap comp = comp(bmp);
-                       String path = saveImageToGallery(bmp);
-                        WXsharePic("he" + System.currentTimeMillis(), true, bmp, path);
-                       // WxShareUtils.shareImageToWX(WxShareUtils.WX_SCENE_SESSION, comp);
+                        //  Bitmap comp = comp(bmp);
+                        String path = saveImageToGallery(bitmap);
+                        WXsharePic("he" + System.currentTimeMillis(), true, bitmap, path);
+                      //   WxShareUtils.shareImageToWX(WxShareUtils.WX_SCENE_SESSION, bitmap);
                         dismiss();
                     }
                 });
                 tvShareMoment.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                    //    Bitmap comp = comp(bmp);
-                        String path = saveImageToGallery(bmp);
-                        WXsharePic("he" + System.currentTimeMillis(), false, bmp, path);
-                      //  WxShareUtils.shareImageToWX(WxShareUtils.WX_SCENE_TIME_LINE, comp);
+                        //    Bitmap comp = comp(bmp);
+                        String path = saveImageToGallery(bitmap);
+                        WXsharePic("he" + System.currentTimeMillis(), false, bitmap, path);
+                        //  WxShareUtils.shareImageToWX(WxShareUtils.WX_SCENE_TIME_LINE, comp);
                         dismiss();
                     }
                 });
                 iconShareSave.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        File file = ImageUtils.saveBitmap(BasicApp.getContext(),
-                                FileUtils.FOLDER_NAME_SAVE, String.valueOf(System.currentTimeMillis()), bmp, true);
-                        if (file != null) {
-                            FToast.success("图片成功保存到：" + file.getAbsolutePath());
-                        }
+                       if(bitmap!=null){
+                           File file = ImageUtils.saveBitmap(BasicApp.getContext(),
+                                   FileUtils.FOLDER_NAME_SAVE, String.valueOf(System.currentTimeMillis()), bitmap, true);
+                           if (file != null) {
+                               FToast.success("图片成功保存到：" + file.getAbsolutePath());
+                           }
+                       }
                         dismiss();
                     }
                 });
@@ -246,8 +269,14 @@ public class CenterShareAppPopup extends CenterPopupView {
                         dismiss();
                     }
                 });
-            } else {
 
+            } else {
+                close.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dismiss();
+                    }
+                });
                 FToast.error(mMyTeamslBean.getInfo());
             }
         } catch (IOException e) {
@@ -257,6 +286,7 @@ public class CenterShareAppPopup extends CenterPopupView {
             e.printStackTrace();
         }
     }
+
 
     //图片按比例大小压缩方法（根据Bitmap图片压缩）
     @SuppressLint("WrongThread")
@@ -297,60 +327,78 @@ public class CenterShareAppPopup extends CenterPopupView {
 
     @SuppressLint("WrongThread")
     public String saveImageToGallery(Bitmap bmp) {
-             // 首先保存图片
-             String storePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "dearyy";
-              File appDir = new File(storePath);
-              if (!appDir.exists()) {
-                      appDir.mkdir();
-                  }
-              String fileName =  "poster.jpg";
-              File file = new File(appDir, fileName);
-              if(file.exists()){
-                  return storePath + "/" + fileName;
-              }
-              try {
-                      FileOutputStream fos = new FileOutputStream(file);
-                      //通过io流的方式来压缩保存图片
-                     bmp.compress(Bitmap.CompressFormat.JPEG, 90, fos);
-                      fos.flush();
-                      fos.close();
-                  } catch (IOException e) {
-                      e.printStackTrace();
-                  }
-              return storePath + "/" + fileName;
-          }
+        // 首先保存图片
+        String storePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "dearyy";
+        File appDir = new File(storePath);
+        if (!appDir.exists()) {
+            appDir.mkdir();
+        }
+        String fileName = "poster.jpg";
+        File file = new File(appDir, fileName);
+        if (file.exists()) {
+            return storePath + "/" + fileName;
+        }
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            //通过io流的方式来压缩保存图片
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return storePath + "/" + fileName;
+    }
+
     public void WXsharePic(String transaction, final boolean isSession, Bitmap bitmap, String path) {
-             //初始化WXImageObject和WXMediaMessage对象
-             WXImageObject imageObject;
-             if (isExist(path)) {
-                     imageObject = new WXImageObject();
-                     imageObject.setImagePath(path);
-                 } else {
-                     imageObject = new WXImageObject(bitmap);
-                 }
-             WXMediaMessage msg = new WXMediaMessage();
-             msg.mediaObject = imageObject;
+        //初始化WXImageObject和WXMediaMessage对象
+        WXImageObject imageObject;
+        if (isExist(path)) {
+            imageObject = new WXImageObject();
+            imageObject.setImagePath(path);
+        } else {
+            imageObject = new WXImageObject(bitmap);
+        }
+        WXMediaMessage msg = new WXMediaMessage();
+        msg.mediaObject = imageObject;
             /* //设置缩略图
              Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, 200, 200, true);
              bitmap.recycle();
              msg.thumbData = getBitmapByte(scaledBitmap);*/
-             //构造一个Req
-             SendMessageToWX.Req req = new SendMessageToWX.Req();
-             req.transaction = transaction + Long.toString(System.currentTimeMillis());
-             req.message = msg;
-             //表示发送给朋友圈  WXSceneTimeline  表示发送给朋友  WXSceneSession
-             req.scene = isSession ? SendMessageToWX.Req.WXSceneSession : SendMessageToWX.Req.WXSceneTimeline;
-             //调用api接口发送数据到微信
-             BasicApp.getIWXAPI().sendReq(req);
-         }
+        //构造一个Req
+        SendMessageToWX.Req req = new SendMessageToWX.Req();
+        req.transaction = transaction + Long.toString(System.currentTimeMillis());
+        req.message = msg;
+        //表示发送给朋友圈  WXSceneTimeline  表示发送给朋友  WXSceneSession
+        req.scene = isSession ? SendMessageToWX.Req.WXSceneSession : SendMessageToWX.Req.WXSceneTimeline;
+        //调用api接口发送数据到微信
+        BasicApp.getIWXAPI().sendReq(req);
+    }
 
     public static boolean isExist(String path) {
         File file = new File(path);
-    //判断文件夹是否存在,如果不存在则创建文件夹
+        //判断文件夹是否存在,如果不存在则创建文件夹
         if (!file.exists()) {
-           return false;
+            return false;
         }
         return true;
+    }
+
+    public static Uri saveBitmap(Bitmap bitmap, File path) {
+        try {
+            FileOutputStream fos = new FileOutputStream(path);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+            fos.close();
+            Uri uri = ImageUtils.getImageContentUri(BasicApp.getContext(), path);
+            Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri);
+            BasicApp.getContext().sendBroadcast(intent);
+            return uri;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
 

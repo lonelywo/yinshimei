@@ -10,9 +10,16 @@ import android.os.Handler;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.Constant;
@@ -30,11 +37,9 @@ import com.cuci.enticement.event.LoginSucceedEvent;
 import com.cuci.enticement.plate.common.eventbus.CartEvent;
 import com.cuci.enticement.plate.common.popup.TipsPopupxieyi;
 import com.cuci.enticement.plate.common.vm.LoginViewModel;
-import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.cuci.enticement.utils.FLog;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.RSAUtil;
-import com.cuci.enticement.utils.Re;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.widget.ClearEditText;
 import com.google.gson.Gson;
@@ -48,10 +53,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import androidx.core.content.ContextCompat;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -97,22 +98,36 @@ public class LoginActivity extends BaseActivity {
     ImageView weixin;
     @BindView(R.id.text_weixindenglu)
     TextView textWeixindenglu;
+    @BindView(R.id.checkbox)
+    CheckBox checkbox;
+    @BindView(R.id.text_dibuwenzi1)
+    TextView textDibuwenzi1;
+    @BindView(R.id.con_dibu)
+    LinearLayout conDibu;
 
     private LocalBroadcastManager mBroadcastManager;
     private static final String TAG = LoginActivity.class.getSimpleName();
     private LoginViewModel mViewModel;
-    private Integer guojiacode=86;
+    private Integer guojiacode = 86;
     private Handler mTimeHandler = new Handler();
     private boolean mShowContract = false;
     private String mUnionId = "";
     private WxInfo minfo;
-    private int mQrCodeChoice=0;
+    private int mQrCodeChoice = 0;
     //private String[] mQrItems = new String[]{"中国", "马来西亚"};
     private GuoJiaBean mGuoJiaBean;
-    private String[] mQrItems ;
-    private Integer[] mQrItems2 ;
+    private String[] mQrItems;
+    private Integer[] mQrItems2;
     private List<Integer> list1 = new ArrayList<Integer>();
-    private  List<String> list2 = new ArrayList<String>();
+    private List<String> list2 = new ArrayList<String>();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
+
     public interface OnLoginListener {
         void onLoginSucceed(UserInfo userInfo, boolean showContract);
     }
@@ -132,8 +147,8 @@ public class LoginActivity extends BaseActivity {
     public void initViews(Bundle savedInstanceState) {
         mViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
         mGuoJiaBean = SharedPrefUtils.get(GuoJiaBean.class);
-        if(mGuoJiaBean!=null){
-            for (int i = 0; i < mGuoJiaBean.getData().size() ; i++) {
+        if (mGuoJiaBean != null) {
+            for (int i = 0; i < mGuoJiaBean.getData().size(); i++) {
                 list1.add(mGuoJiaBean.getData().get(i).getCode());
                 list2.add(mGuoJiaBean.getData().get(i).getTitle());
             }
@@ -150,26 +165,32 @@ public class LoginActivity extends BaseActivity {
                 finish();
             }
         });
-        String strMsg = "登录代表您已阅读并同意"+"<font color=\"#BF9964\">"+"《因诗美APP用户服务协议》"+"</font>"+"的内容";
-        textDibuwenzi.setText(Html.fromHtml(strMsg));
+        String strMsg1 = "登录代表您已阅读并同意" + "<font color=\"#BF9964\">" + "《因诗美APP用户服务协议》" + "</font>"+"的内容";
+        textDibuwenzi.setText(Html.fromHtml(strMsg1));
+       /* String strMsg2 = "和" + "<font color=\"#BF9964\">" + "《隐私政策》" + "</font>"+"的内容";
+        textDibuwenzi1.setText(Html.fromHtml(strMsg2));*/
     }
 
 
-    @OnClick({R.id.tv_code, R.id.ok, R.id.text_zhuce, R.id.weixin, R.id.text_dibuwenzi,R.id.text_guojia})
+    @OnClick({R.id.tv_code, R.id.ok, R.id.text_zhuce, R.id.weixin, R.id.text_dibuwenzi, R.id.text_guojia})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_code:
                 getSmsCodelogin();
                 break;
             case R.id.ok:
-                login();
+                  login();
                 break;
             case R.id.text_zhuce:
                 startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
                 break;
             case R.id.weixin:
-                SharedPrefUtils.saveWechatAuth("login");
-                startWxLogin();
+                if(checkbox.isChecked()){
+                    SharedPrefUtils.saveWechatAuth("login");
+                    startWxLogin();
+                }else {
+                    FToast.warning("请先勾选同意后再登录");
+                }
                 break;
             case R.id.text_dibuwenzi:
                 new XPopup.Builder(this)
@@ -218,8 +239,12 @@ public class LoginActivity extends BaseActivity {
         String mloginBean = new Gson().toJson(loginBean);
         String data = RSAUtil.encryptByPublic(this, mloginBean);
 
+        if(checkbox.isChecked()){
+            mViewModel.login(data).observe(this, mObserver);
+        }else {
+            FToast.warning("请先勾选同意后再登录");
+        }
 
-        mViewModel.login(data).observe(this, mObserver);
 
     }
 
@@ -282,7 +307,7 @@ public class LoginActivity extends BaseActivity {
             return;
         }
 
-        mViewModel.getSmsCodelogin(phone, "cuci", ""+guojiacode).observe(this, mSmsCodeObserver);
+        mViewModel.getSmsCodelogin(phone, "cuci", "" + guojiacode).observe(this, mSmsCodeObserver);
     }
 
     private Observer<Status<Base>> mSmsCodeObserver = new Observer<Status<Base>>() {
@@ -377,9 +402,9 @@ public class LoginActivity extends BaseActivity {
             if (b.contains("errcode")) {
                 dismissLoading();
                 WxError error = new Gson().fromJson(b, WxError.class);
-              //  finish();
+                //  finish();
                 FToast.error(error.getErrMsg() + "->" + error.getErrCode());
-              //  FToast.error("请再登录");
+                //  FToast.error("请再登录");
             } else {
                 WxToken token = new Gson().fromJson(b, WxToken.class);
 
@@ -518,6 +543,7 @@ public class LoginActivity extends BaseActivity {
             }
         }
     };
+
     private void showQrCodeDialog() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -530,7 +556,7 @@ public class LoginActivity extends BaseActivity {
         builder.setPositiveButton("确定", (dialog, which) -> {
 
             textGuojia.setText(mQrItems[mQrCodeChoice]);
-            guojiacode=mQrItems2[mQrCodeChoice];
+            guojiacode = mQrItems2[mQrCodeChoice];
         });
 
         builder.setNegativeButton("取消", null);
