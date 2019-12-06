@@ -844,10 +844,10 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                 List<Version.DataBean.FullBean.FullinfoBean> fullinfo = mVersion.getData().getFull().getFullinfo();
         if(total<fullinfo.get(0).getAmount()){
             int chajia = fullinfo.get(0).getAmount() - total;
-            textZengping.setText("再买"+chajia+"赠送橙花精油护手霜×2支");
+            textZengping.setText("再买"+chajia+"元即可赠送橙花精油护手霜两支");
         }
         for (int i = 0; i <fullinfo.size() ; i++) {
-            if(total>=fullinfo.get(i).getAmount()&&total<fullinfo.get(i+1).getAmount()){
+            if(total>=fullinfo.get(i).getAmount()){
                 textZengping.setText(fullinfo.get(i).getDesc());
             }
 
