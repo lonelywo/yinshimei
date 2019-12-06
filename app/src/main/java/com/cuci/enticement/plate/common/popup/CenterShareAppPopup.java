@@ -228,15 +228,16 @@ public class CenterShareAppPopup extends CenterPopupView {
                 // String sharepic = mMyTeamslBean.getData().getSharepic();
                 //  bmp = returnBitMap(sharepic);
 
-                bitmap = ImageUtils.getViewBitmap(conImg, 750, 1334);
+               // bitmap = ImageUtils.getViewBitmap(conImg, 750, 1334);
 
                 tvShareWx.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         //  Bitmap comp = comp(bmp);
-                        String path = saveImageToGallery(bitmap);
-                        WXsharePic("he" + System.currentTimeMillis(), true, bitmap, path);
-                      //   WxShareUtils.shareImageToWX(WxShareUtils.WX_SCENE_SESSION, bitmap);
+                       /* String path = saveImageToGallery(bitmap);
+                        WXsharePic("he" + System.currentTimeMillis(), true, bitmap, path);*/
+                         bitmap = ImageUtils.getViewBitmap(conImg, 750, 1334);
+                         WxShareUtils.shareImageToWX(WxShareUtils.WX_SCENE_SESSION, bitmap);
                         dismiss();
                     }
                 });
@@ -244,22 +245,22 @@ public class CenterShareAppPopup extends CenterPopupView {
                     @Override
                     public void onClick(View view) {
                         //    Bitmap comp = comp(bmp);
-                        String path = saveImageToGallery(bitmap);
-                        WXsharePic("he" + System.currentTimeMillis(), false, bitmap, path);
-                        //  WxShareUtils.shareImageToWX(WxShareUtils.WX_SCENE_TIME_LINE, comp);
+                        /*String path = saveImageToGallery(bitmap);
+                        WXsharePic("he" + System.currentTimeMillis(), false, bitmap, path);*/
+                        bitmap = ImageUtils.getViewBitmap(conImg, 750, 1334);
+                          WxShareUtils.shareImageToWX(WxShareUtils.WX_SCENE_TIME_LINE, bitmap);
                         dismiss();
                     }
                 });
                 iconShareSave.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                       if(bitmap!=null){
-                           File file = ImageUtils.saveBitmap(BasicApp.getContext(),
+                        bitmap = ImageUtils.getViewBitmap(conImg, 750, 1334);
+                        File file = ImageUtils.saveBitmap(BasicApp.getContext(),
                                    FileUtils.FOLDER_NAME_SAVE, String.valueOf(System.currentTimeMillis()), bitmap, true);
                            if (file != null) {
                                FToast.success("图片成功保存到：" + file.getAbsolutePath());
                            }
-                       }
                         dismiss();
                     }
                 });
