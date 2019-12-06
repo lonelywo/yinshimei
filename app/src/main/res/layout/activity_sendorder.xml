@@ -137,14 +137,48 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             />
+     <androidx.constraintlayout.widget.ConstraintLayout
+         android:id="@+id/con_zengping"
+         android:layout_width="0dp"
+         android:layout_height="wrap_content"
+         app:layout_constraintTop_toBottomOf="@+id/recycler_view"
+         app:layout_constraintLeft_toLeftOf="parent"
+         app:layout_constraintRight_toRightOf="parent"
+         android:visibility="visible"
+         >
+        <View
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@drawable/shape_login_edit_bottom_line"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="10dp"
+            />
 
+        <TextView
+            android:id="@+id/text_zengping"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:text="满500元 送黑金臻丝睡袍"
+            app:layout_constraintTop_toBottomOf="@id/line"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/orange"
+            android:textSize="20sp"
 
+            />
+     </androidx.constraintlayout.widget.ConstraintLayout>
      <View
          android:id="@+id/line2"
          android:layout_width="match_parent"
          android:layout_height="0.5dp"
          android:background="@drawable/shape_login_edit_bottom_line"
-         app:layout_constraintTop_toBottomOf="@+id/recycler_view"
+         app:layout_constraintTop_toBottomOf="@+id/con_zengping"
          app:layout_constraintLeft_toLeftOf="parent"
          android:layout_marginTop="10dp"
          />
@@ -167,7 +201,7 @@
             android:id="@+id/text_shangpingmoney"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2200.00"
+            android:text="0"
             app:layout_constraintTop_toBottomOf="@id/line2"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginRight="20dp"

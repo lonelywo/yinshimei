@@ -1,88 +1,76 @@
 package com.cuci.enticement.plate.cart.activity;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Parcelable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-
-import com.alipay.sdk.app.PayTask;
-import com.cuci.enticement.BasicApp;
-import com.cuci.enticement.Constant;
-import com.cuci.enticement.R;
-import com.cuci.enticement.base.BaseActivity;
-import com.cuci.enticement.bean.AddressBean;
-import com.cuci.enticement.bean.AllOrderList;
-import com.cuci.enticement.bean.CartDataBean;
-import com.cuci.enticement.bean.CartIntentInfo;
-import com.cuci.enticement.bean.CommitOrder;
-import com.cuci.enticement.bean.DataUserInfo;
-import com.cuci.enticement.bean.ExpressCost;
-import com.cuci.enticement.bean.OrderGoods;
-import com.cuci.enticement.bean.OrderPay;
-import com.cuci.enticement.bean.OrderResult;
-import com.cuci.enticement.bean.Status;
-import com.cuci.enticement.bean.UserInfo;
-import com.cuci.enticement.bean.WxPayBean;
-import com.cuci.enticement.bean.ZFBBean;
-import com.cuci.enticement.plate.common.eventbus.CartEvent;
-import com.cuci.enticement.plate.common.eventbus.OrderEvent;
-import com.cuci.enticement.plate.common.popup.TipsPopup;
-import com.cuci.enticement.plate.common.popup.WarningPopup;
-import com.cuci.enticement.plate.common.vm.CommonViewModel;
-import com.cuci.enticement.plate.mine.activity.MyOrderActivity;
-import com.cuci.enticement.plate.mine.activity.RecAddressActivity;
-import com.cuci.enticement.plate.mine.adapter.ItemProdViewBinder;
-import com.cuci.enticement.plate.mine.adapter.ItemYuProdViewBinder;
-import com.cuci.enticement.plate.mine.fragment._MineFragment;
-import com.cuci.enticement.plate.mine.vm.MineViewModel;
-import com.cuci.enticement.plate.mine.vm.OrderViewModel;
-import com.cuci.enticement.utils.Arith;
-import com.cuci.enticement.utils.FLog;
-import com.cuci.enticement.utils.FToast;
-import com.cuci.enticement.utils.PayResult;
-import com.cuci.enticement.utils.SharedPrefUtils;
-import com.cuci.enticement.utils.ViewUtils;
-import com.cuci.enticement.widget.OrderItemDecoration;
-import com.cuci.enticement.wxapi.WXEntryActivity;
-import com.google.gson.Gson;
-import com.lxj.xpopup.XPopup;
-import com.tencent.mm.opensdk.modelpay.PayReq;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
-
-import java.io.IOException;
-import java.lang.ref.WeakReference;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.alipay.sdk.app.PayTask;
+import com.cuci.enticement.BasicApp;
+import com.cuci.enticement.R;
+import com.cuci.enticement.base.BaseActivity;
+import com.cuci.enticement.bean.AddressBean;
+import com.cuci.enticement.bean.AllOrderList;
+import com.cuci.enticement.bean.CommitOrder;
+import com.cuci.enticement.bean.DataUserInfo;
+import com.cuci.enticement.bean.ExpressCost;
+import com.cuci.enticement.bean.OrderGoods;
+import com.cuci.enticement.bean.OrderPay;
+import com.cuci.enticement.bean.Status;
+import com.cuci.enticement.bean.UserInfo;
+import com.cuci.enticement.bean.Version;
+import com.cuci.enticement.bean.WxPayBean;
+import com.cuci.enticement.bean.ZFBBean;
+import com.cuci.enticement.plate.common.eventbus.CartEvent;
+import com.cuci.enticement.plate.common.eventbus.OrderEvent;
+import com.cuci.enticement.plate.common.popup.WarningPopup;
+import com.cuci.enticement.plate.common.vm.CommonViewModel;
+import com.cuci.enticement.plate.common.vm.MainViewModel;
+import com.cuci.enticement.plate.mine.activity.MyOrderActivity;
+import com.cuci.enticement.plate.mine.activity.RecAddressActivity;
+import com.cuci.enticement.plate.mine.adapter.ItemYuProdViewBinder;
+import com.cuci.enticement.plate.mine.fragment._MineFragment;
+import com.cuci.enticement.plate.mine.vm.MineViewModel;
+import com.cuci.enticement.plate.mine.vm.OrderViewModel;
+import com.cuci.enticement.utils.Arith;
+import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.PayResult;
+import com.cuci.enticement.utils.SharedPrefUtils;
+import com.cuci.enticement.utils.ViewUtils;
+import com.cuci.enticement.widget.OrderItemDecoration;
+import com.google.gson.Gson;
+import com.lxj.xpopup.XPopup;
+import com.tencent.mm.opensdk.modelpay.PayReq;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 import okhttp3.ResponseBody;
-
 
 
 /**
@@ -109,12 +97,53 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
     TextView tvTotalMoney;
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
+    @BindView(R.id.back_iv)
+    ImageView backIv;
+    @BindView(R.id.con_toubu)
+    ConstraintLayout conToubu;
+    @BindView(R.id.caixian)
+    ImageView caixian;
+    @BindView(R.id.line1)
+    View line1;
+    @BindView(R.id.line)
+    View line;
+    @BindView(R.id.text_zengping)
+    TextView textZengping;
+    @BindView(R.id.con_zengping)
+    ConstraintLayout conZengping;
+    @BindView(R.id.line2)
+    View line2;
+    @BindView(R.id.tv2)
+    TextView tv2;
+    @BindView(R.id.line3)
+    View line3;
+    @BindView(R.id.text_yunfei)
+    TextView textYunfei;
+    @BindView(R.id.line4)
+    View line4;
+    @BindView(R.id.text_fangshi)
+    TextView textFangshi;
+    @BindView(R.id.con_fangshi1)
+    ConstraintLayout conFangshi1;
+    @BindView(R.id.con_fangshi2)
+    ConstraintLayout conFangshi2;
+    @BindView(R.id.con_zhongjian)
+    ConstraintLayout conZhongjian;
+    @BindView(R.id.tv_commit)
+    TextView tvCommit;
+    @BindView(R.id.tv1)
+    TextView tv1;
+    @BindView(R.id.tv)
+    TextView tv;
+    @BindView(R.id.bottom)
+    ConstraintLayout bottom;
 
     private OrderViewModel mViewModel;
     private UserInfo mUserInfo;
-    private String mAddressId="";
-    private int mPayType=2;
-    private AllOrderList.DataBean.ListBeanX   mInfo;
+
+    private String mAddressId = "";
+    private int mPayType = 2;
+    private AllOrderList.DataBean.ListBeanX mInfo;
     private LinearLayoutManager mLayoutManager;
     private MultiTypeAdapter mAdapter;
     private Items mItems;
@@ -122,7 +151,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
     private int number;
     private String rule;
     @SuppressLint("HandlerLeak")
-    private  Handler mHandler = new Handler() {
+    private Handler mHandler = new Handler() {
         @SuppressWarnings("unused")
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -147,8 +176,6 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                         startActivity(new Intent(OrderActivity.this, MyOrderActivity.class));
 
                         finish();
-
-
 
 
                     } else {
@@ -190,9 +217,9 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onOrderEventMessage(OrderEvent event) {
-        if(event.getCode()==OrderEvent.FINISH_ACTIVITY){
+        if (event.getCode() == OrderEvent.FINISH_ACTIVITY) {
             finish();
-        }else if(event.getCode()==OrderEvent.SET_ADDRESS){
+        } else if (event.getCode() == OrderEvent.SET_ADDRESS) {
 
             tvAddress.setText("");
             ViewUtils.hideView(tvAddress);
@@ -202,7 +229,6 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
 
 
     }
-
 
 
     @Override
@@ -227,20 +253,23 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
         if (mUserInfo == null) {
             return;
         }
+
         mViewModel = ViewModelProviders.of(this).get(OrderViewModel.class);
         //请求当前用户信息
        /* MineViewModel mViewModel1 = ViewModelProviders.of(this).get(MineViewModel.class);
         mViewModel1.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);*/
 
-
-
-
+        //检测APP更新
+        MainViewModel  mMineViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        mMineViewModel.getVersion("2").observe(this, mUpdateObserver);
         // ImageLoader.loadPlaceholder(mOrderBean.get);
         //设置商品总价，运费，订单总价
+
+
         textShangpingmoney.setText(mInfo.getPrice_goods());
         tvTotalMoney.setText(mInfo.getPrice_goods());
 
-        String  address = SharedPrefUtils.getDefaultAdress();
+        String address = SharedPrefUtils.getDefaultAdress();
 
         if (!TextUtils.isEmpty(address)) {
 
@@ -250,28 +279,28 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
             //默认地址id，不去选中就用这个
             mAddressId = SharedPrefUtils.getDefaultAdressId();
 
-            mViewModel.getExpressCost(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),String.valueOf(number),mInfo.getPrice_goods(),mAddressId)
-                    .observe(OrderActivity.this,mExpressCostObserver);
+            mViewModel.getExpressCost(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(number), mInfo.getPrice_goods(), mAddressId)
+                    .observe(OrderActivity.this, mExpressCostObserver);
 
-        }else {
+        } else {
 
 
             CommonViewModel commonViewModel = ViewModelProviders.of(this).get(CommonViewModel.class);
-            commonViewModel.getAdressList(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),Status.LOAD_REFRESH)
-                    .observe(this,mObserver);
+            commonViewModel.getAdressList(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), Status.LOAD_REFRESH)
+                    .observe(this, mObserver);
 
         }
 
 
         mAdapter = new MultiTypeAdapter();
         mItems = new Items();
-           mItems.addAll(items);
+        mItems.addAll(items);
         mAdapter.setItems(mItems);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        mAdapter.register(OrderGoods.class, new ItemYuProdViewBinder(this,vip));
+        mAdapter.register(OrderGoods.class, new ItemYuProdViewBinder(this, vip));
 
 
         OrderItemDecoration mDecoration = new OrderItemDecoration(this, 6);
@@ -283,8 +312,6 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
         mRecyclerView.setAdapter(mAdapter);
 
 
-
-
     }
 
 
@@ -293,10 +320,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
         super.onResume();
 
 
-
     }
-
-
 
 
     private Observer<Status<AddressBean>> mObserver = new Observer<Status<AddressBean>>() {
@@ -308,7 +332,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
 
                     AddressBean data = status.content;
                     List<AddressBean.DataBean.ListBean> list = data.getData().getList();
-                    if (list == null||list.size()==0) {
+                    if (list == null || list.size() == 0) {
 
                         ViewUtils.showView(textDizi);
                         ViewUtils.hideView(tvAddress);
@@ -339,25 +363,22 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
     };
 
 
-
-
-
     private void saveDefault(List<AddressBean.DataBean.ListBean> list) {
-        boolean hasDefault=false;
-        int num=0;
+        boolean hasDefault = false;
+        int num = 0;
         for (int i = 0; i < list.size(); i++) {
             AddressBean.DataBean.ListBean item = list.get(i);
 
             int is_default = item.getIs_default();
-            if(is_default==1){
+            if (is_default == 1) {
                 //存在默认就设置
-                hasDefault=true;
-                num=i;
+                hasDefault = true;
+                num = i;
                 break;
             }
         }
 
-        if(hasDefault){
+        if (hasDefault) {
 
             AddressBean.DataBean.ListBean item = list.get(num);
             SharedPrefUtils.saveDefaultAdressId(String.valueOf(item.getId()));
@@ -373,47 +394,36 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
             ViewUtils.showView(tvAddress);
             tvAddress.setText(SharedPrefUtils.getDefaultAdress());
 
-        }else {
+        } else {
             ViewUtils.showView(textDizi);
             ViewUtils.hideView(tvAddress);
         }
 
 
-
-
     }
 
 
-
-
-
-
-
-
-
-
-
-    @OnClick({R.id.text_dizi, R.id.text_address,R.id.tv_commit,R.id.back_iv})
+    @OnClick({R.id.text_dizi, R.id.text_address, R.id.tv_commit, R.id.back_iv})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.text_dizi:
             case R.id.text_address:
                 Intent intent = new Intent(OrderActivity.this, RecAddressActivity.class);
-                intent.putExtra("code",100);
+                intent.putExtra("code", 100);
                 startActivityForResult(intent, 100);
                 break;
             case R.id.tv_commit:
                 //支付生成订单
-                if(TextUtils.isEmpty(tvAddress.getText())){
+                if (TextUtils.isEmpty(tvAddress.getText())) {
 
                     new XPopup.Builder(OrderActivity.this)
                             .dismissOnBackPressed(false)
                             .dismissOnTouchOutside(false)
                             .asCustom(new WarningPopup(OrderActivity.this,
-                                    "请选择收货地址","确定")).show();
+                                    "请选择收货地址", "确定")).show();
 
 
-                            //FToast.warning("请选择收货地址");
+                    //FToast.warning("请选择收货地址");
                     return;
                 }
                 //提交订单，成功后，去调用获取支付参数接口
@@ -427,8 +437,6 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
     }
 
 
-
-
     //暂不使用  可缩起来
     private Observer<Status<AddressBean>> mAddressObserver = new Observer<Status<AddressBean>>() {
         @Override
@@ -439,28 +447,28 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                     dismissLoading();
                     AddressBean data = status.content;
                     List<AddressBean.DataBean.ListBean> list = data.getData().getList();
-                    if (list == null||list.size()==0) {
+                    if (list == null || list.size() == 0) {
                         ViewUtils.showView(textDizi);
                         ViewUtils.hideView(tvAddress);
                         return;
                     }
 
                     if (data.getCode() == 1) {
-                        boolean hasDefault=false;
-                        int num=0;
+                        boolean hasDefault = false;
+                        int num = 0;
                         for (int i = 0; i < list.size(); i++) {
                             AddressBean.DataBean.ListBean item = list.get(i);
 
                             int is_default = item.getIs_default();
-                            if(is_default==1){
+                            if (is_default == 1) {
                                 //存在默认就设置
-                                hasDefault=true;
-                                num=i;
+                                hasDefault = true;
+                                num = i;
                                 break;
                             }
                         }
 
-                        if(hasDefault){
+                        if (hasDefault) {
 
                             AddressBean.DataBean.ListBean item = list.get(num);
                             ViewUtils.hideView(textDizi);
@@ -474,11 +482,9 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                                     .append(item.getAddress());
 
                             tvAddress.setText(sb.toString());
-                            mViewModel.getExpressCost(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),String.valueOf(number),mInfo.getPrice_goods(),mAddressId)
-                                    .observe(OrderActivity.this,mExpressCostObserver);
+                            mViewModel.getExpressCost(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(number), mInfo.getPrice_goods(), mAddressId)
+                                    .observe(OrderActivity.this, mExpressCostObserver);
                         }
-
-
 
 
                     } else {
@@ -500,14 +506,6 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
     };
 
 
-
-
-
-
-
-
-
-
     /**
      * 获取支付参数接口
      */
@@ -518,19 +516,19 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                 try {
                     String result = body.string();
 
-                    if(mPayType==2){
+                    if (mPayType == 2) {
                         ZFBBean orderPay = new Gson().fromJson(result, ZFBBean.class);
-                        if(orderPay.getCode()==1){
+                        if (orderPay.getCode() == 1) {
 
-                                sendReq2ZFB(orderPay.getData());
+                            sendReq2ZFB(orderPay.getData());
 
-                        }else {
+                        } else {
                             FToast.error(orderPay.getInfo());
                         }
 
-                    }else if(mPayType==1){
+                    } else if (mPayType == 1) {
                         OrderPay orderPay = new Gson().fromJson(result, OrderPay.class);
-                        if(orderPay.getCode()==1){
+                        if (orderPay.getCode() == 1) {
                             OrderPay.DataBean data = orderPay.getData();
                             String appid = data.getAppid();
                             String prepayid = data.getPrepayid();
@@ -541,27 +539,22 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                             String packageX = data.getPackageX();
                             //weixin
 
-                                WxPayBean wxPayBean = new WxPayBean();
-                                wxPayBean.setAppId(appid);
-                                wxPayBean.setPrepayId(prepayid);
-                                wxPayBean.setPartnerId(partnerid);
-                                wxPayBean.setNonceStr(noncestr);
-                                wxPayBean.setPaySign(sign);
-                                wxPayBean.setTimestamp(timestamp);
-                                wxPayBean.setPackageX(packageX);
-                                sendReq2WX(wxPayBean);
+                            WxPayBean wxPayBean = new WxPayBean();
+                            wxPayBean.setAppId(appid);
+                            wxPayBean.setPrepayId(prepayid);
+                            wxPayBean.setPartnerId(partnerid);
+                            wxPayBean.setNonceStr(noncestr);
+                            wxPayBean.setPaySign(sign);
+                            wxPayBean.setTimestamp(timestamp);
+                            wxPayBean.setPackageX(packageX);
+                            sendReq2WX(wxPayBean);
 
-                    }else {
+                        } else {
                             FToast.error(orderPay.getInfo());
                         }
 
 
-
-
-
-
                     }
-
 
 
                 } catch (IOException e) {
@@ -589,7 +582,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
             /*String adress = data.getStringExtra("address");
             mAddressId= data.getStringExtra("addressId");*/
             AddressBean.DataBean.ListBean bean = data.getParcelableExtra("addressBean");
-            mAddressId=String.valueOf(bean.getId());
+            mAddressId = String.valueOf(bean.getId());
             StringBuilder sb = new StringBuilder();
             sb.append(bean.getName()).append(" ")
                     .append(bean.getPhone()).append(" ").append("\n")
@@ -597,12 +590,12 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                     .append(bean.getCity()).append(" ")
                     .append(bean.getArea()).append(" ")
                     .append(bean.getAddress());
-            String adress=sb.toString();
+            String adress = sb.toString();
             ViewUtils.hideView(textDizi);
             ViewUtils.showView(tvAddress);
             tvAddress.setText(adress);
-            mViewModel.getExpressCost(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),String.valueOf(number),mInfo.getPrice_goods(),mAddressId)
-                    .observe(OrderActivity.this,mExpressCostObserver);
+            mViewModel.getExpressCost(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(number), mInfo.getPrice_goods(), mAddressId)
+                    .observe(OrderActivity.this, mExpressCostObserver);
         }
     }
 
@@ -618,23 +611,20 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                 try {
                     String result = body.string();
                     ExpressCost expressCost = new Gson().fromJson(result, ExpressCost.class);
-                    if(expressCost.getCode()==1){
+                    if (expressCost.getCode() == 1) {
                         double express_price = expressCost.getData().getExpress_price();
-                        textYunfeimoney.setText(String.format(Locale.CHINA,"¥%s",express_price));
+                        textYunfeimoney.setText(String.format(Locale.CHINA, "¥%s", express_price));
                         //计算总价
-                        double totalMoney= Arith.add(Double.parseDouble(mInfo.getPrice_goods()),express_price);
-                        tvTotalMoney.setText(String.format(Locale.CHINA,"%s",totalMoney));
-                    }else {
+                        double totalMoney = Arith.add(Double.parseDouble(mInfo.getPrice_goods()), express_price);
+                        tvTotalMoney.setText(String.format(Locale.CHINA, "%s", totalMoney));
+                    } else {
                         FToast.error(expressCost.getInfo());
                     }
-
-
 
 
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
 
 
                 break;
@@ -660,7 +650,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                 try {
                     String result = body.string();
                     CommitOrder commitOrder = new Gson().fromJson(result, CommitOrder.class);
-                    if(commitOrder.getCode()==1){
+                    if (commitOrder.getCode() == 1) {
 
 
                         //订单生成成功后，刷新购物车列表
@@ -671,22 +661,17 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
 
                         LocalBroadcastManager.getInstance(this).sendBroadcast(intent2);
 
-                        mViewModel.getOrderPay(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),
-                                commitOrder.getData().getOrder().getOrder_no(),String.valueOf(mPayType))
-                                .observe(this,mPayObserver);
-                    }else {
+                        mViewModel.getOrderPay(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),
+                                commitOrder.getData().getOrder().getOrder_no(), String.valueOf(mPayType))
+                                .observe(this, mPayObserver);
+                    } else {
                         FToast.error(commitOrder.getInfo());
                     }
-
-
-
-
 
 
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
 
 
                 break;
@@ -701,10 +686,6 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
     };
 
 
-
-
-
-
     @OnClick({R.id.con_fangshi1, R.id.con_fangshi2})
     public void onPayViewClicked(View view) {
         switch (view.getId()) {
@@ -712,13 +693,13 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                 aliIv.setImageResource(R.drawable.xuanzhong);
                 wechatIv.setImageResource(R.drawable.noxuanzhong);
 
-                mPayType=2;
+                mPayType = 2;
                 break;
             case R.id.con_fangshi2:
                 aliIv.setImageResource(R.drawable.noxuanzhong);
                 wechatIv.setImageResource(R.drawable.xuanzhong);
 
-                mPayType=1;
+                mPayType = 1;
 
                 break;
            /* case R.id.con_fangshi3:
@@ -758,6 +739,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
             }
         }).start();
     }
+
     /**
      * 调支付的方法
      * <p>
@@ -766,7 +748,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
      * @param wxPayBean
      */
     //这个WxPayBean以后台返回为准,这里是我手动拿接口文档里生成的
-    private  void sendReq2WX(WxPayBean wxPayBean) {
+    private void sendReq2WX(WxPayBean wxPayBean) {
 
         //这里的appid，替换成自己的即可
 
@@ -809,7 +791,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
             String b = body.string();
             DataUserInfo mDataUserInfo = new Gson().fromJson(b, DataUserInfo.class);
             if (mDataUserInfo.getCode() == 1) {
-             //   is_new = mDataUserInfo.getData().getIs_new();
+                //   is_new = mDataUserInfo.getData().getIs_new();
             } else {
 
                 FToast.error(mDataUserInfo.getInfo());
@@ -824,5 +806,60 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
     @Override
     public void onProdClick(OrderGoods item) {
 
+    }
+
+    private Observer<Status<ResponseBody>> mUpdateObserver = status -> {
+
+        switch (status.status) {
+            case Status.SUCCESS:
+                ResponseBody body = status.content;
+                opera(body);
+                break;
+            case Status.ERROR:
+
+                FToast.error("网络错误");
+                break;
+            case Status.LOADING:
+
+                break;
+        }
+
+
+    };
+
+    private void opera(ResponseBody body) {
+        try {
+            String b = body.string();
+            Version mVersion = new Gson().fromJson(b, Version.class);
+            if (mVersion.getCode() == 1) {
+                  if(mVersion.getData().getFull().getOpenfulle()==1){
+            ViewUtils.showView(conZengping);
+        }else {
+            ViewUtils.hideView(conZengping);
+        }
+                String price_goods = mInfo.getPrice_goods();
+                int total =Double.valueOf(price_goods).intValue();
+              /*  ArrayList<Integer> ints = new ArrayList<Integer>();
+                ArrayList<String> desc = new ArrayList<String>();*/
+                List<Version.DataBean.FullBean.FullinfoBean> fullinfo = mVersion.getData().getFull().getFullinfo();
+        if(total<fullinfo.get(0).getAmount()){
+            int chajia = fullinfo.get(0).getAmount() - total;
+            textZengping.setText("再买"+chajia+"赠送橙花精油护手霜×2支");
+        }
+        for (int i = 0; i <fullinfo.size() ; i++) {
+            if(total>=fullinfo.get(i).getAmount()&&total<fullinfo.get(i+1).getAmount()){
+                textZengping.setText(fullinfo.get(i).getDesc());
+            }
+
+        }
+
+
+            } else {
+                FToast.error(mVersion.getInfo());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            FToast.error("数据错误");
+        }
     }
 }
