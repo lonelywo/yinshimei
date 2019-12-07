@@ -36,6 +36,7 @@ import com.cuci.enticement.bean.WxToken;
 import com.cuci.enticement.event.LoginSucceedEvent;
 import com.cuci.enticement.plate.common.eventbus.CartEvent;
 import com.cuci.enticement.plate.common.popup.TipsPopupxieyi;
+import com.cuci.enticement.plate.common.popup.TipsPopupxieyi3;
 import com.cuci.enticement.plate.common.vm.LoginViewModel;
 import com.cuci.enticement.utils.FLog;
 import com.cuci.enticement.utils.FToast;
@@ -104,6 +105,10 @@ public class LoginActivity extends BaseActivity {
     TextView textDibuwenzi1;
     @BindView(R.id.con_dibu)
     LinearLayout conDibu;
+    @BindView(R.id.text_dibuwenzi2)
+    TextView textDibuwenzi2;
+    @BindView(R.id.text_dibuwenzi3)
+    TextView textDibuwenzi3;
 
     private LocalBroadcastManager mBroadcastManager;
     private static final String TAG = LoginActivity.class.getSimpleName();
@@ -165,38 +170,48 @@ public class LoginActivity extends BaseActivity {
                 finish();
             }
         });
-        String strMsg1 = "登录代表您已阅读并同意" + "<font color=\"#BF9964\">" + "《因诗美APP用户服务协议》" + "</font>"+"的内容";
-        textDibuwenzi.setText(Html.fromHtml(strMsg1));
-       /* String strMsg2 = "和" + "<font color=\"#BF9964\">" + "《隐私政策》" + "</font>"+"的内容";
-        textDibuwenzi1.setText(Html.fromHtml(strMsg2));*/
+
     }
 
 
-    @OnClick({R.id.tv_code, R.id.ok, R.id.text_zhuce, R.id.weixin, R.id.text_dibuwenzi, R.id.text_guojia})
+    @OnClick({R.id.tv_code, R.id.ok, R.id.text_zhuce, R.id.weixin, R.id.text_dibuwenzi1,R.id.text_dibuwenzi3, R.id.text_guojia})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_code:
                 getSmsCodelogin();
                 break;
             case R.id.ok:
-                  login();
+                login();
                 break;
             case R.id.text_zhuce:
                 startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
                 break;
             case R.id.weixin:
-                if(checkbox.isChecked()){
+               /* if (checkbox.isChecked()) {
                     SharedPrefUtils.saveWechatAuth("login");
                     startWxLogin();
-                }else {
+                } else {
                     FToast.warning("请先勾选同意后再登录");
-                }
+                }*/
+                SharedPrefUtils.saveWechatAuth("login");
+                startWxLogin();
                 break;
-            case R.id.text_dibuwenzi:
+            case R.id.text_dibuwenzi1:
                 new XPopup.Builder(this)
                         .dismissOnBackPressed(false)
                         .dismissOnTouchOutside(false)
                         .asCustom(new TipsPopupxieyi(this,
+                                () -> {
+
+                                }))
+                        .show();
+
+                break;
+            case R.id.text_dibuwenzi3:
+                new XPopup.Builder(this)
+                        .dismissOnBackPressed(false)
+                        .dismissOnTouchOutside(false)
+                        .asCustom(new TipsPopupxieyi3(this,
                                 () -> {
 
                                 }))
@@ -239,12 +254,12 @@ public class LoginActivity extends BaseActivity {
         String mloginBean = new Gson().toJson(loginBean);
         String data = RSAUtil.encryptByPublic(this, mloginBean);
 
-        if(checkbox.isChecked()){
+        /*if (checkbox.isChecked()) {
             mViewModel.login(data).observe(this, mObserver);
-        }else {
+        } else {
             FToast.warning("请先勾选同意后再登录");
-        }
-
+        }*/
+        mViewModel.login(data).observe(this, mObserver);
 
     }
 

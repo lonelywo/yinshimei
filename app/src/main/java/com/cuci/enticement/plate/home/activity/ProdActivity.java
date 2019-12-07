@@ -279,6 +279,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                 }else if(type==2){
                     opera2(body);
                 }
+
                 break;
             case Status.ERROR:
 
@@ -298,7 +299,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
             if (mMyTeamslBean.getCode() == 1) {
                 int  is_new = mMyTeamslBean.getData().getIs_new();
                 if(is_new==0){
-                    FToast.warning("购买任意商品成为会员，即可分享~");
+                    FToast.warning("成为会员，即可分享~");
                 }else {
                     if (mProData != null) {
                         new XPopup.Builder(ProdActivity.this)
@@ -333,6 +334,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                 orderGoods.setGoods_spec(mSpec);
                 orderGoods.setGoods_price_selling(mProData.getInitial_price_selling());
                 orderGoods.setGoods_price_market(mProData.getInitial_price_market());
+                orderGoods.setVip_mod(mProData.getVip_mod());
                 items.add(orderGoods);
 
                 AllOrderList.DataBean.ListBeanX cartIntentInfo = new AllOrderList.DataBean.ListBeanX();
@@ -340,7 +342,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                 //cartIntentInfo.setOrder_no(Long.parseLong(orderResult.getData().getOrder().getOrder_no()));
                 cartIntentInfo.setList(items);
                 cartIntentInfo.setGoods_count(items.size());
-                if(is_new==0){
+                if(is_new==0&&mProData.getVip_mod()==0||is_new==1&&mProData.getVip_mod()==1){
                     double goodsPrice = MathExtend.multiply(mProData.getInitial_price_market(), String.valueOf(mNum));
                     cartIntentInfo.setPrice_goods(String.valueOf(goodsPrice));
                 }else {
@@ -403,13 +405,17 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                         homeDetailGoodsname.setText(content.getData().getTitle());
                        /* text_jiage.setText("原价¥" + content.getData().getInitial_price_market());
                         textJiage1.setText("会员价¥" + content.getData().getInitial_price_selling());*/
-                        if(mProData.getVip_mod()==1){
-                            String strMsg = "<font color=\"#BF9964\">"+"活动价¥" + mProData.getInitial_price_selling()+"</font>";
+                        if(SharedPrefUtils.getisnew()==1&&mProData.getVip_mod()==1){
+                            String strMsg = "<font color=\"#BF9964\">"+mProData.getPricename()+"¥" + mProData.getInitial_price_market()+"</font>";
+                            text_jiage.setText(Html.fromHtml(strMsg));
+                        }else if(SharedPrefUtils.getisnew()==0&&mProData.getVip_mod()==1){
+                            String strMsg = "<font color=\"#BF9964\">"+mProData.getPricename()+"¥" + mProData.getInitial_price_selling()+"</font>";
                             text_jiage.setText(Html.fromHtml(strMsg));
                         }else {
                             String strMsg = "原价¥" + mProData.getInitial_price_market()+" "+"<font color=\"#BF9964\">"+"会员价¥" + mProData.getInitial_price_selling()+"</font>";
                             text_jiage.setText(Html.fromHtml(strMsg));
                         }
+
                         webDetails.loadDataWithBaseURL(null,
                                 getHtmlData(htmlContent), "text/html", "utf-8", null);
 

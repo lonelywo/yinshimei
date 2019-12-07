@@ -62,7 +62,7 @@ public class ItemYuProdViewBinder extends ItemViewBinder<OrderGoods, ItemYuProdV
         ImageLoader.loadPlaceholder(item.getGoods_logo(),holder.imgTupian);
         holder.textBiaoti.setText(item.getGoods_title());
         holder.textNeirong.setText(item.getGoods_spec());
-        if(mis_new==0){
+        if(mis_new==0&&item.getVip_mod()==0||mis_new==1&&item.getVip_mod()==1){
             holder.textQian.setText(String.format(Locale.CHINA,"%s",item.getGoods_price_market()));
         }else {
             holder.textQian.setText(String.format(Locale.CHINA,"%s",item.getGoods_price_selling()));

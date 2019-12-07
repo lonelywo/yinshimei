@@ -838,13 +838,13 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
             ViewUtils.hideView(conZengping);
         }
                 String price_goods = mInfo.getPrice_goods();
-                int total =Double.valueOf(price_goods).intValue();
-              /*  ArrayList<Integer> ints = new ArrayList<Integer>();
-                ArrayList<String> desc = new ArrayList<String>();*/
+                float total= Float.parseFloat(price_goods);
                 List<Version.DataBean.FullBean.FullinfoBean> fullinfo = mVersion.getData().getFull().getFullinfo();
         if(total<fullinfo.get(0).getAmount()){
-            int chajia = fullinfo.get(0).getAmount() - total;
+            float chajia = fullinfo.get(0).getAmount() - total;
             textZengping.setText("再买"+chajia+"元即可赠送橙花精油护手霜两支");
+            return;
+
         }
         for (int i = 0; i <fullinfo.size() ; i++) {
             if(total>=fullinfo.get(i).getAmount()){

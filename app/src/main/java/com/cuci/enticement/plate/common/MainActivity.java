@@ -17,6 +17,7 @@ import com.cuci.enticement.R;
 import com.cuci.enticement.BasicApp;
 
 import com.cuci.enticement.bean.Base;
+import com.cuci.enticement.bean.ClauseBean;
 import com.cuci.enticement.bean.GeTuibean;
 import com.cuci.enticement.bean.GuoJiaBean;
 import com.cuci.enticement.bean.MonBackBean;
@@ -188,7 +189,8 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
 
         //检测APP更新
         mViewModel.getVersion("2").observe(this, mUpdateObserver);
-
+        //隐私政策
+        mViewModel.clause("2").observe(this, clauseObserver);
         //打印设备信息
         FLog.e("设备信息",GetDeviceID());
         /*UserInfo userInfo = ServiceCreator.getInstance().getUserInfo();
@@ -217,17 +219,7 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
 
         mViewModel.getGuoJiaCode("2").observe(this, guojiamObserver);
         getCid();
-        if (SharedPrefUtils.getFirstTime()) {
-            SharedPrefUtils.saveFirstTime(false);
-            new XPopup.Builder(this)
-                    .dismissOnBackPressed(false)
-                    .dismissOnTouchOutside(false)
-                    .asCustom(new TipsPopupxieyi2(this,
-                            () -> {
-
-                            }))
-                    .show();
-        }
+       
         MainActivityPermissionsDispatcher.needsPermissionWithPermissionCheck(this);
     }
 
@@ -578,4 +570,49 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
         return "设备类型："+android.os.Build.MODEL;
 
     }
+    private Observer<Status<ResponseBody>> clauseObserver = status -> {
+
+        switch (status.status) {
+            case Status.SUCCESS:
+                ResponseBody body = status.content;
+                opera2(body);
+                break;
+            case Status.ERROR:
+
+                FToast.error("网络错误");
+                break;
+            case Status.LOADING:
+
+                break;
+        }
+
+
+    };
+
+    private void opera2(ResponseBody body) {
+        try {
+            String b = body.string();
+            ClauseBean mClauseBean = new Gson().fromJson(b, ClauseBean.class);
+            if (mClauseBean.getCode() == 1) {
+                String title = mClauseBean.getData().getTitle();
+                String url = mClauseBean.getData().getUrl();
+                if (SharedPrefUtils.getFirstTime()) {
+                    new XPopup.Builder(this)
+                            .dismissOnBackPressed(false)
+                            .dismissOnTouchOutside(false)
+                            .asCustom(new TipsPopupxieyi2(this,
+                                    url, title,  () -> {
+
+                                    }))
+                            .show();
+                }
+            } else {
+                FToast.error(mClauseBean.getInfo());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            FToast.error("数据错误");
+        }
+    }
+
 }

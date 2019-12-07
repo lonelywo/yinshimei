@@ -2,56 +2,44 @@ package com.cuci.enticement.plate.common.popup;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 
 import com.cuci.enticement.R;
-import com.cuci.enticement.utils.SharedPrefUtils;
 import com.lxj.xpopup.core.CenterPopupView;
 import com.tencent.smtt.sdk.WebView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class TipsPopupxieyi2 extends CenterPopupView {
+public class TipsPopupxieyi3 extends CenterPopupView {
 
 
     @BindView(R.id.web_context)
     WebView webContext;
     @BindView(R.id.cancel)
-    TextView cancel;
-    @BindView(R.id.text_xieyi)
-    TextView textXieyi;
-    @BindView(R.id.line1)
-    View line1;
-    @BindView(R.id.line2)
-    View line2;
-    private String murl;
-    private String mtext;
+    ImageView cancel;
 
-    public TipsPopupxieyi2(@NonNull Context context, String url, String text, OnExitListener listener) {
+    public TipsPopupxieyi3(@NonNull Context context, OnExitListener listener) {
         super(context);
         mOnExitListener = listener;
-        murl = url;
-        mtext = text;
+
     }
 
     @Override
     protected int getImplLayoutId() {
-        return R.layout.popup_tips_view_xieyi2;
+        return R.layout.popup_tips_view_xieyi3;
     }
 
     @Override
     protected void onCreate() {
         super.onCreate();
         ButterKnife.bind(this);
-        textXieyi.setText(mtext);
-        webContext.loadUrl(murl);
+       webContext.loadUrl("http://web.enticementchina.com/appweb/user_privacy.html");
         cancel.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPrefUtils.saveFirstTime(false);
                 dismiss();
                 //   mOnExitListener.onPositive();
 

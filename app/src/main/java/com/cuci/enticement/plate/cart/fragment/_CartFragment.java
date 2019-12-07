@@ -391,7 +391,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
         for (int i = 0; i < mItems.size(); i++) {
             OrderGoods item = (OrderGoods) mItems.get(i);
             if (item.isCheck()) {
-                if(is_new==0){
+                if(is_new==0&&item.getVip_mod()==0||is_new==1&&item.getVip_mod()==1){
                     double itemMoeny = Double.parseDouble(item.getGoods_price_market());
                     totalF = totalF + item.getGoods_num() * itemMoeny;
                 }else {

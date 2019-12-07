@@ -24,6 +24,7 @@ import com.cuci.enticement.plate.mine.vm.OrderViewModel;
 import com.cuci.enticement.utils.DimensionUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.ImageLoader;
+import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.ViewUtils;
 import com.lxj.xpopup.core.BottomPopupView;
 
@@ -150,13 +151,17 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
         List<HomeDetailsBean.DataBean.SpecsBean.ListBean> list = specsBean.getList();
       /*  text_money.setText("原价¥" + mItem.getInitial_price_market());
         textHomeMoneyVip.setText("会员价¥" + mItem.getInitial_price_selling());*/
-        if(mItem.getVip_mod()==1){
-            String strMsg = "<font color=\"#BF9964\">"+"活动价¥" + mItem.getInitial_price_selling()+"</font>";
+        if(SharedPrefUtils.getisnew()==1&&mItem.getVip_mod()==1){
+            String strMsg = "<font color=\"#BF9964\">"+mItem.getPricename()+"¥" + mItem.getInitial_price_market()+"</font>";
+            text_money.setText(Html.fromHtml(strMsg));
+        }else if(SharedPrefUtils.getisnew()==0&&mItem.getVip_mod()==1){
+            String strMsg = "<font color=\"#BF9964\">"+mItem.getPricename()+"¥" + mItem.getInitial_price_selling()+"</font>";
             text_money.setText(Html.fromHtml(strMsg));
         }else {
             String strMsg = "原价¥" + mItem.getInitial_price_market()+" "+"<font color=\"#BF9964\">"+"会员价¥" + mItem.getInitial_price_selling()+"</font>";
             text_money.setText(Html.fromHtml(strMsg));
         }
+
         ImageLoader.loadPlaceholder(mItem.getLogo(), imgTuxiang);
         stockTv.setText("库存" + mItem.getNumber_stock() + "件");
         textFenzu.setText(specsBean.getName());

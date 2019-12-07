@@ -307,6 +307,9 @@ public class _MineFragment extends BaseFragment  {
             String b = body.string();
             DataUserInfo mDataUserInfo = new Gson().fromJson(b, DataUserInfo.class);
             if (mDataUserInfo.getCode() == 1) {
+               //保存is_new
+                int is_new = mDataUserInfo.getData().getIs_new();
+                SharedPrefUtils.saveisnew(is_new);
                 if (mDataUserInfo.getData().getVip_level() == 0) {
                     textHuiyuan.setText("用户");
                     textHuiyuan1.setText("升级会员");
@@ -396,7 +399,7 @@ public class _MineFragment extends BaseFragment  {
                     orderViewModel.getStatisticsOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()))
                             .observe(mActivity, mTotalOrderObserver);
                     //刷新当前用户信息
-                    // mViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(mActivity, mdataObserver);
+                     mViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(mActivity, mdataObserver);
                 } else if (ACTION_REFRESH_HX.equals(intent.getAction())) {
                     int data = intent.getIntExtra("data", 0);
                     Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);

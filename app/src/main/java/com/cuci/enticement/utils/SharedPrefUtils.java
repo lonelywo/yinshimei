@@ -498,17 +498,17 @@ public class SharedPrefUtils {
         SharedPreferences sp = BasicApp.getContext().getSharedPreferences("quyu", Context.MODE_PRIVATE);
         return sp.getInt("showQyCode", 86);
     }
-   //保存是否绑定手机
-    public static void saveShowregCode(int show) {
-        SharedPreferences sp = BasicApp.getContext().getSharedPreferences("bind", Context.MODE_PRIVATE);
+   //保存isnew
+    public static void saveisnew(int show) {
+        SharedPreferences sp = BasicApp.getContext().getSharedPreferences("isnew", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
-        editor.putInt("showQyCode", show);
+        editor.putInt("is_new", show);
         editor.apply();
     }
 
-    public static int getShowregCode() {
-        SharedPreferences sp = BasicApp.getContext().getSharedPreferences("bind", Context.MODE_PRIVATE);
-        return sp.getInt("showQyCode", 0);
+    public static int getisnew() {
+        SharedPreferences sp = BasicApp.getContext().getSharedPreferences("isnew", Context.MODE_PRIVATE);
+        return sp.getInt("is_new", 0);
     }
 
 

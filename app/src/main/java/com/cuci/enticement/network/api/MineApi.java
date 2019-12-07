@@ -231,5 +231,14 @@ public interface MineApi {
             @Field("clientId") String clientId,
             @Field("sign") String sign
     );
+    /**
+     * 用户条款
+     */
+    @FormUrlEncoded
+    @POST("store/api.page/protocol")
+    Call<ResponseBody> clause(
+            @Field("from_type") String from_type,
+            @Field("sign") String sign
+    );
 }
 

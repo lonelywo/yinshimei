@@ -141,7 +141,7 @@ public class Version implements Serializable {
                  */
 
                 private int itme;
-                private int amount;
+                private float amount;
                 private int quota;
                 private String desc;
                 private List<GoodslistBean> goodslist;
@@ -154,11 +154,11 @@ public class Version implements Serializable {
                     this.itme = itme;
                 }
 
-                public int getAmount() {
+                public float getAmount() {
                     return amount;
                 }
 
-                public void setAmount(int amount) {
+                public void setAmount(float amount) {
                     this.amount = amount;
                 }
 

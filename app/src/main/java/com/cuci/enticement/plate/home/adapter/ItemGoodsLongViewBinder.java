@@ -18,6 +18,7 @@ import com.cuci.enticement.R;
 import com.cuci.enticement.bean.GoodsItem;
 import com.cuci.enticement.plate.home.activity.ProdActivity;
 import com.cuci.enticement.utils.ImageLoader;
+import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.UtilsForClick;
 
 import butterknife.BindView;
@@ -46,8 +47,12 @@ public class ItemGoodsLongViewBinder extends ItemViewBinder<GoodsItem, ItemGoods
         holder.textHomeGoodsname.setText(item.getTitle());
      /*   holder.textHomeMoney.setText("原价¥" + item.getInitial_price_market());
         holder.textHomeMoneyVip.setText("会员价¥" + item.getInitial_price_selling());*/
-        if(item.getVip_mod()==1){
-            String strMsg = "<font color=\"#BF9964\">"+"活动价¥" + item.getInitial_price_selling()+"</font>";
+
+        if(SharedPrefUtils.getisnew()==1&&item.getVip_mod()==1){
+            String strMsg = "<font color=\"#BF9964\">"+item.getPricename()+"¥" + item.getInitial_price_market()+"</font>";
+            holder.textHomeMoney.setText(Html.fromHtml(strMsg));
+        }else if(SharedPrefUtils.getisnew()==0&&item.getVip_mod()==1){
+            String strMsg = "<font color=\"#BF9964\">"+item.getPricename()+"¥" + item.getInitial_price_selling()+"</font>";
             holder.textHomeMoney.setText(Html.fromHtml(strMsg));
         }else {
             String strMsg = "原价¥" + item.getInitial_price_market()+" "+"<font color=\"#BF9964\">"+"会员价¥" + item.getInitial_price_selling()+"</font>";

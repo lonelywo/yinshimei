@@ -79,7 +79,7 @@ public class ItemCartViewBinder extends ItemViewBinder<OrderGoods, ItemCartViewB
 
         holder.textBiaoti.setText(item.getGoods_title());
         holder.textNeirong.setText(item.getGoods_spec());
-        if(mis_new==0){
+        if(mis_new==0&&item.getVip_mod()==0||mis_new==1&&item.getVip_mod()==1){
             holder.textJiage.setText(String.format(Locale.CHINA,"%s",item.getGoods_price_market()));
         }else {
             holder.textJiage.setText(String.format(Locale.CHINA,"%s",item.getGoods_price_selling()));

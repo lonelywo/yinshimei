@@ -61,6 +61,9 @@ public class ItemTitleViewBinder extends ItemViewBinder<ItemOrderTitle, ItemTitl
            case 5:
                holder.textZhuangtai.setText("已完成");
                break;
+           case 6:
+               holder.textZhuangtai.setText("已退货");
+               break;
 
        }
 

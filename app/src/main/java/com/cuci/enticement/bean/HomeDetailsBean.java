@@ -73,6 +73,16 @@ public class HomeDetailsBean {
         private int cate_id;
         private String initial_price_market;
         private String initial_price_selling;
+
+        public String getPricename() {
+            return pricename;
+        }
+
+        public void setPricename(String pricename) {
+            this.pricename = pricename;
+        }
+
+        private String pricename;
         private int number_sales;
         private int number_stock;
         private int vip_mod;
