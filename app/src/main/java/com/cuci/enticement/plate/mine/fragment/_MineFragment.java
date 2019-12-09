@@ -36,8 +36,11 @@ import com.cuci.enticement.bean.HxBean;
 import com.cuci.enticement.bean.OrderStatistics;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
+import com.cuci.enticement.event.ClickCatEvent;
 import com.cuci.enticement.event.ClickMyEvent;
+import com.cuci.enticement.event.IsnewEvent;
 import com.cuci.enticement.event.LoginOutEvent;
+import com.cuci.enticement.event.ProgoodsEvent;
 import com.cuci.enticement.plate.common.LoginActivity;
 import com.cuci.enticement.plate.common.MainActivity;
 import com.cuci.enticement.plate.common.popup.TipsPopup;
@@ -309,7 +312,14 @@ public class _MineFragment extends BaseFragment  {
             if (mDataUserInfo.getCode() == 1) {
                //保存is_new
                 int is_new = mDataUserInfo.getData().getIs_new();
-                SharedPrefUtils.saveisnew(is_new);
+                if(is_new==1){
+                    if(SharedPrefUtils.getisnew()!=is_new){
+                        SharedPrefUtils.saveisnew(is_new);
+                        EventBus.getDefault().post(new IsnewEvent());
+                    }
+
+                }
+
                 if (mDataUserInfo.getData().getVip_level() == 0) {
                     textHuiyuan.setText("用户");
                     textHuiyuan1.setText("升级会员");
@@ -399,7 +409,7 @@ public class _MineFragment extends BaseFragment  {
                     orderViewModel.getStatisticsOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()))
                             .observe(mActivity, mTotalOrderObserver);
                     //刷新当前用户信息
-                     mViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(mActivity, mdataObserver);
+                    // mViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(mActivity, mdataObserver);
                 } else if (ACTION_REFRESH_HX.equals(intent.getAction())) {
                     int data = intent.getIntExtra("data", 0);
                     Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -476,8 +486,9 @@ public class _MineFragment extends BaseFragment  {
                 .observe(mActivity, mTotalOrderObserver);
 
         //   mViewModel.bag499(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2").observe(_MineFragment.this, mbagObserver);
-
-        mViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);
+        //刷新商品详情数据
+       // EventBus.getDefault().post(new ProgoodsEvent());
+       // mViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);
     }
 
     private Observer<Status<ResponseBody>> mbagObserver = status -> {

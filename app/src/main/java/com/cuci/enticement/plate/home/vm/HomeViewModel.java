@@ -60,18 +60,16 @@ public class HomeViewModel extends ViewModel {
                 });
         return data;
     }
-    public MutableLiveData<Status<GeneralGoods>> getGeneralGoods(int minId, int loadType) {
+    public MutableLiveData<Status<GeneralGoods>> getGeneralGoods(String from_type, String mid, String token, int loadType) {
 
         final MutableLiveData<Status<GeneralGoods>> liveData = new MutableLiveData<>();
-        if(ServiceCreator.ConstantA==0){
-            sign = EncryptUtils.md5Encrypt("&key=O65dGdgf5Hf5GK6aF9JDFl5I9skPkd");
-        }else {
-            sign = EncryptUtils.md5Encrypt("&key=A8sUd9bqis3sN5GK6aF9JDFl5I9skPkd");
-        }
-      //  String sign = EncryptUtils.md5Encrypt("&key=A8sUd9bqis3sN5GK6aF9JDFl5I9skPkd");
-        String signs = sign.toUpperCase();
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("from_type",from_type);
+        params.put("token",token);
+        params.put("mid",mid);
+        String signs = SignUtils.signParamRemoveNull(params);
         mCreator.create(HomeApi.class)
-                .getGeneralGoods(signs)
+                .getGeneralGoods(from_type,  mid,  token,signs)
                 .enqueue(new Callback<GeneralGoods>() {
 
                     @Override
@@ -96,19 +94,17 @@ public class HomeViewModel extends ViewModel {
                 });
         return liveData;
     }
-    public MutableLiveData<Status<HomeDetailsBean>> getHomeDetails(String goods_id) {
+    public MutableLiveData<Status<HomeDetailsBean>> getHomeDetails(String from_type, String mid, String token,String goods_id) {
 
         final MutableLiveData<Status<HomeDetailsBean>> data = new MutableLiveData<>();
-        String  stringA = "goods_id="+goods_id;
-        if(ServiceCreator.ConstantA==0){
-            sign = EncryptUtils.md5Encrypt(stringA+"&key=O65dGdgf5Hf5GK6aF9JDFl5I9skPkd");
-        }else {
-            sign = EncryptUtils.md5Encrypt(stringA+"&key=A8sUd9bqis3sN5GK6aF9JDFl5I9skPkd");
-        }
-       // String sign = EncryptUtils.md5Encrypt(stringA+"&key=A8sUd9bqis3sN5GK6aF9JDFl5I9skPkd");
-        String signs = sign.toUpperCase();
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("from_type",from_type);
+        params.put("token",token);
+        params.put("mid",mid);
+        params.put("goods_id",goods_id);
+        String signs = SignUtils.signParamRemoveNull(params);
         mCreator.create(HomeApi.class)
-                .getHomeDetails(goods_id,signs)
+                .getHomeDetails(from_type, mid,token,goods_id,signs)
                 .enqueue(new Callback<HomeDetailsBean>() {
 
                     @Override

@@ -184,6 +184,8 @@ public class SettingsActivity extends BaseActivity {
     private void loginout() {
         dismissLoading();
         FToast.success("退出登录");
+        //退出默认设置isnew为0
+        SharedPrefUtils.saveisnew(0);
         //清空默认地址缓存
         SharedPrefUtils.saveDefaultAdress("");
         SharedPrefUtils.exit();

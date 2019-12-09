@@ -1,5 +1,6 @@
 package com.cuci.enticement.plate.home.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -20,27 +21,42 @@ import com.cuci.enticement.base.BaseFragment;
 import com.cuci.enticement.bean.BannerDataBean;
 import com.cuci.enticement.bean.BaseList;
 
+import com.cuci.enticement.bean.DataUserInfo;
 import com.cuci.enticement.bean.GeneralGoods;
 import com.cuci.enticement.bean.GoodsItem;
 import com.cuci.enticement.bean.ItemBanner;
 import com.cuci.enticement.bean.Status;
+import com.cuci.enticement.bean.UserInfo;
+import com.cuci.enticement.event.ClickCatEvent;
+import com.cuci.enticement.event.IsnewEvent;
+import com.cuci.enticement.plate.common.popup.CenterShareAppPopup;
 import com.cuci.enticement.plate.home.activity.ProdActivity;
 import com.cuci.enticement.plate.home.adapter.ItemBannerViewBinder;
 import com.cuci.enticement.plate.home.adapter.ItemGoodsLongViewBinder;
 import com.cuci.enticement.plate.home.vm.HomeViewModel;
+import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.widget.CustomRefreshHeader;
 import com.cuci.enticement.widget.HomeGridItemDecoration;
 import com.cuci.enticement.widget.HomeListSpanSizeLookup;
+import com.google.gson.Gson;
+import com.lxj.xpopup.XPopup;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.io.IOException;
 import java.util.List;
 
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
+import okhttp3.ResponseBody;
 
 /**
  * 首页外层Fragment
@@ -58,6 +74,8 @@ public class _HomeFragment extends BaseFragment  implements ItemBannerViewBinder
     private HomeListSpanSizeLookup mSizeLookup;
     private HomeViewModel mViewModel;
     private boolean mCanLoadMore = true;
+    private UserInfo mUserInfo;
+
 
 //    private LocalBroadcastManager mLocalBroadcastManager;
 
@@ -74,6 +92,7 @@ public class _HomeFragment extends BaseFragment  implements ItemBannerViewBinder
 
     @Override
     protected void initViews(LayoutInflater inflater, View view, ViewGroup container, Bundle savedInstanceState) {
+        mUserInfo = SharedPrefUtils.get(UserInfo.class);
         mViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         mRecyclerView = view.findViewById(R.id.rec_goods);
         mRefreshLayout = view.findViewById(R.id.refresh_home);
@@ -104,10 +123,63 @@ public class _HomeFragment extends BaseFragment  implements ItemBannerViewBinder
 
 
     }
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        EventBus.getDefault().register(this);
+    }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        EventBus.getDefault().unregister(this);
 
+    }
+    //刷新isnew显示数据
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onClickIsnewEvent(IsnewEvent event) {
+        UserInfo   mUserInfo = SharedPrefUtils.get(UserInfo.class);
+        //进入页面先请求是否会员
+        MineViewModel mViewMode3 = ViewModelProviders.of(this).get(MineViewModel.class);
+        if (mUserInfo != null) {
+            mViewMode3.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);
+        }
 
+    }
+    private Observer<Status<ResponseBody>> mdataObserver = status -> {
 
+        switch (status.status) {
+            case Status.SUCCESS:
+
+                ResponseBody body = status.content;
+                    opera1(body);
+                break;
+            case Status.ERROR:
+
+                FToast.error("网络错误");
+                break;
+            case Status.LOADING:
+
+                break;
+        }
+
+    };
+    private void opera1(ResponseBody body) {
+        try {
+            String b = body.string();
+            DataUserInfo mMyTeamslBean = new Gson().fromJson(b, DataUserInfo.class);
+            if (mMyTeamslBean.getCode() == 1) {
+                int  is_new = mMyTeamslBean.getData().getIs_new();
+                SharedPrefUtils.saveisnew(is_new);
+                mAdapter.notifyDataSetChanged();
+            } else {
+                FToast.error(mMyTeamslBean.getInfo());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            FToast.error("数据错误");
+        }
+    }
     @Override
     public void onBannerClick(BannerDataBean bannerDataBean) {
         Intent intentProd = new Intent(mActivity, ProdActivity.class);
@@ -154,8 +226,12 @@ public class _HomeFragment extends BaseFragment  implements ItemBannerViewBinder
                         ItemBanner itemBanner = new ItemBanner(items);
                         mItems.clear();
                         mItems.add(itemBanner);
+                    if(mUserInfo!=null){
+                        mViewModel.getGeneralGoods("2" ,String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), Status.LOAD_REFRESH).observe(_HomeFragment.this, GoodsmObserver);
+                    } else {
+                        mViewModel.getGeneralGoods("2" ,"", "", Status.LOAD_REFRESH).observe(_HomeFragment.this, GoodsmObserver);
+                    }
 
-                        mViewModel.getGeneralGoods( mMinId, Status.LOAD_REFRESH).observe(_HomeFragment.this, GoodsmObserver);
                     } else {
                         FToast.error(list.info);
                     }

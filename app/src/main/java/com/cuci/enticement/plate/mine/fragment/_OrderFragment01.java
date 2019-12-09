@@ -44,6 +44,7 @@ import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.bean.WxPayBean;
 import com.cuci.enticement.bean.ZFBBean;
+import com.cuci.enticement.event.IsnewEvent;
 import com.cuci.enticement.plate.cart.activity.LogisticsActivity;
 import com.cuci.enticement.plate.cart.activity.OrderActivity;
 import com.cuci.enticement.plate.cart.activity.OrderDetailsActivity;
@@ -168,7 +169,8 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                         Intent intent = new Intent(_MineFragment.ACTION_REFRESH_STATUS);
 
                         LocalBroadcastManager.getInstance(mActivity).sendBroadcast(intent);
-
+                        //刷新is_new
+                        EventBus.getDefault().post(new IsnewEvent());
                         //切换全部订单
                         EventBus.getDefault().post(new OrderEvent(OrderEvent.INTENT_MY_ORDER));
 
@@ -506,7 +508,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
     public void onOrderEventMessage(OrderEvent event) {
         if(event.getCode()==OrderEvent.CANCEL_ORDER){
             if(mtype.equals("")||mtype.equals("2")||mtype.equals("3")){
-                mRefreshLayout.autoRefresh();
+               load();
             }
         }else if(event.getCode()==OrderEvent.REFRESH_OUTSIDE){
             mRefreshLayout.autoRefresh();
@@ -592,7 +594,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                     String result = content.string();
                     OrderCancel orderCancel = new Gson().fromJson(result, OrderCancel.class);
                     if(orderCancel.getCode()==1){
-                        if(mtype.equals("2")||mtype.equals("3")){
+                        if(mtype.equals("")||mtype.equals("2")||mtype.equals("3")){
                             //待支付或者待发货页面  局部删除
                          /*  int count= mCancelItem.bottomcur-mCancelItem.topCur+1;
                             Items items = new Items();

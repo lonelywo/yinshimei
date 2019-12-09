@@ -30,6 +30,8 @@ import com.cuci.enticement.bean.OrderGoods;
 import com.cuci.enticement.bean.OrderResult;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
+import com.cuci.enticement.event.IsnewEvent;
+import com.cuci.enticement.event.ProgoodsEvent;
 import com.cuci.enticement.plate.cart.activity.OrderActivity;
 import com.cuci.enticement.plate.cart.vm.CartViewModel;
 import com.cuci.enticement.plate.common.GlideImageLoader;
@@ -57,6 +59,8 @@ import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
 import java.net.URL;
@@ -136,7 +140,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
 
     @Override
     public void initViews(Bundle savedInstanceState) {
-
+        EventBus.getDefault().register(this);
         Intent intent = getIntent();
         if (intent == null) {
             FToast.error("数据错误");
@@ -155,7 +159,12 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
         banner.setImageLoader(new GlideImageLoader());
 
         mHomeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
-        mHomeViewModel.getHomeDetails(url).observe(this, mObserver);
+        if(mUserInfo!=null){
+            mHomeViewModel.getHomeDetails("2",String.valueOf(mUserInfo.getId()), mUserInfo.getToken(),url).observe(this, mObserver);
+        }else {
+            mHomeViewModel.getHomeDetails("2","", "",url).observe(this, mObserver);
+        }
+
 
         imgShare.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -253,6 +262,8 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                                 .show();
                     }*/
               //  }
+                }else {
+                    finish();
                 }
             }
         });
@@ -278,6 +289,8 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                     opera1(body);
                 }else if(type==2){
                     opera2(body);
+                }else if(type==3){
+                    opera3(body);
                 }
 
                 break;
@@ -349,14 +362,36 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                     double goodsPrice = MathExtend.multiply(mProData.getInitial_price_selling(), String.valueOf(mNum));
                     cartIntentInfo.setPrice_goods(String.valueOf(goodsPrice));
                 }
+                    Intent intent = new Intent(ProdActivity.this, OrderActivity.class);
+                    intent.putExtra("intentInfo", cartIntentInfo);
+                    intent.putExtra("vip", is_new);
+                    intent.putExtra("num", mNum);
+                    intent.putExtra("rule", rule);
+                    startActivity(intent);
 
-                Intent intent = new Intent(ProdActivity.this, OrderActivity.class);
-                intent.putExtra("intentInfo", cartIntentInfo);
-                intent.putExtra("vip", is_new);
-                intent.putExtra("num", mNum);
-                intent.putExtra("rule", rule);
-                startActivity(intent);
 
+
+
+            } else {
+                FToast.error(mMyTeamslBean.getInfo());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            FToast.error("数据错误");
+        }
+    }
+    private void opera3(ResponseBody body) {
+        try {
+            String b = body.string();
+            DataUserInfo mMyTeamslBean = new Gson().fromJson(b, DataUserInfo.class);
+            if (mMyTeamslBean.getCode() == 1) {
+                int  is_new = mMyTeamslBean.getData().getIs_new();
+                SharedPrefUtils.saveisnew(is_new);
+                if(mUserInfo!=null){
+                    mHomeViewModel.getHomeDetails("2",String.valueOf(mUserInfo.getId()), mUserInfo.getToken(),url).observe(this, mObserver);
+                }else {
+                    mHomeViewModel.getHomeDetails("2","", "",url).observe(this, mObserver);
+                }
 
             } else {
                 FToast.error(mMyTeamslBean.getInfo());
@@ -453,6 +488,8 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
 
                     }
 
+                }else {
+                    finish();
                 }
 
                 break;
@@ -469,6 +506,8 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                         FToast.warning("商品已经下架啦~");
                     }
 
+                }else {
+                    finish();
                 }
                 break;
             case R.id.iv_cart:
@@ -478,6 +517,8 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                     LocalBroadcastManager broadcastManager = getInstance(ProdActivity.this);
                     broadcastManager.sendBroadcast(new Intent(ACTION_GO_TO_CART));
 
+                }else {
+                    finish();
                 }
                 break;
 
@@ -500,7 +541,8 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
             long id = mProData.getId();
             String s = spec;
             String numStr = String.valueOf(num);
-            mViewModel.cartChange(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(id), spec, String.valueOf(num)).observe(this, mIntoCart);
+                mViewModel.cartChange(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(id), spec, String.valueOf(num)).observe(this, mIntoCart);
+
 
 
         } else if (code == QUICK_BUY) {
@@ -709,16 +751,22 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
 
         }
     };
+    //刷新isnew显示数据
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onClickIsnewEvent(IsnewEvent event) {
+        mUserInfo = SharedPrefUtils.get(UserInfo.class);
+        //进入页面先请求是否会员
+        MineViewModel mViewMode3 = ViewModelProviders.of(ProdActivity.this).get(MineViewModel.class);
+        if (mUserInfo != null) {
+            type=3;
+            mViewMode3.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(ProdActivity.this, mdataObserver);
+        }
 
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
     }
 
-
-
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 }

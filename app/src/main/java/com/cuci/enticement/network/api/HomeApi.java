@@ -26,13 +26,21 @@ public interface HomeApi {
      */
     @FormUrlEncoded
     @POST("store/api.goods/gets")
-    Call<GeneralGoods> getGeneralGoods(@Field("sign") String sign);
+    Call<GeneralGoods> getGeneralGoods(@Field("from_type") String from_type,
+                                       @Field("mid") String mid,
+                                       @Field("token") String token,
+                                       @Field("sign") String sign
+
+    );
     /**
      * 获取商品详情
      */
     @FormUrlEncoded
     @POST("store/api.goods/get")
-    Call<HomeDetailsBean> getHomeDetails(@Field("goods_id") String goods_id,
+    Call<HomeDetailsBean> getHomeDetails(@Field("from_type") String from_type,
+                                         @Field("mid") String mid,
+                                         @Field("token") String token,
+                                         @Field("goods_id") String goods_id,
                                          @Field("sign") String sign
 
     );

@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.Constant;
+import com.cuci.enticement.event.IsnewEvent;
 import com.cuci.enticement.plate.cart.activity.OrderActivity;
 import com.cuci.enticement.plate.common.eventbus.OrderEvent;
 import com.cuci.enticement.plate.mine.activity.MyOrderActivity;
@@ -74,6 +75,8 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
                     Intent intent= new Intent(_MineFragment.ACTION_REFRESH_STATUS);
                     LocalBroadcastManager.getInstance(BasicApp.getContext()).sendBroadcast(intent);
 
+                    //刷新is_new
+                    EventBus.getDefault().post(new IsnewEvent());
                     //3  跳转订单页面--全部
 
                     startActivity(new Intent(WXPayEntryActivity.this, MyOrderActivity.class));

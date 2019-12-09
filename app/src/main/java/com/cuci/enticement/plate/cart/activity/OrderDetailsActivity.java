@@ -33,6 +33,7 @@ import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.bean.WxPayBean;
 import com.cuci.enticement.bean.ZFBBean;
+import com.cuci.enticement.event.IsnewEvent;
 import com.cuci.enticement.plate.common.eventbus.OrderEvent;
 import com.cuci.enticement.plate.common.popup.PayBottom2TopProdPopup;
 import com.cuci.enticement.plate.common.popup.TipsPopup;
@@ -254,11 +255,13 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
             ViewUtils.hideView(tvRight);
             tvLeft.setText("查看物流");
             textZhuangtai.setText("已完成");
+        } else if (status == 6) {
+            //已退货  查看物流
+            ViewUtils.hideView(tvLeft);
+            ViewUtils.hideView(tvRight);
+            textZhuangtai.setText("已退货");
         }
-
-
     }
-
 
     @OnClick({R.id.image_back, R.id.tv_left, R.id.tv_right})
     public void onViewClicked(View view) {
@@ -585,6 +588,8 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
 
                         LocalBroadcastManager.getInstance(OrderDetailsActivity.this).sendBroadcast(intent);
 
+                        //刷新is_new
+                        EventBus.getDefault().post(new IsnewEvent());
                         //切换全部订单
                         EventBus.getDefault().post(new OrderEvent(OrderEvent.INTENT_MY_ORDER));
 

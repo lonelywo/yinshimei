@@ -279,6 +279,7 @@ public class CenterShareAppPopup extends CenterPopupView {
                     }
                 });
                 FToast.error(mMyTeamslBean.getInfo());
+                dismiss();
             }
         } catch (IOException e) {
             e.printStackTrace();

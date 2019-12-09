@@ -35,6 +35,7 @@ import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.bean.Version;
 import com.cuci.enticement.bean.WxPayBean;
 import com.cuci.enticement.bean.ZFBBean;
+import com.cuci.enticement.event.IsnewEvent;
 import com.cuci.enticement.plate.common.eventbus.CartEvent;
 import com.cuci.enticement.plate.common.eventbus.OrderEvent;
 import com.cuci.enticement.plate.common.popup.WarningPopup;
@@ -170,7 +171,8 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                         Intent intent = new Intent(_MineFragment.ACTION_REFRESH_STATUS);
 
                         LocalBroadcastManager.getInstance(OrderActivity.this).sendBroadcast(intent);
-
+                       //刷新is_new
+                        EventBus.getDefault().post(new IsnewEvent());
                         //跳转订单页面--全部
 
                         startActivity(new Intent(OrderActivity.this, MyOrderActivity.class));
@@ -393,7 +395,8 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
             ViewUtils.hideView(textDizi);
             ViewUtils.showView(tvAddress);
             tvAddress.setText(SharedPrefUtils.getDefaultAdress());
-
+            mViewModel.getExpressCost(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(number), mInfo.getPrice_goods(), SharedPrefUtils.getDefaultAdressId())
+                    .observe(OrderActivity.this, mExpressCostObserver);
         } else {
             ViewUtils.showView(textDizi);
             ViewUtils.hideView(tvAddress);
@@ -427,7 +430,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                     return;
                 }
                 //提交订单，成功后，去调用获取支付参数接口
-                mViewModel.udpateAdress(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), rule, mAddressId)
+                mViewModel.udpateAdress(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), rule, SharedPrefUtils.getDefaultAdressId())
                         .observe(OrderActivity.this, mCommitObserver);
                 break;
             case R.id.back_iv:
