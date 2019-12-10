@@ -365,9 +365,6 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                     intent.putExtra("rule", rule);
                     startActivity(intent);
 
-
-
-
             } else {
                 FToast.error(mMyTeamslBean.getInfo());
             }
@@ -382,16 +379,13 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
             DataUserInfo mMyTeamslBean = new Gson().fromJson(b, DataUserInfo.class);
             if (mMyTeamslBean.getCode() == 1) {
                 int  is_new = mMyTeamslBean.getData().getIs_new();
-                if(is_new==1){
-                    if(SharedPrefUtils.getisnew()!=is_new){
-                        SharedPrefUtils.saveisnew(is_new);
-                        if(mUserInfo!=null){
+                SharedPrefUtils.saveisnew(is_new);
+                if(mUserInfo!=null){
                             mHomeViewModel.getHomeDetails("2",String.valueOf(mUserInfo.getId()), mUserInfo.getToken(),url).observe(this, mObserver);
                         }else {
                             mHomeViewModel.getHomeDetails("2","", "",url).observe(this, mObserver);
                         }
-                    }
-                }
+
 
             } else {
                 FToast.error(mMyTeamslBean.getInfo());
@@ -558,10 +552,9 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
             rule = sb.toString();
             // mViewModel.commitOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), rule, "").observe(this, mCommitObserver);
             //进入页面先请求是否会员
-            MineViewModel mViewMode2 = ViewModelProviders.of(this).get(MineViewModel.class);
             if (mUserInfo != null) {
                 type=2;
-                mViewMode2.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);
+                mHomeViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);
             }
            /* List<OrderGoods> items = new ArrayList<>();
             OrderGoods orderGoods = new OrderGoods();
@@ -756,10 +749,9 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
     public void onClickIsnewEvent(IsnewEvent event) {
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
         //进入页面先请求是否会员
-        MineViewModel mViewMode3 = ViewModelProviders.of(ProdActivity.this).get(MineViewModel.class);
         if (mUserInfo != null) {
             type=3;
-            mViewMode3.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(ProdActivity.this, mdataObserver);
+            mHomeViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(ProdActivity.this, mdataObserver);
         }
 
     }

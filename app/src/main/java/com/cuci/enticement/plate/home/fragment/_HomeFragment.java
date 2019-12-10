@@ -140,9 +140,8 @@ public class _HomeFragment extends BaseFragment  implements ItemBannerViewBinder
     public void onClickIsnewEvent(IsnewEvent event) {
         UserInfo   mUserInfo = SharedPrefUtils.get(UserInfo.class);
         //进入页面先请求是否会员
-        MineViewModel mViewMode3 = ViewModelProviders.of(this).get(MineViewModel.class);
         if (mUserInfo != null) {
-            mViewMode3.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);
+            mViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);
         }
 
     }
@@ -170,12 +169,8 @@ public class _HomeFragment extends BaseFragment  implements ItemBannerViewBinder
             DataUserInfo mMyTeamslBean = new Gson().fromJson(b, DataUserInfo.class);
             if (mMyTeamslBean.getCode() == 1) {
                 int  is_new = mMyTeamslBean.getData().getIs_new();
-                if(is_new==1){
-                    if(SharedPrefUtils.getisnew()!=is_new){
                         SharedPrefUtils.saveisnew(is_new);
                         mAdapter.notifyDataSetChanged();
-                    }
-                }
             } else {
                 FToast.error(mMyTeamslBean.getInfo());
             }
