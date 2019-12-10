@@ -39,7 +39,9 @@ public class RegActivityViewModel extends ViewModel {
         Map<String, String> params = new HashMap<String, String>();
         params.put("code",code);
         params.put("phone",phone);
-        params.put("agent_phone",agent_phone);
+        if(!TextUtils.isEmpty(agent_phone)){
+            params.put("agent_phone",agent_phone);
+        }
         if(!TextUtils.isEmpty(unionId)){
             params.put("unionId",unionId);
         }

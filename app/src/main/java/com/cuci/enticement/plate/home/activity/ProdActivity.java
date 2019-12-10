@@ -165,17 +165,24 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
             mHomeViewModel.getHomeDetails("2","", "",url).observe(this, mObserver);
         }
 
+        //进入页面先请求是否会员
+       /* MineViewModel mViewMode2 = ViewModelProviders.of(ProdActivity.this).get(MineViewModel.class);
+        if (mUserInfo != null) {
+            type=1;
+            mViewMode2.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(ProdActivity.this, mdataObserver);
+        }*/
 
         imgShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (AppUtils.isAllowPermission(ProdActivity.this)) {
                     mUserInfo = SharedPrefUtils.get(UserInfo.class);
-                    //进入页面先请求是否会员
-                    MineViewModel mViewMode2 = ViewModelProviders.of(ProdActivity.this).get(MineViewModel.class);
-                    if (mUserInfo != null) {
-                        type=1;
-                        mViewMode2.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(ProdActivity.this, mdataObserver);
+                    if (mProData != null) {
+                        new XPopup.Builder(ProdActivity.this)
+                                .dismissOnTouchOutside(false)
+                                .dismissOnBackPressed(false)
+                                .asCustom(new CenterShareAppPopup(ProdActivity.this, mProData))
+                                .show();
                     }
                     /*if (mProData != null) {
                         new XPopup.Builder(ProdActivity.this)
@@ -311,18 +318,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
             DataUserInfo mMyTeamslBean = new Gson().fromJson(b, DataUserInfo.class);
             if (mMyTeamslBean.getCode() == 1) {
                 int  is_new = mMyTeamslBean.getData().getIs_new();
-                if(is_new==0){
-                    FToast.warning("成为会员，即可分享~");
-                }else {
-                    if (mProData != null) {
-                        new XPopup.Builder(ProdActivity.this)
-                                .dismissOnTouchOutside(false)
-                                .dismissOnBackPressed(false)
-                                .asCustom(new CenterShareAppPopup(ProdActivity.this, mProData))
-                                .show();
-                    }
-                }
-
+                SharedPrefUtils.saveisnew(is_new);
             } else {
                 FToast.error(mMyTeamslBean.getInfo());
             }
@@ -386,11 +382,15 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
             DataUserInfo mMyTeamslBean = new Gson().fromJson(b, DataUserInfo.class);
             if (mMyTeamslBean.getCode() == 1) {
                 int  is_new = mMyTeamslBean.getData().getIs_new();
-                SharedPrefUtils.saveisnew(is_new);
-                if(mUserInfo!=null){
-                    mHomeViewModel.getHomeDetails("2",String.valueOf(mUserInfo.getId()), mUserInfo.getToken(),url).observe(this, mObserver);
-                }else {
-                    mHomeViewModel.getHomeDetails("2","", "",url).observe(this, mObserver);
+                if(is_new==1){
+                    if(SharedPrefUtils.getisnew()!=is_new){
+                        SharedPrefUtils.saveisnew(is_new);
+                        if(mUserInfo!=null){
+                            mHomeViewModel.getHomeDetails("2",String.valueOf(mUserInfo.getId()), mUserInfo.getToken(),url).observe(this, mObserver);
+                        }else {
+                            mHomeViewModel.getHomeDetails("2","", "",url).observe(this, mObserver);
+                        }
+                    }
                 }
 
             } else {

@@ -202,7 +202,7 @@
             android:layout_marginTop="20dp"
             android:background="@null"
             android:drawablePadding="4dp"
-            android:hint="请输入推荐人手机号（必填）"
+            android:hint="请输入推荐人手机号（选填）"
             android:inputType="phone"
             android:maxLength="11"
             android:singleLine="true"

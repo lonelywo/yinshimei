@@ -36,21 +36,15 @@ import com.cuci.enticement.bean.HxBean;
 import com.cuci.enticement.bean.OrderStatistics;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
-import com.cuci.enticement.event.ClickCatEvent;
 import com.cuci.enticement.event.ClickMyEvent;
 import com.cuci.enticement.event.IsnewEvent;
 import com.cuci.enticement.event.LoginOutEvent;
-import com.cuci.enticement.event.ProgoodsEvent;
 import com.cuci.enticement.plate.common.LoginActivity;
-import com.cuci.enticement.plate.common.MainActivity;
 import com.cuci.enticement.plate.common.popup.TipsPopup;
-import com.cuci.enticement.plate.common.popup.TipsPopup1;
-import com.cuci.enticement.plate.common.popup.TipsPopupxieyi;
 import com.cuci.enticement.plate.mine.activity.AchievementActivity;
 import com.cuci.enticement.plate.mine.activity.CommissionActivity;
 import com.cuci.enticement.plate.mine.activity.MyOrderActivity;
 import com.cuci.enticement.plate.mine.activity.MyTeamActivity;
-import com.cuci.enticement.plate.mine.activity.NoticeActivity;
 import com.cuci.enticement.plate.mine.activity.PKActivity;
 import com.cuci.enticement.plate.mine.activity.RecAddressActivity;
 import com.cuci.enticement.plate.mine.activity.SettingsActivity;
@@ -93,7 +87,7 @@ import static com.superrtc.ContextUtils.getApplicationContext;
  * 首页外层Fragment
  */
 
-public class _MineFragment extends BaseFragment  {
+public class _MineFragment extends BaseFragment {
 
     private static final String TAG = _MineFragment.class.getSimpleName();
 
@@ -155,8 +149,6 @@ public class _MineFragment extends BaseFragment  {
     public static final String ACTION_REFRESH_HX = "com.example.enticement.plate.mine.fragment.ACTION_REFRESH_HX";
     @BindView(R.id.text_name)
     TextView textName;
-    @BindView(R.id.v6)
-    View v6;
     @BindView(R.id.dot1_tv)
     TextView dot1Tv;
     @BindView(R.id.dot2_tv)
@@ -195,6 +187,14 @@ public class _MineFragment extends BaseFragment  {
     ImageView imgHeadwear;
     @BindView(R.id.text_wodegonggao)
     TextView textWodegonggao;
+    @BindView(R.id.img_shape_bai4)
+    ImageView imgShapeBai4;
+    @BindView(R.id.text_gongju)
+    TextView textGongju;
+    @BindView(R.id.view2)
+    View view2;
+    @BindView(R.id.con_gongju)
+    ConstraintLayout conGongju;
     private boolean mCouldChange = true;
     private LocalBroadcastManager mBroadcastManager;
     private UserInfo mUserInfo;
@@ -228,9 +228,7 @@ public class _MineFragment extends BaseFragment  {
         mBroadcastManager.registerReceiver(mReceiver, intentFilter);
         EventBus.getDefault().register(this);
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
-        if (mUserInfo == null) {
-            conYingchang.setVisibility(View.GONE);
-        }
+
 
         //todo  临时存储
       /*  mUserInfo=new UserInfo();
@@ -242,8 +240,11 @@ public class _MineFragment extends BaseFragment  {
             @Override
             public void onClick(View view) {
                 if (AppUtils.isAllowPermission(mActivity)) {
-                    mViewModel.bag499(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2").observe(_MineFragment.this, mbagObserver);
-
+                    //  mViewModel.bag499(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2").observe(_MineFragment.this, mbagObserver);
+                    Bitmap bitmap = BitmapFactory.decodeResource(BasicApp.getContext().getResources(), R.drawable.tuxiang);
+                    WxShareUtils.shareToWX(WxShareUtils.WX_SCENE_SESSION,
+                            "http://web.enticementchina.com/register.html?phone=" + mUserInfo.getPhone(), mActivity.getString(R.string.app_name_test),
+                            "因诗美，我的质感美学", bitmap);
                 }
             }
 
@@ -310,22 +311,24 @@ public class _MineFragment extends BaseFragment  {
             String b = body.string();
             DataUserInfo mDataUserInfo = new Gson().fromJson(b, DataUserInfo.class);
             if (mDataUserInfo.getCode() == 1) {
-               //保存is_new
+                //保存is_new
                 int is_new = mDataUserInfo.getData().getIs_new();
-                if(is_new==1){
-                    if(SharedPrefUtils.getisnew()!=is_new){
+                if (is_new == 1) {
+                    ViewUtils.showView(conYingchang);
+                    if (SharedPrefUtils.getisnew() != is_new) {
                         SharedPrefUtils.saveisnew(is_new);
                         EventBus.getDefault().post(new IsnewEvent());
                     }
-
+                }else {
+                    ViewUtils.hideView(conYingchang);
                 }
 
                 if (mDataUserInfo.getData().getVip_level() == 0) {
                     textHuiyuan.setText("用户");
-                    textHuiyuan1.setText("升级会员");
+                    textHuiyuan1.setText("");
                 } else if (mDataUserInfo.getData().getVip_level() == 1) {
                     textHuiyuan.setText("会员");
-                    textHuiyuan1.setText("升级服务商");
+                    textHuiyuan1.setText("");
                 } else if (mDataUserInfo.getData().getVip_level() == 2) {
                     textHuiyuan.setText("服务商");
                     textHuiyuan1.setVisibility(View.GONE);
@@ -437,12 +440,11 @@ public class _MineFragment extends BaseFragment  {
             ViewUtils.hideView(dot2Tv);
             ViewUtils.hideView(dot3Tv);
             ViewUtils.hideView(dot4Tv);
-            conYingchang.setVisibility(View.GONE);
+            ViewUtils.hideView(conYingchang);
             imgHeadwear.setVisibility(View.GONE);
             return;
         }
         PushManager.getInstance().bindAlias(mActivity, String.valueOf(mUserInfo.getId()));
-        conYingchang.setVisibility(View.VISIBLE);
         ImageLoader.loadPlaceholder1(mUserInfo.getHeadimg(), imgTuxiang);
         textName.setText(mUserInfo.getNickname());
 
@@ -487,8 +489,8 @@ public class _MineFragment extends BaseFragment  {
 
         //   mViewModel.bag499(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2").observe(_MineFragment.this, mbagObserver);
         //刷新商品详情数据
-       // EventBus.getDefault().post(new ProgoodsEvent());
-       // mViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);
+        // EventBus.getDefault().post(new ProgoodsEvent());
+        // mViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);
     }
 
     private Observer<Status<ResponseBody>> mbagObserver = status -> {
@@ -552,7 +554,7 @@ public class _MineFragment extends BaseFragment  {
             case R.id.btn_shengji:
                 //startActivity(new Intent(mActivity, ZengAddressActivity.class));
                 if (AppUtils.isAllowPermission(mActivity)) {
-                    if (mUserInfo.getVip_level() == 0) {
+                  /*  if (mUserInfo.getVip_level() == 0) {
                         new XPopup.Builder(mActivity)
                                 .dismissOnBackPressed(false)
                                 .dismissOnTouchOutside(false)
@@ -572,8 +574,9 @@ public class _MineFragment extends BaseFragment  {
                                 .show();
                     } else if (mUserInfo.getVip_level() == 2) {
 
-                    }
-
+                    }*/
+                    LocalBroadcastManager broadcastManager = getInstance(mActivity);
+                    broadcastManager.sendBroadcast(new Intent(ACTION_GO_TO_HOME));
                 }
                 break;
             case R.id.text_quanbudingdan:
@@ -612,19 +615,21 @@ public class _MineFragment extends BaseFragment  {
                 }
                 break;
             case R.id.text_wodekefu:
-                if (ChatClient.getInstance().isLoggedInBefore()) {
-                    //已经登录，可以直接进入会话界面
-                    Intent intent = new IntentBuilder(mActivity)
-                            .setServiceIMNumber("kefuchannelimid_269943")
-                            .setTitleName("美美")
-                            .build();
-                    startActivity(intent);
-                    //所有未读消息数清零
-                    ChatClient.getInstance().chatManager().markAllConversationsAsRead();
-                    dot1Hx.setVisibility(View.GONE);
-                } else {
-                    //未登录，需要登录后，再进入会话界面
-                    FToast.error("环信登录失败");
+                if(AppUtils.isAllowPermission(mActivity)){
+                    if (ChatClient.getInstance().isLoggedInBefore()) {
+                        //已经登录，可以直接进入会话界面
+                        Intent intent = new IntentBuilder(mActivity)
+                                .setServiceIMNumber("kefuchannelimid_269943")
+                                .setTitleName("美美")
+                                .build();
+                        startActivity(intent);
+                        //所有未读消息数清零
+                        ChatClient.getInstance().chatManager().markAllConversationsAsRead();
+                        dot1Hx.setVisibility(View.GONE);
+                    } else {
+                        //未登录，需要登录后，再进入会话界面
+                        FToast.error("环信登录失败");
+                    }
                 }
                 break;
         }

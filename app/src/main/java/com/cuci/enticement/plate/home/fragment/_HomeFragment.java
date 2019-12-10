@@ -170,8 +170,12 @@ public class _HomeFragment extends BaseFragment  implements ItemBannerViewBinder
             DataUserInfo mMyTeamslBean = new Gson().fromJson(b, DataUserInfo.class);
             if (mMyTeamslBean.getCode() == 1) {
                 int  is_new = mMyTeamslBean.getData().getIs_new();
-                SharedPrefUtils.saveisnew(is_new);
-                mAdapter.notifyDataSetChanged();
+                if(is_new==1){
+                    if(SharedPrefUtils.getisnew()!=is_new){
+                        SharedPrefUtils.saveisnew(is_new);
+                        mAdapter.notifyDataSetChanged();
+                    }
+                }
             } else {
                 FToast.error(mMyTeamslBean.getInfo());
             }

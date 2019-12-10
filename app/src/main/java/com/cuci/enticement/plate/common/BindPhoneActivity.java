@@ -164,7 +164,7 @@ public class BindPhoneActivity extends BaseActivity {
 
         if (TextUtils.isEmpty(phone)
         ) {
-            FToast.warning("请填写完整");
+            FToast.warning("请填写手机号");
             return;
         }
 
@@ -219,7 +219,7 @@ public class BindPhoneActivity extends BaseActivity {
 
         String phone = edtPhone.getText().toString().trim();
         if (TextUtils.isEmpty(phone)) {
-            FToast.warning("请填写完整");
+            FToast.warning("请填写手机号");
             return;
         }
 
@@ -334,15 +334,15 @@ public class BindPhoneActivity extends BaseActivity {
 
         String inviteCode = edtCodeTuijian.getText().toString().trim();
 
-        if (TextUtils.isEmpty(inviteCode) || TextUtils.isEmpty(phone)
+        if ( TextUtils.isEmpty(phone)
                 || TextUtils.isEmpty(smsCode)) {
-            FToast.warning("请填写完整");
+            FToast.warning("请填写手机号和验证码");
             return;
         }
-        if (TextUtils.isEmpty(inviteCode)) {
+      /*  if (TextUtils.isEmpty(inviteCode)) {
             FToast.warning("请填写正确的推荐人手机号");
             return;
-        }
+        }*/
         mViewModel.register(smsCode, phone, inviteCode, minfo.getUnionId(), minfo.getOpenId(), minfo.getHeadImgUrl(), minfo.getNickName(), String.valueOf(minfo.getSex())).observe(this, mObserver1);
 
     }
@@ -354,7 +354,7 @@ public class BindPhoneActivity extends BaseActivity {
         String smsCode = edtCode.getText().toString().trim();
         if (TextUtils.isEmpty(phone)
                 || TextUtils.isEmpty(smsCode)) {
-            FToast.warning("请填写完整");
+            FToast.warning("请填写手机号和验证码");
             return;
         }
         mViewModel.wxBindPhone(phone,smsCode, minfo.getUnionId(), minfo.getOpenId(), minfo.getHeadImgUrl(), minfo.getNickName(), "2", String.valueOf(minfo.getSex())
