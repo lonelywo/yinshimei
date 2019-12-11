@@ -839,6 +839,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
             ViewUtils.showView(conZengping);
         }else {
             ViewUtils.hideView(conZengping);
+            return;
         }
                 String price_goods = mInfo.getPrice_goods();
                 float total= Float.parseFloat(price_goods);

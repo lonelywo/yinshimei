@@ -411,7 +411,7 @@
     android:layout_height="150dp"
     app:layout_constraintTop_toBottomOf="@+id/img_shape_bai2"
     android:layout_marginTop="10dp"
-
+    android:visibility="gone"
     >
 
     <ImageView
