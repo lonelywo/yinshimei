@@ -51,6 +51,7 @@ import com.cuci.enticement.utils.Arith;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.PayResult;
 import com.cuci.enticement.utils.SharedPrefUtils;
+import com.cuci.enticement.utils.UtilsForClick;
 import com.cuci.enticement.utils.ViewUtils;
 import com.cuci.enticement.widget.OrderItemDecoration;
 import com.google.gson.Gson;
@@ -429,9 +430,11 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                     //FToast.warning("请选择收货地址");
                     return;
                 }
-                //提交订单，成功后，去调用获取支付参数接口
-                mViewModel.udpateAdress(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), rule, SharedPrefUtils.getDefaultAdressId())
-                        .observe(OrderActivity.this, mCommitObserver);
+                if (UtilsForClick.isFastClick()) {
+                    //提交订单，成功后，去调用获取支付参数接口
+                    mViewModel.udpateAdress(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), rule, SharedPrefUtils.getDefaultAdressId())
+                            .observe(OrderActivity.this, mCommitObserver);
+                }
                 break;
             case R.id.back_iv:
                 finish();
@@ -664,9 +667,10 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
 
                         LocalBroadcastManager.getInstance(this).sendBroadcast(intent2);
 
-                        mViewModel.getOrderPay(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),
-                                commitOrder.getData().getOrder().getOrder_no(), String.valueOf(mPayType))
-                                .observe(this, mPayObserver);
+                            mViewModel.getOrderPay(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),
+                                    commitOrder.getData().getOrder().getOrder_no(), String.valueOf(mPayType))
+                                    .observe(this, mPayObserver);
+
                     } else {
                         FToast.error(commitOrder.getInfo());
                     }

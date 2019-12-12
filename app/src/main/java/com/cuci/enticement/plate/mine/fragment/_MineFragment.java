@@ -20,17 +20,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
 import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseFragment;
-import com.cuci.enticement.bean.Bag499Bean;
-import com.cuci.enticement.bean.Base;
 import com.cuci.enticement.bean.DataUserInfo;
 import com.cuci.enticement.bean.HxBean;
 import com.cuci.enticement.bean.OrderStatistics;
@@ -38,7 +34,6 @@ import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.event.ClickMyEvent;
 import com.cuci.enticement.event.IsnewEvent;
-import com.cuci.enticement.event.LoginOutEvent;
 import com.cuci.enticement.plate.common.LoginActivity;
 import com.cuci.enticement.plate.common.popup.TipsPopup;
 import com.cuci.enticement.plate.mine.activity.AchievementActivity;
@@ -64,15 +59,11 @@ import com.hyphenate.helpdesk.callback.Callback;
 import com.hyphenate.helpdesk.easeui.util.IntentBuilder;
 import com.igexin.sdk.PushManager;
 import com.lxj.xpopup.XPopup;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -229,18 +220,12 @@ public class _MineFragment extends BaseFragment {
         EventBus.getDefault().register(this);
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
 
-
-        //todo  临时存储
-      /*  mUserInfo=new UserInfo();
-        mUserInfo.setToken("7ee35ab8215b6992c500a42ae6abe3ec");
-        mUserInfo.setId(18281);
-        SharedPrefUtils.save(mUserInfo,UserInfo.class);*/
+         //刷新界面
         refreshLayout();
         imgYqhy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (AppUtils.isAllowPermission(mActivity)) {
-                    //  mViewModel.bag499(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2").observe(_MineFragment.this, mbagObserver);
                     Bitmap bitmap = BitmapFactory.decodeResource(BasicApp.getContext().getResources(), R.drawable.tuxiang);
                     WxShareUtils.shareToWX(WxShareUtils.WX_SCENE_SESSION,
                             "http://web.enticementchina.com/register.html?phone=" + mUserInfo.getPhone(), mActivity.getString(R.string.app_name_test),
@@ -387,19 +372,7 @@ public class _MineFragment extends BaseFragment {
             if (intent != null) {
 
                 if (LoginActivity.ACTION_WX_LOGIN_SUCCEED.equals(intent.getAction()) && "mine".equals(type)) {
-                    /*if (tenOuter()) {
-                       String code = intent.getStringExtra("code");
-                        mLoginViewModel.getWxToken(Constant.WX_APP_ID, Constant.WX_APP_SECRET_ID,
-                                code, "authorization_code")
-                                .observe(_MineFragment.this, mWxTokenObserver);
-                    } else {
-                        //获取保存的信息
-                        String wxOpenId = SharedPrefUtils.getWxOpenId();
-                        String openId = wxOpenId.split("FDSH")[1];
-                        String token = wxOpenId.split("FDSH")[2];
-                        mLoginViewModel.getWxInfo(token, openId)
-                                .observe(_MineFragment.this, mWxInfoObserver);
-                    }*/
+
                 } else if (ACTION_LOGIN_SUCCEED.equals(intent.getAction())) {
                     UserInfo userInfo = (UserInfo) intent.getSerializableExtra(DATA_USER_INFO);
                     if (userInfo != null) {
@@ -418,14 +391,7 @@ public class _MineFragment extends BaseFragment {
                     Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                     Ringtone rt = RingtoneManager.getRingtone(getApplicationContext(), uri);
                     rt.play();
-                   /* Conversation conversation = ChatClient.getInstance().chatManager().getConversation("kefuchannelimid_269943");
-                    int i = conversation.unreadMessagesCount();
-                    FLog.e("shuangliang",""+i);
-                    if (i == 0) {
-                        dot1Hx.setVisibility(View.GONE);
-                    } else {
-                        dot1Hx.setVisibility(View.VISIBLE);
-                    }*/
+
                 }
 
             }
@@ -487,48 +453,8 @@ public class _MineFragment extends BaseFragment {
         orderViewModel.getStatisticsOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()))
                 .observe(mActivity, mTotalOrderObserver);
 
-        //   mViewModel.bag499(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2").observe(_MineFragment.this, mbagObserver);
         //刷新商品详情数据
-        // EventBus.getDefault().post(new ProgoodsEvent());
         // mViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);
-    }
-
-    private Observer<Status<ResponseBody>> mbagObserver = status -> {
-
-        switch (status.status) {
-            case Status.SUCCESS:
-
-                ResponseBody body = status.content;
-                opera(body);
-                break;
-            case Status.ERROR:
-
-                FToast.error("网络错误");
-                break;
-            case Status.LOADING:
-
-                break;
-        }
-
-    };
-
-    private void opera(ResponseBody body) {
-        try {
-            String b = body.string();
-            Bag499Bean mMyTeamslBean = new Gson().fromJson(b, Bag499Bean.class);
-            if (mMyTeamslBean.getCode() == 1) {
-                Bitmap bitmap = BitmapFactory.decodeResource(BasicApp.getContext().getResources(), R.drawable.tuxiang);
-                WxShareUtils.shareToWX(WxShareUtils.WX_SCENE_SESSION,
-                        "http://web.enticementchina.com/register.html?phone=" + mUserInfo.getPhone(), mActivity.getString(R.string.app_name_test),
-                        "因诗美，我的质感美学", bitmap);
-            } else {
-
-                FToast.error(mMyTeamslBean.getInfo());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            FToast.error("数据错误");
-        }
     }
 
     @OnClick({R.id.img_kaiguan, R.id.btn_shengji, R.id.text_quanbudingdan, R.id.text_tuiguangyongjing, R.id.text_wodetuandui, R.id.text_shouhuodizi, R.id.text_yejiyuefan, R.id.text_wodekefu})
@@ -537,22 +463,9 @@ public class _MineFragment extends BaseFragment {
             case R.id.img_kaiguan:
                 if (AppUtils.isAllowPermission(mActivity)) {
 
-                    new XPopup.Builder(mActivity)
-                            .dismissOnBackPressed(false)
-                            .dismissOnTouchOutside(false)
-                            .asCustom(new TipsPopup(mActivity,
-                                    "亲，确定要退出吗？", "取消", "确定", () -> {
-                                int mid = mUserInfo.getId();
-                                String token = mUserInfo.getToken();
-                                mViewModel.loginOut("2", token, "" + mid).observe(this, mloginoutObserver);
-                                //loginout();
-                            }))
-                            .show();
-
                 }
                 break;
             case R.id.btn_shengji:
-                //startActivity(new Intent(mActivity, ZengAddressActivity.class));
                 if (AppUtils.isAllowPermission(mActivity)) {
                   /*  if (mUserInfo.getVip_level() == 0) {
                         new XPopup.Builder(mActivity)
@@ -711,104 +624,6 @@ public class _MineFragment extends BaseFragment {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
         mBroadcastManager.unregisterReceiver(mReceiver);
-    }
-
-    //判断是否超过10分钟
-    private boolean tenOuter() {
-
-        String wxOpenId = SharedPrefUtils.getWxOpenId();
-
-        if ("0FDSH0FDSH0".equals(wxOpenId)) {
-            return true;
-        }
-
-        long oldTime = Long.parseLong(wxOpenId.split("FDSH")[0]);
-
-        long now = new Date().getTime();
-        long ten = 10 * 60 * 1000L;
-
-        if (now - oldTime >= ten) {
-            return true;
-        }
-
-        return false;
-    }
-
-    private Observer<Status<Base>> mObserver = new Observer<Status<Base>>() {
-        @Override
-        public void onChanged(Status<Base> baseStatus) {
-            switch (baseStatus.status) {
-                case Status.LOADING:
-                    break;
-                case Status.ERROR:
-                    FToast.error("请求错误，请稍后再试。");
-                    break;
-                case Status.SUCCESS:
-                    if (baseStatus.content == null) {
-                        FToast.error("请求错误，请稍后再试。");
-                        return;
-                    }
-                    if (baseStatus.content.code == 1) {
-                        String s = new Gson().toJson(baseStatus.content.data);
-                        //    UserInfo userInfo =(UserInfo)baseStatus.content.data;
-                        FToast.success("登录成功");
-                     /*   SharedPrefUtils.save(userInfo,UserInfo.class);
-                        Intent intent = new Intent(_MineFragment.ACTION_LOGIN_SUCCEED);
-                       intent.putExtra(_MineFragment.DATA_USER_INFO, userInfo);
-                        LocalBroadcastManager.getInstance(LoginActivity.this).sendBroadcast(intent);
-                        finish();*/
-                     /*   if (mOnLoginListener != null) {
-                            mOnLoginListener.onLoginSucceed(userInfo, mShowContract);
-                        }*/
-                    } else {
-                        FToast.error(baseStatus.content.info);
-                    }
-                    break;
-            }
-        }
-    };
-
-    private Observer<Status<Base>> mloginoutObserver = new Observer<Status<Base>>() {
-        @Override
-        public void onChanged(Status<Base> baseStatus) {
-            switch (baseStatus.status) {
-                case Status.LOADING:
-                    break;
-                case Status.ERROR:
-                    loginout();
-                    break;
-                case Status.SUCCESS:
-
-                    loginout();
-                    break;
-            }
-        }
-    };
-
-
-    private void loginout() {
-        FToast.success("退出登录");
-        SharedPrefUtils.exit();
-        mUserInfo = null;
-        EventBus.getDefault().post(new LoginOutEvent());
-        // refreshLayout();
-        //第一个参数为是否解绑推送的devicetoken
-        ChatClient.getInstance().logout(true, new Callback() {
-            @Override
-            public void onSuccess() {
-
-            }
-
-            @Override
-            public void onError(int code, String error) {
-
-            }
-
-            @Override
-            public void onProgress(int progress, String status) {
-
-            }
-        });
     }
 
 

@@ -574,40 +574,7 @@ public class MineViewModel extends ViewModel {
         return liveData;
 
     }
-    /**
-     * 499礼包
-     * @param from_type
-     * @param token
-     * @param mid
-     * @return
-     */
-    public MutableLiveData<Status<ResponseBody>> bag499(String token, String mid, String from_type) {
 
-        final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
-        liveData.setValue(Status.loading(null));
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("from_type",from_type);
-        params.put("token",token);
-        params.put("mid",mid);
-        String signs = SignUtils.signParam(params);
-        mCreator.create(MineApi.class)
-                .bag499(token,from_type,mid,signs)
-                .enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(@NonNull Call<ResponseBody> call,
-                                           @NonNull Response<ResponseBody> response) {
-                        liveData.setValue(Status.success(response.body()));
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull Call<ResponseBody> call,
-                                          @NonNull Throwable t) {
-                        liveData.setValue(Status.error(null, t.getMessage() == null ? "网络错误" : t.getMessage()));
-                    }
-                });
-        return liveData;
-
-    }
     /**
      * 绑定微信
      * @param from_type

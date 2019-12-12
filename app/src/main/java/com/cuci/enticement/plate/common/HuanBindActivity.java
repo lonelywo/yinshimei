@@ -10,14 +10,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
-import com.cuci.enticement.bean.Bag499Bean;
 import com.cuci.enticement.bean.Base;
 import com.cuci.enticement.bean.GuoJiaBean;
 import com.cuci.enticement.bean.HuanbindBean;
-import com.cuci.enticement.bean.ModifyInfo;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.plate.common.vm.RegActivityViewModel;
@@ -27,11 +24,9 @@ import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.widget.ClearEditText;
 import com.google.gson.Gson;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;

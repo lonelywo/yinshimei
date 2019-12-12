@@ -16,12 +16,9 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
-import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.AllOrderList;
-import com.cuci.enticement.bean.Bag499Bean;
 import com.cuci.enticement.bean.CartChange;
 import com.cuci.enticement.bean.CartNum;
 import com.cuci.enticement.bean.DataUserInfo;
@@ -31,44 +28,31 @@ import com.cuci.enticement.bean.OrderResult;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.event.IsnewEvent;
-import com.cuci.enticement.event.ProgoodsEvent;
 import com.cuci.enticement.plate.cart.activity.OrderActivity;
 import com.cuci.enticement.plate.cart.vm.CartViewModel;
 import com.cuci.enticement.plate.common.GlideImageLoader;
 import com.cuci.enticement.plate.common.eventbus.CartEvent;
 import com.cuci.enticement.plate.common.popup.CenterShareAppPopup;
 import com.cuci.enticement.plate.common.popup.ShareBottom2TopProdPopup;
-import com.cuci.enticement.plate.common.popup.ShareImgTipsPopup;
-import com.cuci.enticement.plate.common.popup.TipsPopup;
 import com.cuci.enticement.plate.home.vm.HomeViewModel;
-import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.MathExtend;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.ViewUtils;
-import com.cuci.enticement.utils.WxShareUtils;
 import com.cuci.enticement.widget.SmoothScrollview;
 import com.google.gson.Gson;
 import com.lxj.xpopup.XPopup;
-import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
-import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
-import com.tencent.mm.opensdk.modelmsg.WXMiniProgramObject;
 import com.tencent.smtt.sdk.WebView;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.ResponseBody;
 
