@@ -6,17 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
-import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseFragment;
 import com.cuci.enticement.bean.MallSourceBean;
 import com.cuci.enticement.bean.Status;
 
 import com.cuci.enticement.event.ClickMallpopEvent;
-import com.cuci.enticement.event.ClickMyEvent;
-import com.cuci.enticement.plate.common.eventbus.MessageEvent;
-import com.cuci.enticement.plate.common.eventbus.MessageEvent1;
 import com.cuci.enticement.plate.common.popup.ImageViewerPopup;
 import com.cuci.enticement.plate.mall.adapter.NineAdapter;
 import com.cuci.enticement.plate.mall.vm.MallViewModel;

@@ -55,7 +55,6 @@ public class ItemBottomViewBinder extends ItemViewBinder<ItemOrderBottom, ItemBo
             //已取消          重新购买
             ViewUtils.hideView( holder.textQuxiao);
             ViewUtils.hideView( holder.textZhifu);
-          //  holder.textZhifu.setText("重新购买");
         }else if(status==2){
             //待付款  取消订单  立即支付
             ViewUtils.showView( holder.textQuxiao);
@@ -79,6 +78,10 @@ public class ItemBottomViewBinder extends ItemViewBinder<ItemOrderBottom, ItemBo
             ViewUtils.hideView( holder.textZhifu);
             holder.textQuxiao.setText("查看物流");
 
+        }else if(status==6){
+            //已退货
+            ViewUtils.hideView( holder.textQuxiao);
+            ViewUtils.hideView( holder.textZhifu);
         }
 
         double expressMoney = Double.parseDouble(itemOrderBottom.expressMoney);

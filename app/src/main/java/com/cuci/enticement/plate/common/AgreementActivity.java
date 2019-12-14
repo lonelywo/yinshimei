@@ -1,5 +1,6 @@
 package com.cuci.enticement.plate.common;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -8,22 +9,25 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
+import com.cuci.enticement.utils.FToast;
 import com.tencent.smtt.sdk.WebView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class AgreementActivity extends BaseActivity {
 
 
+    @BindView(R.id.web_context)
+    WebView webContext;
     @BindView(R.id.image_top)
     TextView imageTop;
     @BindView(R.id.image_back)
     ImageView imageBack;
     @BindView(R.id.con_title)
     ConstraintLayout conTitle;
-    @BindView(R.id.web_context)
-    WebView webContext;
+    private String url;
 
     @Override
     public int getLayoutId() {
@@ -32,8 +36,14 @@ public class AgreementActivity extends BaseActivity {
 
     @Override
     public void initViews(Bundle savedInstanceState) {
+        Intent intent = getIntent();
+        if (intent == null) {
+            FToast.error("数据错误");
+            return;
+        }
+        url = intent.getStringExtra("bannerData");
         webContext.loadDataWithBaseURL(null,
-                getHtmlData("http://www.enticementchina.com/user_agreement.html"), "text/html", "utf-8", null);
+                getHtmlData(url), "text/html", "utf-8", null);
     }
 
     private String getHtmlData(String bodyHTML) {
@@ -44,4 +54,10 @@ public class AgreementActivity extends BaseActivity {
         return "<html>" + head + "<body>" + bodyHTML + "</body></html>";
     }
 
+
+
+    @OnClick(R.id.image_back)
+    public void onViewClicked() {
+        finish();
+    }
 }

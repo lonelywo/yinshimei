@@ -20,10 +20,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseFragment;
@@ -34,6 +36,8 @@ import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.event.ClickMyEvent;
 import com.cuci.enticement.event.IsnewEvent;
+import com.cuci.enticement.event.ProgoodsEvent;
+import com.cuci.enticement.plate.common.DailyActivity;
 import com.cuci.enticement.plate.common.LoginActivity;
 import com.cuci.enticement.plate.common.popup.TipsPopup;
 import com.cuci.enticement.plate.mine.activity.AchievementActivity;
@@ -59,11 +63,14 @@ import com.hyphenate.helpdesk.callback.Callback;
 import com.hyphenate.helpdesk.easeui.util.IntentBuilder;
 import com.igexin.sdk.PushManager;
 import com.lxj.xpopup.XPopup;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
 import java.io.IOException;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -186,6 +193,16 @@ public class _MineFragment extends BaseFragment {
     View view2;
     @BindView(R.id.con_gongju)
     ConstraintLayout conGongju;
+    @BindView(R.id.text_shareliwu)
+    TextView textShareliwu;
+    @BindView(R.id.text_wodetuandui2)
+    TextView textWodetuandui2;
+    @BindView(R.id.text_pk2)
+    TextView textPk2;
+    @BindView(R.id.text_yejiyuefan2)
+    TextView textYejiyuefan2;
+    @BindView(R.id.ll_fuwu1)
+    LinearLayout llFuwu1;
     private boolean mCouldChange = true;
     private LocalBroadcastManager mBroadcastManager;
     private UserInfo mUserInfo;
@@ -194,6 +211,7 @@ public class _MineFragment extends BaseFragment {
     private static final int THUMB_SIZE1 = 400;
     private boolean bag = false;
     private int is_month;
+
 
 
     @Override
@@ -220,7 +238,7 @@ public class _MineFragment extends BaseFragment {
         EventBus.getDefault().register(this);
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
 
-         //刷新界面
+        //刷新界面
         refreshLayout();
         imgYqhy.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -228,7 +246,7 @@ public class _MineFragment extends BaseFragment {
                 if (AppUtils.isAllowPermission(mActivity)) {
                     Bitmap bitmap = BitmapFactory.decodeResource(BasicApp.getContext().getResources(), R.drawable.tuxiang);
                     WxShareUtils.shareToWX(WxShareUtils.WX_SCENE_SESSION,
-                            "http://web.enticementchina.com/register.html?phone=" + mUserInfo.getPhone(), mActivity.getString(R.string.app_name_test),
+                            "http://web.enticementchina.com/present.html?mid=" + mUserInfo.getId(), mActivity.getString(R.string.app_name_test),
                             "因诗美，我的质感美学", bitmap);
                 }
             }
@@ -270,6 +288,7 @@ public class _MineFragment extends BaseFragment {
             }
         });
 
+
     }
 
     private Observer<Status<ResponseBody>> mdataObserver = status -> {
@@ -300,14 +319,32 @@ public class _MineFragment extends BaseFragment {
                 int is_new = mDataUserInfo.getData().getIs_new();
                 if (is_new == 1) {
                     ViewUtils.showView(conYingchang);
+                    ViewUtils.showView(imgYqhy);
                     if (SharedPrefUtils.getisnew() != is_new) {
                         SharedPrefUtils.saveisnew(is_new);
-                        EventBus.getDefault().post(new IsnewEvent());
+                        EventBus.getDefault().post(new ProgoodsEvent());
                     }
-                }else {
+                } else {
+                    ViewUtils.hideView(imgYqhy);
                     ViewUtils.hideView(conYingchang);
                 }
-
+                //分享赠礼
+                int daily_activity = mDataUserInfo.getData().getDaily_activity();
+                if (daily_activity == 1) {
+                    ViewUtils.showView(llFuwu1);
+                 final String daily_activity_url = mDataUserInfo.getData().getDaily_activity_url();
+                    textShareliwu.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                                Intent intentProd = new Intent(mActivity, DailyActivity.class);
+                                intentProd.putExtra("url", daily_activity_url);
+                                intentProd.putExtra("token", mUserInfo.getToken());
+                                mActivity.startActivity(intentProd);
+                        }
+                    });
+                } else {
+                    ViewUtils.hideView(llFuwu1);
+                }
                 if (mDataUserInfo.getData().getVip_level() == 0) {
                     textHuiyuan.setText("用户");
                     textHuiyuan1.setText("");
@@ -327,6 +364,8 @@ public class _MineFragment extends BaseFragment {
                 mUserInfo.setCity(mDataUserInfo.getData().getCity());
                 mUserInfo.setProvince(mDataUserInfo.getData().getProvince());
                 mUserInfo.setSex(mDataUserInfo.getData().getSex());
+                ImageLoader.loadPlaceholder1(mUserInfo.getHeadimg(), imgTuxiang);
+                textName.setText(mUserInfo.getNickname());
                 SharedPrefUtils.save(mUserInfo, UserInfo.class);
                 int is_bindingwx = mDataUserInfo.getData().getIs_bindingwx();
                 if (is_bindingwx == 1) {
@@ -407,6 +446,7 @@ public class _MineFragment extends BaseFragment {
             ViewUtils.hideView(dot3Tv);
             ViewUtils.hideView(dot4Tv);
             ViewUtils.hideView(conYingchang);
+            ViewUtils.hideView(imgYqhy);
             imgHeadwear.setVisibility(View.GONE);
             return;
         }
@@ -528,7 +568,7 @@ public class _MineFragment extends BaseFragment {
                 }
                 break;
             case R.id.text_wodekefu:
-                if(AppUtils.isAllowPermission(mActivity)){
+                if (AppUtils.isAllowPermission(mActivity)) {
                     if (ChatClient.getInstance().isLoggedInBefore()) {
                         //已经登录，可以直接进入会话界面
                         Intent intent = new IntentBuilder(mActivity)
@@ -711,6 +751,14 @@ public class _MineFragment extends BaseFragment {
             mViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);
         }
     }
+    //刷新isnew显示数据
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onClickIsnewEvent(IsnewEvent event) {
+        //进入页面先请求是否会员
+        if (mUserInfo != null) {
+            mViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);
+        }
 
+    }
 
 }

@@ -118,6 +118,26 @@ public class DataUserInfo implements Serializable {
         private OrdertotalBean ordertotal;
         private String kf_status;
         private int is_month;
+
+        public int getDaily_activity() {
+            return daily_activity;
+        }
+
+        public void setDaily_activity(int daily_activity) {
+            this.daily_activity = daily_activity;
+        }
+
+        private int daily_activity;
+
+        public String getDaily_activity_url() {
+            return daily_activity_url;
+        }
+
+        public void setDaily_activity_url(String daily_activity_url) {
+            this.daily_activity_url = daily_activity_url;
+        }
+
+        private String daily_activity_url;
         public int getIs_month() {
             return is_month;
         }

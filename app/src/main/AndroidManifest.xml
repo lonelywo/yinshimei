@@ -18,9 +18,39 @@
         <meta-data
             android:name="com.cuci.enticement.cache.GlideConfiguration"
             android:value="GlideModule" />
+     <!--网页跳转APP-->
+        <activity android:name=".JumpActivity"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!-- 在data里设置了scheme和host，则该Activity可以接收和处理类似于"scheme://data/XXX"的链接 -->
+                <data
+                    android:host="data"
+                    android:scheme="scheme" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".plate.home.activity.ProdActivity"
+            android:screenOrientation="portrait"
+            >
+        </activity>
+        <activity
+            android:name=".plate.common.AgreementActivity"
+            android:screenOrientation="portrait"
+            >
+        </activity>
+        <activity
+            android:name=".plate.common.Agreement2Activity"
+            android:screenOrientation="portrait"
+            >
+        </activity>
+        <activity
+            android:name=".plate.common.DailyActivity"
             android:screenOrientation="portrait"
             >
         </activity>

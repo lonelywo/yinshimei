@@ -149,12 +149,8 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
         }
         HomeDetailsBean.DataBean.SpecsBean specsBean = specs.get(0);
         List<HomeDetailsBean.DataBean.SpecsBean.ListBean> list = specsBean.getList();
-      /*  text_money.setText("原价¥" + mItem.getInitial_price_market());
-        textHomeMoneyVip.setText("会员价¥" + mItem.getInitial_price_selling());*/
-        if(SharedPrefUtils.getisnew()==1&&mItem.getVip_mod()==1){
-            String strMsg = "<font color=\"#BF9964\">"+mItem.getPricename()+"¥" + mItem.getInitial_price_market()+"</font>";
-            text_money.setText(Html.fromHtml(strMsg));
-        }else if(SharedPrefUtils.getisnew()==0&&mItem.getVip_mod()==1){
+
+        if(mItem.getVip_mod()==1){
             String strMsg = "<font color=\"#BF9964\">"+mItem.getPricename()+"¥" + mItem.getInitial_price_selling()+"</font>";
             text_money.setText(Html.fromHtml(strMsg));
         }else {

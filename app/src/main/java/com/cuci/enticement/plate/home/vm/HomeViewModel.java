@@ -191,7 +191,40 @@ public class HomeViewModel extends ViewModel {
 
     }
 
+    /**
+     * 文章内容
+     * @param from_type
+     * @param nid
+     * @param new_version
+     * @return
+     */
+    public MutableLiveData<Status<ResponseBody>>  essay(String nid,String from_type, String new_version) {
 
+        final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
+        liveData.setValue(Status.loading(null));
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("from_type",from_type);
+        params.put("nid",nid);
+        params.put("new_version",new_version);
+        String signs = SignUtils.signParam(params);
+        mCreator.create(HomeApi.class)
+                .essay(nid,from_type,new_version,signs)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(@NonNull Call<ResponseBody> call,
+                                           @NonNull Response<ResponseBody> response) {
+                        liveData.setValue(Status.success(response.body()));
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<ResponseBody> call,
+                                          @NonNull Throwable t) {
+                        liveData.setValue(Status.error(null, t.getMessage() == null ? "网络错误" : t.getMessage()));
+                    }
+                });
+        return liveData;
+
+    }
 
 
 

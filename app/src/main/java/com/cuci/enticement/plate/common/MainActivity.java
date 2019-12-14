@@ -16,19 +16,17 @@ import android.util.Log;
 import com.cuci.enticement.R;
 import com.cuci.enticement.BasicApp;
 
-import com.cuci.enticement.bean.Base;
+
 import com.cuci.enticement.bean.ClauseBean;
 import com.cuci.enticement.bean.GeTuibean;
 import com.cuci.enticement.bean.GuoJiaBean;
-import com.cuci.enticement.bean.MonBackBean;
-import com.cuci.enticement.bean.MyTeamslBean;
+
 import com.cuci.enticement.bean.Status;
-import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.bean.Version;
-import com.cuci.enticement.event.ClickCatEvent;
 import com.cuci.enticement.event.ClickMyEvent;
 import com.cuci.enticement.event.LoginOutEvent;
 import com.cuci.enticement.event.LoginSucceedEvent;
+import com.cuci.enticement.event.ProgoodsEvent;
 import com.cuci.enticement.plate.cart.fragment._CartFragment;
 import com.cuci.enticement.plate.common.adapter.MainPagerAdapter;
 import com.cuci.enticement.plate.common.popup.TipsPopupxieyi;
@@ -36,16 +34,16 @@ import com.cuci.enticement.plate.common.popup.TipsPopupxieyi2;
 import com.cuci.enticement.plate.common.popup.UpdatePopup;
 import com.cuci.enticement.plate.common.popup.UpdateProgressPopup;
 import com.cuci.enticement.plate.common.vm.MainViewModel;
-import com.cuci.enticement.plate.common.vm.RegActivityViewModel;
+
 import com.cuci.enticement.plate.home.fragment._HomeFragment;
 import com.cuci.enticement.plate.mall.fragment._MallFragment;
-import com.cuci.enticement.plate.mine.activity.AchievementActivity;
+
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FLog;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.SharedPrefUtils;
-import com.cuci.enticement.utils.ViewUtils;
+
 import com.cuci.enticement.widget.BottomBarView;
 import com.cuci.enticement.widget.FitSystemWindowViewPager;
 import com.google.gson.Gson;
@@ -60,7 +58,7 @@ import java.util.List;
 
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -163,9 +161,6 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
             @Override
             public void onPageSelected(int position) {
                 mBottomLayout.setSelected(position);
-                if (position == 2) {
-                    EventBus.getDefault().post(new ClickCatEvent());
-                }
                 if (position == 3) {
                     EventBus.getDefault().post(new ClickMyEvent());
                 }

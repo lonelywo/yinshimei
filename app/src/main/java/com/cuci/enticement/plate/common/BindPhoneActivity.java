@@ -391,9 +391,9 @@ public class BindPhoneActivity extends BaseActivity {
                         } else {
                             FLog.e(TAG, "用户信息保存失败");
                         }
-                        Intent intent = new Intent(_MineFragment.ACTION_LOGIN_SUCCEED);
+                        /*Intent intent = new Intent(_MineFragment.ACTION_LOGIN_SUCCEED);
                         intent.putExtra(_MineFragment.DATA_USER_INFO, userInfo);
-                        LocalBroadcastManager.getInstance(BindPhoneActivity.this).sendBroadcast(intent);
+                        LocalBroadcastManager.getInstance(BindPhoneActivity.this).sendBroadcast(intent);*/
                         finish();
 
                     } else {

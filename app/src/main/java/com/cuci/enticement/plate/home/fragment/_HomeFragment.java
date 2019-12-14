@@ -7,9 +7,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Switch;
 
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -22,6 +24,7 @@ import com.cuci.enticement.bean.BannerDataBean;
 import com.cuci.enticement.bean.BaseList;
 
 import com.cuci.enticement.bean.DataUserInfo;
+import com.cuci.enticement.bean.EssayBean;
 import com.cuci.enticement.bean.GeneralGoods;
 import com.cuci.enticement.bean.GoodsItem;
 import com.cuci.enticement.bean.ItemBanner;
@@ -29,12 +32,17 @@ import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.event.ClickCatEvent;
 import com.cuci.enticement.event.IsnewEvent;
+import com.cuci.enticement.event.ProgoodsEvent;
+import com.cuci.enticement.plate.common.Agreement2Activity;
+import com.cuci.enticement.plate.common.AgreementActivity;
 import com.cuci.enticement.plate.common.popup.CenterShareAppPopup;
 import com.cuci.enticement.plate.home.activity.ProdActivity;
 import com.cuci.enticement.plate.home.adapter.ItemBannerViewBinder;
 import com.cuci.enticement.plate.home.adapter.ItemGoodsLongViewBinder;
 import com.cuci.enticement.plate.home.vm.HomeViewModel;
+import com.cuci.enticement.plate.mine.activity.PKActivity;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
+import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.widget.CustomRefreshHeader;
@@ -54,6 +62,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.IOException;
 import java.util.List;
 
+import io.reactivex.internal.operators.flowable.FlowableSwitchIfEmpty;
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 import okhttp3.ResponseBody;
@@ -137,21 +146,17 @@ public class _HomeFragment extends BaseFragment  implements ItemBannerViewBinder
     }
     //刷新isnew显示数据
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onClickIsnewEvent(IsnewEvent event) {
-        UserInfo   mUserInfo = SharedPrefUtils.get(UserInfo.class);
-        //进入页面先请求是否会员
-        if (mUserInfo != null) {
-            mViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);
-        }
-
+    public void onClickProgoodsEvent(ProgoodsEvent event) {
+       load();
     }
-    private Observer<Status<ResponseBody>> mdataObserver = status -> {
+
+    private Observer<Status<ResponseBody>> essayObserver = status -> {
 
         switch (status.status) {
             case Status.SUCCESS:
 
                 ResponseBody body = status.content;
-                    opera1(body);
+                opera2(body);
                 break;
             case Status.ERROR:
 
@@ -163,16 +168,16 @@ public class _HomeFragment extends BaseFragment  implements ItemBannerViewBinder
         }
 
     };
-    private void opera1(ResponseBody body) {
+    private void opera2(ResponseBody body) {
         try {
             String b = body.string();
-            DataUserInfo mMyTeamslBean = new Gson().fromJson(b, DataUserInfo.class);
-            if (mMyTeamslBean.getCode() == 1) {
-                int  is_new = mMyTeamslBean.getData().getIs_new();
-                        SharedPrefUtils.saveisnew(is_new);
-                        mAdapter.notifyDataSetChanged();
+            EssayBean mEssayBean = new Gson().fromJson(b, EssayBean.class);
+            if (mEssayBean.getCode() == 1) {
+                Intent intentProd = new Intent(mActivity, AgreementActivity.class);
+                intentProd.putExtra("bannerData", mEssayBean.getData().getContent());
+                mActivity.startActivity(intentProd);
             } else {
-                FToast.error(mMyTeamslBean.getInfo());
+                FToast.error(mEssayBean.getInfo());
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -181,9 +186,23 @@ public class _HomeFragment extends BaseFragment  implements ItemBannerViewBinder
     }
     @Override
     public void onBannerClick(BannerDataBean bannerDataBean) {
-        Intent intentProd = new Intent(mActivity, ProdActivity.class);
-        intentProd.putExtra("bannerData", bannerDataBean.getUrl());
-        mActivity.startActivity(intentProd);
+     switch (bannerDataBean.getType()){
+         case "0":
+             Intent intentProd = new Intent(mActivity, ProdActivity.class);
+             intentProd.putExtra("bannerData", bannerDataBean.getLink());
+             mActivity.startActivity(intentProd);
+             break;
+         case "1" :
+             mViewModel.essay(bannerDataBean.getLink(), "2",  ""+AppUtils.getVersionCode(mActivity)).observe(this, essayObserver);
+             break;
+         case "2":
+             Intent intentProd1 = new Intent(mActivity, Agreement2Activity.class);
+             intentProd1.putExtra("url", bannerDataBean.getLink());
+             mActivity.startActivity(intentProd1);
+             break;
+     }
+
+
     }
 
     @Override

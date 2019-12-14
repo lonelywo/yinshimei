@@ -48,10 +48,7 @@ public class ItemGoodsLongViewBinder extends ItemViewBinder<GoodsItem, ItemGoods
      /*   holder.textHomeMoney.setText("原价¥" + item.getInitial_price_market());
         holder.textHomeMoneyVip.setText("会员价¥" + item.getInitial_price_selling());*/
 
-        if(SharedPrefUtils.getisnew()==1&&item.getVip_mod()==1){
-            String strMsg = "<font color=\"#BF9964\">"+item.getPricename()+"¥" + item.getInitial_price_market()+"</font>";
-            holder.textHomeMoney.setText(Html.fromHtml(strMsg));
-        }else if(SharedPrefUtils.getisnew()==0&&item.getVip_mod()==1){
+       if(item.getVip_mod()==1){
             String strMsg = "<font color=\"#BF9964\">"+item.getPricename()+"¥" + item.getInitial_price_selling()+"</font>";
             holder.textHomeMoney.setText(Html.fromHtml(strMsg));
         }else {

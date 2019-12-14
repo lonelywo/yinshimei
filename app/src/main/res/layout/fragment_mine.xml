@@ -91,6 +91,7 @@
          android:src="@drawable/yqhy"
          app:layout_constraintRight_toRightOf="@+id/img_shape_bai"
          app:layout_constraintTop_toTopOf="@+id/img_shape_bai"
+         android:visibility="gone"
          />
       <ImageView
           android:id="@+id/img_headwear"
@@ -187,18 +188,27 @@
         app:layout_constraintBottom_toBottomOf="@+id/img_shape_huang"
         android:text="立即加入"
         android:textColor="#BF9964"
+        android:visibility="gone"
         />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/con_dingdan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@+id/img_shape_huang"
+            >
     <ImageView
         android:id="@+id/img_shape_bai2"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="0dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
         android:src="@drawable/shape_mine_bg3"
-        app:layout_constraintTop_toBottomOf="@+id/img_shape_huang"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         />
      <TextView
          android:id="@+id/text_dingdan"
@@ -405,11 +415,12 @@
       </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 <androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/con_yingchang"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
-    app:layout_constraintTop_toBottomOf="@+id/img_shape_bai2"
+    android:layout_height="wrap_content"
+    app:layout_constraintTop_toBottomOf="@+id/con_dingdan"
     android:layout_marginTop="10dp"
     android:visibility="gone"
     >
@@ -455,7 +466,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintTop_toTopOf="@+id/view1"
-        app:layout_constraintBottom_toBottomOf="@+id/img_shape_bai3"
       app:layout_constraintStart_toStartOf="@+id/img_shape_bai3"
       app:layout_constraintEnd_toEndOf="@+id/img_shape_bai3"
         android:layout_weight="1"
@@ -511,11 +521,73 @@
             android:gravity="center_horizontal"
             />
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_fuwu1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/ll_fuwu"
+        app:layout_constraintStart_toStartOf="@+id/img_shape_bai3"
+        app:layout_constraintEnd_toEndOf="@+id/img_shape_bai3"
+        android:layout_weight="1"
+        android:padding="10dp"
+        android:visibility="gone"
+        >
+        <TextView
+            android:id="@+id/text_shareliwu"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/tgyongjing"
+            android:drawablePadding="6dp"
+            android:text="分享赠礼"
+            android:textColor="#646262"
+            android:layout_marginTop="5dp"
+            android:gravity="center_horizontal"
+
+            />
+        <TextView
+            android:id="@+id/text_wodetuandui2"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:drawablePadding="6dp"
+            android:text=""
+            android:textColor="#646262"
+            android:layout_marginTop="5dp"
+            android:gravity="center_horizontal"
+
+            />
+        <TextView
+            android:id="@+id/text_pk2"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:drawablePadding="6dp"
+            android:text=""
+            android:textColor="#646262"
+            android:layout_marginTop="5dp"
+            android:gravity="center_horizontal"
+
+            />
+        <TextView
+            android:id="@+id/text_yejiyuefan2"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:drawablePadding="6dp"
+            android:text=""
+            android:textColor="#646262"
+            android:layout_marginTop="5dp"
+            android:gravity="center_horizontal"
+
+            />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/con_gongju"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/con_yingchang"
         android:layout_marginTop="10dp"
         >
@@ -651,14 +723,14 @@
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-    <!--   <View
+       <View
            android:id="@+id/v6"
            android:layout_width="0dp"
            android:layout_height="16dp"
            android:background="#E2E3E3"
            app:layout_constraintEnd_toEndOf="parent"
            app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toBottomOf="@+id/con_yingchang" />-->
+           app:layout_constraintTop_toBottomOf="@+id/con_gongju" />
    </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>

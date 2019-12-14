@@ -38,7 +38,9 @@ import com.cuci.enticement.bean.OrderResult;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.event.ClickCatEvent;
+import com.cuci.enticement.event.IsnewEvent;
 import com.cuci.enticement.event.LoginOutEvent;
+import com.cuci.enticement.event.ProgoodsEvent;
 import com.cuci.enticement.plate.cart.activity.OrderActivity;
 import com.cuci.enticement.plate.cart.adapter.ItemCartViewBinder;
 import com.cuci.enticement.plate.cart.vm.CartViewModel;
@@ -202,12 +204,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
             if (intent != null && intent.getAction() != null) {
                 if(intent.getAction().equals(ACTION_REFRESH_DATA)){
                     //刷新购物车列表
-                /*    mUserInfo = SharedPrefUtils.get(UserInfo.class);
-                    if(mUserInfo==null){
-                        mStatusView.showEmpty();
-                        return;
-                    }
-                    load();*/
+
                 }
 
             }
@@ -253,9 +250,6 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         load();
-        //请求当前用户VIP信息
-       MineViewModel mViewModel1 = ViewModelProviders.of(this).get(MineViewModel.class);
-        mViewModel1.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);
 
     }
 
@@ -391,7 +385,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
         for (int i = 0; i < mItems.size(); i++) {
             OrderGoods item = (OrderGoods) mItems.get(i);
             if (item.isCheck()) {
-                if(is_new==0&&item.getVip_mod()==0||is_new==1&&item.getVip_mod()==1){
+                if(SharedPrefUtils.getisnew()==0&&item.getVip_mod()==0||SharedPrefUtils.getisnew()==1&&item.getVip_mod()==1){
                     double itemMoeny = Double.parseDouble(item.getGoods_price_market());
                     totalF = totalF + item.getGoods_num() * itemMoeny;
                 }else {
@@ -529,12 +523,9 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
                         String result = content.string();
                         CartDelete cartDelete = new Gson().fromJson(result, CartDelete.class);
                         if(cartDelete.code==1){
-                            // mItems.remove(mPosition);
-                            // mRefreshLayout.autoRefresh();
+
                             mViewModel.getCartList(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "1", Status.LOAD_REFRESH)
                                     .observe(mActivity, mObserver);
-
-                            //    mAdapter.notifyItemRemoved(mPosition);
 
                             FToast.success(cartDelete.info);
                             if(mAdapter.getItemCount()==0){
@@ -611,7 +602,6 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
     @OnClick(R.id.tv_commit)
     public void onViewClicked() {
         List<OrderGoods> checkeds = getCheckeds();
-        //  List<OrderGoods> items = (List<OrderGoods>) mAdapter.getItems();
 
         if(checkeds.size()==0){
             FToast.warning("请先选择要结算的商品");
@@ -645,7 +635,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
         cartIntentInfo.setPrice_goods(mTvTotal.getText().toString());
         Intent intent = new Intent(mActivity, OrderActivity.class);
         intent.putExtra("intentInfo",cartIntentInfo);
-        intent.putExtra("vip", is_new);
+        intent.putExtra("vip", SharedPrefUtils.getisnew());
         intent.putExtra("num", mgoods_num);
         intent.putExtra("rule", sb.toString());
         startActivity(intent);
@@ -676,7 +666,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
                             cartIntentInfo.setPrice_goods(mTvTotal.getText().toString());
                             Intent intent = new Intent(mActivity, OrderActivity.class);
                             intent.putExtra("intentInfo",cartIntentInfo);
-                            intent.putExtra("vip", is_new);
+                            intent.putExtra("vip", SharedPrefUtils.getisnew());
                             startActivity(intent);
 
 
@@ -702,50 +692,10 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
             }
         }
     };
-    //请求当前用户信息
+
+    //刷新isnew显示数据
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onClickCatEvent(ClickCatEvent event) {
-       /* if(mUserInfo!=null){
-            MineViewModel mViewModel1 = ViewModelProviders.of(this).get(MineViewModel.class);
-            mViewModel1.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);
-        }*/
-
-        }
-    private Observer<Status<ResponseBody>> mdataObserver = status -> {
-
-        switch (status.status) {
-            case Status.SUCCESS:
-
-                ResponseBody body = status.content;
-                dataUserinfo(body);
-                break;
-            case Status.ERROR:
-
-                FToast.error("网络错误");
-                break;
-            case Status.LOADING:
-
-                break;
-        }
-
-    };
-
-    private void dataUserinfo(ResponseBody body) {
-        try {
-            String b = body.string();
-            DataUserInfo mDataUserInfo = new Gson().fromJson(b, DataUserInfo.class);
-            if (mDataUserInfo.getCode() == 1) {
-                is_new = mDataUserInfo.getData().getIs_new();
-                itemCartViewBinder.setMis_new(is_new);
-                mAdapter.notifyDataSetChanged();
-            } else {
-
-                FToast.error(mDataUserInfo.getInfo());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            FToast.error("数据错误");
-        }
+    public void onClickProgoodsEvent(ProgoodsEvent event) {
+        mAdapter.notifyDataSetChanged();
     }
-
 }

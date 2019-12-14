@@ -16,6 +16,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.AllOrderList;
@@ -28,6 +30,7 @@ import com.cuci.enticement.bean.OrderResult;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.event.IsnewEvent;
+import com.cuci.enticement.event.ProgoodsEvent;
 import com.cuci.enticement.plate.cart.activity.OrderActivity;
 import com.cuci.enticement.plate.cart.vm.CartViewModel;
 import com.cuci.enticement.plate.common.GlideImageLoader;
@@ -40,6 +43,7 @@ import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.MathExtend;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.ViewUtils;
+import com.cuci.enticement.utils.WxShareUtils;
 import com.cuci.enticement.widget.SmoothScrollview;
 import com.google.gson.Gson;
 import com.lxj.xpopup.XPopup;
@@ -50,6 +54,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
@@ -58,6 +63,7 @@ import okhttp3.ResponseBody;
 
 import static androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance;
 import static com.cuci.enticement.plate.common.MainActivity.ACTION_GO_TO_CART;
+import static com.cuci.enticement.utils.WxShareUtils.getBitmapBytes;
 
 public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPopup.OnCommitClickListener {
     private static final String TAG = ProdActivity.class.getSimpleName();
@@ -162,11 +168,18 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                 if (AppUtils.isAllowPermission(ProdActivity.this)) {
                     mUserInfo = SharedPrefUtils.get(UserInfo.class);
                     if (mProData != null) {
-                        new XPopup.Builder(ProdActivity.this)
+                        //  Bitmap bitmap = BitmapFactory.decodeResource(BasicApp.getContext().getResources(), R.drawable.tuxiang);
+                        WxShareUtils.shareToWX(WxShareUtils.WX_SCENE_SESSION,
+                                "http://web.enticementchina.com/present.html?mid="
+                                        + mUserInfo.getId() + "&goods_id=" + mProData.getId()+"&phone=" + mUserInfo.getPhone()
+                                , ProdActivity.this.getString(R.string.app_name_test),
+                                "因诗美，我的质感美学", mProData.getLogo());
+
+                       /* new XPopup.Builder(ProdActivity.this)
                                 .dismissOnTouchOutside(false)
                                 .dismissOnBackPressed(false)
                                 .asCustom(new CenterShareAppPopup(ProdActivity.this, mProData))
-                                .show();
+                                .show();*/
                     }
                     /*if (mProData != null) {
                         new XPopup.Builder(ProdActivity.this)
@@ -297,19 +310,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
     };
 
     private void opera1(ResponseBody body) {
-        try {
-            String b = body.string();
-            DataUserInfo mMyTeamslBean = new Gson().fromJson(b, DataUserInfo.class);
-            if (mMyTeamslBean.getCode() == 1) {
-                int  is_new = mMyTeamslBean.getData().getIs_new();
-                SharedPrefUtils.saveisnew(is_new);
-            } else {
-                FToast.error(mMyTeamslBean.getInfo());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            FToast.error("数据错误");
-        }
+
     }
 
 
@@ -319,6 +320,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
             DataUserInfo mMyTeamslBean = new Gson().fromJson(b, DataUserInfo.class);
             if (mMyTeamslBean.getCode() == 1) {
                int  is_new = mMyTeamslBean.getData().getIs_new();
+               SharedPrefUtils.saveisnew(is_new);
                 List<OrderGoods> items = new ArrayList<>();
                 OrderGoods orderGoods = new OrderGoods();
                 orderGoods.setGoods_logo(mProData.getLogo());
@@ -358,26 +360,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
         }
     }
     private void opera3(ResponseBody body) {
-        try {
-            String b = body.string();
-            DataUserInfo mMyTeamslBean = new Gson().fromJson(b, DataUserInfo.class);
-            if (mMyTeamslBean.getCode() == 1) {
-                int  is_new = mMyTeamslBean.getData().getIs_new();
-                SharedPrefUtils.saveisnew(is_new);
-                if(mUserInfo!=null){
-                            mHomeViewModel.getHomeDetails("2",String.valueOf(mUserInfo.getId()), mUserInfo.getToken(),url).observe(this, mObserver);
-                        }else {
-                            mHomeViewModel.getHomeDetails("2","", "",url).observe(this, mObserver);
-                        }
 
-
-            } else {
-                FToast.error(mMyTeamslBean.getInfo());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            FToast.error("数据错误");
-        }
     }
 
     private String getHtmlData(String bodyHTML) {
@@ -410,18 +393,14 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                         } else {
                             ViewUtils.showView(conXiajiabuju);
                         }
-                        //   String s = new Gson().toJson(mProData);
+
                         final List<String> images = content.getData().getImage();
                         banner.setImages(images);
                         banner.start();
                         String htmlContent = content.getData().getContent();
                         homeDetailGoodsname.setText(content.getData().getTitle());
-                       /* text_jiage.setText("原价¥" + content.getData().getInitial_price_market());
-                        textJiage1.setText("会员价¥" + content.getData().getInitial_price_selling());*/
-                        if(SharedPrefUtils.getisnew()==1&&mProData.getVip_mod()==1){
-                            String strMsg = "<font color=\"#BF9964\">"+mProData.getPricename()+"¥" + mProData.getInitial_price_market()+"</font>";
-                            text_jiage.setText(Html.fromHtml(strMsg));
-                        }else if(SharedPrefUtils.getisnew()==0&&mProData.getVip_mod()==1){
+
+                     if(mProData.getVip_mod()==1){
                             String strMsg = "<font color=\"#BF9964\">"+mProData.getPricename()+"¥" + mProData.getInitial_price_selling()+"</font>";
                             text_jiage.setText(Html.fromHtml(strMsg));
                         }else {
@@ -456,11 +435,15 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
             case R.id.text_cart:
                 if (AppUtils.isAllowPermission(ProdActivity.this)) {
                     if (status == 1) {
+                        if(SharedPrefUtils.getisnew()==1&&mProData.getVip_mod()==1){
+                            FToast.warning("该活动仅限新美粉");
+                        }else {
                             new XPopup.Builder(ProdActivity.this)
                                     .dismissOnTouchOutside(true)
                                     .dismissOnBackPressed(true)
                                     .asCustom(new ShareBottom2TopProdPopup(ProdActivity.this, mProData, PUT_IN_CART, this))
                                     .show();
+                        }
                     } else {
                         FToast.warning("商品已经下架啦~");
 
@@ -474,13 +457,17 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
             case R.id.text_buy:
                 if (AppUtils.isAllowPermission(ProdActivity.this)) {
                     if (status == 1) {
+                        if(SharedPrefUtils.getisnew()==1&&mProData.getVip_mod()==1){
+                            FToast.warning("该活动仅限新美粉");
+                        }else {
                             new XPopup.Builder(ProdActivity.this)
                                     .dismissOnTouchOutside(true)
                                     .dismissOnBackPressed(true)
                                     .asCustom(new ShareBottom2TopProdPopup(ProdActivity.this, mProData, QUICK_BUY, this))
                                     .show();
-
+                        }
                     } else {
+
                         FToast.warning("商品已经下架啦~");
                     }
 
@@ -730,12 +717,12 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
     };
     //刷新isnew显示数据
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onClickIsnewEvent(IsnewEvent event) {
+    public void onClickProgoodsEvent(ProgoodsEvent event) {
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
-        //进入页面先请求是否会员
-        if (mUserInfo != null) {
-            type=3;
-            mHomeViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(ProdActivity.this, mdataObserver);
+        if(mUserInfo!=null){
+            mHomeViewModel.getHomeDetails("2",String.valueOf(mUserInfo.getId()), mUserInfo.getToken(),url).observe(this, mObserver);
+        }else {
+            mHomeViewModel.getHomeDetails("2","", "",url).observe(this, mObserver);
         }
 
     }

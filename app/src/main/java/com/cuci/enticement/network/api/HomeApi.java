@@ -67,4 +67,15 @@ public interface HomeApi {
             @Field("token") String token,
             @Field("sign") String sign
     );
+    /**
+     * 文章内容
+     */
+    @FormUrlEncoded
+    @POST("store/api.placard/get")
+    Call<ResponseBody> essay(
+            @Field("nid") String nid,
+            @Field("from_type") String from_type,
+            @Field("new_version") String new_version,
+            @Field("sign") String sign
+    );
 }

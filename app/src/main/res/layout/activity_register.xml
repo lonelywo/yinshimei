@@ -194,6 +194,7 @@
             app:layout_constraintTop_toBottomOf="@+id/view_line"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="20dp"
+            android:visibility="gone"
             />
         <EditText
             android:id="@+id/edt_code_tuijian"
@@ -213,6 +214,7 @@
             app:layout_constraintStart_toEndOf="@id/text_suosu"
             app:layout_constraintTop_toBottomOf="@+id/view_line"
             android:layout_marginRight="20dp"
+            android:visibility="gone"
             />
         <TextView
             android:id="@+id/ok"
