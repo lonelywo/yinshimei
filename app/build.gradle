@@ -74,7 +74,7 @@ android {
     applicationVariants.all { variant ->
         if (variant.buildType.name == 'release') {
             variant.outputs.all { output ->
-                def buildName = "YSM-android"
+                def buildName = "Enticement-android"
                 def type = variant.buildType.name
                 def releaseApkName = buildName + '_' + versionCode + "_" + versionName + '_' + type + '_' + new Date().format("yyyy-MM-dd_HH-mm-ss") + '.apk'
                 outputFileName = releaseApkName
