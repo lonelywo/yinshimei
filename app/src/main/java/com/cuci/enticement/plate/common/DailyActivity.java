@@ -3,29 +3,44 @@ package com.cuci.enticement.plate.common;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ProgressBar;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.viewpager.widget.ViewPager;
+
+import com.classic.common.MultipleStatusView;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
+import com.cuci.enticement.plate.common.adapter.MainPagerAdapter;
+import com.cuci.enticement.plate.mine.fragment._OrderFragment01;
+import com.cuci.enticement.plate.mine.fragment._ShareliwuFragment01;
 import com.cuci.enticement.utils.FToast;
-import com.tencent.smtt.sdk.WebChromeClient;
-import com.tencent.smtt.sdk.WebSettings;
-import com.tencent.smtt.sdk.WebView;
-import com.tencent.smtt.sdk.WebViewClient;
+import com.flyco.tablayout.SlidingTabLayout;
+import com.flyco.tablayout.listener.OnTabSelectListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class DailyActivity extends BaseActivity {
 
 
-    @BindView(R.id.web_context)
-    WebView webContext;
-    @BindView(R.id.progressBar)
-    ProgressBar progressBar;
-    private String url;
-    private String token;
+    List<String> data = new ArrayList<String>();
+    @BindView(R.id.image_top)
+    TextView imageTop;
+    @BindView(R.id.image_back)
+    ImageView imageBack;
+    @BindView(R.id.con_title)
+    ConstraintLayout conTitle;
+    @BindView(R.id.tab_layout)
+    SlidingTabLayout mTabLayout;
+    @BindView(R.id.view_pager)
+    ViewPager mViewPager;
+    @BindView(R.id.status_view)
+    MultipleStatusView statusView;
 
     @Override
     public int getLayoutId() {
@@ -39,7 +54,39 @@ public class DailyActivity extends BaseActivity {
             FToast.error("数据错误");
             return;
         }
-        url = intent.getStringExtra("url");
+        data.add("未领取");
+        data.add("已领取");
+        MainPagerAdapter adapter = new MainPagerAdapter(getSupportFragmentManager());
+        String[] titles = new String[data.size()];
+        for (int i = 0; i < data.size(); i++) {
+
+            titles[i] = data.get(i);
+        }
+        adapter.addFragment(_ShareliwuFragment01.newInstance("1"));
+        adapter.addFragment(_ShareliwuFragment01.newInstance("2"));
+        mViewPager.setOffscreenPageLimit(data.size() - 1);
+        mViewPager.setAdapter(adapter);
+        mTabLayout.setViewPager(mViewPager, titles);
+        mViewPager.setCurrentItem(0);
+
+        mTabLayout.setOnTabSelectListener(new OnTabSelectListener() {
+            @Override
+            public void onTabSelect(int position) {
+
+            }
+
+            @Override
+            public void onTabReselect(int position) {
+
+            }
+        });
+        imageBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+       /* url = intent.getStringExtra("url");
         token = intent.getStringExtra("token");
         webContext.loadUrl(url + "&token=" + token);
 
@@ -65,7 +112,7 @@ public class DailyActivity extends BaseActivity {
                 }
                 super.onProgressChanged(view, newProgress);
             }
-        });
+        });*/
 
     }
 
@@ -76,14 +123,5 @@ public class DailyActivity extends BaseActivity {
                 "</head>";
         return "<html>" + head + "<body>" + bodyHTML + "</body></html>";
     }
-
-
-    @Override
-    protected void onDestroy() {
-        webContext.destroy();
-        webContext = null;
-        super.onDestroy();
-    }
-
 
 }

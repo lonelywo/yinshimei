@@ -230,5 +230,16 @@ public interface MineApi {
             @Field("from_type") String from_type,
             @Field("sign") String sign
     );
+    /**
+     * 绑定推荐人
+     */
+    @FormUrlEncoded
+    @POST("store/api.member.center/agent")
+    Call<ResponseBody> bindTuijian(@Field("token") String token,
+                                      @Field("mid") String mid,
+                                      @Field("from_type") String from_type,
+                                      @Field("phone") String phone,
+                                      @Field("sign") String sign
+    );
 }
 

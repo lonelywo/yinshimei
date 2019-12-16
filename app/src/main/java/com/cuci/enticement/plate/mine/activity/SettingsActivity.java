@@ -98,7 +98,7 @@ public class SettingsActivity extends BaseActivity {
 
 
 
-    @OnClick({R.id.image_back, R.id.ll_info, R.id.ll_phone, R.id.ll_wechat,R.id.ll_about_us, R.id.tv_exit})
+    @OnClick({R.id.image_back, R.id.ll_info, R.id.ll_phone, R.id.ll_wechat,R.id.ll_tuijianren,R.id.ll_about_us, R.id.tv_exit})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.image_back:
@@ -137,6 +137,10 @@ public class SettingsActivity extends BaseActivity {
                          }))
                          .show();
              }
+                break;
+            case R.id.ll_tuijianren:
+                Intent intent1 = new Intent(this, BindTuiJinActivity.class);
+                startActivity(intent1);
                 break;
             case R.id.ll_about_us:
 

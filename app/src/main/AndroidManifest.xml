@@ -55,6 +55,11 @@
             >
         </activity>
         <activity
+            android:name=".plate.mine.activity.BindTuiJinActivity"
+            android:screenOrientation="portrait"
+            >
+        </activity>
+        <activity
             android:name=".plate.mine.activity.TuiTypeActivity"
             android:screenOrientation="portrait"
             >
