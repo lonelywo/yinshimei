@@ -349,10 +349,10 @@ public class _MineFragment extends BaseFragment {
                     textHuiyuan.setText("用户");
                     textHuiyuan1.setText("");
                 } else if (mDataUserInfo.getData().getVip_level() == 1) {
-                    textHuiyuan.setText("会员");
+                    textHuiyuan.setText("美粉");
                     textHuiyuan1.setText("");
                 } else if (mDataUserInfo.getData().getVip_level() == 2) {
-                    textHuiyuan.setText("服务商");
+                    textHuiyuan.setText("超级美粉");
                     textHuiyuan1.setVisibility(View.GONE);
                     textHuiyuan2.setVisibility(View.GONE);
                     btnShengji.setVisibility(View.GONE);
