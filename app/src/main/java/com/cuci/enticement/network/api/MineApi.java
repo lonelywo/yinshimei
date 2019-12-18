@@ -241,5 +241,27 @@ public interface MineApi {
                                       @Field("phone") String phone,
                                       @Field("sign") String sign
     );
+    /**
+     * 领取列表
+     */
+    @FormUrlEncoded
+    @POST("store/api.activity.gift")
+    Call<ResponseBody> ReceiveQueue(@Field("token") String token,
+                                   @Field("mid") String mid,
+                                   @Field("from_type") String from_type,
+                                   @Field("get_state") String get_state,
+                                   @Field("page") String page,
+                                   @Field("sign") String sign
+    );
+    /**
+     * 领取提交
+     */
+    @FormUrlEncoded
+    @POST("store/api.activity.getAllgift")
+    Call<ResponseBody> ReceiveCommit(@Field("token") String token,
+                                   @Field("mid") String mid,
+                                   @Field("from_type") String from_type,
+                                   @Field("sign") String sign
+    );
 }
 
