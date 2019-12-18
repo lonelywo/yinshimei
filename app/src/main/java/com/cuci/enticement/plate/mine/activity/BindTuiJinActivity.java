@@ -62,6 +62,7 @@ public class BindTuiJinActivity extends BaseActivity {
 
     @Override
     public void initViews(Bundle savedInstanceState) {
+        edtPhone.setClearIconVisible(false);
         mViewModel = ViewModelProviders.of(this).get(MineViewModel.class);
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
 
