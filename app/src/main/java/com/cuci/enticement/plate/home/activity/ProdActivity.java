@@ -1,23 +1,16 @@
 package com.cuci.enticement.plate.home.activity;
 
-
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.Html;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
-import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.AllOrderList;
@@ -29,13 +22,11 @@ import com.cuci.enticement.bean.OrderGoods;
 import com.cuci.enticement.bean.OrderResult;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
-import com.cuci.enticement.event.IsnewEvent;
 import com.cuci.enticement.event.ProgoodsEvent;
 import com.cuci.enticement.plate.cart.activity.OrderActivity;
 import com.cuci.enticement.plate.cart.vm.CartViewModel;
 import com.cuci.enticement.plate.common.GlideImageLoader;
 import com.cuci.enticement.plate.common.eventbus.CartEvent;
-import com.cuci.enticement.plate.common.popup.CenterShareAppPopup;
 import com.cuci.enticement.plate.common.popup.ShareBottom2TopProdPopup;
 import com.cuci.enticement.plate.home.vm.HomeViewModel;
 import com.cuci.enticement.utils.AppUtils;
@@ -54,16 +45,14 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.ResponseBody;
-
 import static androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance;
 import static com.cuci.enticement.plate.common.MainActivity.ACTION_GO_TO_CART;
-import static com.cuci.enticement.utils.WxShareUtils.getBitmapBytes;
+
 
 public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPopup.OnCommitClickListener {
     private static final String TAG = ProdActivity.class.getSimpleName();
@@ -109,8 +98,6 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
     TextView textXiajia;
     @BindView(R.id.con_xiajiabuju)
     ConstraintLayout conXiajiabuju;
-  /*  @BindView(R.id.text_jiage1)
-    TextView textJiage1;*/
     private String url;
     private HomeDetailsBean.DataBean mProData;
     private HomeViewModel mHomeViewModel;
@@ -154,13 +141,6 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
         }else {
             mHomeViewModel.getHomeDetails("2","", "",url).observe(this, mObserver);
         }
-
-        //进入页面先请求是否会员
-       /* MineViewModel mViewMode2 = ViewModelProviders.of(ProdActivity.this).get(MineViewModel.class);
-        if (mUserInfo != null) {
-            type=1;
-            mViewMode2.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(ProdActivity.this, mdataObserver);
-        }*/
 
         imgShare.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -570,19 +550,6 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                     break;
                 case Status.SUCCESS:
                     ResponseBody content = baseStatus.content;
-
-                  /*  String result = null;
-                    try {
-                        result = content.string();
-                        OrderResult orderResult = new Gson().fromJson(result, OrderResult.class);
-                        if (orderResult.getCode() == 1) {
-
-                        }
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }*/
-
 
                     try {
                         String result = content.string();

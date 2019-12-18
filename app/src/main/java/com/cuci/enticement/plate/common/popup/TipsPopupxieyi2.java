@@ -3,16 +3,13 @@ package com.cuci.enticement.plate.common.popup;
 import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
-
 import com.cuci.enticement.R;
-import com.cuci.enticement.utils.SharedPrefUtils;
 import com.lxj.xpopup.core.CenterPopupView;
 import com.tencent.smtt.sdk.WebView;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class TipsPopupxieyi2 extends CenterPopupView {
 
@@ -27,11 +24,17 @@ public class TipsPopupxieyi2 extends CenterPopupView {
     View line1;
     @BindView(R.id.line2)
     View line2;
+    @BindView(R.id.line3)
+    View line3;
+    @BindView(R.id.agree)
+    TextView agree;
     private String murl;
     private String mtext;
+    private Context mcontext;
 
     public TipsPopupxieyi2(@NonNull Context context, String url, String text, OnExitListener listener) {
         super(context);
+        mcontext=context;
         mOnExitListener = listener;
         murl = url;
         mtext = text;
@@ -48,17 +51,25 @@ public class TipsPopupxieyi2 extends CenterPopupView {
         ButterKnife.bind(this);
         textXieyi.setText(mtext);
         webContext.loadUrl(murl);
-        cancel.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SharedPrefUtils.saveFirstTime(false);
-                dismiss();
-                //   mOnExitListener.onPositive();
 
-            }
-        });
     }
-
+    @OnClick({R.id.cancel,R.id.agree})
+    public void onViewClick(View view) {
+        switch (view.getId()) {
+            case R.id.cancel:
+                if (mOnExitListener != null) {
+                    mOnExitListener.onPositive1();
+                }
+                dismiss();
+                break;
+            case R.id.agree:
+                if (mOnExitListener != null) {
+                    mOnExitListener.onPositive2();
+                }
+                dismiss();
+                break;
+        }
+    }
     private String getHtmlData(String bodyHTML) {
         String head = "<head>" +
                 "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=no\"> " +
@@ -70,7 +81,8 @@ public class TipsPopupxieyi2 extends CenterPopupView {
     private OnExitListener mOnExitListener;
 
     public interface OnExitListener {
-        void onPositive();
+        void onPositive1();
+        void onPositive2();
     }
 
 }

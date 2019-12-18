@@ -403,7 +403,6 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
             ViewUtils.hideView(tvAddress);
         }
 
-
     }
 
 
@@ -425,14 +424,12 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                             .dismissOnTouchOutside(false)
                             .asCustom(new WarningPopup(OrderActivity.this,
                                     "请选择收货地址", "确定")).show();
-
-
                     //FToast.warning("请选择收货地址");
                     return;
                 }
                 if (UtilsForClick.isFastClick()) {
                     //提交订单，成功后，去调用获取支付参数接口
-                    mViewModel.udpateAdress(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), rule, SharedPrefUtils.getDefaultAdressId())
+                    mViewModel.udpateAdress(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), rule, mAddressId)
                             .observe(OrderActivity.this, mCommitObserver);
                 }
                 break;
@@ -441,76 +438,6 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                 break;
         }
     }
-
-
-    //暂不使用  可缩起来
-    private Observer<Status<AddressBean>> mAddressObserver = new Observer<Status<AddressBean>>() {
-        @Override
-        public void onChanged(Status<AddressBean> status) {
-            switch (status.status) {
-
-                case Status.SUCCESS:
-                    dismissLoading();
-                    AddressBean data = status.content;
-                    List<AddressBean.DataBean.ListBean> list = data.getData().getList();
-                    if (list == null || list.size() == 0) {
-                        ViewUtils.showView(textDizi);
-                        ViewUtils.hideView(tvAddress);
-                        return;
-                    }
-
-                    if (data.getCode() == 1) {
-                        boolean hasDefault = false;
-                        int num = 0;
-                        for (int i = 0; i < list.size(); i++) {
-                            AddressBean.DataBean.ListBean item = list.get(i);
-
-                            int is_default = item.getIs_default();
-                            if (is_default == 1) {
-                                //存在默认就设置
-                                hasDefault = true;
-                                num = i;
-                                break;
-                            }
-                        }
-
-                        if (hasDefault) {
-
-                            AddressBean.DataBean.ListBean item = list.get(num);
-                            ViewUtils.hideView(textDizi);
-                            ViewUtils.showView(tvAddress);
-                            StringBuilder sb = new StringBuilder();
-                            sb.append(item.getName()).append(" ")
-                                    .append(item.getPhone()).append(" ").append("\n")
-                                    .append(item.getProvince()).append(" ")
-                                    .append(item.getCity()).append(" ")
-                                    .append(item.getArea()).append(" ")
-                                    .append(item.getAddress());
-
-                            tvAddress.setText(sb.toString());
-                            mViewModel.getExpressCost(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(number), mInfo.getPrice_goods(), mAddressId)
-                                    .observe(OrderActivity.this, mExpressCostObserver);
-                        }
-
-
-                    } else {
-                        ViewUtils.showView(textDizi);
-                        ViewUtils.hideView(tvAddress);
-                        FToast.error(data.getInfo());
-                    }
-                    break;
-                case Status.ERROR:
-                    dismissLoading();
-                    FToast.error(status.message);
-
-                    break;
-                case Status.LOADING:
-                    showLoading();
-                    break;
-            }
-        }
-    };
-
 
     /**
      * 获取支付参数接口
@@ -584,9 +511,6 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 100 && resultCode == 101) {
             //返回更新地址
-            //todo
-            /*String adress = data.getStringExtra("address");
-            mAddressId= data.getStringExtra("addressId");*/
             AddressBean.DataBean.ListBean bean = data.getParcelableExtra("addressBean");
             mAddressId = String.valueOf(bean.getId());
             StringBuilder sb = new StringBuilder();

@@ -29,6 +29,7 @@ import com.cuci.enticement.event.LoginSucceedEvent;
 import com.cuci.enticement.event.ProgoodsEvent;
 import com.cuci.enticement.plate.cart.fragment._CartFragment;
 import com.cuci.enticement.plate.common.adapter.MainPagerAdapter;
+import com.cuci.enticement.plate.common.popup.CartTipsPopup;
 import com.cuci.enticement.plate.common.popup.TipsPopupxieyi;
 import com.cuci.enticement.plate.common.popup.TipsPopupxieyi2;
 import com.cuci.enticement.plate.common.popup.UpdatePopup;
@@ -188,29 +189,7 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
         mViewModel.clause("2").observe(this, clauseObserver);
         //打印设备信息
         FLog.e("设备信息",GetDeviceID());
-        /*UserInfo userInfo = ServiceCreator.getInstance().getUserInfo();
 
-        if (userInfo!=null){
-            Set<String> sets1 = new HashSet<>();
-            sets1.add("sid" + userInfo.getSid());
-            sets1.add("phone" + userInfo.getPhone());
-            sets1.add("invitecode" + userInfo.getInviteCode());
-            sets1.add("is_colonel" + userInfo.getIsColonel());
-            sets1.add("seller_id" + userInfo.getSellerId());
-            sets1.add(BuildConfig.DEBUG ? "dev" : "release");
-            sets1.add("isLogin1");
-            if (SharedPrefUtils.getNewMoney()) {
-                sets1.add("income1");
-            }
-            if (SharedPrefUtils.getNewAgent()) {
-                sets1.add("team1");
-            }
-
-            Set<String> strings = JPushInterface.filterValidTags(sets1);
-            for (String s : strings) {
-                FLog.e(TAG, "有效标签："+s);
-            }
-        }*/
 
         mViewModel.getGuoJiaCode("2").observe(this, guojiamObserver);
         getCid();
@@ -596,9 +575,17 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
                             .dismissOnBackPressed(false)
                             .dismissOnTouchOutside(false)
                             .asCustom(new TipsPopupxieyi2(this,
-                                    url, title,  () -> {
+                                    url, title,  new TipsPopupxieyi2.OnExitListener() {
+                                @Override
+                                public void onPositive1() {
+                                 finish();
+                                }
 
-                                    }))
+                                @Override
+                                public void onPositive2() {
+                                    SharedPrefUtils.saveFirstTime(false);
+                                }
+                            }))
                             .show();
                 }
             } else {
