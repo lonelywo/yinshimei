@@ -17,6 +17,7 @@ import com.cuci.enticement.bean.BindTuijianBean;
 import com.cuci.enticement.bean.CommissiontxBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
+import com.cuci.enticement.event.ProgoodsEvent;
 import com.cuci.enticement.plate.common.popup.TipsPopup;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.FToast;
@@ -24,6 +25,8 @@ import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.widget.ClearEditText;
 import com.google.gson.Gson;
 import com.lxj.xpopup.XPopup;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 
@@ -132,6 +135,7 @@ public class BindTuiJinActivity extends BaseActivity {
             String b = body.string();
             BindTuijianBean mBindTuijianBean = new Gson().fromJson(b, BindTuijianBean.class);
             if (mBindTuijianBean.getCode() == 1) {
+                EventBus.getDefault().post(new ProgoodsEvent());
                 FToast.success(mBindTuijianBean.getInfo());
             } else {
                 FToast.error(mBindTuijianBean.getInfo());
