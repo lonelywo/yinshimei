@@ -385,6 +385,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
 
             AddressBean.DataBean.ListBean item = list.get(num);
             SharedPrefUtils.saveDefaultAdressId(String.valueOf(item.getId()));
+            mAddressId=SharedPrefUtils.getDefaultAdressId();
             StringBuilder sb = new StringBuilder();
             sb.append(item.getName()).append(" ")
                     .append(item.getPhone()).append(" ").append("\n")
@@ -396,7 +397,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
             ViewUtils.hideView(textDizi);
             ViewUtils.showView(tvAddress);
             tvAddress.setText(SharedPrefUtils.getDefaultAdress());
-            mViewModel.getExpressCost(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(number), mInfo.getPrice_goods(), SharedPrefUtils.getDefaultAdressId())
+            mViewModel.getExpressCost(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(number), mInfo.getPrice_goods(),mAddressId )
                     .observe(OrderActivity.this, mExpressCostObserver);
         } else {
             ViewUtils.showView(textDizi);
