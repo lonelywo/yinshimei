@@ -581,7 +581,34 @@ public class _MineFragment extends BaseFragment {
                         dot1Hx.setVisibility(View.GONE);
                     } else {
                         //未登录，需要登录后，再进入会话界面
-                        FToast.error("环信登录失败");
+                        Log.d("hxlogin","环信登录失败");
+                        if (!TextUtils.isEmpty(mUserInfo.getPhone())) {
+                            ChatClient.getInstance().login(mUserInfo.getPhone(), "ysm6j351r6", new Callback() {
+                                @Override
+                                public void onSuccess() {
+                                    Log.d("Success_hx", "环信登录成功");
+                                    //已经登录，可以直接进入会话界面
+                                    Intent intent = new IntentBuilder(mActivity)
+                                            .setServiceIMNumber("kefuchannelimid_269943")
+                                            .setTitleName("美美")
+                                            .build();
+                                    startActivity(intent);
+                                    //所有未读消息数清零
+                                    ChatClient.getInstance().chatManager().markAllConversationsAsRead();
+                                    dot1Hx.setVisibility(View.GONE);
+                                }
+
+                                @Override
+                                public void onError(int code, String error) {
+                                    Log.d("error_hx", error);
+                                }
+
+                                @Override
+                                public void onProgress(int progress, String status) {
+
+                                }
+                            });
+                        }
                     }
                 }
                 break;
@@ -615,6 +642,9 @@ public class _MineFragment extends BaseFragment {
                     @Override
                     public void onError(int code, String error) {
                         Log.d("error_hx", error);
+                        if(mUserInfo!=null){
+                            mViewModel.hxreg(mUserInfo.getPhone(), "2", mUserInfo.getToken(), String.valueOf(mUserInfo.getId())).observe(mActivity, mhxregObserver);
+                        }
                     }
 
                     @Override

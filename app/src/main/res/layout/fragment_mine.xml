@@ -540,7 +540,7 @@
             android:layout_height="wrap_content"
             android:drawableTop="@drawable/tgyongjing"
             android:drawablePadding="6dp"
-            android:text="分享好礼"
+            android:text="礼品中心"
             android:textColor="#646262"
             android:layout_marginTop="5dp"
             android:gravity="center_horizontal"
