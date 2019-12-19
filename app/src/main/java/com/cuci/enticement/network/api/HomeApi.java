@@ -1,13 +1,9 @@
 package com.cuci.enticement.network.api;
 
 import com.cuci.enticement.bean.BannerDataBean;
-
 import com.cuci.enticement.bean.BaseList;
 import com.cuci.enticement.bean.GeneralGoods;
-
 import com.cuci.enticement.bean.HomeDetailsBean;
-
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;

@@ -1,12 +1,6 @@
 package com.cuci.enticement.network.api;
 
-
-import com.cuci.enticement.bean.ExpressInfo;
-import com.cuci.enticement.bean.OrderList;
-import com.cuci.enticement.bean.OrderPay;
-import com.cuci.enticement.bean.OrderResult;
 import com.cuci.enticement.bean.OrderStatistics;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;

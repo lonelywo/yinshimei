@@ -1,10 +1,8 @@
 package com.cuci.enticement.network.api;
 
-
 import com.cuci.enticement.bean.AddressBean;
 import com.cuci.enticement.bean.Base;
 import com.cuci.enticement.bean.UserInfo;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
