@@ -13,6 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cuci.enticement.R;
 import com.cuci.enticement.bean.OrderGoods;
+import com.cuci.enticement.utils.ImageLoader;
+
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,7 +35,10 @@ public class ItemReceiveViewBinder extends ItemViewBinder<OrderGoods, ItemReceiv
 
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull OrderGoods mOrderGoods) {
-
+        ImageLoader.loadPlaceholder(mOrderGoods.getGoods_logo(),holder.imgTupian);
+        holder.textBiaoti.setText(mOrderGoods.getGoods_title());
+        holder.textQian.setText(String.format(Locale.CHINA,"%s",mOrderGoods.getGoods_price_selling()));
+        holder.textNum.setText(String.format(Locale.CHINA,"x%s",mOrderGoods.getNumber()));
 
     }
 

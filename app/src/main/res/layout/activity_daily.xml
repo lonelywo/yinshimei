@@ -18,7 +18,7 @@
             android:id="@+id/image_top"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="分享好礼"
+            android:text="礼品中心"
             android:textColor="#000000"
             android:textSize="17sp"
             app:layout_constraintEnd_toEndOf="parent"

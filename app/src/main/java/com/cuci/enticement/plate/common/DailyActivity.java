@@ -62,8 +62,8 @@ public class DailyActivity extends BaseActivity {
 
             titles[i] = data.get(i);
         }
+        adapter.addFragment(_ShareliwuFragment01.newInstance("0"));
         adapter.addFragment(_ShareliwuFragment01.newInstance("1"));
-        adapter.addFragment(_ShareliwuFragment01.newInstance("2"));
         mViewPager.setOffscreenPageLimit(data.size() - 1);
         mViewPager.setAdapter(adapter);
         mTabLayout.setViewPager(mViewPager, titles);

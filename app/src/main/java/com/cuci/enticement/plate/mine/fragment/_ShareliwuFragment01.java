@@ -2,14 +2,17 @@ package com.cuci.enticement.plate.mine.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -18,17 +21,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseFragment;
+import com.cuci.enticement.bean.AddressBean;
 import com.cuci.enticement.bean.AllOrderList;
+import com.cuci.enticement.bean.AllReceiveList;
+import com.cuci.enticement.bean.CommissiontxBean;
 import com.cuci.enticement.bean.ItemOrderBottom;
 import com.cuci.enticement.bean.ItemOrderTitle;
+import com.cuci.enticement.bean.ItemReceiveBottom;
+import com.cuci.enticement.bean.ItemReceiveTitle;
 import com.cuci.enticement.bean.OrderGoods;
+import com.cuci.enticement.bean.ReceiveBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.plate.cart.activity.LogisticsActivity;
+import com.cuci.enticement.plate.cart.activity.OrderActivity;
+import com.cuci.enticement.plate.mine.activity.RecAddressActivity;
 import com.cuci.enticement.plate.mine.adapter.ItemReceiveBottomViewBinder;
 import com.cuci.enticement.plate.mine.adapter.ItemReceiveTitleViewBinder;
 import com.cuci.enticement.plate.mine.adapter.ItemReceiveViewBinder;
-import com.cuci.enticement.plate.mine.vm.OrderViewModel;
+import com.cuci.enticement.plate.mine.vm.LiwuViewModel;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.ViewUtils;
@@ -44,6 +55,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 import okhttp3.ResponseBody;
@@ -62,10 +74,12 @@ public class _ShareliwuFragment01 extends BaseFragment implements OnRefreshLoadM
     ImageView imageTop;
     @BindView(R.id.empty_view)
     LinearLayout mEmptyLayout;
+    @BindView(R.id.ok)
+    TextView ok;
 
 
     private boolean mCanLoadMore = true;
-    private OrderViewModel mViewModel;
+    private LiwuViewModel mViewModel;
     private int page = 1;
     private String mtype;
     private final String PAGE_SIZE = "20";
@@ -74,7 +88,7 @@ public class _ShareliwuFragment01 extends BaseFragment implements OnRefreshLoadM
     private LinearLayoutManager mLayoutManager;
     private MultiTypeAdapter mAdapter;
     private Items mItems;
-    private List<AllOrderList.DataBean.ListBeanX> mDatas = new ArrayList<>();
+    private List<AllReceiveList.DataBean.ListBeanX> mDatas = new ArrayList<>();
     private UserInfo mUserInfo;
 
     public static _ShareliwuFragment01 newInstance(String type) {
@@ -102,12 +116,16 @@ public class _ShareliwuFragment01 extends BaseFragment implements OnRefreshLoadM
     protected void initViews(LayoutInflater inflater, View view, ViewGroup container, Bundle savedInstanceState) {
         Bundle bundle = getArguments();
         mtype = bundle.getString("type");
-
+        if (TextUtils.equals(mtype, "0")) {
+            ViewUtils.showView(ok);
+        } else {
+            ViewUtils.hideView(ok);
+        }
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
         if (mUserInfo == null) {
             return;
         }
-        mViewModel = ViewModelProviders.of(this).get(OrderViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(LiwuViewModel.class);
 
         CustomRefreshHeader header = new CustomRefreshHeader(mActivity);
         header.setBackground(0xFFF3F4F6);
@@ -120,25 +138,23 @@ public class _ShareliwuFragment01 extends BaseFragment implements OnRefreshLoadM
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         //注册布局
-        mAdapter.register(ItemOrderTitle.class, new ItemReceiveTitleViewBinder());
+        mAdapter.register(ItemReceiveTitle.class, new ItemReceiveTitleViewBinder());
 
         mAdapter.register(OrderGoods.class, new ItemReceiveViewBinder());
 
-        mAdapter.register(ItemOrderBottom.class, new ItemReceiveBottomViewBinder(this));
+        mAdapter.register(ItemReceiveBottom.class, new ItemReceiveBottomViewBinder(this));
 
         mLayoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(mLayoutManager);
         OrderItemTopDecoration mDecoration = new OrderItemTopDecoration(mActivity, 4);
         mRecyclerView.addItemDecoration(mDecoration);
         mRecyclerView.setAdapter(mAdapter);
+
     }
 
     private void load() {
-        String token = mUserInfo.getToken();
-        int id = mUserInfo.getId();
-        mRefreshLayout.finishRefresh();
-       /* mViewModel.getOrderList(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "1", mtype, "", Status.LOAD_REFRESH)
-          .observe(this, mObserver);*/
+        mViewModel.ReceiveQueue(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "1", mtype, Status.LOAD_REFRESH)
+                .observe(this, mObserver);
     }
 
     private Observer<Status<ResponseBody>> mObserver = status -> {
@@ -152,11 +168,11 @@ public class _ShareliwuFragment01 extends BaseFragment implements OnRefreshLoadM
 
                         Log.d("east", ": " + result);
                     }
-                    AllOrderList allOrderList = new Gson().fromJson(result, AllOrderList.class);
+                    AllReceiveList allOrderList = new Gson().fromJson(result, AllReceiveList.class);
 
                     if (allOrderList.getCode() == 1) {
-                        AllOrderList.DataBean data = allOrderList.getData();
-                        List<AllOrderList.DataBean.ListBeanX> item = data.getList();
+                        AllReceiveList.DataBean data = allOrderList.getData();
+                        List<AllReceiveList.DataBean.ListBeanX> item = data.getList();
 
                         if (item == null) {
                             if (status.loadType == Status.LOAD_REFRESH) {
@@ -232,35 +248,32 @@ public class _ShareliwuFragment01 extends BaseFragment implements OnRefreshLoadM
                 break;
         }
     };
+
     /**
      * 添加订单item
+     *
      * @param item
      */
-    private void addOrderItem(List<AllOrderList.DataBean.ListBeanX> item) {
+    private void addOrderItem(List<AllReceiveList.DataBean.ListBeanX> item) {
 
-
-
-        for (int i = 0; i <item.size() ; i++) {
-            AllOrderList.DataBean.ListBeanX orderBean = item.get(i);
-            int cur=mItems.size();
-            ItemOrderTitle itemOrderTitle = new ItemOrderTitle(String.valueOf(orderBean.getOrder_no()), orderBean.getStatus(),cur);
-            mItems.add(itemOrderTitle);
-            List<OrderGoods> goodsBeanList = orderBean.getList();
+        for (int i = 0; i < item.size(); i++) {
+            AllReceiveList.DataBean.ListBeanX orderBean = item.get(i);
+            int cur = mItems.size();
+           /* ItemReceiveTitle itemReceiveTitle = new ItemReceiveTitle(String.valueOf(orderBean.getCreate_at()), orderBean.getStatus(), cur);
+            mItems.add(itemReceiveTitle);
+            List<AllReceiveList.DataBean.ListBeanX.ListBean> goodsBeanList = orderBean.getList();
             mItems.addAll(goodsBeanList);
-            int curBottom=mItems.size();
-            ItemOrderBottom itemOrderBottom = new ItemOrderBottom();
-            itemOrderBottom.status=orderBean.getStatus();
-            itemOrderBottom.orderNum=String.valueOf(orderBean.getOrder_no());
-            itemOrderBottom.totalMoney=orderBean.getPrice_total();
-            itemOrderBottom.goodsMoney=orderBean.getPrice_goods();
-            itemOrderBottom.expressMoney=orderBean.getPrice_express();
-            itemOrderBottom.expressNo=orderBean.getExpress_send_no();
-            itemOrderBottom.express_company_title=orderBean.getExpress_company_title();
-            itemOrderBottom.expressCode=orderBean.getExpress_company_code();
-            itemOrderBottom.num=orderBean.getGoods_count();
-            itemOrderBottom.bottomcur=curBottom;
-            itemOrderBottom.topCur=cur;
-            mItems.add(itemOrderBottom);
+            int curBottom = mItems.size();
+            ItemReceiveBottom itemReceiveBottom = new ItemReceiveBottom();
+            itemReceiveBottom.status = orderBean.getStatus();
+            itemReceiveBottom.expressMoney = orderBean.getPrice_express();
+            itemReceiveBottom.expressNo = orderBean.getExpress_send_no();
+            itemReceiveBottom.express_company_title = orderBean.getExpress_company_title();
+            itemReceiveBottom.expressCode = orderBean.getExpress_company_code();
+            itemReceiveBottom.num = orderBean.getGoods_count();
+            itemReceiveBottom.bottomcur = curBottom;
+            itemReceiveBottom.topCur = cur;
+            mItems.add(itemReceiveBottom);*/
         }
 
     }
@@ -269,7 +282,8 @@ public class _ShareliwuFragment01 extends BaseFragment implements OnRefreshLoadM
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
         if (mCanLoadMore = true) {
             mCanLoadMore = false;
-            //   mViewModel.getOrderList(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(page), mtype, "", Status.LOAD_MORE).observe(this, mObserver);
+            mViewModel.ReceiveQueue(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), ""+page, mtype, Status.LOAD_MORE)
+                    .observe(this, mObserver);
 
         } else {
             mRefreshLayout.finishLoadMore();
@@ -284,28 +298,84 @@ public class _ShareliwuFragment01 extends BaseFragment implements OnRefreshLoadM
     }
 
 
+
+
+
+
+    @OnClick(R.id.ok)
+    public void onViewClicked() {
+        Intent intent = new Intent(mActivity, RecAddressActivity.class);
+        intent.putExtra("code", 100);
+        startActivityForResult(intent, 100);
+
+    }
+    private Observer<Status<ResponseBody>> mObserver1 = status -> {
+
+        switch (status.status) {
+            case Status.SUCCESS:
+                ResponseBody body = status.content;
+                opera(body);
+                break;
+            case Status.ERROR:
+                FToast.error("网络错误");
+                break;
+            case Status.LOADING:
+
+                break;
+        }
+
+    };
+    private void opera(ResponseBody body) {
+        try {
+            String b = body.string();
+            ReceiveBean mReceiveBean = new Gson().fromJson(b, ReceiveBean.class);
+            if (mReceiveBean.getCode() == 1) {
+                FToast.success(mReceiveBean.getInfo());
+                load();
+            } else {
+                FToast.error(mReceiveBean.getInfo());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            FToast.error("数据错误");
+        }
+    }
+
     @Override
-    public void onReBuy(ItemOrderBottom itemOrderBottom) {
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100 && resultCode == 101) {
+            //返回更新地址
+            AddressBean.DataBean.ListBean bean = data.getParcelableExtra("addressBean");
+            String mAddressId = String.valueOf(bean.getId());
+
+            mViewModel.ReceiveCommit(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), mAddressId)
+                    .observe(this, mObserver1);
+        }
+    }
+
+    @Override
+    public void onReBuy(ItemReceiveBottom itemOrderBottom) {
 
     }
 
     @Override
-    public void onCancel(ItemOrderBottom itemOrderBottom) {
+    public void onCancel(ItemReceiveBottom itemOrderBottom) {
 
     }
 
     @Override
-    public void onPay(ItemOrderBottom itemOrderBottom) {
+    public void onPay(ItemReceiveBottom itemOrderBottom) {
 
     }
 
     @Override
-    public void onConfirmGoods(ItemOrderBottom itemOrderBottom) {
+    public void onConfirmGoods(ItemReceiveBottom itemOrderBottom) {
 
     }
 
     @Override
-    public void onViewLogistics(ItemOrderBottom itemOrderBottom) {
+    public void onViewLogistics(ItemReceiveBottom itemOrderBottom) {
         Intent intent = new Intent(mActivity, LogisticsActivity.class);
         intent.putExtra("express_no", itemOrderBottom.expressNo);
         intent.putExtra("express_code", itemOrderBottom.expressCode);

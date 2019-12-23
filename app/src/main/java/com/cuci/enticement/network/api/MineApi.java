@@ -259,6 +259,7 @@ public interface MineApi {
     Call<ResponseBody> ReceiveCommit(@Field("token") String token,
                                    @Field("mid") String mid,
                                    @Field("from_type") String from_type,
+                                   @Field("address_id") String address_id,
                                    @Field("sign") String sign
     );
 }

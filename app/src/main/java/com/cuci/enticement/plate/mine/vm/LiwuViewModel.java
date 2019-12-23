@@ -1,5 +1,7 @@
 package com.cuci.enticement.plate.mine.vm;
 
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -30,7 +32,7 @@ public class LiwuViewModel extends ViewModel {
      * 领取列表
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> ReceiveQueue(String token, String mid, String get_state, String page) {
+    public MutableLiveData<Status<ResponseBody>> ReceiveQueue(String token, String mid, String page,String get_state, int loadType) {
 
         final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
         data.setValue(Status.loading(null));
@@ -49,13 +51,25 @@ public class LiwuViewModel extends ViewModel {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,
                                            @NonNull Response<ResponseBody> response) {
-                        data.setValue(Status.success(response.body()));
+                        if (loadType == Status.LOAD_REFRESH) {
+                            data.setValue(Status.refreshSuccess(response.body()));
+                        } else {
+                            data.setValue(Status.moreSuccess(response.body()));
+                        }
+
+
                     }
 
                     @Override
                     public void onFailure(@NonNull Call<ResponseBody> call,
                                           @NonNull Throwable t) {
-                        data.setValue(Status.error(null, t.getMessage() == null ? "获取失败" : t.getMessage()));
+                        if (loadType == Status.LOAD_REFRESH) {
+                            data.setValue(Status.refreshError(null, t.getMessage() ==
+                                    null ? "加载失败" : t.getMessage()));
+                        } else {
+                            data.setValue(Status.moreError(null, t.getMessage() ==
+                                    null ? "加载失败" : t.getMessage()));
+                        }
                     }
                 });
         return data;
@@ -64,7 +78,7 @@ public class LiwuViewModel extends ViewModel {
      * 领取提交
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> ReceiveCommit(String token, String mid, String rule, String adressId) {
+    public MutableLiveData<Status<ResponseBody>> ReceiveCommit(String token, String mid, String address_id) {
 
         final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
         data.setValue(Status.loading(null));
@@ -72,9 +86,10 @@ public class LiwuViewModel extends ViewModel {
         params.put("token",token);
         params.put("mid",mid);
         params.put("from_type","2");
+        params.put("address_id",address_id);
         String sign = SignUtils.signParam(params);
         mCreator.create(MineApi.class)
-                .ReceiveCommit(token,mid,"2",sign)
+                .ReceiveCommit(token,mid,"2",address_id,sign)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,

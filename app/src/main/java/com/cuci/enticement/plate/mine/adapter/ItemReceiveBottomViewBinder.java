@@ -11,25 +11,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cuci.enticement.R;
 import com.cuci.enticement.bean.ItemOrderBottom;
+import com.cuci.enticement.bean.ItemReceiveBottom;
+import com.cuci.enticement.utils.ViewUtils;
 
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.drakeet.multitype.ItemViewBinder;
 
-public class ItemReceiveBottomViewBinder extends ItemViewBinder<ItemOrderBottom, ItemReceiveBottomViewBinder.ViewHolder> {
+public class ItemReceiveBottomViewBinder extends ItemViewBinder<ItemReceiveBottom, ItemReceiveBottomViewBinder.ViewHolder> {
 
     public interface OnItemClickListener {
-        void onReBuy(ItemOrderBottom itemOrderBottom);
+        void onReBuy(ItemReceiveBottom itemOrderBottom);
 
-        void onCancel(ItemOrderBottom itemOrderBottom);
+        void onCancel(ItemReceiveBottom itemOrderBottom);
 
-        void onPay(ItemOrderBottom itemOrderBottom);
+        void onPay(ItemReceiveBottom itemOrderBottom);
 
-        void onConfirmGoods(ItemOrderBottom itemOrderBottom);
+        void onConfirmGoods(ItemReceiveBottom itemOrderBottom);
 
-        void onViewLogistics(ItemOrderBottom itemOrderBottom);
+        void onViewLogistics(ItemReceiveBottom itemOrderBottom);
 
     }
 
@@ -47,9 +48,15 @@ public class ItemReceiveBottomViewBinder extends ItemViewBinder<ItemOrderBottom,
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull ItemOrderBottom itemOrderBottom) {
+    protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull ItemReceiveBottom itemOrderBottom) {
         int status = itemOrderBottom.status;
-
+        if(status==0){
+            //未领取
+            ViewUtils.hideView( holder.textWuliu);
+        }else if(status==1){
+            //已领取
+            ViewUtils.showView( holder.textWuliu);
+        }
         holder.textWuliu.setOnClickListener(v -> {
 
             if (mOnItemClickListener != null) {
@@ -63,8 +70,6 @@ public class ItemReceiveBottomViewBinder extends ItemViewBinder<ItemOrderBottom,
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.line)
-        View line;
         @BindView(R.id.text_wuliu)
         TextView textWuliu;
         ViewHolder(View itemView) {
