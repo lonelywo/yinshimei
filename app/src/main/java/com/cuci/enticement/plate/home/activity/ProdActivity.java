@@ -1,6 +1,8 @@
 package com.cuci.enticement.plate.home.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
@@ -11,6 +13,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.AllOrderList;
@@ -38,6 +42,9 @@ import com.cuci.enticement.utils.WxShareUtils;
 import com.cuci.enticement.widget.SmoothScrollview;
 import com.google.gson.Gson;
 import com.lxj.xpopup.XPopup;
+import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.opensdk.modelmsg.WXMiniProgramObject;
 import com.tencent.smtt.sdk.WebView;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -45,6 +52,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
@@ -168,32 +176,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                                 .asCustom(new CenterShareAppPopup(ProdActivity.this, mUserInfo))
                                 .show();*/
                    /* if (mProData.getVip_mod() != 1) {
-                        BasicApp.getAppExecutors()
-                                    .networkIO()
-                                    .execute(() -> {
-                                        try {
-                                            WXMiniProgramObject miniProgramObj = new WXMiniProgramObject();
-                                            miniProgramObj.webpageUrl = "https://test.enticementchina.com/pages/goods/detail?id=" + mProData.getId(); // 兼容低版本的网页链接
-                                            miniProgramObj.miniprogramType = WXMiniProgramObject.MINIPTOGRAM_TYPE_RELEASE;// 正式版:0，测试版:1，体验版:2
-                                            miniProgramObj.userName = "gh_f19e5dd49f49";     // 小程序原始id
-                                            miniProgramObj.path = "pages/goods/detail?g=" + mProData.getId()+ "&p=" + mUserInfo.getPhone();            //小程序页面路径；对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"
-                                            // miniProgramObj.path = "";            //小程序页面路径；对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"
-                                            WXMediaMessage msg = new WXMediaMessage(miniProgramObj);
-                                            msg.title = mProData.getTitle();                    // 小程序消息title
-                                            msg.description = "因诗美，因你而美";               // 小程序消息desc
-                                            Bitmap bmp = BitmapFactory.decodeStream(new URL(mProData.getLogo()).openStream());
-                                            Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, THUMB_SIZE1, THUMB_SIZE, true);
-                                            bmp.recycle();
-                                            msg.thumbData = WxShareUtils.bmpToByteArray(thumbBmp, true); // 小程序消息封面图片，小于128k
-                                            SendMessageToWX.Req req = new SendMessageToWX.Req();
-                                            req.transaction = String.valueOf(System.currentTimeMillis());
-                                            req.message = msg;
-                                            req.scene = SendMessageToWX.Req.WXSceneSession;  // 目前只支持会话
-                                            BasicApp.getIWXAPI().sendReq(req);
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-                                    });
+                       ShareXiaoChengnXu();
                     } else {
                         new XPopup.Builder(ProdActivity.this)
                                 .dismissOnBackPressed(false)
@@ -201,32 +184,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                                 .asCustom(new ShareImgTipsPopup(ProdActivity.this, "取消", new ShareImgTipsPopup.OnExitListener() {
                                     @Override
                                     public void onPositive1() {
-                                            BasicApp.getAppExecutors()
-                                                    .networkIO()
-                                                    .execute(() -> {
-                                                        try {
-                                                            WXMiniProgramObject miniProgramObj = new WXMiniProgramObject();
-                                                            miniProgramObj.webpageUrl = "https://test.enticementchina.com/pages/goods/detail?g=" + mProData.getId(); // 兼容低版本的网页链接
-                                                            miniProgramObj.miniprogramType = WXMiniProgramObject.MINIPTOGRAM_TYPE_RELEASE;// 正式版:0，测试版:1，体验版:2
-                                                            miniProgramObj.userName = "gh_f19e5dd49f49";     // 小程序原始id
-                                                            miniProgramObj.path = "pages/goods/detail?g=" + mProData.getId() + "&p=" + mUserInfo.getPhone();            //小程序页面路径；对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"
-                                                            // miniProgramObj.path = "";            //小程序页面路径；对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"
-                                                            WXMediaMessage msg = new WXMediaMessage(miniProgramObj);
-                                                            msg.title = mProData.getTitle();                    // 小程序消息title
-                                                            msg.description = "因诗美，因你而美";               // 小程序消息desc
-                                                            Bitmap bmp = BitmapFactory.decodeStream(new URL(mProData.getLogo()).openStream());
-                                                            Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, THUMB_SIZE1, THUMB_SIZE, true);
-                                                            bmp.recycle();
-                                                            msg.thumbData = WxShareUtils.bmpToByteArray(thumbBmp, true); // 小程序消息封面图片，小于128k
-                                                            SendMessageToWX.Req req = new SendMessageToWX.Req();
-                                                            req.transaction = String.valueOf(System.currentTimeMillis());
-                                                            req.message = msg;
-                                                            req.scene = SendMessageToWX.Req.WXSceneSession;  // 目前只支持会话
-                                                            BasicApp.getIWXAPI().sendReq(req);
-                                                        } catch (IOException e) {
-                                                            e.printStackTrace();
-                                                        }
-                                                    });
+                                           ShareXiaoChengnXu();
                                     }
 
                                     @Override
@@ -307,8 +265,8 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                 orderGoods.setGoods_title(mProData.getTitle());
                 orderGoods.setGoods_num(mNum);
                 orderGoods.setGoods_spec(mSpec);
-                orderGoods.setGoods_price_selling(mProData.getInitial_price_selling());
-                orderGoods.setGoods_price_market(mProData.getInitial_price_market());
+                orderGoods.setGoods_price_selling(mprice_sell);
+                orderGoods.setGoods_price_market(mprice_market);
                 orderGoods.setVip_mod(mProData.getVip_mod());
                 items.add(orderGoods);
 
@@ -318,19 +276,18 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                 cartIntentInfo.setList(items);
                 cartIntentInfo.setGoods_count(items.size());
                 if(is_new==0&&mProData.getVip_mod()==0||is_new==1&&mProData.getVip_mod()==1){
-                    double goodsPrice = MathExtend.multiply(mProData.getInitial_price_market(), String.valueOf(mNum));
+                    double goodsPrice = MathExtend.multiply(mprice_market, String.valueOf(mNum));
                     cartIntentInfo.setPrice_goods(String.valueOf(goodsPrice));
                 }else {
-                    double goodsPrice = MathExtend.multiply(mProData.getInitial_price_selling(), String.valueOf(mNum));
+                    double goodsPrice = MathExtend.multiply(mprice_sell, String.valueOf(mNum));
                     cartIntentInfo.setPrice_goods(String.valueOf(goodsPrice));
                 }
-                    Intent intent = new Intent(ProdActivity.this, OrderActivity.class);
-                    intent.putExtra("intentInfo", cartIntentInfo);
-                    intent.putExtra("vip", is_new);
-                    intent.putExtra("num", mNum);
-                    intent.putExtra("rule", rule);
-                    startActivity(intent);
-
+                Intent intent = new Intent(ProdActivity.this, OrderActivity.class);
+                intent.putExtra("intentInfo", cartIntentInfo);
+                intent.putExtra("vip", is_new);
+                intent.putExtra("num", mNum);
+                intent.putExtra("rule", rule);
+                startActivity(intent);
             } else {
                 FToast.error(mMyTeamslBean.getInfo());
             }
@@ -474,14 +431,16 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
     private double mTotalMoeny;
     private int mNum;
     private String mSpec;
+    private String mprice_sell;
+    private String mprice_market;
 
     @Override
-    public void onCommitClick(String spec, int num, int code) {
+    public void onCommitClick(String spec, int num, int code,String price_sell,String price_market) {
         mCode = code;
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
         CartViewModel mViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
-
-
+        mprice_sell=price_sell;
+        mprice_market=price_market;
         if (code == PUT_IN_CART) {
             long id = mProData.getId();
             String s = spec;
@@ -502,40 +461,12 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
 
             rule = sb.toString();
             // mViewModel.commitOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), rule, "").observe(this, mCommitObserver);
+
             //进入页面先请求是否会员
             if (mUserInfo != null) {
                 type=2;
                 mHomeViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);
             }
-           /* List<OrderGoods> items = new ArrayList<>();
-            OrderGoods orderGoods = new OrderGoods();
-            orderGoods.setGoods_logo(mProData.getLogo());
-            orderGoods.setGoods_title(mProData.getTitle());
-            orderGoods.setGoods_num(mNum);
-            orderGoods.setGoods_spec(mSpec);
-            orderGoods.setGoods_price_selling(mProData.getInitial_price_selling());
-            orderGoods.setGoods_price_market(mProData.getInitial_price_market());
-            items.add(orderGoods);
-
-            AllOrderList.DataBean.ListBeanX cartIntentInfo = new AllOrderList.DataBean.ListBeanX();
-
-            //cartIntentInfo.setOrder_no(Long.parseLong(orderResult.getData().getOrder().getOrder_no()));
-            cartIntentInfo.setList(items);
-            cartIntentInfo.setGoods_count(items.size());
-            if(is_new==0){
-                double goodsPrice = MathExtend.multiply(mProData.getInitial_price_market(), String.valueOf(mNum));
-                cartIntentInfo.setPrice_goods(String.valueOf(goodsPrice));
-            }else {
-                double goodsPrice = MathExtend.multiply(mProData.getInitial_price_selling(), String.valueOf(mNum));
-                cartIntentInfo.setPrice_goods(String.valueOf(goodsPrice));
-            }
-
-            Intent intent = new Intent(ProdActivity.this, OrderActivity.class);
-            intent.putExtra("intentInfo", cartIntentInfo);
-            intent.putExtra("vip", is_new);
-            intent.putExtra("num", mNum);
-            intent.putExtra("rule", rule);
-            startActivity(intent);*/
         }
 
     }
@@ -698,5 +629,33 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+    public void ShareXiaoChengnXu(){
+        BasicApp.getAppExecutors()
+                .networkIO()
+                .execute(() -> {
+                    try {
+                        WXMiniProgramObject miniProgramObj = new WXMiniProgramObject();
+                        miniProgramObj.webpageUrl = "https://test.enticementchina.com/pages/goods/detail?g=" + mProData.getId(); // 兼容低版本的网页链接
+                        miniProgramObj.miniprogramType = WXMiniProgramObject.MINIPTOGRAM_TYPE_RELEASE;// 正式版:0，测试版:1，体验版:2
+                        miniProgramObj.userName = "gh_f19e5dd49f49";     // 小程序原始id
+                        miniProgramObj.path = "pages/goods/detail?g=" + mProData.getId() + "&p=" + mUserInfo.getPhone();            //小程序页面路径；对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"
+                        // miniProgramObj.path = "";            //小程序页面路径；对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"
+                        WXMediaMessage msg = new WXMediaMessage(miniProgramObj);
+                        msg.title = mProData.getTitle();                    // 小程序消息title
+                        msg.description = "因诗美，因你而美";               // 小程序消息desc
+                        Bitmap bmp = BitmapFactory.decodeStream(new URL(mProData.getLogo()).openStream());
+                        Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, THUMB_SIZE1, THUMB_SIZE, true);
+                        bmp.recycle();
+                        msg.thumbData = WxShareUtils.bmpToByteArray(thumbBmp, true); // 小程序消息封面图片，小于128k
+                        SendMessageToWX.Req req = new SendMessageToWX.Req();
+                        req.transaction = String.valueOf(System.currentTimeMillis());
+                        req.message = msg;
+                        req.scene = SendMessageToWX.Req.WXSceneSession;  // 目前只支持会话
+                        BasicApp.getIWXAPI().sendReq(req);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
     }
 }

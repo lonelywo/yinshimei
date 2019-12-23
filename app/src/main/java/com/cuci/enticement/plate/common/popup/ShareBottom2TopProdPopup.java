@@ -96,7 +96,8 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
     private String mSpec;
     private String mSpec2;
     private int mID;
-
+    private String price_sell;
+    private String price_market;
     public ShareBottom2TopProdPopup(@NonNull Context context, HomeDetailsBean.DataBean item, int code, OnCommitClickListener OnCommitClickListener) {
         super(context);
         mContext = context;
@@ -149,12 +150,16 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
         }
         HomeDetailsBean.DataBean.SpecsBean specsBean = specs.get(0);
         List<HomeDetailsBean.DataBean.SpecsBean.ListBean> list = specsBean.getList();
-
+        price_market = mItem.getList().get(0).getPrice_market();
+        price_sell = mItem.getList().get(0).getPrice_selling();
         if(mItem.getVip_mod()==1){
             String strMsg = "<font color=\"#BF9964\">"+mItem.getPricename()+"¥" + mItem.getInitial_price_selling()+"</font>";
             text_money.setText(Html.fromHtml(strMsg));
-        }else {
-            String strMsg = "原价¥" + mItem.getInitial_price_market()+" "+"<font color=\"#BF9964\">"+"会员价¥" + mItem.getInitial_price_selling()+"</font>";
+        }else if(SharedPrefUtils.getisnew()==0){
+            String strMsg = "<font color=\"#000000\">"+"¥" + mItem.getList().get(0).getPrice_market()+"</font>";
+            text_money.setText(Html.fromHtml(strMsg));
+        }else if(SharedPrefUtils.getisnew()==1){
+            String strMsg = "<font color=\"#BF9964\">"+"¥" + mItem.getList().get(0).getPrice_selling()+"</font>";
             text_money.setText(Html.fromHtml(strMsg));
         }
 
@@ -172,6 +177,17 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
                     int id = radioGroup.getChildAt(j).getId();
                     if (id == i) {
                         selectedTv.setText(list.get(j).getName());
+                        if(SharedPrefUtils.getisnew()==0){
+                            price_market = mItem.getList().get(j).getPrice_market();
+                            price_sell = mItem.getList().get(j).getPrice_selling();
+                            String strMsg = "<font color=\"#000000\">"+"¥" + price_market+"</font>";
+                            text_money.setText(Html.fromHtml(strMsg));
+                        }else if(SharedPrefUtils.getisnew()==1){
+                            price_market = mItem.getList().get(j).getPrice_market();
+                            price_sell = mItem.getList().get(j).getPrice_selling();
+                            String strMsg = "<font color=\"#BF9964\">"+"¥" + price_sell+"</font>";
+                            text_money.setText(Html.fromHtml(strMsg));
+                        }
                         mSpec = specsBean.getName() + ":" + list.get(j).getName();
                         mID = id;
                         break;
@@ -207,7 +223,7 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
             button.setPadding(20, 10, 20, 10);
             button.setGravity(Gravity.LEFT);
-            layoutParams.setMargins(DimensionUtils.dp2px(getContext(), 10), 0, DimensionUtils.dp2px(getContext(), 10), 0);//4个参数按顺序分别是左上右下
+            layoutParams.setMargins(DimensionUtils.dp2px(getContext(), 10), 10, DimensionUtils.dp2px(getContext(), 10), 0);//4个参数按顺序分别是左上右下
             button.setLayoutParams(layoutParams);
             index++;
         }
@@ -252,7 +268,7 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
                 spec = mSpec + ";" + mSpec2;
             }
 
-            mOnCommitClickListener.onCommitClick(spec, mCount, mCode);
+            mOnCommitClickListener.onCommitClick(spec, mCount, mCode,price_sell,price_market);
             dismiss();
         }
     }
@@ -288,7 +304,7 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
 
     public interface OnCommitClickListener {
 
-        void onCommitClick(String spec, int num, int code);
+        void onCommitClick(String spec, int num, int code,String price_sell,String price_market);
 
     }
 
