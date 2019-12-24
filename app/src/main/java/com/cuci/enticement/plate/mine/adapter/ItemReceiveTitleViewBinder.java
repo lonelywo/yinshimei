@@ -29,13 +29,13 @@ public class ItemReceiveTitleViewBinder extends ItemViewBinder<ItemReceiveTitle,
     }
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull ItemReceiveTitle itemOrderTitle) {
-        holder.textBianhao.setText(String.format(Locale.CHINA,"订单号:%s",itemOrderTitle.getCreate_at()));
+        holder.textBianhao.setText(String.format(Locale.CHINA,"%s",itemOrderTitle.getCreate_at()));
        switch (itemOrderTitle.status){
-           case 0:
+           case "0":
                holder.textZhuangtai.setText("未领取");
 
                break;
-           case 1:
+           case "1":
                holder.textZhuangtai.setText("已领取");
                break;
        }

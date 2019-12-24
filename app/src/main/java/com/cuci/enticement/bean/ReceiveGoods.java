@@ -1,7 +1,9 @@
 package com.cuci.enticement.bean;
 
 
-public class ReceiveGoods  {
+import java.io.Serializable;
+
+public class ReceiveGoods  implements Serializable {
 
     /**
      * aid : 36

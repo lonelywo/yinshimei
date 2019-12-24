@@ -12,7 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cuci.enticement.R;
-import com.cuci.enticement.bean.OrderGoods;
+import com.cuci.enticement.bean.ReceiveGoods;
 import com.cuci.enticement.utils.ImageLoader;
 
 import java.util.Locale;
@@ -21,7 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.drakeet.multitype.ItemViewBinder;
 
-public class ItemReceiveViewBinder extends ItemViewBinder<OrderGoods, ItemReceiveViewBinder.ViewHolder> {
+public class ItemReceiveViewBinder extends ItemViewBinder<ReceiveGoods, ItemReceiveViewBinder.ViewHolder> {
 
 
 
@@ -34,17 +34,15 @@ public class ItemReceiveViewBinder extends ItemViewBinder<OrderGoods, ItemReceiv
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull OrderGoods mOrderGoods) {
-        ImageLoader.loadPlaceholder(mOrderGoods.getGoods_logo(),holder.imgTupian);
+    protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull ReceiveGoods mOrderGoods) {
+        ImageLoader.loadPlaceholder(mOrderGoods.getGoods_logo(), holder.imgTupian);
         holder.textBiaoti.setText(mOrderGoods.getGoods_title());
-        holder.textQian.setText(String.format(Locale.CHINA,"%s",mOrderGoods.getGoods_price_selling()));
-        holder.textNum.setText(String.format(Locale.CHINA,"x%s",mOrderGoods.getNumber()));
+        holder.textQian.setText(String.format(Locale.CHINA, "%s", mOrderGoods.getPrice_selling()));
+        holder.textNum.setText(String.format(Locale.CHINA, "x%s", mOrderGoods.getNumber()));
 
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-
-
         @BindView(R.id.line)
         View line;
         @BindView(R.id.img_tupian)

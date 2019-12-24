@@ -1,5 +1,6 @@
 package com.cuci.enticement.plate.mine.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -22,19 +23,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseFragment;
 import com.cuci.enticement.bean.AddressBean;
-import com.cuci.enticement.bean.AllOrderList;
 import com.cuci.enticement.bean.AllReceiveList;
-import com.cuci.enticement.bean.CommissiontxBean;
-import com.cuci.enticement.bean.ItemOrderBottom;
-import com.cuci.enticement.bean.ItemOrderTitle;
 import com.cuci.enticement.bean.ItemReceiveBottom;
 import com.cuci.enticement.bean.ItemReceiveTitle;
-import com.cuci.enticement.bean.OrderGoods;
 import com.cuci.enticement.bean.ReceiveBean;
+import com.cuci.enticement.bean.ReceiveGoods;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
+import com.cuci.enticement.event.ReceiveEvent;
 import com.cuci.enticement.plate.cart.activity.LogisticsActivity;
-import com.cuci.enticement.plate.cart.activity.OrderActivity;
+import com.cuci.enticement.plate.common.popup.TipsPopup;
 import com.cuci.enticement.plate.mine.activity.RecAddressActivity;
 import com.cuci.enticement.plate.mine.adapter.ItemReceiveBottomViewBinder;
 import com.cuci.enticement.plate.mine.adapter.ItemReceiveTitleViewBinder;
@@ -46,9 +44,14 @@ import com.cuci.enticement.utils.ViewUtils;
 import com.cuci.enticement.widget.CustomRefreshHeader;
 import com.cuci.enticement.widget.OrderItemTopDecoration;
 import com.google.gson.Gson;
+import com.lxj.xpopup.XPopup;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -66,6 +69,8 @@ import okhttp3.ResponseBody;
 public class _ShareliwuFragment01 extends BaseFragment implements OnRefreshLoadMoreListener, ItemReceiveBottomViewBinder.OnItemClickListener {
 
     private static final String TAG = _ShareliwuFragment01.class.getSimpleName();
+    @BindView(R.id.line)
+    View line;
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @BindView(R.id.refresh_layout)
@@ -140,7 +145,7 @@ public class _ShareliwuFragment01 extends BaseFragment implements OnRefreshLoadM
         //注册布局
         mAdapter.register(ItemReceiveTitle.class, new ItemReceiveTitleViewBinder());
 
-        mAdapter.register(OrderGoods.class, new ItemReceiveViewBinder());
+        mAdapter.register(ReceiveGoods.class, new ItemReceiveViewBinder());
 
         mAdapter.register(ItemReceiveBottom.class, new ItemReceiveBottomViewBinder(this));
 
@@ -164,12 +169,7 @@ public class _ShareliwuFragment01 extends BaseFragment implements OnRefreshLoadM
                 ResponseBody content = status.content;
                 try {
                     String result = content.string();
-                    if (mtype.equals("2")) {
-
-                        Log.d("east", ": " + result);
-                    }
                     AllReceiveList allOrderList = new Gson().fromJson(result, AllReceiveList.class);
-
                     if (allOrderList.getCode() == 1) {
                         AllReceiveList.DataBean data = allOrderList.getData();
                         List<AllReceiveList.DataBean.ListBeanX> item = data.getList();
@@ -178,7 +178,9 @@ public class _ShareliwuFragment01 extends BaseFragment implements OnRefreshLoadM
                             if (status.loadType == Status.LOAD_REFRESH) {
 
                                 ViewUtils.showView(mEmptyLayout);
-
+                                if(TextUtils.equals(mtype,"0")){
+                                    ViewUtils.hideView(ok);
+                                }
                                 mRefreshLayout.finishRefresh();
                             } else {
 
@@ -195,6 +197,9 @@ public class _ShareliwuFragment01 extends BaseFragment implements OnRefreshLoadM
 
                             if (item.size() > 0) {
                                 ViewUtils.hideView(mEmptyLayout);
+                              if(TextUtils.equals(mtype,"0")){
+                                  ViewUtils.showView(ok);
+                              }
 
                                 mDatas.clear();
                                 mDatas.addAll(item);
@@ -259,21 +264,19 @@ public class _ShareliwuFragment01 extends BaseFragment implements OnRefreshLoadM
         for (int i = 0; i < item.size(); i++) {
             AllReceiveList.DataBean.ListBeanX orderBean = item.get(i);
             int cur = mItems.size();
-           /* ItemReceiveTitle itemReceiveTitle = new ItemReceiveTitle(String.valueOf(orderBean.getCreate_at()), orderBean.getStatus(), cur);
+            ItemReceiveTitle itemReceiveTitle = new ItemReceiveTitle(String.valueOf(orderBean.getCreate_at()), mtype, cur);
             mItems.add(itemReceiveTitle);
-            List<AllReceiveList.DataBean.ListBeanX.ListBean> goodsBeanList = orderBean.getList();
+            List<ReceiveGoods> goodsBeanList = orderBean.getList();
             mItems.addAll(goodsBeanList);
             int curBottom = mItems.size();
             ItemReceiveBottom itemReceiveBottom = new ItemReceiveBottom();
-            itemReceiveBottom.status = orderBean.getStatus();
-            itemReceiveBottom.expressMoney = orderBean.getPrice_express();
+            itemReceiveBottom.status = mtype;
             itemReceiveBottom.expressNo = orderBean.getExpress_send_no();
-            itemReceiveBottom.express_company_title = orderBean.getExpress_company_title();
+            itemReceiveBottom.express_company_title = orderBean.getExpress_company_name();
             itemReceiveBottom.expressCode = orderBean.getExpress_company_code();
-            itemReceiveBottom.num = orderBean.getGoods_count();
             itemReceiveBottom.bottomcur = curBottom;
             itemReceiveBottom.topCur = cur;
-            mItems.add(itemReceiveBottom);*/
+            mItems.add(itemReceiveBottom);
         }
 
     }
@@ -282,7 +285,7 @@ public class _ShareliwuFragment01 extends BaseFragment implements OnRefreshLoadM
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
         if (mCanLoadMore = true) {
             mCanLoadMore = false;
-            mViewModel.ReceiveQueue(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), ""+page, mtype, Status.LOAD_MORE)
+            mViewModel.ReceiveQueue(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "" + page, mtype, Status.LOAD_MORE)
                     .observe(this, mObserver);
 
         } else {
@@ -298,17 +301,20 @@ public class _ShareliwuFragment01 extends BaseFragment implements OnRefreshLoadM
     }
 
 
-
-
-
-
     @OnClick(R.id.ok)
     public void onViewClicked() {
-        Intent intent = new Intent(mActivity, RecAddressActivity.class);
-        intent.putExtra("code", 100);
-        startActivityForResult(intent, 100);
-
+        new XPopup.Builder(mActivity)
+                .dismissOnBackPressed(false)
+                .dismissOnTouchOutside(false)
+                .asCustom(new TipsPopup(mActivity,
+                        "前往选择地址即可领取礼品", "关闭", "前往", () -> {
+                    Intent intent = new Intent(mActivity, RecAddressActivity.class);
+                    intent.putExtra("code", 100);
+                    startActivityForResult(intent, 100);
+                }))
+                .show();
     }
+
     private Observer<Status<ResponseBody>> mObserver1 = status -> {
 
         switch (status.status) {
@@ -325,13 +331,14 @@ public class _ShareliwuFragment01 extends BaseFragment implements OnRefreshLoadM
         }
 
     };
+
     private void opera(ResponseBody body) {
         try {
             String b = body.string();
             ReceiveBean mReceiveBean = new Gson().fromJson(b, ReceiveBean.class);
             if (mReceiveBean.getCode() == 1) {
                 FToast.success(mReceiveBean.getInfo());
-                load();
+                EventBus.getDefault().post(new ReceiveEvent(ReceiveEvent.REFRESH_LIST));
             } else {
                 FToast.error(mReceiveBean.getInfo());
             }
@@ -381,5 +388,24 @@ public class _ShareliwuFragment01 extends BaseFragment implements OnRefreshLoadM
         intent.putExtra("express_code", itemOrderBottom.expressCode);
         intent.putExtra("express_company_title", itemOrderBottom.express_company_title);
         startActivity(intent);
+    }
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        EventBus.getDefault().unregister(this);
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onReceiveEventMessage(ReceiveEvent event) {
+        if(event.getCode()==ReceiveEvent.REFRESH_LIST){
+            if(mtype.equals("0")||mtype.equals("1")){
+                load();
+            }
+        }
     }
 }

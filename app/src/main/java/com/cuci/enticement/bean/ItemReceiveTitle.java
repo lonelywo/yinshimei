@@ -13,9 +13,9 @@ public class ItemReceiveTitle {
     status 4 已发货，待完成收货
     status 5 已确认收货，订单完成*/
 
-    public int status;//订单状态
+    public String status;//订单状态
     public int cur;
-    public ItemReceiveTitle(String create_at, int status, int cur) {
+    public ItemReceiveTitle(String create_at, String status, int cur) {
         this.create_at = create_at;
         this.status = status;
         this.cur=cur;
@@ -29,11 +29,11 @@ public class ItemReceiveTitle {
         this.create_at = create_at;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

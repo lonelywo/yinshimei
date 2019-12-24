@@ -6,7 +6,7 @@ import android.os.Parcelable;
 
 import java.util.List;
 
-public class AllReceiveList implements Parcelable {
+public class AllReceiveList  implements Parcelable {
 
 
     /**
@@ -71,7 +71,7 @@ public class AllReceiveList implements Parcelable {
         parcel.writeString(info);
     }
 
-    public static class DataBean {
+    public static class DataBean implements Parcelable{
         /**
          * list : [{"create_at":"2019-12-23 17:34:04","express_company_code":"#@@#","express_company_name":"","price_goods":0,"pay_price":0,"list":[{"aid":36,"price_selling":"0.00","number":1,"goods_title":"49.9活动领取-原生水","goods_id":6765798002,"goods_logo":"http://qiniu.cdn.enticementchina.com/b2df297b033e86b7/080201611ed0959e.jpg","order_no":67709364487},{"aid":22403,"price_selling":"0.00","number":1,"goods_title":"49.9活动领取-洁面乳","goods_id":6765799319,"goods_logo":"http://qiniu.cdn.enticementchina.com/9920fd48c8ae11fd/5727e88d2fafce4c.jpg","order_no":67709364487}]}]
          * page : {"pages":1,"current":1,"total":1,"limit":20}
@@ -79,6 +79,21 @@ public class AllReceiveList implements Parcelable {
 
         private PageBean page;
         private List<ListBeanX> list;
+
+        protected DataBean(Parcel in) {
+        }
+
+        public static final Creator<DataBean> CREATOR = new Creator<DataBean>() {
+            @Override
+            public DataBean createFromParcel(Parcel in) {
+                return new DataBean(in);
+            }
+
+            @Override
+            public DataBean[] newArray(int size) {
+                return new DataBean[size];
+            }
+        };
 
         public PageBean getPage() {
             return page;
@@ -96,7 +111,16 @@ public class AllReceiveList implements Parcelable {
             this.list = list;
         }
 
-        public static class PageBean {
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel parcel, int i) {
+        }
+
+        public static class PageBean implements Parcelable{
             /**
              * pages : 1
              * current : 1
@@ -108,6 +132,25 @@ public class AllReceiveList implements Parcelable {
             private int current;
             private int total;
             private int limit;
+
+            protected PageBean(Parcel in) {
+                pages = in.readInt();
+                current = in.readInt();
+                total = in.readInt();
+                limit = in.readInt();
+            }
+
+            public static final Creator<PageBean> CREATOR = new Creator<PageBean>() {
+                @Override
+                public PageBean createFromParcel(Parcel in) {
+                    return new PageBean(in);
+                }
+
+                @Override
+                public PageBean[] newArray(int size) {
+                    return new PageBean[size];
+                }
+            };
 
             public int getPages() {
                 return pages;
@@ -140,9 +183,22 @@ public class AllReceiveList implements Parcelable {
             public void setLimit(int limit) {
                 this.limit = limit;
             }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel parcel, int i) {
+                parcel.writeInt(pages);
+                parcel.writeInt(current);
+                parcel.writeInt(total);
+                parcel.writeInt(limit);
+            }
         }
 
-        public static class ListBeanX {
+        public static class ListBeanX implements Parcelable{
             /**
              * create_at : 2019-12-23 17:34:04
              * express_company_code : #@@#
@@ -155,9 +211,40 @@ public class AllReceiveList implements Parcelable {
             private String create_at;
             private String express_company_code;
             private String express_company_name;
+
+            public String getExpress_send_no() {
+                return express_send_no;
+            }
+
+            public void setExpress_send_no(String express_send_no) {
+                this.express_send_no = express_send_no;
+            }
+
+            private String express_send_no;
             private int price_goods;
             private int pay_price;
-            private List<ListBean> list;
+            private List<ReceiveGoods> list;
+
+            protected ListBeanX(Parcel in) {
+                create_at = in.readString();
+                express_company_code = in.readString();
+                express_company_name = in.readString();
+                express_send_no = in.readString();
+                price_goods = in.readInt();
+                pay_price = in.readInt();
+            }
+
+            public static final Creator<ListBeanX> CREATOR = new Creator<ListBeanX>() {
+                @Override
+                public ListBeanX createFromParcel(Parcel in) {
+                    return new ListBeanX(in);
+                }
+
+                @Override
+                public ListBeanX[] newArray(int size) {
+                    return new ListBeanX[size];
+                }
+            };
 
             public String getCreate_at() {
                 return create_at;
@@ -199,88 +286,28 @@ public class AllReceiveList implements Parcelable {
                 this.pay_price = pay_price;
             }
 
-            public List<ListBean> getList() {
+            public List<ReceiveGoods> getList() {
                 return list;
             }
 
-            public void setList(List<ListBean> list) {
+            public void setList(List<ReceiveGoods> list) {
                 this.list = list;
             }
 
-            public static class ListBean {
-                /**
-                 * aid : 36
-                 * price_selling : 0.00
-                 * number : 1
-                 * goods_title : 49.9活动领取-原生水
-                 * goods_id : 6765798002
-                 * goods_logo : http://qiniu.cdn.enticementchina.com/b2df297b033e86b7/080201611ed0959e.jpg
-                 * order_no : 67709364487
-                 */
 
-                private int aid;
-                private String price_selling;
-                private int number;
-                private String goods_title;
-                private long goods_id;
-                private String goods_logo;
-                private long order_no;
+            @Override
+            public int describeContents() {
+                return 0;
+            }
 
-                public int getAid() {
-                    return aid;
-                }
-
-                public void setAid(int aid) {
-                    this.aid = aid;
-                }
-
-                public String getPrice_selling() {
-                    return price_selling;
-                }
-
-                public void setPrice_selling(String price_selling) {
-                    this.price_selling = price_selling;
-                }
-
-                public int getNumber() {
-                    return number;
-                }
-
-                public void setNumber(int number) {
-                    this.number = number;
-                }
-
-                public String getGoods_title() {
-                    return goods_title;
-                }
-
-                public void setGoods_title(String goods_title) {
-                    this.goods_title = goods_title;
-                }
-
-                public long getGoods_id() {
-                    return goods_id;
-                }
-
-                public void setGoods_id(long goods_id) {
-                    this.goods_id = goods_id;
-                }
-
-                public String getGoods_logo() {
-                    return goods_logo;
-                }
-
-                public void setGoods_logo(String goods_logo) {
-                    this.goods_logo = goods_logo;
-                }
-
-                public long getOrder_no() {
-                    return order_no;
-                }
-
-                public void setOrder_no(long order_no) {
-                    this.order_no = order_no;
-                }
+            @Override
+            public void writeToParcel(Parcel parcel, int i) {
+                parcel.writeString(create_at);
+                parcel.writeString(express_company_code);
+                parcel.writeString(express_company_name);
+                parcel.writeString(express_send_no);
+                parcel.writeInt(price_goods);
+                parcel.writeInt(pay_price);
             }
         }
     }

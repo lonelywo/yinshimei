@@ -54,6 +54,7 @@ import com.cuci.enticement.utils.FLog;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.ImageLoader;
 import com.cuci.enticement.utils.SharedPrefUtils;
+import com.cuci.enticement.utils.UnicodeUitls;
 import com.cuci.enticement.utils.ViewUtils;
 import com.cuci.enticement.utils.WxShareUtils;
 import com.google.gson.Gson;
@@ -364,8 +365,6 @@ public class _MineFragment extends BaseFragment {
                 mUserInfo.setCity(mDataUserInfo.getData().getCity());
                 mUserInfo.setProvince(mDataUserInfo.getData().getProvince());
                 mUserInfo.setSex(mDataUserInfo.getData().getSex());
-                ImageLoader.loadPlaceholder1(mUserInfo.getHeadimg(), imgTuxiang);
-                textName.setText(mUserInfo.getNickname());
                 SharedPrefUtils.save(mUserInfo, UserInfo.class);
                 int is_bindingwx = mDataUserInfo.getData().getIs_bindingwx();
                 if (is_bindingwx == 1) {
@@ -423,8 +422,6 @@ public class _MineFragment extends BaseFragment {
                     OrderViewModel orderViewModel = ViewModelProviders.of(_MineFragment.this).get(OrderViewModel.class);
                     orderViewModel.getStatisticsOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()))
                             .observe(mActivity, mTotalOrderObserver);
-                    //刷新当前用户信息
-                    // mViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(mActivity, mdataObserver);
                 } else if (ACTION_REFRESH_HX.equals(intent.getAction())) {
                     int data = intent.getIntExtra("data", 0);
                     Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -452,7 +449,8 @@ public class _MineFragment extends BaseFragment {
         }
         PushManager.getInstance().bindAlias(mActivity, String.valueOf(mUserInfo.getId()));
         ImageLoader.loadPlaceholder1(mUserInfo.getHeadimg(), imgTuxiang);
-        textName.setText(mUserInfo.getNickname());
+        //textName.setText(mUserInfo.getNickname());
+        textName.setText(UnicodeUitls.unicodeToString(mUserInfo.getNickname()));
 
         if (SharedPrefUtils.getShowhxCode() == 0) {
             mViewModel.hxreg(mUserInfo.getPhone(), "2", mUserInfo.getToken(), String.valueOf(mUserInfo.getId())).observe(this, mhxregObserver);
@@ -488,13 +486,10 @@ public class _MineFragment extends BaseFragment {
             }
         }
 
-
         OrderViewModel orderViewModel = ViewModelProviders.of(this).get(OrderViewModel.class);
         orderViewModel.getStatisticsOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()))
                 .observe(mActivity, mTotalOrderObserver);
 
-        //刷新商品详情数据
-        // mViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);
     }
 
     @OnClick({R.id.img_kaiguan, R.id.btn_shengji, R.id.text_quanbudingdan, R.id.text_tuiguangyongjing, R.id.text_wodetuandui, R.id.text_shouhuodizi, R.id.text_yejiyuefan, R.id.text_wodekefu})

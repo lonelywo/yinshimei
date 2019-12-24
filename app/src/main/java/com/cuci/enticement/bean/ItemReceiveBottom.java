@@ -3,7 +3,7 @@ package com.cuci.enticement.bean;
 
 public class ItemReceiveBottom {
     public String orderNum;
-    public int status;
+    public String status;
     public int num ;
     public String totalMoney ;
     public String goodsMoney ;

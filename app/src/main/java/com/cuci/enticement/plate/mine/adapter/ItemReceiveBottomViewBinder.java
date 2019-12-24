@@ -1,6 +1,7 @@
 package com.cuci.enticement.plate.mine.adapter;
 
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,11 +50,11 @@ public class ItemReceiveBottomViewBinder extends ItemViewBinder<ItemReceiveBotto
 
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull ItemReceiveBottom itemOrderBottom) {
-        int status = itemOrderBottom.status;
-        if(status==0){
+        String status = itemOrderBottom.status;
+        if(TextUtils.equals(status,"0")){
             //未领取
             ViewUtils.hideView( holder.textWuliu);
-        }else if(status==1){
+        }else {
             //已领取
             ViewUtils.showView( holder.textWuliu);
         }
