@@ -538,7 +538,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:drawableTop="@drawable/tgyongjing"
+            android:drawableTop="@drawable/receivegoods"
             android:drawablePadding="6dp"
             android:text="礼品中心"
             android:textColor="#646262"
