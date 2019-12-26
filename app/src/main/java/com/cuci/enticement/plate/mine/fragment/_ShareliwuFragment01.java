@@ -264,13 +264,13 @@ public class _ShareliwuFragment01 extends BaseFragment implements OnRefreshLoadM
         for (int i = 0; i < item.size(); i++) {
             AllReceiveList.DataBean.ListBeanX orderBean = item.get(i);
             int cur = mItems.size();
-            ItemReceiveTitle itemReceiveTitle = new ItemReceiveTitle(String.valueOf(orderBean.getCreate_at()), mtype, cur);
+            ItemReceiveTitle itemReceiveTitle = new ItemReceiveTitle(String.valueOf(orderBean.getCreate_at()),orderBean.getStatus() , cur);
             mItems.add(itemReceiveTitle);
             List<ReceiveGoods> goodsBeanList = orderBean.getList();
             mItems.addAll(goodsBeanList);
             int curBottom = mItems.size();
             ItemReceiveBottom itemReceiveBottom = new ItemReceiveBottom();
-            itemReceiveBottom.status = mtype;
+            itemReceiveBottom.status = orderBean.getStatus();
             itemReceiveBottom.expressNo = orderBean.getExpress_send_no();
             itemReceiveBottom.express_company_title = orderBean.getExpress_company_name();
             itemReceiveBottom.expressCode = orderBean.getExpress_company_code();

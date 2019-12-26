@@ -98,6 +98,7 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
     private int mID;
     private String price_sell;
     private String price_market;
+    private String spec = null;
     public ShareBottom2TopProdPopup(@NonNull Context context, HomeDetailsBean.DataBean item, int code, OnCommitClickListener OnCommitClickListener) {
         super(context);
         mContext = context;
@@ -133,7 +134,7 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
             textFenzu2.setText(specsBean.getName());
             addview(txRadioGroup, list);
             mSpec2 = specsBean.getName() + ":" + list.get(0).getName();
-            radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            txRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(RadioGroup radioGroup, int i) {
                     for (int j = 0; j < radioGroup.getChildCount(); j++) {
@@ -142,6 +143,7 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
                             selectedTv.setText(list.get(j).getName());
                             mSpec2 = specsBean.getName() + ":" + list.get(j).getName();
                             mID = id;
+                            addspec();
                             break;
                         }
                     }
@@ -150,23 +152,7 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
         }
         HomeDetailsBean.DataBean.SpecsBean specsBean = specs.get(0);
         List<HomeDetailsBean.DataBean.SpecsBean.ListBean> list = specsBean.getList();
-        price_market = mItem.getList().get(0).getPrice_market();
-        price_sell = mItem.getList().get(0).getPrice_selling();
-        if(mItem.getVip_mod()==1){
-            String strMsg = "<font color=\"#BF9964\">"+mItem.getPricename()+"¥" + mItem.getInitial_price_selling()+"</font>";
-            text_money.setText(Html.fromHtml(strMsg));
-        }else if(SharedPrefUtils.getisnew()==0){
-            String strMsg = "<font color=\"#000000\">"+"¥" + mItem.getList().get(0).getPrice_market()+"</font>";
-            text_money.setText(Html.fromHtml(strMsg));
-        }else if(SharedPrefUtils.getisnew()==1){
-            String strMsg = "<font color=\"#BF9964\">"+"¥" + mItem.getList().get(0).getPrice_selling()+"</font>";
-            text_money.setText(Html.fromHtml(strMsg));
-        }
-
-        ImageLoader.loadPlaceholder(mItem.getLogo(), imgTuxiang);
-        stockTv.setText("库存" + mItem.getNumber_stock() + "件");
         textFenzu.setText(specsBean.getName());
-
         addview(radioGroup, list);
         mSpec = specsBean.getName() + ":" + list.get(0).getName();
         selectedTv.setText(list.get(0).getName());
@@ -177,19 +163,9 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
                     int id = radioGroup.getChildAt(j).getId();
                     if (id == i) {
                         selectedTv.setText(list.get(j).getName());
-                        if(SharedPrefUtils.getisnew()==0){
-                            price_market = mItem.getList().get(j).getPrice_market();
-                            price_sell = mItem.getList().get(j).getPrice_selling();
-                            String strMsg = "<font color=\"#000000\">"+"¥" + price_market+"</font>";
-                            text_money.setText(Html.fromHtml(strMsg));
-                        }else if(SharedPrefUtils.getisnew()==1){
-                            price_market = mItem.getList().get(j).getPrice_market();
-                            price_sell = mItem.getList().get(j).getPrice_selling();
-                            String strMsg = "<font color=\"#BF9964\">"+"¥" + price_sell+"</font>";
-                            text_money.setText(Html.fromHtml(strMsg));
-                        }
                         mSpec = specsBean.getName() + ":" + list.get(j).getName();
                         mID = id;
+                        addspec();
                         break;
                     }
                 }
@@ -202,8 +178,39 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
                 dismiss();
             }
         });
+        addspec();
+        ImageLoader.loadPlaceholder(mItem.getLogo(), imgTuxiang);
+        stockTv.setText("库存" + mItem.getNumber_stock() + "件");
     }
-
+    public void addspec(){
+        if (TextUtils.isEmpty(mSpec2)) {
+            spec = mSpec;
+        } else {
+            spec = mSpec + ";" + mSpec2;
+        }
+        for (int i = 0; i <mItem.getList().size() ; i++) {
+            if(TextUtils.equals(spec,mItem.getList().get(i).getGoods_spec())){
+                if(mItem.getVip_mod()==1){
+                    String strMsg = "<font color=\"#BF9964\">"+mItem.getPricename()+"¥" + mItem.getInitial_price_selling()+"</font>";
+                    text_money.setText(Html.fromHtml(strMsg));
+                    selectedTv.setText(mItem.getList().get(i).getGoods_spec());
+                }else if(SharedPrefUtils.getisnew()==0){
+                    price_market = mItem.getList().get(i).getPrice_market();
+                    price_sell = mItem.getList().get(i).getPrice_selling();
+                    String strMsg = "<font color=\"#000000\">"+"¥" + price_market+"</font>";
+                    text_money.setText(Html.fromHtml(strMsg));
+                    selectedTv.setText(mItem.getList().get(i).getGoods_spec());
+                }else if(SharedPrefUtils.getisnew()==1){
+                    price_market = mItem.getList().get(i).getPrice_market();
+                    price_sell = mItem.getList().get(i).getPrice_selling();
+                    String strMsg = "<font color=\"#BF9964\">"+"¥" + price_sell+"</font>";
+                    text_money.setText(Html.fromHtml(strMsg));
+                    selectedTv.setText(mItem.getList().get(i).getGoods_spec());
+                }
+              break;
+            }
+        }
+    }
     public void addview(RadioGroup radiogroup, List<HomeDetailsBean.DataBean.SpecsBean.ListBean> skuList) {
 
         int index = 0;
@@ -261,12 +268,12 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
             return;
         }
         if (mOnCommitClickListener != null) {
-            String spec = null;
+           /* String spec = null;
             if (TextUtils.isEmpty(mSpec2)) {
                 spec = mSpec;
             } else {
                 spec = mSpec + ";" + mSpec2;
-            }
+            }*/
 
             mOnCommitClickListener.onCommitClick(spec, mCount, mCode,price_sell,price_market);
             dismiss();

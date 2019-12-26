@@ -33,10 +33,18 @@ public class ItemReceiveTitleViewBinder extends ItemViewBinder<ItemReceiveTitle,
        switch (itemOrderTitle.status){
            case "0":
                holder.textZhuangtai.setText("未领取");
-
                break;
-           case "1":
-               holder.textZhuangtai.setText("已领取");
+           case "3":
+               holder.textZhuangtai.setText("待发货");
+               break;
+           case "4":
+               holder.textZhuangtai.setText("已发货");
+               break;
+           case "5":
+               holder.textZhuangtai.setText("已收货");
+               break;
+           case "6":
+               holder.textZhuangtai.setText("已退款");
                break;
        }
 
