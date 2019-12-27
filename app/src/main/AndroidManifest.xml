@@ -40,6 +40,11 @@
             >
         </activity>
         <activity
+            android:name=".plate.mine.activity.GouldActivity"
+            android:screenOrientation="portrait"
+            >
+        </activity>
+        <activity
             android:name=".plate.common.AgreementActivity"
             android:screenOrientation="portrait"
             >
@@ -259,7 +264,13 @@
             android:label="PushService"
             android:process=":pushservice">
         </service>
+        <!--高德开发者申请的key-->
+        <meta-data android:name="com.amap.api.v2.apikey" android:value="91955824c4fa92c31c137b89951358e2">
 
+        </meta-data>
+        <service android:name="com.amap.api.location.APSService">
+
+        </service>
     </application>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -286,5 +297,12 @@
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+   <!--高德-->
+    <!--用于获取wifi的获取权限，wifi信息会用来进行网络定位-->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"></uses-permission>
+    <!--用于申请调用A-GPS模块-->
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"></uses-permission>
+
 
 </manifest>

@@ -375,6 +375,10 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                         if(SharedPrefUtils.getisnew()==1&&mProData.getVip_mod()==1){
                             FToast.warning("该活动仅限新美粉");
                         }else {
+                            if(mProData.getNumber_stock()==0){
+                                FToast.warning("库存没啦~");
+                                return;
+                            }
                             new XPopup.Builder(ProdActivity.this)
                                     .dismissOnTouchOutside(true)
                                     .dismissOnBackPressed(true)
@@ -397,6 +401,10 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                         if(SharedPrefUtils.getisnew()==1&&mProData.getVip_mod()==1){
                             FToast.warning("该活动仅限新美粉");
                         }else {
+                            if(mProData.getNumber_stock()==0){
+                                FToast.warning("库存没啦~");
+                                return;
+                            }
                             new XPopup.Builder(ProdActivity.this)
                                     .dismissOnTouchOutside(true)
                                     .dismissOnBackPressed(true)

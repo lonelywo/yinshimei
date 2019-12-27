@@ -1,20 +1,14 @@
 package com.cuci.enticement.plate.mine.adapter;
 
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.cuci.enticement.R;
-import com.cuci.enticement.bean.ItemOrderTitle;
 import com.cuci.enticement.bean.ItemReceiveTitle;
-
 import java.util.Locale;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.drakeet.multitype.ItemViewBinder;
@@ -44,7 +38,7 @@ public class ItemReceiveTitleViewBinder extends ItemViewBinder<ItemReceiveTitle,
                holder.textZhuangtai.setText("已收货");
                break;
            case "6":
-               holder.textZhuangtai.setText("已退款");
+               holder.textZhuangtai.setText("已取消");
                break;
        }
 

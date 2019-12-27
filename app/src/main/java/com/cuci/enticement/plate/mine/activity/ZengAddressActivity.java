@@ -188,6 +188,13 @@ public class ZengAddressActivity extends BaseActivity {
 
             }
         });
+        imgYoujiantou.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ZengAddressActivity.this, GouldActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
 

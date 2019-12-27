@@ -142,10 +142,8 @@ dependencies {
     implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:3.0.0'
     implementation files('libs/tbs_sdk_thirdapp_v4.3.0.1020_43633_sharewithdownload_withoutGame_obfs_20190111_105200.jar')
     implementation 'com.yanzhenjie.recyclerview:x:1.3.2'
-
     //仿IOS侧滑Item删除菜单
     implementation 'com.github.jdsjlzx:LRecyclerView:1.5.4.3'
-
     //https://github.com/chrisbanes/PhotoView
     implementation 'com.github.chrisbanes:PhotoView:2.1.3'
     implementation 'de.hdodenhof:circleimageview:3.0.0'
@@ -154,14 +152,14 @@ dependencies {
     implementation 'liji.library.dev:citypickerview:5.0.0'
     //微信分享 登录
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
-   //EventBus
+    //EventBus
     implementation 'org.greenrobot:eventbus:3.1.1'
     //支付宝
     implementation(name: 'alipaySdk-15.6.5-20190718211159-noUtdid', ext: 'aar')
-   //环信客服SDK
+    //环信客服SDK
     // implementation 'com.hyphenate:kefu-easeui-android:latest.release'
     api project(':kefu-easeui')
-   //个推
+    //个推
     implementation 'com.getui:sdk:2.13.3.0'
     implementation 'com.assist:oppo:1.0.3'
     implementation 'com.assist:vivo:1.0.3'
@@ -169,4 +167,10 @@ dependencies {
     implementation 'com.getui:mzp:1.0.7'
     implementation 'com.getui:xmp:1.0.5'
 
+    //定位功能
+    implementation 'com.amap.api:location:latest.integration'
+    //2D地图
+    implementation 'com.amap.api:map2d:latest.integration'
+    //搜索功能
+    implementation 'com.amap.api:search:latest.integration'
 }

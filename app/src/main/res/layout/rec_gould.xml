@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+   <ImageView
+       android:id="@+id/img_wuliutubiao"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       app:layout_constraintTop_toTopOf="@+id/text_qianshouxinxi"
+       app:layout_constraintBottom_toBottomOf="@+id/text_qianshouxinxi"
+       android:src="@drawable/wuliutubiao_huang"
+       app:layout_constraintStart_toStartOf="parent"
+       android:layout_marginLeft="@dimen/dp_10"
+       />
+    <View
+      android:id="@+id/line2"
+        android:layout_width="0.5dp"
+        android:layout_height="0dp"
+        android:background="@drawable/shape_login_edit_bottom_line"
+        app:layout_constraintTop_toBottomOf="@+id/img_wuliutubiao"
+        app:layout_constraintBottom_toBottomOf="@+id/line_bottom"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+    <TextView
+        android:id="@+id/text_qianshouxinxi"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:text="已签收已签收已签收已签收已签收已签收已签收已签收已签收已签收"
+         android:layout_marginTop="12dp"
+        android:textSize="18sp"
+        android:textColor="@color/hei"
+        app:layout_constraintLeft_toRightOf="@+id/img_wuliutubiao"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="10dp"
+        />
+    <TextView
+        android:id="@+id/text_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2019-0-0 13:22:00"
+        android:textSize="12sp"
+        app:layout_constraintTop_toBottomOf="@+id/text_qianshouxinxi"
+        app:layout_constraintStart_toStartOf="@+id/text_qianshouxinxi"
+        android:layout_marginTop="3dp"
+        />
+
+      <View
+        android:id="@+id/line_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="0.5dp"
+        android:background="@drawable/shape_login_edit_bottom_line"
+       app:layout_constraintTop_toBottomOf="@id/text_time"
+        app:layout_constraintLeft_toLeftOf="@id/text_qianshouxinxi"
+        android:layout_marginTop="15dp"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>
