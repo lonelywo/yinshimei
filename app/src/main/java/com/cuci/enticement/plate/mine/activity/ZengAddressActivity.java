@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alipay.android.phone.mrpc.core.v;
+import com.amap.api.services.core.PoiItem;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
@@ -67,7 +69,7 @@ public class ZengAddressActivity extends BaseActivity {
     @BindView(R.id.tv_code)
     TextView tvCode;
     @BindView(R.id.img_youjiantou)
-    ImageView imgYoujiantou;
+    TextView imgYoujiantou;
     @BindView(R.id.edt_xiangxi)
     EditText edtXiangxi;
     @BindView(R.id.text_morendizi)
@@ -93,6 +95,12 @@ public class ZengAddressActivity extends BaseActivity {
     @Override
     public void initViews(Bundle savedInstanceState) {
         Intent intent = getIntent();
+        PoiItem bean = intent.getParcelableExtra("bean");
+        if(bean!=null){
+            mAddress = bean.getProvinceName() + " " + bean.getCityName() + " " + bean.getAdName();
+            tvCode.setText(mAddress);
+            edtXiangxi.setText(bean.getSnippet());
+        }
         AddressBean.DataBean.ListBean addressBean = intent.getParcelableExtra("addressBean");
         if (addressBean != null) {
             edtName.setText(addressBean.getName());

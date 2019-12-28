@@ -339,6 +339,7 @@ public class _ShareliwuFragment01 extends BaseFragment implements OnRefreshLoadM
             if (mReceiveBean.getCode() == 1) {
                 FToast.success(mReceiveBean.getInfo());
                 EventBus.getDefault().post(new ReceiveEvent(ReceiveEvent.REFRESH_LIST));
+                EventBus.getDefault().post(new ReceiveEvent(ReceiveEvent.CHECK_ITEM));
             } else {
                 FToast.error(mReceiveBean.getInfo());
             }

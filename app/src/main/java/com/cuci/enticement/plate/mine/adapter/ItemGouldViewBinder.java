@@ -26,20 +26,15 @@ public class ItemGouldViewBinder extends ItemViewBinder<PoiItem, ItemGouldViewBi
 
     public interface OnItemClickListener {
 
-        void onAddClick(OrderGoods bean, int position);
 
-        void onMinusClick(OrderGoods bean, int position);
-
-        void onCheckedChange();
-
-        void onDelete(OrderGoods bean);
+        void onClick(PoiItem bean,int position);
     }
 
     private OnItemClickListener mOnItemClickListener;
 
-   /* public ItemLogisticsViewBinder(ItemLogisticsViewBinder.OnItemClickListener onItemClickListener) {
+    public ItemGouldViewBinder(ItemGouldViewBinder.OnItemClickListener onItemClickListener) {
         mOnItemClickListener = onItemClickListener;
-    }*/
+    }
 
     @NonNull
     @Override
@@ -50,7 +45,7 @@ public class ItemGouldViewBinder extends ItemViewBinder<PoiItem, ItemGouldViewBi
 
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull PoiItem item) {
-
+        int adapterPosition = holder.getAdapterPosition();
 
         holder.textQianshouxinxi.setText(item.getTitle());
         holder.textTime.setText(item.getSnippet());
@@ -59,6 +54,12 @@ public class ItemGouldViewBinder extends ItemViewBinder<PoiItem, ItemGouldViewBi
         String adName = item.getAdName();
         holder.imgWuliutubiao.setImageResource(R.drawable.wuliutubiao_huang);
         ViewUtils.showView(holder.line2);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mOnItemClickListener.onClick(item,adapterPosition);
+            }
+        });
 
 
     }

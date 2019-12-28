@@ -6,18 +6,25 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import com.classic.common.MultipleStatusView;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
+import com.cuci.enticement.event.ReceiveEvent;
 import com.cuci.enticement.plate.common.adapter.MainPagerAdapter;
+import com.cuci.enticement.plate.common.eventbus.OrderEvent;
 import com.cuci.enticement.plate.mine.fragment._OrderFragment01;
 import com.cuci.enticement.plate.mine.fragment._ShareliwuFragment01;
 import com.cuci.enticement.utils.FToast;
 import com.flyco.tablayout.SlidingTabLayout;
 import com.flyco.tablayout.listener.OnTabSelectListener;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -122,6 +129,22 @@ public class DailyActivity extends BaseActivity {
                 "<style>img{max-width: 100%; width:auto; height:auto!important;}</style>" +
                 "</head>";
         return "<html>" + head + "<body>" + bodyHTML + "</body></html>";
+    }
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onReceiveEventMessage(ReceiveEvent event) {
+        if(event.getCode()==ReceiveEvent.CHECK_ITEM){
+            mViewPager.setCurrentItem(1);
+        }
     }
 
 }

@@ -4,6 +4,7 @@ public class ReceiveEvent {
     private int code;
 
     public static final int REFRESH_LIST=100;
+    public static final int CHECK_ITEM=101;
     public ReceiveEvent(int code) {
         this.code = code;
     }
