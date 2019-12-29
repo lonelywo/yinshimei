@@ -50,6 +50,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
@@ -95,12 +96,7 @@ public class ZengAddressActivity extends BaseActivity {
     @Override
     public void initViews(Bundle savedInstanceState) {
         Intent intent = getIntent();
-        PoiItem bean = intent.getParcelableExtra("bean");
-        if(bean!=null){
-            mAddress = bean.getProvinceName() + " " + bean.getCityName() + " " + bean.getAdName();
-            tvCode.setText(mAddress);
-            edtXiangxi.setText(bean.getSnippet());
-        }
+
         AddressBean.DataBean.ListBean addressBean = intent.getParcelableExtra("addressBean");
         if (addressBean != null) {
             edtName.setText(addressBean.getName());
@@ -200,7 +196,8 @@ public class ZengAddressActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ZengAddressActivity.this, GouldActivity.class);
-                startActivity(intent);
+                intent.putExtra("code", 100);
+                startActivityForResult(intent, 100);
             }
         });
     }
@@ -451,5 +448,17 @@ public class ZengAddressActivity extends BaseActivity {
         return detail;
     }
 
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100 && resultCode == 101) {
+            //返回更新地址
+            PoiItem bean = data.getParcelableExtra("bean");
+            if(bean!=null){
+                mAddress = bean.getProvinceName() + " " + bean.getCityName() + " " + bean.getAdName();
+                tvCode.setText(mAddress);
+                edtXiangxi.setText(bean.getSnippet()+bean.getTitle());
+            }
+        }
+    }
 }

@@ -24,7 +24,7 @@
             android:drawableTop="@drawable/icon_share_wx"
             android:drawablePadding="6dp"
             android:gravity="center_horizontal"
-            android:text="分享商品"
+            android:text="微信"
             android:textColor="#666666"
             android:textSize="12sp"/>
 
@@ -33,10 +33,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableTop="@drawable/icon_share_save"
+            android:drawableTop="@drawable/icon_share_moment"
             android:drawablePadding="6dp"
             android:gravity="center_horizontal"
-            android:text="分享海报"
+            android:text="朋友圈"
             android:textColor="#666666"
             android:textSize="12sp"/>
 

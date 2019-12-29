@@ -39,6 +39,7 @@ import com.cuci.enticement.event.IsnewEvent;
 import com.cuci.enticement.event.ProgoodsEvent;
 import com.cuci.enticement.plate.common.DailyActivity;
 import com.cuci.enticement.plate.common.LoginActivity;
+import com.cuci.enticement.plate.common.popup.ShareImgTipsPopup;
 import com.cuci.enticement.plate.common.popup.TipsPopup;
 import com.cuci.enticement.plate.mine.activity.AchievementActivity;
 import com.cuci.enticement.plate.mine.activity.CommissionActivity;
@@ -245,10 +246,33 @@ public class _MineFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 if (AppUtils.isAllowPermission(mActivity)) {
-                    Bitmap bitmap = BitmapFactory.decodeResource(BasicApp.getContext().getResources(), R.drawable.tuxiang);
-                    WxShareUtils.shareToWX(WxShareUtils.WX_SCENE_SESSION,
-                            "http://web.enticementchina.com/present.html?mid=" + mUserInfo.getId()+"&phone=" + mUserInfo.getPhone(), mActivity.getString(R.string.app_name_test),
-                            "因诗美，我的质感美学", bitmap);
+                    new XPopup.Builder(mActivity)
+                            .dismissOnBackPressed(false)
+                            .dismissOnTouchOutside(false)
+                            .asCustom(new ShareImgTipsPopup(mActivity, "取消", new ShareImgTipsPopup.OnExitListener() {
+                                @Override
+                                public void onPositive1() {
+                                    Bitmap bitmap = BitmapFactory.decodeResource(BasicApp.getContext().getResources(), R.drawable.tuxiang);
+                                    WxShareUtils.shareToWX(WxShareUtils.WX_SCENE_SESSION,
+                                            "http://web.enticementchina.com/present.html?mid=" + mUserInfo.getId()+"&phone=" + mUserInfo.getPhone(), mActivity.getString(R.string.app_name_test),
+                                            "因诗美，我的质感美学", bitmap);
+                                }
+
+                                @Override
+                                public void onPositive2() {
+                                    Bitmap bitmap = BitmapFactory.decodeResource(BasicApp.getContext().getResources(), R.drawable.tuxiang);
+                                    WxShareUtils.shareToWX(WxShareUtils.WX_SCENE_TIME_LINE,
+                                            "http://web.enticementchina.com/present.html?mid=" + mUserInfo.getId()+"&phone=" + mUserInfo.getPhone(), "请您即刻体验原生水",
+                                            "因诗美，我的质感美学", bitmap);
+                                }
+
+                                @Override
+                                public void onCancel() {
+
+                                }
+                            }))
+                            .show();
+
                 }
             }
 

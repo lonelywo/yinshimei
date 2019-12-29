@@ -329,7 +329,7 @@ public class GouldActivity extends BaseActivity implements
         String adName = bean.getAdName();
         Intent intent = new Intent(this, ZengAddressActivity.class);
         intent.putExtra("bean",bean);
-        startActivity(intent);
+        setResult(101,intent);
         finish();
     }
 }

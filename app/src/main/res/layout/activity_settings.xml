@@ -204,7 +204,7 @@
                   android:layout_height="wrap_content"
                   android:paddingTop="14dp"
                   android:paddingBottom="14dp"
-                  android:text="绑定推荐人"
+                  android:text="绑定美粉号"
                   android:textColor="@color/hei"
                   android:textSize="14sp" />
 
