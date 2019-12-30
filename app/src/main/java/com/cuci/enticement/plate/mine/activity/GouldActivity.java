@@ -123,12 +123,12 @@ public class GouldActivity extends BaseActivity implements
 
         mAdapter2 = new MultiTypeAdapter();
         mItems2 = new Items();
-        mAdapter2.setItems(mItems);
+        mAdapter2.setItems(mItems2);
         recyclerView2.setItemAnimator(new DefaultItemAnimator());
         mAdapter2.register(PoiItem.class, new ItemGould2ViewBinder(this));
         mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView2.setLayoutManager(mLayoutManager2);
-        recyclerView2.setAdapter(mAdapter);
+        recyclerView2.setAdapter(mAdapter2);
         new AMapLocUtils().getLonLat(this, new AMapLocUtils.LonLatListener() {
             @Override
             public void getLonLat(AMapLocation aMapLocation) {
