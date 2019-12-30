@@ -239,13 +239,13 @@ public class GouldActivity extends BaseActivity implements
     protected void doSearchQuery() {
         type=1;
         currentPage = 0;
-        query = new PoiSearch.Query(keyWord, "", city);// 第一个参数表示搜索字符串，第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
+        query = new PoiSearch.Query("", "", city);// 第一个参数表示搜索字符串，第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
         query.setPageSize(20);// 设置每页最多返回多少条poiitem
         query.setPageNum(currentPage);// 设置查第一页
         LatLonPoint lpTemp = convertToLatLonPoint(mFinalChoosePosition);
         if (lpTemp != null) {
             poiSearch = new PoiSearch(this, query);
-            poiSearch.setOnPoiSearchListener((PoiSearch.OnPoiSearchListener) this);
+            poiSearch.setOnPoiSearchListener(this);
             poiSearch.setBound(new PoiSearch.SearchBound(lpTemp, 5000, true));//
             // 设置搜索区域为以lp点为圆心，其周围5000米范围
             poiSearch.searchPOIAsyn();// 异步搜索
