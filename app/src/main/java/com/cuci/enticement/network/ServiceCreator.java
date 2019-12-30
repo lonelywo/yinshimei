@@ -1,17 +1,9 @@
 package com.cuci.enticement.network;
 
-
-
-
 import android.text.TextUtils;
-
 import com.cuci.enticement.BuildConfig;
-
 import java.util.concurrent.TimeUnit;
-
-
 import okhttp3.OkHttpClient;
-
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -23,8 +15,7 @@ public class ServiceCreator {
     public static  int ConstantA = 0;
 
      private static final String BASE_URL = "https://test.enticementchina.com/";
-    //  private static final String BASE_URL = "https://app.enticementchina.com/";3
-    // //private static final String BASE_URL = "http://192.168.2.152:809/";
+    //  private static final String BASE_URL = "https://app.enticementchina.com/";
 
     private final Retrofit mRetrofit;
 

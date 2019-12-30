@@ -9,7 +9,7 @@ public class CommissionjlBean implements Serializable {
     /**
      * code : 1
      * info : 获取拥金记录成功！
-     * data : {"list":[{"id":9749,"type":1,"mid":1,"order_no":"665588866464","order_mid":42,"order_price":"1750.00","profit_price":"175.00","desc":"直推10%","create_at":"2019-08-12 13:47:56","member":{"id":42,"bid":63,"pid":63,"ppid":1,"path":"-1-63-","path_initial":"-1-63-","teams":17,"teams_total":17,"openid":"oBMoo43jSy6V1hzdDqla87aCfImA","headimg":"https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIwCjFTOa8JcFRFTvdmxcrOXsUk9Q55u2kZkU43RicicjC48jibBhlYvdRO9CicGJbLuc2OZlCvY1JpLA/132","nickname":"因诗美 浩子","phone":"18350122753","username":"","amount_profit":"12600.00","amount_used":"12600.00","black_state":0,"vip_auth":1,"vip_level":1,"vip_date":"2019-03-18","vip_desc":"","create_at":"2019-03-18 15:00:06"}},{"id":9170,"type":1,"mid":1,"order_no":"665201891275","order_mid":41,"order_price":"3500.00","profit_price":"350.00","desc":"直推10%","create_at":"2019-08-08 02:22:52","member":{"id":41,"bid":1,"pid":1,"ppid":0,"path":"-1-","path_initial":"-1-","teams":785,"teams_total":5564,"openid":"oBMoo444M3lf1iyjjxRm7lwsiKh0","headimg":"https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIZGu5BWDoZKiallib0WgaV3VkLvARwf6ZLUl3N81n6N1QMCfhCdJ9ia5iaq7nvCvrl7JFnHQp2cKKfgQ/132","nickname":"凯婷","phone":"18819814949","username":"","amount_profit":"331295.20","amount_used":"308225.00","black_state":0,"vip_auth":1,"vip_level":2,"vip_date":"2019-04-11","vip_desc":"","create_at":"2019-03-18 14:56:14"}}]}
+     * data : {"page":{"limit":20,"total":1,"pages":1,"current":1},"list":[{"id":245997,"type":1,"mid":21045,"order_no":676843186840,"order_mid":47407,"order_price":"240.00","profit_price":"72.00","is_refund":1,"desc":"","create_at":"2019-12-20 20:01:17","member":{"id":47407,"bid":21045,"pid":21045,"ppid":3,"path":"-2-3-21045-","path_initial":"-2-3-6-","teams":0,"teams_total":0,"daily_teams":0,"daily_teams_total":0,"total_amount":"240.00","unionid":null,"openid":"","headimg":"","nickname":"YSM_T_80029","phone":"18000000029","username":"","sex":"","province":"","city":"","area":"","amount_profit":"0.00","amount_used":"0.00","black_state":0,"vip_auth":1,"vip_level":1,"vip_date":"2019-12-20 20:01:05","vip_time":null,"vip_desc":"","is_new":1,"pay_at":"2019-12-20","sharepic":"","token":"","token_time":0,"create_at":"2019-12-12 16:16:45"}}]}
      */
 
     private int code;
@@ -41,7 +41,21 @@ public class CommissionjlBean implements Serializable {
     }
 
     public static class DataBean {
+        /**
+         * page : {"limit":20,"total":1,"pages":1,"current":1}
+         * list : [{"id":245997,"type":1,"mid":21045,"order_no":676843186840,"order_mid":47407,"order_price":"240.00","profit_price":"72.00","is_refund":1,"desc":"","create_at":"2019-12-20 20:01:17","member":{"id":47407,"bid":21045,"pid":21045,"ppid":3,"path":"-2-3-21045-","path_initial":"-2-3-6-","teams":0,"teams_total":0,"daily_teams":0,"daily_teams_total":0,"total_amount":"240.00","unionid":null,"openid":"","headimg":"","nickname":"YSM_T_80029","phone":"18000000029","username":"","sex":"","province":"","city":"","area":"","amount_profit":"0.00","amount_used":"0.00","black_state":0,"vip_auth":1,"vip_level":1,"vip_date":"2019-12-20 20:01:05","vip_time":null,"vip_desc":"","is_new":1,"pay_at":"2019-12-20","sharepic":"","token":"","token_time":0,"create_at":"2019-12-12 16:16:45"}}]
+         */
+
+        private PageBean page;
         private List<ListBean> list;
+
+        public PageBean getPage() {
+            return page;
+        }
+
+        public void setPage(PageBean page) {
+            this.page = page;
+        }
 
         public List<ListBean> getList() {
             return list;
@@ -51,27 +65,75 @@ public class CommissionjlBean implements Serializable {
             this.list = list;
         }
 
-        public static class ListBean implements Serializable{
+        public static class PageBean {
             /**
-             * id : 9749
+             * limit : 20
+             * total : 1
+             * pages : 1
+             * current : 1
+             */
+
+            private int limit;
+            private int total;
+            private int pages;
+            private int current;
+
+            public int getLimit() {
+                return limit;
+            }
+
+            public void setLimit(int limit) {
+                this.limit = limit;
+            }
+
+            public int getTotal() {
+                return total;
+            }
+
+            public void setTotal(int total) {
+                this.total = total;
+            }
+
+            public int getPages() {
+                return pages;
+            }
+
+            public void setPages(int pages) {
+                this.pages = pages;
+            }
+
+            public int getCurrent() {
+                return current;
+            }
+
+            public void setCurrent(int current) {
+                this.current = current;
+            }
+        }
+
+        public static class ListBean {
+            /**
+             * id : 245997
              * type : 1
-             * mid : 1
-             * order_no : 665588866464
-             * order_mid : 42
-             * order_price : 1750.00
-             * profit_price : 175.00
-             * desc : 直推10%
-             * create_at : 2019-08-12 13:47:56
-             * member : {"id":42,"bid":63,"pid":63,"ppid":1,"path":"-1-63-","path_initial":"-1-63-","teams":17,"teams_total":17,"openid":"oBMoo43jSy6V1hzdDqla87aCfImA","headimg":"https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIwCjFTOa8JcFRFTvdmxcrOXsUk9Q55u2kZkU43RicicjC48jibBhlYvdRO9CicGJbLuc2OZlCvY1JpLA/132","nickname":"因诗美 浩子","phone":"18350122753","username":"","amount_profit":"12600.00","amount_used":"12600.00","black_state":0,"vip_auth":1,"vip_level":1,"vip_date":"2019-03-18","vip_desc":"","create_at":"2019-03-18 15:00:06"}
+             * mid : 21045
+             * order_no : 676843186840
+             * order_mid : 47407
+             * order_price : 240.00
+             * profit_price : 72.00
+             * is_refund : 1
+             * desc :
+             * create_at : 2019-12-20 20:01:17
+             * member : {"id":47407,"bid":21045,"pid":21045,"ppid":3,"path":"-2-3-21045-","path_initial":"-2-3-6-","teams":0,"teams_total":0,"daily_teams":0,"daily_teams_total":0,"total_amount":"240.00","unionid":null,"openid":"","headimg":"","nickname":"YSM_T_80029","phone":"18000000029","username":"","sex":"","province":"","city":"","area":"","amount_profit":"0.00","amount_used":"0.00","black_state":0,"vip_auth":1,"vip_level":1,"vip_date":"2019-12-20 20:01:05","vip_time":null,"vip_desc":"","is_new":1,"pay_at":"2019-12-20","sharepic":"","token":"","token_time":0,"create_at":"2019-12-12 16:16:45"}
              */
 
             private int id;
             private int type;
             private int mid;
-            private String order_no;
+            private long order_no;
             private int order_mid;
             private String order_price;
             private String profit_price;
+            private int is_refund;
             private String desc;
             private String create_at;
             private MemberBean member;
@@ -100,11 +162,11 @@ public class CommissionjlBean implements Serializable {
                 this.mid = mid;
             }
 
-            public String getOrder_no() {
+            public long getOrder_no() {
                 return order_no;
             }
 
-            public void setOrder_no(String order_no) {
+            public void setOrder_no(long order_no) {
                 this.order_no = order_no;
             }
 
@@ -130,6 +192,14 @@ public class CommissionjlBean implements Serializable {
 
             public void setProfit_price(String profit_price) {
                 this.profit_price = profit_price;
+            }
+
+            public int getIs_refund() {
+                return is_refund;
+            }
+
+            public void setIs_refund(int is_refund) {
+                this.is_refund = is_refund;
             }
 
             public String getDesc() {
@@ -158,27 +228,41 @@ public class CommissionjlBean implements Serializable {
 
             public static class MemberBean {
                 /**
-                 * id : 42
-                 * bid : 63
-                 * pid : 63
-                 * ppid : 1
-                 * path : -1-63-
-                 * path_initial : -1-63-
-                 * teams : 17
-                 * teams_total : 17
-                 * openid : oBMoo43jSy6V1hzdDqla87aCfImA
-                 * headimg : https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIwCjFTOa8JcFRFTvdmxcrOXsUk9Q55u2kZkU43RicicjC48jibBhlYvdRO9CicGJbLuc2OZlCvY1JpLA/132
-                 * nickname : 因诗美 浩子
-                 * phone : 18350122753
+                 * id : 47407
+                 * bid : 21045
+                 * pid : 21045
+                 * ppid : 3
+                 * path : -2-3-21045-
+                 * path_initial : -2-3-6-
+                 * teams : 0
+                 * teams_total : 0
+                 * daily_teams : 0
+                 * daily_teams_total : 0
+                 * total_amount : 240.00
+                 * unionid : null
+                 * openid :
+                 * headimg :
+                 * nickname : YSM_T_80029
+                 * phone : 18000000029
                  * username :
-                 * amount_profit : 12600.00
-                 * amount_used : 12600.00
+                 * sex :
+                 * province :
+                 * city :
+                 * area :
+                 * amount_profit : 0.00
+                 * amount_used : 0.00
                  * black_state : 0
                  * vip_auth : 1
                  * vip_level : 1
-                 * vip_date : 2019-03-18
+                 * vip_date : 2019-12-20 20:01:05
+                 * vip_time : null
                  * vip_desc :
-                 * create_at : 2019-03-18 15:00:06
+                 * is_new : 1
+                 * pay_at : 2019-12-20
+                 * sharepic :
+                 * token :
+                 * token_time : 0
+                 * create_at : 2019-12-12 16:16:45
                  */
 
                 private int id;
@@ -189,18 +273,32 @@ public class CommissionjlBean implements Serializable {
                 private String path_initial;
                 private int teams;
                 private int teams_total;
+                private int daily_teams;
+                private int daily_teams_total;
+                private String total_amount;
+                private Object unionid;
                 private String openid;
                 private String headimg;
                 private String nickname;
                 private String phone;
                 private String username;
+                private String sex;
+                private String province;
+                private String city;
+                private String area;
                 private String amount_profit;
                 private String amount_used;
                 private int black_state;
                 private int vip_auth;
                 private int vip_level;
                 private String vip_date;
+                private Object vip_time;
                 private String vip_desc;
+                private int is_new;
+                private String pay_at;
+                private String sharepic;
+                private String token;
+                private int token_time;
                 private String create_at;
 
                 public int getId() {
@@ -267,6 +365,38 @@ public class CommissionjlBean implements Serializable {
                     this.teams_total = teams_total;
                 }
 
+                public int getDaily_teams() {
+                    return daily_teams;
+                }
+
+                public void setDaily_teams(int daily_teams) {
+                    this.daily_teams = daily_teams;
+                }
+
+                public int getDaily_teams_total() {
+                    return daily_teams_total;
+                }
+
+                public void setDaily_teams_total(int daily_teams_total) {
+                    this.daily_teams_total = daily_teams_total;
+                }
+
+                public String getTotal_amount() {
+                    return total_amount;
+                }
+
+                public void setTotal_amount(String total_amount) {
+                    this.total_amount = total_amount;
+                }
+
+                public Object getUnionid() {
+                    return unionid;
+                }
+
+                public void setUnionid(Object unionid) {
+                    this.unionid = unionid;
+                }
+
                 public String getOpenid() {
                     return openid;
                 }
@@ -305,6 +435,38 @@ public class CommissionjlBean implements Serializable {
 
                 public void setUsername(String username) {
                     this.username = username;
+                }
+
+                public String getSex() {
+                    return sex;
+                }
+
+                public void setSex(String sex) {
+                    this.sex = sex;
+                }
+
+                public String getProvince() {
+                    return province;
+                }
+
+                public void setProvince(String province) {
+                    this.province = province;
+                }
+
+                public String getCity() {
+                    return city;
+                }
+
+                public void setCity(String city) {
+                    this.city = city;
+                }
+
+                public String getArea() {
+                    return area;
+                }
+
+                public void setArea(String area) {
+                    this.area = area;
                 }
 
                 public String getAmount_profit() {
@@ -355,12 +517,60 @@ public class CommissionjlBean implements Serializable {
                     this.vip_date = vip_date;
                 }
 
+                public Object getVip_time() {
+                    return vip_time;
+                }
+
+                public void setVip_time(Object vip_time) {
+                    this.vip_time = vip_time;
+                }
+
                 public String getVip_desc() {
                     return vip_desc;
                 }
 
                 public void setVip_desc(String vip_desc) {
                     this.vip_desc = vip_desc;
+                }
+
+                public int getIs_new() {
+                    return is_new;
+                }
+
+                public void setIs_new(int is_new) {
+                    this.is_new = is_new;
+                }
+
+                public String getPay_at() {
+                    return pay_at;
+                }
+
+                public void setPay_at(String pay_at) {
+                    this.pay_at = pay_at;
+                }
+
+                public String getSharepic() {
+                    return sharepic;
+                }
+
+                public void setSharepic(String sharepic) {
+                    this.sharepic = sharepic;
+                }
+
+                public String getToken() {
+                    return token;
+                }
+
+                public void setToken(String token) {
+                    this.token = token;
+                }
+
+                public int getToken_time() {
+                    return token_time;
+                }
+
+                public void setToken_time(int token_time) {
+                    this.token_time = token_time;
                 }
 
                 public String getCreate_at() {

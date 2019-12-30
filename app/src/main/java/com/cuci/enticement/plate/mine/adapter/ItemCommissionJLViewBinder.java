@@ -1,35 +1,23 @@
 package com.cuci.enticement.plate.mine.adapter;
 
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.cuci.enticement.R;
 import com.cuci.enticement.bean.CommissionjlBean;
-import com.cuci.enticement.bean.CommissionjlBeanitem;
 import com.cuci.enticement.utils.ImageLoader;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.drakeet.multitype.ItemViewBinder;
 
 public class ItemCommissionJLViewBinder extends ItemViewBinder<CommissionjlBean.DataBean.ListBean, ItemCommissionJLViewBinder.ViewHolder> {
 
-
-
-
-
    /* public interface OnProdClickListener {
-
         void onProdClick(GoodsBean item);
-
-
     }
 
     private OnProdClickListener mOnProdClickListener;
@@ -54,12 +42,7 @@ public class ItemCommissionJLViewBinder extends ItemViewBinder<CommissionjlBean.
         holder.textMoney.setText("+"+item.getProfit_price());
         holder.textTime.setText(item.getCreate_at());
 
-
-
         /*
-        holder.textBiaoti.setText(item.getGoods_title());
-        holder.textNeirong.setText(item.getGoods_spec());
-
         holder.itemView.setOnClickListener(position -> {
             if (mOnProdClickListener != null) {
                 mOnProdClickListener.onProdClick(item);

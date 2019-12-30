@@ -108,7 +108,7 @@ public class MineViewModel extends ViewModel {
      * @param mid
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> hqcommissiontj(String token, String mid, String from_type,String date,int loadType) {
+    public MutableLiveData<Status<ResponseBody>> hqcommissionjl(String token, String mid, String from_type,String date,String page,int loadType) {
 
         final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
         liveData.setValue(Status.loading(null));
@@ -117,9 +117,10 @@ public class MineViewModel extends ViewModel {
         params.put("token",token);
         params.put("mid",mid);
         params.put("date",date);
+        params.put("page",page);
         String signs = SignUtils.signParam(params);
         mCreator.create(MineApi.class)
-                .hqcommissionjl(token,mid,from_type,date,signs)
+                .hqcommissionjl(token,mid,from_type,date,page,signs)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,

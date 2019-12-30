@@ -126,7 +126,7 @@ public class PKActivity extends BaseActivity {
                     textYongjing.setText("¥"+Constant.PK2);
                 }
                 if(position==2){
-                    textWenzi.setText("我直推的总人数");
+                    textWenzi.setText("我直推的总美粉");
                     textYongjing.setText(Constant.PK3+"人");
                 }
             }

@@ -39,6 +39,9 @@ import com.cuci.enticement.utils.ViewUtils;
 import com.cuci.enticement.widget.BrandItemDecoration;
 import com.cuci.enticement.widget.CustomRefreshHeader;
 import com.google.gson.Gson;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -54,7 +57,7 @@ import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 import okhttp3.ResponseBody;
 
-public class CommissionActivity extends BaseActivity {
+public class CommissionActivity extends BaseActivity implements OnRefreshLoadMoreListener {
 
     @BindView(R.id.img_back)
     ImageView imageBack;
@@ -107,6 +110,8 @@ public class CommissionActivity extends BaseActivity {
     ProgressBar progressBar;
     @BindView(R.id.con_shangmian)
     ConstraintLayout conShangmian;
+    @BindView(R.id.refresh_layout)
+    SmartRefreshLayout refreshLayout;
     private MineViewModel mViewModel;
     private UserInfo mUserInfo;
     private Items mItems;
@@ -120,7 +125,7 @@ public class CommissionActivity extends BaseActivity {
     private FrameLayout mFrameLayout;
     private String formatStart;
     private boolean ishand = false;
-
+    private int page = 1;
     @Override
     public int getLayoutId() {
         return R.layout.activity_commisson;
@@ -134,10 +139,10 @@ public class CommissionActivity extends BaseActivity {
         textName.setText(mUserInfo.getNickname());
         CustomRefreshHeader header = new CustomRefreshHeader(this);
         header.setBackground(0xFFF3F4F6);
-        //mRefreshLayout.setRefreshHeader(header);
-       /* refreshLayout.setEnableRefresh(false);
+        refreshLayout.setRefreshHeader(header);
+        refreshLayout.setEnableRefresh(false);
         refreshLayout.setEnableFooterFollowWhenNoMoreData(true);
-        refreshLayout.setOnRefreshLoadMoreListener(this);*/
+        refreshLayout.setOnRefreshLoadMoreListener(this);
         mAdapter = new MultiTypeAdapter();
         mItems = new Items();
         mAdapter.setItems(mItems);
@@ -217,7 +222,7 @@ public class CommissionActivity extends BaseActivity {
                     textXiageyue.setEnabled(false);
                 } else {
                     textXiageyue.setEnabled(true);
-                    mViewModel.hqcommissiontj(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", format, Status.LOAD_REFRESH)
+                    mViewModel.hqcommissionjl(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", format, "1", Status.LOAD_REFRESH)
                             .observe(CommissionActivity.this, mObserver1);
                     ViewUtils.showView(progressBar);
                 }
@@ -240,7 +245,7 @@ public class CommissionActivity extends BaseActivity {
                 } else {
                     textXiageyue.setEnabled(true);
                 }
-                mViewModel.hqcommissiontj(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", format, Status.LOAD_REFRESH)
+                mViewModel.hqcommissionjl(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", format, "1", Status.LOAD_REFRESH)
                         .observe(CommissionActivity.this, mObserver1);
                 ViewUtils.showView(progressBar);
             }
@@ -302,7 +307,7 @@ public class CommissionActivity extends BaseActivity {
 
 
                 pvTime.dismiss();
-                mViewModel.hqcommissiontj(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", format, Status.LOAD_REFRESH)
+                mViewModel.hqcommissionjl(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", format, "1", Status.LOAD_REFRESH)
                         .observe(CommissionActivity.this, mObserver1);
                 ViewUtils.showView(progressBar);
 
@@ -353,10 +358,9 @@ public class CommissionActivity extends BaseActivity {
 
     private void load() {
         if (mUserInfo == null) {
-            //   refreshLayout.finishRefresh();
             return;
         }
-        mViewModel.hqcommissiontj(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", format, Status.LOAD_REFRESH)
+        mViewModel.hqcommissionjl(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", format, "1", Status.LOAD_REFRESH)
                 .observe(this, mObserver1);
         ViewUtils.showView(progressBar);
     }
@@ -375,9 +379,9 @@ public class CommissionActivity extends BaseActivity {
                 ViewUtils.hideView(progressBar);
                 if (status.loadType == Status.LOAD_MORE) {
                     mCanLoadMore = true;
-                    //    refreshLayout.finishLoadMore();
+                    refreshLayout.finishLoadMore();
                 } else {
-                    //     refreshLayout.finishRefresh();
+                    refreshLayout.finishRefresh();
                 }
                 //   dismissLoading();
                 FToast.error("网络错误");
@@ -395,35 +399,33 @@ public class CommissionActivity extends BaseActivity {
             CommissionjlBean mCommissionjlBean = new Gson().fromJson(b, CommissionjlBean.class);
             List<CommissionjlBean.DataBean.ListBean> item = mCommissionjlBean.getData().getList();
             if (item == null || item.size() == 0) {
-
                 if (status.loadType == Status.LOAD_REFRESH) {
+                    refreshLayout.finishRefresh();
                     statusView.showEmpty();
-                    //    refreshLayout.finishRefresh();
                 } else {
-
-                    //     refreshLayout.finishLoadMore();
+                    refreshLayout.finishLoadMore();
                 }
                 return;
             }
             if (mCommissionjlBean.getCode() == 1) {
+                page = mCommissionjlBean.getData().getPage().getCurrent() + 1;
                 mCanLoadMore = true;
                 if (status.loadType == Status.LOAD_REFRESH) {
                     mItems.clear();
                     mItems.addAll(item);
                     mAdapter.notifyDataSetChanged();
-                    //     refreshLayout.finishRefresh();
+                    refreshLayout.finishRefresh();
                 } else {
                     mItems.addAll(item);
                     mAdapter.notifyDataSetChanged();
-                    //     refreshLayout.finishLoadMore();
+                    refreshLayout.finishLoadMore();
                 }
             } else {
                 if (status.loadType == Status.LOAD_MORE) {
                     mCanLoadMore = true;
-                    //     refreshLayout.finishLoadMore();
+                    refreshLayout.finishLoadMore();
                 } else {
-
-                    //     refreshLayout.finishRefresh();
+                    refreshLayout.finishRefresh();
                 }
                 FToast.error(mCommissionjlBean.getInfo());
             }
@@ -458,7 +460,7 @@ public class CommissionActivity extends BaseActivity {
             String b = body.string();
             CommissiontjBean mCommissiontjBean = new Gson().fromJson(b, CommissiontjBean.class);
             if (mCommissiontjBean.getCode() == 1) {
-                String subtract = MathExtend.subtract(String.valueOf(mCommissiontjBean.getData().getTotal()), String.valueOf(mCommissiontjBean.getData().getUsed()));
+                String subtract = MathExtend.subtract(String.valueOf(mCommissiontjBean.getData().getTotal()), String.valueOf(mCommissiontjBean.getData().getUsed()),String.valueOf(mCommissiontjBean.getData().getLock_profit()));
                 textYongjing.setText("¥" + mCommissiontjBean.getData().getTotal());
                 textYitixian.setText("¥" + mCommissiontjBean.getData().getUsed());
                 textKetixian.setText("¥" + subtract);
@@ -472,10 +474,16 @@ public class CommissionActivity extends BaseActivity {
     }
 
 
-   /* @Override
+    @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+        if (mCanLoadMore) {
+            mCanLoadMore = false;
+            mViewModel.hqcommissionjl(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", format, ""+page, Status.LOAD_MORE)
+                    .observe(CommissionActivity.this, mObserver1);
+        } else {
+            refreshLayout.finishLoadMore();
+        }
 
-        refreshLayout.finishLoadMore();
     }
 
     @Override
@@ -483,7 +491,7 @@ public class CommissionActivity extends BaseActivity {
         mCanLoadMore = false;
         load();
 
-    }*/
+    }
 
 
     @Override

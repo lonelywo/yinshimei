@@ -30,6 +30,7 @@ public interface MineApi {
                               @Field("mid") String mid,
                               @Field("from_type") String from_type,
                               @Field("date") String date,
+                              @Field("page") String page,
                               @Field("sign") String sign
     );
     /**

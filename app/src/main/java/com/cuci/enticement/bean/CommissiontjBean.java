@@ -47,6 +47,8 @@ public class CommissiontjBean implements Serializable {
 
         private double used;
         private double total;
+        private double lock_profit;
+        private String lock_desc;
 
         public double getUsed() {
             return used;
@@ -59,9 +61,24 @@ public class CommissiontjBean implements Serializable {
         public double getTotal() {
             return total;
         }
-
         public void setTotal(int total) {
             this.total = total;
         }
+
+        public double getLock_profit() {
+            return lock_profit;
+        }
+
+        public void setLock_profit(double lock_profit) {
+            this.lock_profit = lock_profit;
+        }
+        public String getLock_desc() {
+            return lock_desc;
+        }
+
+        public void setLock_desc(String lock_desc) {
+            this.lock_desc = lock_desc;
+        }
     }
+
 }
