@@ -1,6 +1,5 @@
 package com.cuci.enticement.plate.mine.activity;
 
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -10,12 +9,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
@@ -41,9 +38,7 @@ import com.cuci.enticement.plate.mine.adapter.ItemGouldViewBinder;
 import com.cuci.enticement.utils.AMapLocUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.ViewUtils;
-
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

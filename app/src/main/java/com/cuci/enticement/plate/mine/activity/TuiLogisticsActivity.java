@@ -8,12 +8,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.caimuhao.rxpicker.RxPicker;
 import com.caimuhao.rxpicker.bean.ImageItem;
 import com.cuci.enticement.R;
@@ -26,10 +24,8 @@ import com.cuci.enticement.utils.ImageUtils;
 import com.cuci.enticement.utils.RxImageLoader;
 import com.cuci.enticement.widget.BrandItemDecoration;
 import com.cuci.enticement.widget.ClearEditText;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

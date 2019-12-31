@@ -11,12 +11,10 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.caimuhao.rxpicker.RxPicker;
 import com.caimuhao.rxpicker.bean.ImageItem;
 import com.cuci.enticement.R;
@@ -29,20 +27,16 @@ import com.cuci.enticement.plate.common.popup.TuiReasonBottom2TopProdPopup;
 import com.cuci.enticement.plate.mine.adapter.ItemImgViewBinder;
 import com.cuci.enticement.plate.mine.adapter.ItemImgkuangViewBinder;
 import com.cuci.enticement.plate.mine.adapter.ItemProdDetailsViewBinder;
-import com.cuci.enticement.utils.ImageLoader;
 import com.cuci.enticement.utils.ImageUtils;
-import com.cuci.enticement.utils.MathExtend;
 import com.cuci.enticement.utils.RxImageLoader;
 import com.cuci.enticement.widget.BrandItemDecoration;
 import com.cuci.enticement.widget.ClearEditText;
 import com.cuci.enticement.widget.OrderItemDecoration;
 import com.cuci.enticement.widget.SmoothScrollview;
 import com.lxj.xpopup.XPopup;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

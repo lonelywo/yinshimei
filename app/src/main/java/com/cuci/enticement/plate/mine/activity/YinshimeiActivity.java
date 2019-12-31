@@ -4,18 +4,14 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
-import com.cuci.enticement.bean.MyTeamlbBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.bean.YsmBean;
 import com.cuci.enticement.plate.common.popup.TipsPopupxieyi1;
-import com.cuci.enticement.plate.mine.adapter.ItemMyTeamViewBinder;
 import com.cuci.enticement.plate.mine.adapter.ItemYsmViewBinder;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.FToast;
@@ -23,10 +19,8 @@ import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.widget.BrandItemDecoration;
 import com.google.gson.Gson;
 import com.lxj.xpopup.XPopup;
-
 import java.io.IOException;
 import java.util.List;
-
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;

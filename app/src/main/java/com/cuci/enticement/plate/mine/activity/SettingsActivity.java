@@ -6,37 +6,27 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
-
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-
 import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.Constant;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.Base;
-import com.cuci.enticement.bean.ModifyInfo;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
-
 import com.cuci.enticement.bean.WxError;
 import com.cuci.enticement.bean.WxInfo;
 import com.cuci.enticement.bean.WxToken;
 import com.cuci.enticement.bean.WxbindBean;
 import com.cuci.enticement.event.LoginOutEvent;
-import com.cuci.enticement.event.LoginSucceedEvent;
-import com.cuci.enticement.plate.common.BindPhoneActivity;
 import com.cuci.enticement.plate.common.HuanBindActivity;
-import com.cuci.enticement.plate.common.LoginActivity;
 import com.cuci.enticement.plate.common.popup.TipsPopup;
-import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.AppUtils;
-import com.cuci.enticement.utils.FLog;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.google.gson.Gson;
@@ -44,18 +34,13 @@ import com.hyphenate.chat.ChatClient;
 import com.hyphenate.helpdesk.callback.Callback;
 import com.lxj.xpopup.XPopup;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
-
 import org.greenrobot.eventbus.EventBus;
-
 import java.io.IOException;
 import java.util.Date;
-
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import butterknife.BindView;
-
 import butterknife.OnClick;
 import okhttp3.ResponseBody;
-
 import static com.cuci.enticement.plate.common.LoginActivity.ACTION_WX_LOGIN_SUCCEED;
 
 

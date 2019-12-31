@@ -6,12 +6,10 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.AddressBean;
@@ -28,9 +26,7 @@ import com.cuci.enticement.utils.ViewUtils;
 import com.google.gson.Gson;
 import com.lxj.xpopup.XPopup;
 import com.tencent.smtt.sdk.WebView;
-
 import java.io.IOException;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -53,14 +49,12 @@ public class AchievementActivity extends BaseActivity {
     ConstraintLayout con1;
     @BindView(R.id.text_kelingqu)
     TextView textKelingqu;
-
     @BindView(R.id.line2)
     View line2;
     @BindView(R.id.con_2)
     ConstraintLayout con2;
     @BindView(R.id.text_fafang)
     TextView textFafang;
-
     @BindView(R.id.con_3)
     ConstraintLayout con3;
     @BindView(R.id.text_weidabiao1)
