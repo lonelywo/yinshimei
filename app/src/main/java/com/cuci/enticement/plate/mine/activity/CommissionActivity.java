@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -27,6 +28,8 @@ import com.cuci.enticement.bean.CommissionjlBean;
 import com.cuci.enticement.bean.CommissiontjBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
+import com.cuci.enticement.event.CashEvent;
+import com.cuci.enticement.plate.common.eventbus.OrderEvent;
 import com.cuci.enticement.plate.mine.adapter.ItemCommissionJLViewBinder;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.FToast;
@@ -40,6 +43,11 @@ import com.google.gson.Gson;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -122,6 +130,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
     private String formatStart;
     private boolean ishand = false;
     private int page = 1;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_commisson;
@@ -456,7 +465,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
             String b = body.string();
             CommissiontjBean mCommissiontjBean = new Gson().fromJson(b, CommissiontjBean.class);
             if (mCommissiontjBean.getCode() == 1) {
-                String subtract = MathExtend.subtract(String.valueOf(mCommissiontjBean.getData().getTotal()), String.valueOf(mCommissiontjBean.getData().getUsed()),String.valueOf(mCommissiontjBean.getData().getLock_profit()));
+                String subtract = MathExtend.subtract(String.valueOf(mCommissiontjBean.getData().getTotal()), String.valueOf(mCommissiontjBean.getData().getUsed()), String.valueOf(mCommissiontjBean.getData().getLock_profit()));
                 textYongjing.setText("¥" + mCommissiontjBean.getData().getTotal());
                 textYitixian.setText("¥" + mCommissiontjBean.getData().getUsed());
                 textKetixian.setText("¥" + subtract);
@@ -474,7 +483,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
         if (mCanLoadMore) {
             mCanLoadMore = false;
-            mViewModel.hqcommissionjl(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", format, ""+page, Status.LOAD_MORE)
+            mViewModel.hqcommissionjl(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", format, "" + page, Status.LOAD_MORE)
                     .observe(CommissionActivity.this, mObserver1);
         } else {
             refreshLayout.finishLoadMore();
@@ -491,9 +500,20 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onCashEventMessage(CashEvent event) {
+        mViewModel.hqcommissiontj(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2")
+                .observe(this, mObserver);
     }
 }

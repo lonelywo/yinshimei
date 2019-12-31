@@ -15,16 +15,19 @@ import com.cuci.enticement.bean.CommissiontjBean;
 import com.cuci.enticement.bean.CommissiontxBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
+import com.cuci.enticement.event.CashEvent;
 import com.cuci.enticement.plate.common.popup.TipsPopup;
 import com.cuci.enticement.plate.common.popup.TipsPopup1;
 import com.cuci.enticement.plate.common.popup.TipsPopupxieyi_cash;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.MathExtend;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.ViewUtils;
 import com.cuci.enticement.widget.ClearEditText;
 import com.google.gson.Gson;
 import com.lxj.xpopup.XPopup;
+import org.greenrobot.eventbus.EventBus;
 import java.io.IOException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -163,6 +166,11 @@ public class CashActivity extends BaseActivity {
             CommissiontxBean mCommissiontxBean = new Gson().fromJson(b, CommissiontxBean.class);
             if (mCommissiontxBean.getCode() == 1) {
                 FToast.success(mCommissiontxBean.getInfo());
+                EventBus.getDefault().post(new CashEvent());
+                if(mUserInfo!=null){
+                    mViewModel.hqcommissiontj(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2")
+                            .observe(this, mObserver1);
+                }
             } else {
                 FToast.error(mCommissiontxBean.getInfo());
             }
@@ -217,6 +225,8 @@ public class CashActivity extends BaseActivity {
             if (mCommissiontjBean.getCode() == 1) {
                double lock_profit = mCommissiontjBean.getData().getLock_profit();
                 lock_desc = mCommissiontjBean.getData().getLock_desc();
+                String subtract = MathExtend.subtract(String.valueOf(mCommissiontjBean.getData().getTotal()), String.valueOf(mCommissiontjBean.getData().getUsed()),String.valueOf(mCommissiontjBean.getData().getLock_profit()));
+                edtPhone.setHint("可提现¥"+subtract);
                 if(lock_profit>0){
                    ViewUtils.showView(conLock);
                     text_lockProfit.setText("有"+lock_profit+"元不可提现");

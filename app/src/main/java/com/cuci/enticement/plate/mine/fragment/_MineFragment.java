@@ -20,12 +20,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
 import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseFragment;
@@ -65,19 +63,15 @@ import com.hyphenate.helpdesk.callback.Callback;
 import com.hyphenate.helpdesk.easeui.util.IntentBuilder;
 import com.igexin.sdk.PushManager;
 import com.lxj.xpopup.XPopup;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.io.IOException;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.ResponseBody;
-
 import static androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance;
 import static com.cuci.enticement.plate.common.MainActivity.ACTION_GO_TO_HOME;
 import static com.superrtc.ContextUtils.getApplicationContext;

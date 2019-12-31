@@ -1,28 +1,22 @@
 package com.cuci.enticement.plate.cart.fragment;
 
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.classic.common.MultipleStatusView;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseFragment;
@@ -31,29 +25,16 @@ import com.cuci.enticement.bean.Base;
 import com.cuci.enticement.bean.CartChange;
 import com.cuci.enticement.bean.CartDataBean;
 import com.cuci.enticement.bean.CartDelete;
-import com.cuci.enticement.bean.CartIntentInfo;
-import com.cuci.enticement.bean.DataUserInfo;
 import com.cuci.enticement.bean.OrderGoods;
 import com.cuci.enticement.bean.OrderResult;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
-import com.cuci.enticement.event.ClickCatEvent;
-import com.cuci.enticement.event.IsnewEvent;
-import com.cuci.enticement.event.LoginOutEvent;
 import com.cuci.enticement.event.ProgoodsEvent;
 import com.cuci.enticement.plate.cart.activity.OrderActivity;
 import com.cuci.enticement.plate.cart.adapter.ItemCartViewBinder;
 import com.cuci.enticement.plate.cart.vm.CartViewModel;
-import com.cuci.enticement.plate.common.eventbus.AddressEvent;
 import com.cuci.enticement.plate.common.eventbus.CartEvent;
 import com.cuci.enticement.plate.common.popup.CartTipsPopup;
-import com.cuci.enticement.plate.common.popup.TipsPopup;
-import com.cuci.enticement.plate.home.activity.ProdActivity;
-import com.cuci.enticement.plate.home.fragment._HomeFragment;
-import com.cuci.enticement.plate.mall.fragment._MallFragment;
-import com.cuci.enticement.plate.mine.activity.AchievementActivity;
-import com.cuci.enticement.plate.mine.fragment._MineFragment;
-import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.ViewUtils;
@@ -64,30 +45,18 @@ import com.lxj.xpopup.XPopup;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
-import com.yanzhenjie.recyclerview.OnItemMenuClickListener;
-import com.yanzhenjie.recyclerview.SwipeMenu;
-import com.yanzhenjie.recyclerview.SwipeMenuBridge;
-import com.yanzhenjie.recyclerview.SwipeMenuCreator;
-import com.yanzhenjie.recyclerview.SwipeMenuItem;
-import com.yanzhenjie.recyclerview.SwipeRecyclerView;
-import com.yanzhenjie.recyclerview.touch.OnItemMoveListener;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 import okhttp3.ResponseBody;
-
-import static androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance;
 
 /**
  * 购物车

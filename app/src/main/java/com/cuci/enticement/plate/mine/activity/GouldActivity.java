@@ -1,14 +1,20 @@
 package com.cuci.enticement.plate.mine.activity;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -31,6 +37,7 @@ import com.amap.api.services.core.PoiItem;
 import com.amap.api.services.core.SuggestionCity;
 import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
+import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.plate.mine.adapter.ItemGould2ViewBinder;
@@ -44,8 +51,14 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnNeverAskAgain;
+import permissions.dispatcher.OnPermissionDenied;
+import permissions.dispatcher.OnShowRationale;
+import permissions.dispatcher.PermissionRequest;
+import permissions.dispatcher.RuntimePermissions;
 
-
+@RuntimePermissions
 public class GouldActivity extends BaseActivity implements
         PoiSearch.OnPoiSearchListener, AMap.OnCameraChangeListener, ItemGouldViewBinder.OnItemClickListener,ItemGould2ViewBinder.OnItemClickListener {
 
@@ -106,7 +119,7 @@ public class GouldActivity extends BaseActivity implements
     public void initViews(Bundle savedInstanceState) {
         mapView = (MapView) findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);// 此方法必须重写
-
+        GouldActivityPermissionsDispatcher.needsPermissionWithPermissionCheck(this);
         mAdapter = new MultiTypeAdapter();
         mItems = new Items();
         mAdapter.setItems(mItems);
@@ -124,17 +137,8 @@ public class GouldActivity extends BaseActivity implements
         mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView2.setLayoutManager(mLayoutManager2);
         recyclerView2.setAdapter(mAdapter2);
-        new AMapLocUtils().getLonLat(this, new AMapLocUtils.LonLatListener() {
-            @Override
-            public void getLonLat(AMapLocation aMapLocation) {
-                double lon = aMapLocation.getLongitude();
-                double lat = aMapLocation.getLatitude();
-                city = aMapLocation.getCity();
-                lp = new LatLonPoint(lat, lon);
-            }
-        });
-        //初始化定位
-        init();
+
+
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -147,6 +151,15 @@ public class GouldActivity extends BaseActivity implements
      * 初始化AMap对象
      */
     private void init() {
+        new AMapLocUtils().getLonLat(this, new AMapLocUtils.LonLatListener() {
+            @Override
+            public void getLonLat(AMapLocation aMapLocation) {
+                double lon = aMapLocation.getLongitude();
+                double lat = aMapLocation.getLatitude();
+                city = aMapLocation.getCity();
+                lp = new LatLonPoint(lat, lon);
+            }
+        });
         if (aMap == null) {
             aMap = mapView.getMap();
             //地图加载监听器
@@ -387,5 +400,77 @@ public class GouldActivity extends BaseActivity implements
                 ViewUtils.hideView(conFragment2);
                 break;
         }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        GouldActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+    /**
+     * 获得权限
+     */
+    @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
+    public void needsPermission() {
+        //初始化定位
+        init();
+    }
+
+    /**
+     * 点取消后再次点击此功能触发
+     *
+     * @param request PermissionRequest
+     */
+    @OnShowRationale({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
+    public void onShowPermission(final PermissionRequest request) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("提示");
+        builder.setCancelable(false);
+        builder.setMessage("没有所需权限，将无法继续，请点击下方“确定”后打开APP所需的权限。");
+        builder.setPositiveButton("确定", (dialog, which) -> request.proceed());
+        builder.setNegativeButton("取消", (dialog, which) -> {
+            request.cancel();
+            finish();
+        });
+        builder.create().show();
+    }
+
+    /**
+     * 权限被拒绝
+     */
+    @OnPermissionDenied({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
+    public void onPermissionDenied() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
+        builder.setTitle("提示");
+        builder.setMessage("因为您拒绝授予使用定位服务的权限，导致无法正常使用定位功能，请返回再次点击后授予权限。");
+        builder.setPositiveButton("确定", (dialog, which) -> finish());
+        builder.create().show();
+    }
+
+    /**
+     * 点了不再询问后再次打开
+     */
+    @OnNeverAskAgain({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
+    public void onNeverAskAgain() {
+        ask4Permission();
+    }
+
+    /**
+     * 提示需要从APP设置里面打开权限
+     */
+    private void ask4Permission() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("提示");
+        builder.setCancelable(false);
+        builder.setMessage("因为需要使用定位服务的权限，请点击下方“设置”按钮后进入权限设置打开定位服务的权限后再次使用此功能。");
+        builder.setNegativeButton("取消", (dialog, which) -> finish());
+        builder.setPositiveButton("设置", (dialog, which) -> {
+            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            intent.setData(Uri.parse("package:" + BasicApp.getContext().getPackageName()));
+            startActivity(intent);
+            finish();
+        });
+
+        builder.create().show();
     }
 }
