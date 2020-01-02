@@ -2,12 +2,7 @@ package com.cuci.enticement.push;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Message;
-import android.text.TextUtils;
 import android.util.Log;
-
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
 import com.cuci.enticement.R;
 import com.cuci.enticement.bean.PushBean;
 import com.cuci.enticement.plate.home.activity.ProdActivity;
@@ -20,13 +15,9 @@ import com.igexin.sdk.GTIntentService;
 import com.igexin.sdk.PushConsts;
 import com.igexin.sdk.PushManager;
 import com.igexin.sdk.message.BindAliasCmdMessage;
-import com.igexin.sdk.message.FeedbackCmdMessage;
 import com.igexin.sdk.message.GTCmdMessage;
 import com.igexin.sdk.message.GTNotificationMessage;
 import com.igexin.sdk.message.GTTransmitMessage;
-import com.igexin.sdk.message.SetTagCmdMessage;
-import com.igexin.sdk.message.UnBindAliasCmdMessage;
-
 /**
  * 继承 GTIntentService 接收来自个推的消息, 所有消息在线程中回调, 如果注册了该服务, 则务必要在 AndroidManifest中声明, 否则无法接受消息<br>
  * onReceiveMessageData 处理透传消息<br>

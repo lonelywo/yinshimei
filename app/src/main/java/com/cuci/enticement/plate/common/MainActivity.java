@@ -507,7 +507,7 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
     }
 
     /**
-     * 提交月返地址
+     * 提交个推cid
      */
     private Observer<Status<ResponseBody>> mCommitObserver = status -> {
         switch (status.status) {
