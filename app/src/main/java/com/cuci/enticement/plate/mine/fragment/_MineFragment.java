@@ -28,6 +28,7 @@ import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseFragment;
 import com.cuci.enticement.bean.DataUserInfo;
+import com.cuci.enticement.bean.GeTuibean;
 import com.cuci.enticement.bean.HxBean;
 import com.cuci.enticement.bean.OrderStatistics;
 import com.cuci.enticement.bean.Status;
@@ -465,7 +466,12 @@ public class _MineFragment extends BaseFragment {
             imgHeadwear.setVisibility(View.GONE);
             return;
         }
+        //个推绑定用户id
         PushManager.getInstance().bindAlias(mActivity, String.valueOf(mUserInfo.getId()));
+       //上传别名cid
+        getCid();
+
+
         ImageLoader.loadPlaceholder1(mUserInfo.getHeadimg(), imgTuxiang);
         //textName.setText(mUserInfo.getNickname());
         textName.setText(UnicodeUitls.unicodeToString(mUserInfo.getNickname()));
@@ -787,6 +793,44 @@ public class _MineFragment extends BaseFragment {
         }
     };
 
+    private void getCid() {
+        String cid = PushManager.getInstance().getClientid(mActivity);
+        Log.d(TAG, "当前应用的cid=" + cid);
+        //提交个推cid
+        mViewModel.getui("2",String.valueOf(mUserInfo.getId()),mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),cid )
+                .observe(this, mCommitObserver);
+    }
+
+    /**
+     * 提交个推cid
+     */
+    private Observer<Status<ResponseBody>> mCommitObserver = status -> {
+        switch (status.status) {
+            case Status.SUCCESS:
+                ResponseBody body = status.content;
+                try {
+                    String result = body.string();
+                    GeTuibean mbean = new Gson().fromJson(result, GeTuibean.class);
+                    if (mbean.getCode() == 1) {
+                        FLog.e(TAG, mbean.getInfo());
+                    } else {
+                        FLog.e(TAG, mbean.getInfo());
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case Status.LOADING:
+                break;
+            case Status.ERROR:
+                FToast.error(status.message);
+                break;
+        }
+    };
+
+
+
     //请求当前用户信息
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onClickMyEvent(ClickMyEvent event) {
@@ -803,5 +847,6 @@ public class _MineFragment extends BaseFragment {
         }
 
     }
+
 
 }

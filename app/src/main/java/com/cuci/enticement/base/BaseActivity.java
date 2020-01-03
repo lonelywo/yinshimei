@@ -7,15 +7,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.Window;
-
-
 import com.cuci.enticement.utils.FileUtils;
 import com.cuci.enticement.utils.Rom;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
-
 import java.io.File;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import butterknife.ButterKnife;

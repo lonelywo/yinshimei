@@ -214,10 +214,13 @@ public interface MineApi {
      * 个推
      */
     @FormUrlEncoded
-    @POST("store/api.push/pushMessageToSingle")
+    @POST("store/api.push/getClientID")
     Call<ResponseBody> getui(
             @Field("from_type") String from_type,
-            @Field("clientId") String clientId,
+            @Field("mid") String mid,
+            @Field("token") String token,
+            @Field("aims") String aims,
+            @Field("cid") String cid,
             @Field("sign") String sign
     );
     /**

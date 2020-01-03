@@ -31,6 +31,46 @@ public class MineViewModel extends ViewModel {
         mCreator = ServiceCreator.getInstance();
     }
 
+
+    /**
+     * 个推
+     * @param from_type
+     * @param mid
+     * @param token
+     * @param aims
+     * @param cid
+     * @return
+     */
+    public MutableLiveData<Status<ResponseBody>> getui(String from_type,String mid,String token,String aims, String cid) {
+
+        final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
+        liveData.setValue(Status.loading(null));
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("from_type",from_type);
+        params.put("mid",mid);
+        params.put("token",token);
+        params.put("aims",aims);
+        params.put("cid",cid);
+        String signs = SignUtils.signParam(params);
+        mCreator.create(MineApi.class)
+                .getui(from_type,mid,token,aims,cid,signs)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(@NonNull Call<ResponseBody> call,
+                                           @NonNull Response<ResponseBody> response) {
+                        liveData.setValue(Status.success(response.body()));
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<ResponseBody> call,
+                                          @NonNull Throwable t) {
+                        liveData.setValue(Status.error(null, t.getMessage() == null ? "网络错误" : t.getMessage()));
+                    }
+                });
+        return liveData;
+
+    }
+
     /**
      * 开关
      * @param from_type

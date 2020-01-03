@@ -192,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
 
 
         mViewModel.getGuoJiaCode("2").observe(this, guojiamObserver);
-        getCid();
+
        
         MainActivityPermissionsDispatcher.needsPermissionWithPermissionCheck(this);
     }
@@ -498,41 +498,7 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
         builder.create().show();
     }
 
-    private void getCid() {
-        String cid = PushManager.getInstance().getClientid(this);
-        Log.d(TAG, "当前应用的cid=" + cid);
-        //提交个推cid
-       /* mViewModel.getui("2",cid )
-                .observe(this, mCommitObserver);*/
-    }
 
-    /**
-     * 提交个推cid
-     */
-    private Observer<Status<ResponseBody>> mCommitObserver = status -> {
-        switch (status.status) {
-            case Status.SUCCESS:
-                ResponseBody body = status.content;
-                try {
-                    String result = body.string();
-                    GeTuibean mbean = new Gson().fromJson(result, GeTuibean.class);
-                    if (mbean.getCode() == 1) {
-                        FLog.e(TAG, "个推cid上传成功");
-                    } else {
-                        FToast.error(mbean.getInfo());
-                    }
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                break;
-            case Status.LOADING:
-                break;
-            case Status.ERROR:
-                FToast.error(status.message);
-                break;
-        }
-    };
 
     @Override
     public void onPositive() {

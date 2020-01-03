@@ -1,19 +1,19 @@
 package com.cuci.enticement.bean;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class GeTuibean implements Serializable {
 
+
     /**
-     * code : 1
-     * info : 成功！
-     * data : []
+     * code : 0
+     * info : 请求有误！
+     * data : {}
      */
 
     private int code;
     private String info;
-    private List<?> data;
+    private DataBean data;
 
     public int getCode() {
         return code;
@@ -31,11 +31,14 @@ public class GeTuibean implements Serializable {
         this.info = info;
     }
 
-    public List<?> getData() {
+    public DataBean getData() {
         return data;
     }
 
-    public void setData(List<?> data) {
+    public void setData(DataBean data) {
         this.data = data;
+    }
+
+    public static class DataBean {
     }
 }
