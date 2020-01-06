@@ -264,6 +264,14 @@
             android:label="PushService"
             android:process=":pushservice">
         </service>
+
+        <!--//注册-->
+        <receiver android:name=".push.GeTuiNotificationClickReceiver">
+            <intent-filter>
+                <action android:name="cn.text"/>
+            </intent-filter>
+        </receiver>
+
         <!--高德开发者申请的key-->
         <meta-data android:name="com.amap.api.v2.apikey" android:value="91955824c4fa92c31c137b89951358e2">
 
