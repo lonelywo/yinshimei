@@ -23,7 +23,9 @@ import com.cuci.enticement.bean.GuoJiaBean;
 
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.Version;
+import com.cuci.enticement.event.CheckHomeEvent;
 import com.cuci.enticement.event.ClickMyEvent;
+import com.cuci.enticement.event.IsnewEvent;
 import com.cuci.enticement.event.LoginOutEvent;
 import com.cuci.enticement.event.LoginSucceedEvent;
 import com.cuci.enticement.event.ProgoodsEvent;
@@ -563,6 +565,11 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
             e.printStackTrace();
             FToast.error("数据错误");
         }
+    }
+    //切换首页
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onCheckHomeEvent(CheckHomeEvent event) {
+        mBottomLayout.setSelected(0);
     }
 
 }
