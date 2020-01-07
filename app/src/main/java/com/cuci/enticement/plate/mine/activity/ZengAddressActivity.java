@@ -446,6 +446,9 @@ public class ZengAddressActivity extends BaseActivity {
             PoiItem bean = data.getParcelableExtra("bean");
             if(bean!=null){
                 mAddress = bean.getProvinceName() + " " + bean.getCityName() + " " + bean.getAdName();
+                mProvince=bean.getProvinceName();
+                mCity=bean.getCityName();
+                mArea=bean.getAdName();
                 tvCode.setText(mAddress);
                 edtXiangxi.setText(bean.getSnippet()+bean.getTitle());
             }

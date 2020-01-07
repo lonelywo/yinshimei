@@ -85,6 +85,8 @@ import permissions.dispatcher.OnShowRationale;
 import permissions.dispatcher.PermissionRequest;
 import permissions.dispatcher.RuntimePermissions;
 
+import static androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance;
+
 @RuntimePermissions
 public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.OnExitListener {
 
@@ -131,7 +133,6 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
 
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
 
         EventBus.getDefault().register(this);
 
@@ -195,6 +196,7 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
 
        
         MainActivityPermissionsDispatcher.needsPermissionWithPermissionCheck(this);
+
     }
 
     private void initBottomLayout() {

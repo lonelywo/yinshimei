@@ -192,6 +192,8 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
             if(TextUtils.equals(spec,mItem.getList().get(i).getGoods_spec())){
                 if(mItem.getVip_mod()==1){
                     String strMsg = "<font color=\"#BF9964\">"+mItem.getPricename()+"¥" + mItem.getInitial_price_selling()+"</font>";
+                    price_market = mItem.getList().get(i).getPrice_market();
+                    price_sell = mItem.getList().get(i).getPrice_selling();
                     text_money.setText(Html.fromHtml(strMsg));
                     selectedTv.setText(mItem.getList().get(i).getGoods_spec());
                 }else if(SharedPrefUtils.getisnew()==0){
