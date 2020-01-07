@@ -32,6 +32,7 @@ import com.cuci.enticement.utils.SharedPrefUtils;
 import com.google.gson.Gson;
 import com.hyphenate.chat.ChatClient;
 import com.hyphenate.helpdesk.callback.Callback;
+import com.igexin.sdk.PushManager;
 import com.lxj.xpopup.XPopup;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import org.greenrobot.eventbus.EventBus;
@@ -173,6 +174,8 @@ public class SettingsActivity extends BaseActivity {
     private void loginout() {
         dismissLoading();
         FToast.success("退出登录");
+        //解绑个推
+        PushManager.getInstance().unBindAlias(this, String.valueOf(mUserInfo.getId()), true);
         //退出默认设置isnew为0
         SharedPrefUtils.saveisnew(0);
         //清空默认地址缓存
