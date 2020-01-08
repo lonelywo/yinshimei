@@ -2,21 +2,17 @@ package com.cuci.enticement.plate.mine.vm;
 
 
 import android.text.TextUtils;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.cuci.enticement.bean.Base;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.network.ServiceCreator;
 import com.cuci.enticement.network.api.MineApi;
 import com.cuci.enticement.network.api.UserApi;
 import com.cuci.enticement.utils.SignUtils;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,8 +26,83 @@ public class MineViewModel extends ViewModel {
     public MineViewModel() {
         mCreator = ServiceCreator.getInstance();
     }
+    /**
+     * 公告详情
+     * @param from_type
+     * @param new_version
+     * @param nid
+     * @return
+     */
+    public MutableLiveData<Status<ResponseBody>> Noticecontent(String from_type,String new_version,String nid) {
 
+        final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
+        liveData.setValue(Status.loading(null));
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("from_type",from_type);
+        params.put("new_version",new_version);
+        params.put("nid",nid);
+        String signs = SignUtils.signParam(params);
+        mCreator.create(MineApi.class)
+                .Noticecontent(from_type,new_version,nid,signs)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(@NonNull Call<ResponseBody> call,
+                                           @NonNull Response<ResponseBody> response) {
+                        liveData.setValue(Status.success(response.body()));
+                    }
 
+                    @Override
+                    public void onFailure(@NonNull Call<ResponseBody> call,
+                                          @NonNull Throwable t) {
+                        liveData.setValue(Status.error(null, t.getMessage() == null ? "网络错误" : t.getMessage()));
+                    }
+                });
+        return liveData;
+
+    }
+    /**
+     * 公告列表
+     * @param from_type
+     * @param page
+     * @return
+     */
+    public MutableLiveData<Status<ResponseBody>> Noticelist(String from_type,String page,int loadType) {
+
+        final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
+        liveData.setValue(Status.loading(null));
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("from_type",from_type);
+        params.put("page",page);
+        String signs = SignUtils.signParam(params);
+        mCreator.create(MineApi.class)
+                .Noticelist(from_type,page,signs)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(@NonNull Call<ResponseBody> call,
+                                           @NonNull Response<ResponseBody> response) {
+                        if (loadType == Status.LOAD_REFRESH) {
+                            liveData.setValue(Status.refreshSuccess(response.body()));
+                        } else {
+                            liveData.setValue(Status.moreSuccess(response.body()));
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<ResponseBody> call,
+                                          @NonNull Throwable t) {
+                        if (loadType == Status.LOAD_REFRESH) {
+                            liveData.setValue(Status.refreshError(null, t.getMessage() ==
+                                    null ? "加载失败" : t.getMessage()));
+                        } else {
+                            liveData.setValue(Status.moreError(null, t.getMessage() ==
+                                    null ? "加载失败" : t.getMessage()));
+                        }
+                    }
+                });
+        return liveData;
+
+    }
     /**
      * 个推
      * @param from_type

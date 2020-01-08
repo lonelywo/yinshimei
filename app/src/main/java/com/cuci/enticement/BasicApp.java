@@ -63,9 +63,9 @@ public class BasicApp extends Application {
         options.setAppkey("1484190905068246#kefuchannelapp74235");//必填项，appkey获取地址：kefu.easemob.com，“管理员模式 > 渠道管理 > 手机APP”页面的关联的“AppKey”
         options.setTenantId("74235");//必填项，tenantId获取地址：kefu.easemob.com，“管理员模式 > 设置 > 企业信息”页面的“租户ID”
         //显示排队数量
-       // options.showVisitorWaitCount();
+        options.showVisitorWaitCount();
         //显示输入状态
-      //  options.showAgentInputState();
+        options.showAgentInputState();
         // Kefu SDK 初始化
         if (!ChatClient.getInstance().init(this, options)){
             return;

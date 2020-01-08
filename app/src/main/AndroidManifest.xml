@@ -69,11 +69,18 @@
             android:screenOrientation="portrait"
             >
         </activity>
+
         <activity
         android:name=".plate.mine.activity.NoticeActivity"
         android:screenOrientation="portrait"
         >
         </activity>
+        <activity
+            android:name=".plate.mine.activity.NoticeRecActivity"
+            android:screenOrientation="portrait"
+            >
+        </activity>
+
         <activity
             android:name=".plate.mine.activity.TuiDetailsNOActivity"
             android:screenOrientation="portrait"

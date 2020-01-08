@@ -128,9 +128,9 @@ public class CashMXActivity extends BaseActivity implements OnRefreshLoadMoreLis
             CommissionmxBean mCommissionjlBean = new Gson().fromJson(b, CommissionmxBean.class);
             List<CommissionmxBean.DataBean.ListBean> item = mCommissionjlBean.getData().getList();
             if (item == null || item.size() == 0) {
-                statusView.showEmpty();
                 if (status.loadType == Status.LOAD_REFRESH) {
                     refreshLayout.finishRefresh();
+                    statusView.showEmpty();
                 } else {
                     refreshLayout.finishLoadMore();
                 }

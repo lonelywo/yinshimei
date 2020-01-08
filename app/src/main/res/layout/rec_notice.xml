@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     >
@@ -67,7 +67,7 @@
            app:layout_constraintLeft_toRightOf="@+id/img_tupian"
            app:layout_constraintTop_toTopOf="@+id/img_tupian"
            app:layout_constraintRight_toLeftOf="@+id/text_time"
-           android:maxLines="2"
+           android:maxLines="3"
            android:ellipsize="end"
            android:textColor="@color/hei"
            android:layout_marginLeft="10dp"

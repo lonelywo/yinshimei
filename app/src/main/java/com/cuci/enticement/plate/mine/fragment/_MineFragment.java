@@ -44,6 +44,7 @@ import com.cuci.enticement.plate.mine.activity.AchievementActivity;
 import com.cuci.enticement.plate.mine.activity.CommissionActivity;
 import com.cuci.enticement.plate.mine.activity.MyOrderActivity;
 import com.cuci.enticement.plate.mine.activity.MyTeamActivity;
+import com.cuci.enticement.plate.mine.activity.NoticeActivity;
 import com.cuci.enticement.plate.mine.activity.PKActivity;
 import com.cuci.enticement.plate.mine.activity.RecAddressActivity;
 import com.cuci.enticement.plate.mine.activity.SettingsActivity;
@@ -301,9 +302,9 @@ public class _MineFragment extends BaseFragment {
         textWodegonggao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              /* if (AppUtils.isAllowPermission(mActivity)) {
+               if (AppUtils.isAllowPermission(mActivity)) {
                     startActivity(new Intent(mActivity, NoticeActivity.class));
-                }*/
+                }
 
             }
         });

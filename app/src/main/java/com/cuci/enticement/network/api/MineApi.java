@@ -8,8 +8,25 @@ import retrofit2.http.POST;
 
 
 public interface MineApi {
-
-
+    /**
+     * 公告详情
+     */
+    @FormUrlEncoded
+    @POST("store/api.placard/get")
+    Call<ResponseBody> Noticecontent(@Field("from_type") String from_type,
+                                  @Field("new_version") String new_version,
+                                  @Field("nid") String nid,
+                                  @Field("sign") String sign
+    );
+    /**
+     * 公告列表
+     */
+    @FormUrlEncoded
+    @POST("store/api.Placard/announce")
+    Call<ResponseBody> Noticelist(@Field("from_type") String from_type,
+                                      @Field("page") String page,
+                                      @Field("sign") String sign
+    );
 
     /**
      * 获取会员佣金统计
