@@ -97,6 +97,7 @@ public class MyTeamActivity extends BaseActivity implements OnRefreshLoadMoreLis
 
     @Override
     public void initViews(Bundle savedInstanceState) {
+        edtShousuo.setClearIconVisible(false);
         mViewModel = ViewModelProviders.of(this).get(MineViewModel.class);
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
         ImageLoader.loadPlaceholder1(mUserInfo.getHeadimg(), civTuxiang);

@@ -17,6 +17,9 @@ import androidx.core.app.NotificationCompat;
 
 import com.cuci.enticement.R;
 import com.cuci.enticement.bean.PushBean;
+import com.cuci.enticement.plate.home.activity.ProdActivity;
+import com.cuci.enticement.plate.mine.activity.MyTeamActivity;
+import com.cuci.enticement.plate.mine.activity.NoticeActivity;
 import com.cuci.enticement.utils.FToast;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -76,20 +79,21 @@ public class DemoIntentService extends GTIntentService {
             Log.d(TAG, "receiver payload = " + data);
             try {
                 PushBean function = new Gson().fromJson(data, PushBean.class);
-                addNotification(function.getTitle(),  function.getContent(), function);
-               /* if (function.getType()==1) {
+              //  addNotification(function.getTitle(),  function.getContent(), function);
+                if (function.getType()==1) {
 
                 } else if (function.getType()==2) {
                     Intent intentProd = new Intent(context, ProdActivity.class);
                     intentProd.putExtra("bannerData", function.getId());
-                    startActivity( intentProd);
+                    getApplication().startActivity( intentProd);
                 }else if (function.getType()==3) {
                     Intent intentProd = new Intent(context, NoticeActivity.class);
-                    startActivity( intentProd);
+                    intentProd.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    getApplication().startActivity( intentProd);
                 }else if (function.getType()==4) {
                     Intent intentProd = new Intent(context, MyTeamActivity.class);
-                    startActivity( intentProd);
-                }*/
+                    getApplication().startActivity( intentProd);
+                }
             } catch (JsonSyntaxException e) {
                 FToast.error("数据有误");
             }
