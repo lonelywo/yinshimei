@@ -467,6 +467,7 @@ public class _MineFragment extends BaseFragment {
             imgHeadwear.setVisibility(View.GONE);
             return;
         }
+        FLog.e("user",""+mUserInfo.getId());
         //个推绑定用户id
         PushManager.getInstance().bindAlias(mActivity, String.valueOf(mUserInfo.getId()));
        //上传别名cid

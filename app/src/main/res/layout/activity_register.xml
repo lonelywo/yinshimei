@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:text="所属国家"
+            android:text="国家/地区"
             android:textSize="16sp"
             android:layout_marginLeft="20dp"
             app:layout_constraintBottom_toTopOf="@+id/viem_line"

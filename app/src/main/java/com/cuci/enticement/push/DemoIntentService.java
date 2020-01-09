@@ -17,6 +17,8 @@ import androidx.core.app.NotificationCompat;
 
 import com.cuci.enticement.R;
 import com.cuci.enticement.bean.PushBean;
+import com.cuci.enticement.event.CheckHomeEvent;
+import com.cuci.enticement.plate.common.MainActivity;
 import com.cuci.enticement.plate.home.activity.ProdActivity;
 import com.cuci.enticement.plate.mine.activity.MyTeamActivity;
 import com.cuci.enticement.plate.mine.activity.NoticeActivity;
@@ -30,6 +32,8 @@ import com.igexin.sdk.message.BindAliasCmdMessage;
 import com.igexin.sdk.message.GTCmdMessage;
 import com.igexin.sdk.message.GTNotificationMessage;
 import com.igexin.sdk.message.GTTransmitMessage;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * 继承 GTIntentService 接收来自个推的消息, 所有消息在线程中回调, 如果注册了该服务, 则务必要在 AndroidManifest中声明, 否则无法接受消息<br>
@@ -79,12 +83,17 @@ public class DemoIntentService extends GTIntentService {
             Log.d(TAG, "receiver payload = " + data);
             try {
                 PushBean function = new Gson().fromJson(data, PushBean.class);
-              //  addNotification(function.getTitle(),  function.getContent(), function);
-                if (function.getType()==1) {
-
+                addNotification(function.getTitle(),  function.getContent(), function);
+               /* if (function.getType()==1) {
+                    Intent intentProd = new Intent(context, MainActivity.class);
+                    intentProd.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    getApplication().startActivity(intentProd);
+                    //切换首页
+                    EventBus.getDefault().post(new CheckHomeEvent());
                 } else if (function.getType()==2) {
                     Intent intentProd = new Intent(context, ProdActivity.class);
                     intentProd.putExtra("bannerData", function.getId());
+                    intentProd.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     getApplication().startActivity( intentProd);
                 }else if (function.getType()==3) {
                     Intent intentProd = new Intent(context, NoticeActivity.class);
@@ -92,8 +101,9 @@ public class DemoIntentService extends GTIntentService {
                     getApplication().startActivity( intentProd);
                 }else if (function.getType()==4) {
                     Intent intentProd = new Intent(context, MyTeamActivity.class);
+                    intentProd.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     getApplication().startActivity( intentProd);
-                }
+                }*/
             } catch (JsonSyntaxException e) {
                 FToast.error("数据有误");
             }

@@ -34,7 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="所属国家"
+        android:text="国家/地区"
         android:textSize="16sp"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="24dp"
