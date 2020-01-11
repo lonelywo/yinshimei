@@ -174,6 +174,8 @@ public class SettingsActivity extends BaseActivity {
     private void loginout() {
         dismissLoading();
         FToast.success("退出登录");
+        //清空环信
+        SharedPrefUtils.saveShowhxCode(0);
         //解绑个推
         PushManager.getInstance().unBindAlias(this, String.valueOf(mUserInfo.getId()), true);
         //退出默认设置isnew为0

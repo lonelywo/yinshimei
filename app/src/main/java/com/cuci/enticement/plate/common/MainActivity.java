@@ -10,75 +10,53 @@ import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
-
+import android.text.TextUtils;
 
 import com.cuci.enticement.R;
 import com.cuci.enticement.BasicApp;
-
-
 import com.cuci.enticement.bean.ClauseBean;
-import com.cuci.enticement.bean.GeTuibean;
 import com.cuci.enticement.bean.GuoJiaBean;
-
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.Version;
 import com.cuci.enticement.event.CheckHomeEvent;
 import com.cuci.enticement.event.ClickMyEvent;
-import com.cuci.enticement.event.IsnewEvent;
 import com.cuci.enticement.event.LoginOutEvent;
 import com.cuci.enticement.event.LoginSucceedEvent;
-import com.cuci.enticement.event.ProgoodsEvent;
 import com.cuci.enticement.plate.cart.fragment._CartFragment;
 import com.cuci.enticement.plate.common.adapter.MainPagerAdapter;
-import com.cuci.enticement.plate.common.popup.CartTipsPopup;
 import com.cuci.enticement.plate.common.popup.TipsPopupxieyi;
 import com.cuci.enticement.plate.common.popup.TipsPopupxieyi2;
 import com.cuci.enticement.plate.common.popup.UpdatePopup;
 import com.cuci.enticement.plate.common.popup.UpdateProgressPopup;
 import com.cuci.enticement.plate.common.vm.MainViewModel;
-
 import com.cuci.enticement.plate.home.fragment._HomeFragment;
 import com.cuci.enticement.plate.mall.fragment._MallFragment;
-
+import com.cuci.enticement.plate.mine.activity.NoticeActivity;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FLog;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.SharedPrefUtils;
-
 import com.cuci.enticement.widget.BottomBarView;
 import com.cuci.enticement.widget.FitSystemWindowViewPager;
 import com.google.gson.Gson;
-import com.igexin.sdk.PushManager;
 import com.lxj.xpopup.XPopup;
-
-
 import java.io.IOException;
 import java.util.ArrayList;
-
 import java.util.List;
-
-
 import androidx.annotation.NonNull;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
 import okhttp3.ResponseBody;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
@@ -86,8 +64,6 @@ import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.OnShowRationale;
 import permissions.dispatcher.PermissionRequest;
 import permissions.dispatcher.RuntimePermissions;
-
-import static androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance;
 
 @RuntimePermissions
 public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.OnExitListener {
@@ -135,6 +111,33 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
 
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        String payload = getIntent().getStringExtra("payload");
+        FLog.e("payload::::",payload);
+      /*  if(TextUtils.isEmpty(payload)){
+            PushBean function = new Gson().fromJson(payload, PushBean.class);
+            if (function.getType()==1) {
+                Intent intentProd = new Intent(this, MainActivity.class);
+                intentProd.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intentProd);
+                //切换首页
+                EventBus.getDefault().post(new CheckHomeEvent());
+            } else if (function.getType()==2) {
+                Intent intentProd = new Intent(this, ProdActivity.class);
+                intentProd.putExtra("bannerData", function.getId());
+                intentProd.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity( intentProd);
+            }else if (function.getType()==3) {
+                Intent intentProd = new Intent(this, NoticeActivity.class);
+                intentProd.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity( intentProd);
+            }else if (function.getType()==4) {
+                Intent intentProd = new Intent(this, MyTeamActivity.class);
+                intentProd.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity( intentProd);
+            }
+        }*/
+
 
         EventBus.getDefault().register(this);
 

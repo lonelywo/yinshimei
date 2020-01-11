@@ -11,6 +11,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
+import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
@@ -22,6 +23,7 @@ import com.cuci.enticement.plate.common.MainActivity;
 import com.cuci.enticement.plate.home.activity.ProdActivity;
 import com.cuci.enticement.plate.mine.activity.MyTeamActivity;
 import com.cuci.enticement.plate.mine.activity.NoticeActivity;
+import com.cuci.enticement.utils.FLog;
 import com.cuci.enticement.utils.FToast;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -68,7 +70,6 @@ public class DemoIntentService extends GTIntentService {
         String cid = msg.getClientId();
 
 
-
         // 第三方回执调用接口，actionid范围为90000-90999，可根据业务场景执行
         boolean result = PushManager.getInstance().sendFeedbackMessage(context, taskid, messageid, 90001);
         Log.d(TAG, "call sendFeedbackMessage = " + (result ? "success" : "failed"));
@@ -83,8 +84,8 @@ public class DemoIntentService extends GTIntentService {
             Log.d(TAG, "receiver payload = " + data);
             try {
                 PushBean function = new Gson().fromJson(data, PushBean.class);
-                addNotification(function.getTitle(),  function.getContent(), function);
-               /* if (function.getType()==1) {
+               // addNotification(function.getTitle(),  function.getContent(), function);
+                if (function.getType()==1) {
                     Intent intentProd = new Intent(context, MainActivity.class);
                     intentProd.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     getApplication().startActivity(intentProd);
@@ -103,7 +104,7 @@ public class DemoIntentService extends GTIntentService {
                     Intent intentProd = new Intent(context, MyTeamActivity.class);
                     intentProd.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     getApplication().startActivity( intentProd);
-                }*/
+                }
             } catch (JsonSyntaxException e) {
                 FToast.error("数据有误");
             }

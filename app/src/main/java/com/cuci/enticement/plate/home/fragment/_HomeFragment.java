@@ -3,45 +3,32 @@ package com.cuci.enticement.plate.home.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Switch;
-
-
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseFragment;
 import com.cuci.enticement.bean.BannerDataBean;
 import com.cuci.enticement.bean.BaseList;
-
-import com.cuci.enticement.bean.DataUserInfo;
 import com.cuci.enticement.bean.EssayBean;
 import com.cuci.enticement.bean.GeneralGoods;
 import com.cuci.enticement.bean.GoodsItem;
 import com.cuci.enticement.bean.ItemBanner;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
-import com.cuci.enticement.event.ClickCatEvent;
-import com.cuci.enticement.event.IsnewEvent;
 import com.cuci.enticement.event.ProgoodsEvent;
 import com.cuci.enticement.plate.common.Agreement2Activity;
 import com.cuci.enticement.plate.common.AgreementActivity;
-import com.cuci.enticement.plate.common.popup.CenterShareAppPopup;
 import com.cuci.enticement.plate.home.activity.ProdActivity;
 import com.cuci.enticement.plate.home.adapter.ItemBannerViewBinder;
 import com.cuci.enticement.plate.home.adapter.ItemGoodsLongViewBinder;
 import com.cuci.enticement.plate.home.vm.HomeViewModel;
-import com.cuci.enticement.plate.mine.activity.PKActivity;
-import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.SharedPrefUtils;
@@ -49,20 +36,14 @@ import com.cuci.enticement.widget.CustomRefreshHeader;
 import com.cuci.enticement.widget.HomeGridItemDecoration;
 import com.cuci.enticement.widget.HomeListSpanSizeLookup;
 import com.google.gson.Gson;
-import com.lxj.xpopup.XPopup;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
-
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.io.IOException;
 import java.util.List;
-
-import io.reactivex.internal.operators.flowable.FlowableSwitchIfEmpty;
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 import okhttp3.ResponseBody;
