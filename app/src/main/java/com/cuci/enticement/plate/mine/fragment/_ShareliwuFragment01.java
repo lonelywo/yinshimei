@@ -30,6 +30,7 @@ import com.cuci.enticement.bean.ReceiveBean;
 import com.cuci.enticement.bean.ReceiveGoods;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
+import com.cuci.enticement.event.IsnewEvent;
 import com.cuci.enticement.event.ReceiveEvent;
 import com.cuci.enticement.plate.cart.activity.LogisticsActivity;
 import com.cuci.enticement.plate.common.popup.TipsPopup;
@@ -340,6 +341,8 @@ public class _ShareliwuFragment01 extends BaseFragment implements OnRefreshLoadM
                 FToast.success(mReceiveBean.getInfo());
                 EventBus.getDefault().post(new ReceiveEvent(ReceiveEvent.REFRESH_LIST));
                 EventBus.getDefault().post(new ReceiveEvent(ReceiveEvent.CHECK_ITEM));
+                //刷新角标
+                EventBus.getDefault().post(new IsnewEvent());
             } else {
                 FToast.error(mReceiveBean.getInfo());
             }

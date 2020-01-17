@@ -174,6 +174,8 @@ public class SettingsActivity extends BaseActivity {
     private void loginout() {
         dismissLoading();
         FToast.success("退出登录");
+        //清空微信绑定标识
+        SharedPrefUtils.saveWXBind(0);
         //清空环信
         SharedPrefUtils.saveShowhxCode(0);
         //解绑个推

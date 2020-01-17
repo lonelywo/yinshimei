@@ -46,15 +46,15 @@ public class ExpressCost implements Serializable {
          * express_desc : 订单总金额满2000.00元减免全部邮费
          */
 
-        private double express_price;
+        private String express_price;
         private String express_type;
         private String express_desc;
 
-        public double getExpress_price() {
+        public String getExpress_price() {
             return express_price;
         }
 
-        public void setExpress_price(int express_price) {
+        public void setExpress_price(String express_price) {
             this.express_price = express_price;
         }
 

@@ -10,7 +10,7 @@ public class DataUserInfo implements Serializable {
     /**
      * code : 1
      * info : 获取会员资料成功！
-     * data : {"id":21045,"bid":1,"pid":1,"ppid":0,"path":"-1-","path_initial":"-1-","teams":0,"teams_total":0,"daily_teams":0,"daily_teams_total":0,"total_amount":"0.00","unionid":"oWvYz1rvVOESFnDI71QKaleIkjzo","openid":"oBMoo4-9WqbaZy-oaNFWqqtrozEg","headimg":"https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83eqalst360wHqrqFJZbTMY4DSjd55iak7kspu6ic1bKKBUO3icQ7dlThwz5b6MlSwD9dfbmS5whwVicfRg/132","nickname":"皮蛋君","phone":"18588564260","username":"","sex":"男","province":"北京市","city":"北京市","area":"东城区","amount_profit":"0.00","amount_used":"0.00","black_state":0,"vip_auth":0,"vip_level":0,"vip_date":null,"vip_desc":"","is_new":0,"pay_at":null,"token":"9a4e1aefa821fb2ffddd0c0ae9403845","token_time":1572745274,"create_at":"2019-09-30 18:54:10","is_bindingwx":1,"ordertotal":{"2":0,"3":0,"4":0,"5":0},"kf_status":"1"}
+     * data : {"id":52202,"bid":48624,"pid":48624,"ppid":27868,"path":"-2-3-19982-27868-48624-","path_initial":"-2-3-19982-27868-48624-","teams":0,"teams_total":0,"daily_teams":0,"daily_teams_total":0,"total_amount":"49.90","unionid":"oWvYz1rvVOESFnDI71QKaleIkjzo","openid":"","headimg":"http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83eqOh0hCrjE0xuKRRsvQUuf6s9zplPKrI5S6gw7YtOajk5pAMD0Vbp3qTdN6UaNpiakJ9cG7ia0s7kBA/132","nickname":"皮蛋君","phone":"18588564260","username":"","sex":"男","province":"","city":"","area":"","amount_profit":"0.00","amount_used":"0.00","black_state":0,"vip_auth":1,"vip_level":1,"vip_date":"2019-12-16 02:06:18","vip_time":null,"vip_desc":"","is_new":1,"pay_at":"2019-12-16","sharepic":"","token":"2789c171a885e9e0ac493b0a780a0af0","token_time":1580481030,"create_at":"2019-12-16 02:02:50","is_bindingwx":1,"ordertotal":{"2":0,"3":0,"4":1,"5":0},"kf_status":"1","is_month":0,"daily_activity":1,"daily_activity_url":"http://web.enticementchina.com/update.html?akey=","menu":{"gift":0}}
      */
 
     private int code;
@@ -43,42 +43,48 @@ public class DataUserInfo implements Serializable {
 
     public static class DataBean implements Serializable{
         /**
-         * id : 21045
-         * bid : 1
-         * pid : 1
-         * ppid : 0
-         * path : -1-
-         * path_initial : -1-
+         * id : 52202
+         * bid : 48624
+         * pid : 48624
+         * ppid : 27868
+         * path : -2-3-19982-27868-48624-
+         * path_initial : -2-3-19982-27868-48624-
          * teams : 0
          * teams_total : 0
          * daily_teams : 0
          * daily_teams_total : 0
-         * total_amount : 0.00
+         * total_amount : 49.90
          * unionid : oWvYz1rvVOESFnDI71QKaleIkjzo
-         * openid : oBMoo4-9WqbaZy-oaNFWqqtrozEg
-         * headimg : https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83eqalst360wHqrqFJZbTMY4DSjd55iak7kspu6ic1bKKBUO3icQ7dlThwz5b6MlSwD9dfbmS5whwVicfRg/132
+         * openid :
+         * headimg : http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83eqOh0hCrjE0xuKRRsvQUuf6s9zplPKrI5S6gw7YtOajk5pAMD0Vbp3qTdN6UaNpiakJ9cG7ia0s7kBA/132
          * nickname : 皮蛋君
          * phone : 18588564260
          * username :
          * sex : 男
-         * province : 北京市
-         * city : 北京市
-         * area : 东城区
+         * province :
+         * city :
+         * area :
          * amount_profit : 0.00
          * amount_used : 0.00
          * black_state : 0
-         * vip_auth : 0
-         * vip_level : 0
-         * vip_date : null
+         * vip_auth : 1
+         * vip_level : 1
+         * vip_date : 2019-12-16 02:06:18
+         * vip_time : null
          * vip_desc :
-         * is_new : 0
-         * pay_at : null
-         * token : 9a4e1aefa821fb2ffddd0c0ae9403845
-         * token_time : 1572745274
-         * create_at : 2019-09-30 18:54:10
+         * is_new : 1
+         * pay_at : 2019-12-16
+         * sharepic :
+         * token : 2789c171a885e9e0ac493b0a780a0af0
+         * token_time : 1580481030
+         * create_at : 2019-12-16 02:02:50
          * is_bindingwx : 1
-         * ordertotal : {"2":0,"3":0,"4":0,"5":0}
+         * ordertotal : {"2":0,"3":0,"4":1,"5":0}
          * kf_status : 1
+         * is_month : 0
+         * daily_activity : 1
+         * daily_activity_url : http://web.enticementchina.com/update.html?akey=
+         * menu : {"gift":0}
          */
 
         private int id;
@@ -107,10 +113,12 @@ public class DataUserInfo implements Serializable {
         private int black_state;
         private int vip_auth;
         private int vip_level;
-        private Object vip_date;
+        private String vip_date;
+        private Object vip_time;
         private String vip_desc;
         private int is_new;
-        private Object pay_at;
+        private String pay_at;
+        private String sharepic;
         private String token;
         private int token_time;
         private String create_at;
@@ -118,33 +126,10 @@ public class DataUserInfo implements Serializable {
         private OrdertotalBean ordertotal;
         private String kf_status;
         private int is_month;
-
-        public int getDaily_activity() {
-            return daily_activity;
-        }
-
-        public void setDaily_activity(int daily_activity) {
-            this.daily_activity = daily_activity;
-        }
-
         private int daily_activity;
-
-        public String getDaily_activity_url() {
-            return daily_activity_url;
-        }
-
-        public void setDaily_activity_url(String daily_activity_url) {
-            this.daily_activity_url = daily_activity_url;
-        }
-
         private String daily_activity_url;
-        public int getIs_month() {
-            return is_month;
-        }
+        private MenuBean menu;
 
-        public void setIs_month(int is_month) {
-            this.is_month = is_month;
-        }
         public int getId() {
             return id;
         }
@@ -353,12 +338,20 @@ public class DataUserInfo implements Serializable {
             this.vip_level = vip_level;
         }
 
-        public Object getVip_date() {
+        public String getVip_date() {
             return vip_date;
         }
 
-        public void setVip_date(Object vip_date) {
+        public void setVip_date(String vip_date) {
             this.vip_date = vip_date;
+        }
+
+        public Object getVip_time() {
+            return vip_time;
+        }
+
+        public void setVip_time(Object vip_time) {
+            this.vip_time = vip_time;
         }
 
         public String getVip_desc() {
@@ -377,12 +370,20 @@ public class DataUserInfo implements Serializable {
             this.is_new = is_new;
         }
 
-        public Object getPay_at() {
+        public String getPay_at() {
             return pay_at;
         }
 
-        public void setPay_at(Object pay_at) {
+        public void setPay_at(String pay_at) {
             this.pay_at = pay_at;
+        }
+
+        public String getSharepic() {
+            return sharepic;
+        }
+
+        public void setSharepic(String sharepic) {
+            this.sharepic = sharepic;
         }
 
         public String getToken() {
@@ -433,11 +434,43 @@ public class DataUserInfo implements Serializable {
             this.kf_status = kf_status;
         }
 
-        public static class OrdertotalBean implements Serializable{
+        public int getIs_month() {
+            return is_month;
+        }
+
+        public void setIs_month(int is_month) {
+            this.is_month = is_month;
+        }
+
+        public int getDaily_activity() {
+            return daily_activity;
+        }
+
+        public void setDaily_activity(int daily_activity) {
+            this.daily_activity = daily_activity;
+        }
+
+        public String getDaily_activity_url() {
+            return daily_activity_url;
+        }
+
+        public void setDaily_activity_url(String daily_activity_url) {
+            this.daily_activity_url = daily_activity_url;
+        }
+
+        public MenuBean getMenu() {
+            return menu;
+        }
+
+        public void setMenu(MenuBean menu) {
+            this.menu = menu;
+        }
+
+        public static class OrdertotalBean {
             /**
              * 2 : 0
              * 3 : 0
-             * 4 : 0
+             * 4 : 1
              * 5 : 0
              */
 
@@ -480,6 +513,22 @@ public class DataUserInfo implements Serializable {
 
             public void set_$5(int _$5) {
                 this._$5 = _$5;
+            }
+        }
+
+        public static class MenuBean implements Serializable{
+            /**
+             * gift : 0
+             */
+
+            private int gift;
+
+            public int getGift() {
+                return gift;
+            }
+
+            public void setGift(int gift) {
+                this.gift = gift;
             }
         }
     }

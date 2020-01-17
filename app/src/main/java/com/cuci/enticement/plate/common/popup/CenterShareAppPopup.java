@@ -257,10 +257,10 @@ public class CenterShareAppPopup extends CenterPopupView {
                     public void onClick(View view) {
                         bitmap = ImageUtils.getViewBitmap(conImg, 750, 1334);
                         File file = ImageUtils.saveBitmap(BasicApp.getContext(),
-                                   FileUtils.FOLDER_NAME_SAVE, String.valueOf(System.currentTimeMillis()), bitmap, true);
-                           if (file != null) {
-                               FToast.success("图片成功保存到：" + file.getAbsolutePath());
-                           }
+                                FileUtils.FOLDER_NAME_SAVE, String.valueOf(System.currentTimeMillis()), bitmap, true);
+                        if (file != null) {
+                            FToast.success("图片成功保存到：" + file.getAbsolutePath());
+                        }
                         dismiss();
                     }
                 });

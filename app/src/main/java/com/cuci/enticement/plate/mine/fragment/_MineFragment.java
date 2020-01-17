@@ -10,7 +10,6 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,10 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseFragment;
@@ -65,15 +61,23 @@ import com.hyphenate.helpdesk.callback.Callback;
 import com.hyphenate.helpdesk.easeui.util.IntentBuilder;
 import com.igexin.sdk.PushManager;
 import com.lxj.xpopup.XPopup;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
 import java.io.IOException;
 import java.util.List;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import butterknife.BindView;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.ResponseBody;
+
 import static androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance;
 import static com.cuci.enticement.plate.common.MainActivity.ACTION_GO_TO_HOME;
 import static com.superrtc.ContextUtils.getApplicationContext;
@@ -193,14 +197,14 @@ public class _MineFragment extends BaseFragment {
     ConstraintLayout conGongju;
     @BindView(R.id.text_shareliwu)
     TextView textShareliwu;
-    @BindView(R.id.text_wodetuandui2)
-    TextView textWodetuandui2;
-    @BindView(R.id.text_pk2)
-    TextView textPk2;
-    @BindView(R.id.text_yejiyuefan2)
-    TextView textYejiyuefan2;
-    @BindView(R.id.ll_fuwu1)
-    LinearLayout llFuwu1;
+    @BindView(R.id.con_dingdan)
+    ConstraintLayout conDingdan;
+    @BindView(R.id.dot1_goods)
+    TextView dot1Goods;
+    @BindView(R.id.goods_ll)
+    ConstraintLayout goodsLl;
+    @BindView(R.id.v6)
+    View v6;
     private boolean mCouldChange = true;
     private LocalBroadcastManager mBroadcastManager;
     private UserInfo mUserInfo;
@@ -209,7 +213,6 @@ public class _MineFragment extends BaseFragment {
     private static final int THUMB_SIZE1 = 400;
     private boolean bag = false;
     private int is_month;
-
 
 
     @Override
@@ -250,7 +253,7 @@ public class _MineFragment extends BaseFragment {
                                 public void onPositive1() {
                                     Bitmap bitmap = BitmapFactory.decodeResource(BasicApp.getContext().getResources(), R.drawable.tuxiang);
                                     WxShareUtils.shareToWX(WxShareUtils.WX_SCENE_SESSION,
-                                            "http://web.enticementchina.com/present.html?mid=" + mUserInfo.getId()+"&phone=" + mUserInfo.getPhone(), mActivity.getString(R.string.app_name_test),
+                                            "http://web.enticementchina.com/present.html?mid=" + mUserInfo.getId() + "&phone=" + mUserInfo.getPhone(), mActivity.getString(R.string.app_name_test),
                                             "因诗美，我的质感美学", bitmap);
                                 }
 
@@ -258,7 +261,7 @@ public class _MineFragment extends BaseFragment {
                                 public void onPositive2() {
                                     Bitmap bitmap = BitmapFactory.decodeResource(BasicApp.getContext().getResources(), R.drawable.tuxiang);
                                     WxShareUtils.shareToWX(WxShareUtils.WX_SCENE_TIME_LINE,
-                                            "http://web.enticementchina.com/present.html?mid=" + mUserInfo.getId()+"&phone=" + mUserInfo.getPhone(), "请您即刻体验原生水",
+                                            "http://web.enticementchina.com/present.html?mid=" + mUserInfo.getId() + "&phone=" + mUserInfo.getPhone(), "请您即刻体验原生水",
                                             "因诗美，我的质感美学", bitmap);
                                 }
 
@@ -302,7 +305,7 @@ public class _MineFragment extends BaseFragment {
         textWodegonggao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               if (AppUtils.isAllowPermission(mActivity)) {
+                if (AppUtils.isAllowPermission(mActivity)) {
                     startActivity(new Intent(mActivity, NoticeActivity.class));
                 }
 
@@ -336,6 +339,13 @@ public class _MineFragment extends BaseFragment {
             String b = body.string();
             DataUserInfo mDataUserInfo = new Gson().fromJson(b, DataUserInfo.class);
             if (mDataUserInfo.getCode() == 1) {
+                //是否绑定微信
+                int is_bindingwx1 = mDataUserInfo.getData().getIs_bindingwx();
+                if(is_bindingwx1==1){
+                    SharedPrefUtils.saveWXBind(1);
+                }else {
+                    SharedPrefUtils.saveWXBind(0);
+                }
                 //保存is_new
                 int is_new = mDataUserInfo.getData().getIs_new();
                 if (is_new == 1) {
@@ -349,22 +359,28 @@ public class _MineFragment extends BaseFragment {
                     ViewUtils.hideView(imgYqhy);
                     ViewUtils.hideView(conYingchang);
                 }
-                //分享赠礼
+                //礼品中心
                 int daily_activity = mDataUserInfo.getData().getDaily_activity();
+                int gift = mDataUserInfo.getData().getMenu().getGift();
                 if (daily_activity == 1) {
-                    ViewUtils.showView(llFuwu1);
-                 final String daily_activity_url = mDataUserInfo.getData().getDaily_activity_url();
+                    ViewUtils.showView(goodsLl);
+                    if(gift==1){
+                        ViewUtils.showView(dot1Goods);
+                    }else {
+                        ViewUtils.hideView(dot1Goods);
+                    }
+                    final String daily_activity_url = mDataUserInfo.getData().getDaily_activity_url();
                     textShareliwu.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                                Intent intentProd = new Intent(mActivity, DailyActivity.class);
-                                intentProd.putExtra("url", daily_activity_url);
-                                intentProd.putExtra("token", mUserInfo.getToken());
-                                mActivity.startActivity(intentProd);
+                            Intent intentProd = new Intent(mActivity, DailyActivity.class);
+                            intentProd.putExtra("url", daily_activity_url);
+                            intentProd.putExtra("token", mUserInfo.getToken());
+                            mActivity.startActivity(intentProd);
                         }
                     });
                 } else {
-                    ViewUtils.hideView(llFuwu1);
+                    ViewUtils.hideView(goodsLl);
                 }
                 if (mDataUserInfo.getData().getVip_level() == 0) {
                     textHuiyuan.setText("用户");
@@ -467,10 +483,10 @@ public class _MineFragment extends BaseFragment {
             imgHeadwear.setVisibility(View.GONE);
             return;
         }
-        FLog.e("user",""+mUserInfo.getId());
+        FLog.e("user", "" + mUserInfo.getId());
         //个推绑定用户id
         PushManager.getInstance().bindAlias(mActivity, String.valueOf(mUserInfo.getId()));
-       //上传别名cid
+        //上传别名cid
         getCid();
 
 
@@ -479,31 +495,31 @@ public class _MineFragment extends BaseFragment {
         textName.setText(UnicodeUitls.unicodeToString(mUserInfo.getNickname()));
 
         //注册环信
-       if(SharedPrefUtils.getShowhxCode()==0){
-           mViewModel.hxreg(mUserInfo.getPhone(), "2", mUserInfo.getToken(), String.valueOf(mUserInfo.getId())).observe(this, mhxregObserver);
-       } else {
-           ChatClient.getInstance().login(mUserInfo.getPhone(), "ysm6j351r6", new Callback() {
-               @Override
-               public void onSuccess() {
-                   Log.d("Success_hx", "环信登录成功");
+        if (SharedPrefUtils.getShowhxCode() == 0) {
+            mViewModel.hxreg(mUserInfo.getPhone(), "2", mUserInfo.getToken(), String.valueOf(mUserInfo.getId())).observe(this, mhxregObserver);
+        } else {
+            ChatClient.getInstance().login(mUserInfo.getPhone(), "ysm6j351r6", new Callback() {
+                @Override
+                public void onSuccess() {
+                    Log.d("Success_hx", "环信登录成功");
 
-               }
+                }
 
-               @Override
-               public void onError(int code, String error) {
-                   Log.d("error_hx", error);
+                @Override
+                public void onError(int code, String error) {
+                    Log.d("error_hx", error);
 
-               }
+                }
 
-               @Override
-               public void onProgress(int progress, String status) {
+                @Override
+                public void onProgress(int progress, String status) {
 
-               }
-           });
-       }
+                }
+            });
+        }
 
 
-     //显示环信未读
+        //显示环信未读
         if (ChatClient.getInstance().isLoggedInBefore()) {
             Conversation conversation = ChatClient.getInstance().chatManager().getConversation("kefuchannelimid_269943");
             int i = conversation.unreadMessagesCount();
@@ -775,7 +791,7 @@ public class _MineFragment extends BaseFragment {
         String cid = PushManager.getInstance().getClientid(mActivity);
         Log.d(TAG, "当前应用的cid=" + cid);
         //提交个推cid
-        mViewModel.getui("2",String.valueOf(mUserInfo.getId()),mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),cid )
+        mViewModel.getui("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), cid)
                 .observe(this, mCommitObserver);
     }
 
@@ -808,14 +824,14 @@ public class _MineFragment extends BaseFragment {
     };
 
 
-
-    //请求当前用户信息
+    //切换此页面请求当前用户信息
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onClickMyEvent(ClickMyEvent event) {
         if (mUserInfo != null) {
             mViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);
         }
     }
+
     //刷新isnew显示数据
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onClickIsnewEvent(IsnewEvent event) {

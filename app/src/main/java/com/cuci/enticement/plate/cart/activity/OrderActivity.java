@@ -49,6 +49,7 @@ import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.plate.mine.vm.OrderViewModel;
 import com.cuci.enticement.utils.Arith;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.MathExtend;
 import com.cuci.enticement.utils.PayResult;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.UtilsForClick;
@@ -543,10 +544,10 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                     String result = body.string();
                     ExpressCost expressCost = new Gson().fromJson(result, ExpressCost.class);
                     if (expressCost.getCode() == 1) {
-                        double express_price = expressCost.getData().getExpress_price();
+                        String express_price = expressCost.getData().getExpress_price();
                         textYunfeimoney.setText(String.format(Locale.CHINA, "¥%s", express_price));
                         //计算总价
-                        double totalMoney = Arith.add(Double.parseDouble(mInfo.getPrice_goods()), express_price);
+                        String totalMoney = MathExtend.addnum(mInfo.getPrice_goods(), express_price);
                         tvTotalMoney.setText(String.format(Locale.CHINA, "%s", totalMoney));
                     } else {
                         FToast.error(expressCost.getInfo());
@@ -771,11 +772,11 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
             return;
         }
                 String price_goods = mInfo.getPrice_goods();
-                float total= Float.parseFloat(price_goods);
+                double total= Double.parseDouble(price_goods);
                 List<Version.DataBean.FullBean.FullinfoBean> fullinfo = mVersion.getData().getFull().getFullinfo();
         if(total<fullinfo.get(0).getAmount()){
-            float chajia = fullinfo.get(0).getAmount() - total;
-            textZengping.setText("再买"+chajia+"元即可赠送橙花精油护手霜两支");
+            String chajia = Arith.sub(fullinfo.get(0).getAmount(),total);
+            textZengping.setText("再买"+chajia+"元"+fullinfo.get(0).getAppmargin());
             return;
 
         }

@@ -141,9 +141,19 @@ public class Version implements Serializable {
                  */
 
                 private int itme;
-                private float amount;
+                private double amount;
                 private int quota;
                 private String desc;
+
+                public String getAppmargin() {
+                    return appmargin;
+                }
+
+                public void setAppmargin(String appmargin) {
+                    this.appmargin = appmargin;
+                }
+
+                private String appmargin;
                 private List<GoodslistBean> goodslist;
 
                 public int getItme() {
@@ -154,11 +164,11 @@ public class Version implements Serializable {
                     this.itme = itme;
                 }
 
-                public float getAmount() {
+                public double getAmount() {
                     return amount;
                 }
 
-                public void setAmount(float amount) {
+                public void setAmount(double amount) {
                     this.amount = amount;
                 }
 

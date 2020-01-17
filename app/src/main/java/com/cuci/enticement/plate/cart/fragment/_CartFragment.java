@@ -36,6 +36,7 @@ import com.cuci.enticement.plate.cart.vm.CartViewModel;
 import com.cuci.enticement.plate.common.eventbus.CartEvent;
 import com.cuci.enticement.plate.common.popup.CartTipsPopup;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.MathExtend;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.ViewUtils;
 import com.cuci.enticement.widget.CartItemDecoration;
@@ -348,18 +349,20 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
         return items;
     }
 
-    private double getCheckedsMoeny() {
+    private String getCheckedsMoeny() {
 
-        double totalF = 0;
+        String totalF = "0.00";
         for (int i = 0; i < mItems.size(); i++) {
             OrderGoods item = (OrderGoods) mItems.get(i);
             if (item.isCheck()) {
                 if(SharedPrefUtils.getisnew()==0&&item.getVip_mod()==0||SharedPrefUtils.getisnew()==1&&item.getVip_mod()==1){
                     double itemMoeny = Double.parseDouble(item.getGoods_price_market());
-                    totalF = totalF + item.getGoods_num() * itemMoeny;
+                    totalF = MathExtend.addnum(totalF,MathExtend.multiply1(String.valueOf(item.getGoods_num()),item.getGoods_price_market()));
+                    //totalF = totalF + item.getGoods_num() * itemMoeny;
                 }else {
                     double itemMoeny = Double.parseDouble(item.getGoods_price_selling());
-                    totalF = totalF + item.getGoods_num() * itemMoeny;
+                    totalF = MathExtend.addnum(totalF,MathExtend.multiply1(String.valueOf(item.getGoods_num()),item.getGoods_price_selling()));
+                   // totalF = totalF + item.getGoods_num() * itemMoeny;
                 }
 
             }

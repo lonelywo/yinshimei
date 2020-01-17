@@ -21,15 +21,15 @@ public class Arith {
      * @param v2 加数
      * @return 两个参数的和
      */
-    public static double add(double v1,double v2){
+    public static String add(double v1,double v2){
         BigDecimal b1 = new BigDecimal(Double.toString(v1));
         BigDecimal b2 = new BigDecimal(Double.toString(v2));
-        return b1.add(b2).doubleValue();
+        return b1.add(b2).toString();
     }
-    public static double sub(double v1,double v2){
+    public static String sub(double v1,double v2){
         BigDecimal b1 = new BigDecimal(Double.toString(v1));
         BigDecimal b2 = new BigDecimal(Double.toString(v2));
-        return b1.subtract(b2).doubleValue();
+        return b1.subtract(b2).toString();
     }
 
 

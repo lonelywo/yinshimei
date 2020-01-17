@@ -6,12 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import androidx.annotation.NonNull;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import android.widget.TextView;
+
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseFragment;
 import com.cuci.enticement.bean.BannerDataBean;
@@ -31,6 +27,7 @@ import com.cuci.enticement.plate.home.adapter.ItemGoodsLongViewBinder;
 import com.cuci.enticement.plate.home.vm.HomeViewModel;
 import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.MathExtend;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.widget.CustomRefreshHeader;
 import com.cuci.enticement.widget.HomeGridItemDecoration;
@@ -39,11 +36,22 @@ import com.google.gson.Gson;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
 import java.io.IOException;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import butterknife.BindView;
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 import okhttp3.ResponseBody;
@@ -51,9 +59,19 @@ import okhttp3.ResponseBody;
 /**
  * 首页外层Fragment
  */
-public class _HomeFragment extends BaseFragment  implements ItemBannerViewBinder.OnBannerClickListener , OnRefreshLoadMoreListener {
+public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.OnBannerClickListener, OnRefreshLoadMoreListener {
 
     private static final String TAG = _HomeFragment.class.getSimpleName();
+    @BindView(R.id.text_home_title)
+    TextView textHomeTitle;
+    @BindView(R.id.heard_home)
+    ConstraintLayout heardHome;
+    @BindView(R.id.rec_goods)
+    RecyclerView recGoods;
+    @BindView(R.id.refresh_home)
+    SmartRefreshLayout refreshHome;
+    @BindView(R.id.container)
+    ConstraintLayout container;
     private int mMinId = 1;
     private RecyclerView mRecyclerView;
     private SmartRefreshLayout mRefreshLayout;
@@ -90,7 +108,7 @@ public class _HomeFragment extends BaseFragment  implements ItemBannerViewBinder
         mItems = new Items();
         mAdapter.setItems(mItems);
         CustomRefreshHeader header = new CustomRefreshHeader(mActivity);
-       // mRefreshLayout.setRefreshHeader(header);
+        // mRefreshLayout.setRefreshHeader(header);
         mRefreshLayout.setEnableFooterFollowWhenNoMoreData(true);
         mRefreshLayout.setOnRefreshLoadMoreListener(this);
         mAdapter.register(ItemBanner.class, new ItemBannerViewBinder(this));
@@ -109,10 +127,8 @@ public class _HomeFragment extends BaseFragment  implements ItemBannerViewBinder
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
-
-
-
     }
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -125,10 +141,11 @@ public class _HomeFragment extends BaseFragment  implements ItemBannerViewBinder
         EventBus.getDefault().unregister(this);
 
     }
+
     //刷新isnew显示数据
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onClickProgoodsEvent(ProgoodsEvent event) {
-       load();
+        load();
     }
 
     private Observer<Status<ResponseBody>> essayObserver = status -> {
@@ -149,6 +166,7 @@ public class _HomeFragment extends BaseFragment  implements ItemBannerViewBinder
         }
 
     };
+
     private void opera2(ResponseBody body) {
         try {
             String b = body.string();
@@ -165,23 +183,24 @@ public class _HomeFragment extends BaseFragment  implements ItemBannerViewBinder
             FToast.error("数据错误");
         }
     }
+
     @Override
     public void onBannerClick(BannerDataBean bannerDataBean) {
-     switch (bannerDataBean.getType()){
-         case "0":
-             Intent intentProd = new Intent(mActivity, ProdActivity.class);
-             intentProd.putExtra("bannerData", bannerDataBean.getLink());
-             mActivity.startActivity(intentProd);
-             break;
-         case "1" :
-             mViewModel.essay(bannerDataBean.getLink(), "2",  ""+AppUtils.getVersionCode(mActivity)).observe(this, essayObserver);
-             break;
-         case "2":
-             Intent intentProd1 = new Intent(mActivity, Agreement2Activity.class);
-             intentProd1.putExtra("url", bannerDataBean.getLink());
-             mActivity.startActivity(intentProd1);
-             break;
-     }
+        switch (bannerDataBean.getType()) {
+            case "0":
+                Intent intentProd = new Intent(mActivity, ProdActivity.class);
+                intentProd.putExtra("bannerData", bannerDataBean.getLink());
+                mActivity.startActivity(intentProd);
+                break;
+            case "1":
+                mViewModel.essay(bannerDataBean.getLink(), "2", "" + AppUtils.getVersionCode(mActivity)).observe(this, essayObserver);
+                break;
+            case "2":
+                Intent intentProd1 = new Intent(mActivity, Agreement2Activity.class);
+                intentProd1.putExtra("url", bannerDataBean.getLink());
+                mActivity.startActivity(intentProd1);
+                break;
+        }
 
 
     }
@@ -197,17 +216,17 @@ public class _HomeFragment extends BaseFragment  implements ItemBannerViewBinder
             mCanLoadMore = false;
             mViewModel.getGeneralGoods( mMinId, Status.LOAD_MORE).observe(this, GoodsmObserver);
         } else {*/
-            mRefreshLayout.finishLoadMore();
-     //   }
+        mRefreshLayout.finishLoadMore();
+        //   }
     }
+
     private void load() {
         mViewModel.getBanner().observe(this, mObserver);
 
     }
 
 
-
-    private Observer<Status<BaseList<BannerDataBean>>>  mObserver = new Observer<Status<BaseList<BannerDataBean>>>() {
+    private Observer<Status<BaseList<BannerDataBean>>> mObserver = new Observer<Status<BaseList<BannerDataBean>>>() {
 
         @Override
         public void onChanged(Status<BaseList<BannerDataBean>> baseListStatus) {
@@ -225,11 +244,11 @@ public class _HomeFragment extends BaseFragment  implements ItemBannerViewBinder
                         ItemBanner itemBanner = new ItemBanner(items);
                         mItems.clear();
                         mItems.add(itemBanner);
-                    if(mUserInfo!=null){
-                        mViewModel.getGeneralGoods("2" ,String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), Status.LOAD_REFRESH).observe(_HomeFragment.this, GoodsmObserver);
-                    } else {
-                        mViewModel.getGeneralGoods("2" ,"", "", Status.LOAD_REFRESH).observe(_HomeFragment.this, GoodsmObserver);
-                    }
+                        if (mUserInfo != null) {
+                            mViewModel.getGeneralGoods("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), Status.LOAD_REFRESH).observe(_HomeFragment.this, GoodsmObserver);
+                        } else {
+                            mViewModel.getGeneralGoods("2", "", "", Status.LOAD_REFRESH).observe(_HomeFragment.this, GoodsmObserver);
+                        }
 
                     } else {
                         FToast.error(list.info);
@@ -301,10 +320,11 @@ public class _HomeFragment extends BaseFragment  implements ItemBannerViewBinder
             }
         }
     };
+
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         mCanLoadMore = false;
-        mMinId=1;
+        mMinId = 1;
         mViewModel.getBanner().observe(this, mObserver);
 
     }
@@ -326,11 +346,6 @@ public class _HomeFragment extends BaseFragment  implements ItemBannerViewBinder
                 break;
         }
     };*/
-
-
-
-
-
 
 
 }
