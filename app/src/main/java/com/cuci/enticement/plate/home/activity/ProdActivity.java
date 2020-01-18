@@ -168,26 +168,17 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
             public void onClick(View view) {
                 if (AppUtils.isAllowPermission(ProdActivity.this)) {
                     mUserInfo = SharedPrefUtils.get(UserInfo.class);
-                  /*  if (mProData != null) {
-                          Bitmap bitmap = BitmapFactory.decodeResource(BasicApp.getContext().getResources(), R.drawable.tuxiang);
-                        WxShareUtils.shareToWX(WxShareUtils.WX_SCENE_SESSION,
-                                "http://web.enticementchina.com/present.html?mid="
-                                        + mUserInfo.getId() + "&goods_id=" + mProData.getId()+"&phone=" + mUserInfo.getPhone()
-                                , ProdActivity.this.getString(R.string.app_name_test),
-                                "因诗美，我的质感美学", mProData.getLogo());
-
-                        new XPopup.Builder(ProdActivity.this)
+                    if (mProData != null) {
+                        type = 1;
+                        mHomeViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(ProdActivity.this, mdataObserver);
+                        ViewUtils.showView(progressBar);
+                        /* new XPopup.Builder(ProdActivity.this)
                                 .dismissOnTouchOutside(false)
                                 .dismissOnBackPressed(false)
                                 .asCustom(new CenterShareAppPopup(ProdActivity.this, mProData))
-                                .show();
-
-                    }*/
-                    if (mProData != null) {
-
-                      /*  if (mProData.getVip_mod() != 1) {
-                            ShareXiaoChengnXu();
-                        } else {*/
+                                .show();*/
+                    }
+                   /* if (mProData != null) {
                             new XPopup.Builder(ProdActivity.this)
                                     .dismissOnBackPressed(false)
                                     .dismissOnTouchOutside(false)
@@ -211,8 +202,8 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                                         }
                                     }))
                                     .show();
-                        }
-                   // }
+                        }*/
+
                 } else {
                     finish();
                 }
@@ -233,7 +224,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
 
         switch (status.status) {
             case Status.SUCCESS:
-
+                ViewUtils.hideView(progressBar);
                 ResponseBody body = status.content;
                 if (type == 1) {
                     opera1(body);
@@ -245,7 +236,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
 
                 break;
             case Status.ERROR:
-
+                ViewUtils.hideView(progressBar);
                 FToast.error("网络错误");
                 break;
             case Status.LOADING:
@@ -256,6 +247,28 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
     };
 
     private void opera1(ResponseBody body) {
+        try {
+            String b = body.string();
+            DataUserInfo mMyTeamslBean = new Gson().fromJson(b, DataUserInfo.class);
+            if (mMyTeamslBean.getCode() == 1) {
+                int is_new = mMyTeamslBean.getData().getIs_new();
+                SharedPrefUtils.saveisnew(is_new);
+                if(is_new==1){
+                    WxShareUtils.shareToWX(WxShareUtils.WX_SCENE_SESSION,
+                            "http://web.enticementchina.com/present.html?mid="
+                                    + mUserInfo.getId() + "&goods_id=" + mProData.getId()+"&phone=" + mUserInfo.getPhone()
+                            , ProdActivity.this.getString(R.string.app_name_test),
+                            "因诗美，我的质感美学", mProData.getLogo());
+                }else {
+                    FToast.warning("购买任意商品成为会员即可分享");
+                }
+            } else {
+                FToast.error(mMyTeamslBean.getInfo());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            FToast.error("数据错误");
+        }
 
     }
 
