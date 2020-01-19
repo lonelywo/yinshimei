@@ -162,16 +162,19 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
         } else {
             mHomeViewModel.getHomeDetails("2", "", "", url).observe(this, mObserver);
         }
-
+        type = 1;
+        mHomeViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(ProdActivity.this, mdataObserver);
         imgShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (AppUtils.isAllowPermission(ProdActivity.this)) {
                     mUserInfo = SharedPrefUtils.get(UserInfo.class);
                     if (mProData != null) {
-                        type = 1;
-                        mHomeViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(ProdActivity.this, mdataObserver);
-                        ViewUtils.showView(progressBar);
+                        WxShareUtils.shareToWX(WxShareUtils.WX_SCENE_SESSION,
+                                "http://web.enticementchina.com/present.html?mid="
+                                        + mUserInfo.getId() + "&goods_id=" + mProData.getId()+"&phone=" + mUserInfo.getPhone()
+                                , ProdActivity.this.getString(R.string.app_name_test),
+                                "因诗美，我的质感美学", mProData.getLogo());
                         /* new XPopup.Builder(ProdActivity.this)
                                 .dismissOnTouchOutside(false)
                                 .dismissOnBackPressed(false)
@@ -224,7 +227,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
 
         switch (status.status) {
             case Status.SUCCESS:
-                ViewUtils.hideView(progressBar);
+
                 ResponseBody body = status.content;
                 if (type == 1) {
                     opera1(body);
@@ -236,7 +239,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
 
                 break;
             case Status.ERROR:
-                ViewUtils.hideView(progressBar);
+
                 FToast.error("网络错误");
                 break;
             case Status.LOADING:
@@ -254,13 +257,11 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                 int is_new = mMyTeamslBean.getData().getIs_new();
                 SharedPrefUtils.saveisnew(is_new);
                 if(is_new==1){
-                    WxShareUtils.shareToWX(WxShareUtils.WX_SCENE_SESSION,
-                            "http://web.enticementchina.com/present.html?mid="
-                                    + mUserInfo.getId() + "&goods_id=" + mProData.getId()+"&phone=" + mUserInfo.getPhone()
-                            , ProdActivity.this.getString(R.string.app_name_test),
-                            "因诗美，我的质感美学", mProData.getLogo());
+                    ViewUtils.showView(imgShare);
+                    ViewUtils.showView(textShare);
                 }else {
-                    FToast.warning("购买任意商品成为会员即可分享");
+                    ViewUtils.hideView(imgShare);
+                    ViewUtils.hideView(textShare);
                 }
             } else {
                 FToast.error(mMyTeamslBean.getInfo());
@@ -652,6 +653,9 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
         } else {
             mHomeViewModel.getHomeDetails("2", "", "", url).observe(this, mObserver);
         }
+        //刷新分享显示
+        type = 1;
+        mHomeViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(ProdActivity.this, mdataObserver);
 
     }
 
