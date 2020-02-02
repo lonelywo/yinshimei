@@ -162,26 +162,29 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
         } else {
             mHomeViewModel.getHomeDetails("2", "", "", url).observe(this, mObserver);
         }
+        //显示隐藏分享
         type = 1;
-        mHomeViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(ProdActivity.this, mdataObserver);
+        if(mUserInfo != null){
+            mHomeViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(ProdActivity.this, mdataObserver);
+        }
         imgShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (AppUtils.isAllowPermission(ProdActivity.this)) {
                     mUserInfo = SharedPrefUtils.get(UserInfo.class);
-                    if (mProData != null) {
+                   /* if (mProData != null) {
                         WxShareUtils.shareToWX(WxShareUtils.WX_SCENE_SESSION,
                                 "http://web.enticementchina.com/present.html?mid="
                                         + mUserInfo.getId() + "&goods_id=" + mProData.getId()+"&phone=" + mUserInfo.getPhone()
                                 , ProdActivity.this.getString(R.string.app_name_test),
                                 "因诗美，我的质感美学", mProData.getLogo());
-                        /* new XPopup.Builder(ProdActivity.this)
+                        *//* new XPopup.Builder(ProdActivity.this)
                                 .dismissOnTouchOutside(false)
                                 .dismissOnBackPressed(false)
                                 .asCustom(new CenterShareAppPopup(ProdActivity.this, mProData))
-                                .show();*/
-                    }
-                   /* if (mProData != null) {
+                                .show();*//*
+                    }*/
+                    if (mProData != null) {
                             new XPopup.Builder(ProdActivity.this)
                                     .dismissOnBackPressed(false)
                                     .dismissOnTouchOutside(false)
@@ -205,7 +208,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                                         }
                                     }))
                                     .show();
-                        }*/
+                        }
 
                 } else {
                     finish();
@@ -655,7 +658,10 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
         }
         //刷新分享显示
         type = 1;
-        mHomeViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(ProdActivity.this, mdataObserver);
+        if(mUserInfo != null){
+            mHomeViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(ProdActivity.this, mdataObserver);
+        }
+
 
     }
 
@@ -674,7 +680,8 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                         miniProgramObj.webpageUrl = "https://test.enticementchina.com/pages/goods/detail?g=" + mProData.getId(); // 兼容低版本的网页链接
                         miniProgramObj.miniprogramType = WXMiniProgramObject.MINIPTOGRAM_TYPE_RELEASE;// 正式版:0，测试版:1，体验版:2
                         miniProgramObj.userName = "gh_26859964eed3";     // 小程序原始id
-                        miniProgramObj.path = "pages/goods/detail?g=" + mProData.getId() + "&p=" + mUserInfo.getPhone();            //小程序页面路径；对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"
+                        miniProgramObj.path = "pages/goods/detail?g=" + mProData.getId() + "&p=" + mUserInfo.getPhone();
+                                   //小程序页面路径；对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"
                         // miniProgramObj.path = "";            //小程序页面路径；对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"
                         WXMediaMessage msg = new WXMediaMessage(miniProgramObj);
                         msg.title = mProData.getTitle();                    // 小程序消息title

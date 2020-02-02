@@ -422,7 +422,7 @@
     android:layout_height="wrap_content"
     app:layout_constraintTop_toBottomOf="@+id/con_dingdan"
     android:layout_marginTop="10dp"
-    android:visibility="visible"
+    android:visibility="gone"
     >
 
     <ImageView
