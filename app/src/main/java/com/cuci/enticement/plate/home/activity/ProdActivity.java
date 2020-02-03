@@ -1,9 +1,12 @@
 package com.cuci.enticement.plate.home.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.Html;
 import android.view.View;
 import android.widget.ImageView;
@@ -11,6 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.Target;
 import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
@@ -36,6 +41,7 @@ import com.cuci.enticement.plate.common.popup.SharegoodsImgTipsPopup;
 import com.cuci.enticement.plate.home.vm.HomeViewModel;
 import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.BitmapUitls;
+import com.cuci.enticement.utils.FLog;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.MathExtend;
 import com.cuci.enticement.utils.SharedPrefUtils;
@@ -56,6 +62,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -127,7 +134,9 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
     private int status;
     private int type;
     private String rule;
-
+    private MyHandler mHandler = new MyHandler(this);
+    private Bitmap bitmap1;
+    private Bitmap bitmap2;
 
     @Override
     public int getLayoutId() {
@@ -728,11 +737,13 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
             if (mMyTeamslBean.getCode() == 1) {
                 String poster = mMyTeamslBean.getData().getPoster();
                 String qrcode = mMyTeamslBean.getData().getQrcode();
-                new XPopup.Builder(ProdActivity.this)
-                        .dismissOnTouchOutside(false)
-                        .dismissOnBackPressed(false)
-                        .asCustom(new CenterShareAppPopup2(ProdActivity.this, mUserInfo, poster, qrcode))
-                        .show();
+                       //   bitmap1 = downloadImage(ProdActivity.this, poster);
+                       //   bitmap2 = downloadImage(ProdActivity.this, qrcode);
+                              new XPopup.Builder(ProdActivity.this)
+                                      .dismissOnTouchOutside(false)
+                                      .dismissOnBackPressed(false)
+                                      .asCustom(new CenterShareAppPopup2(ProdActivity.this, mUserInfo, poster, qrcode))
+                                      .show();
             } else {
                 FToast.error(mMyTeamslBean.getInfo());
             }
@@ -750,5 +761,39 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
+    }
+    private Bitmap downloadImage(Context context, String url) {
+
+        try {
+            return Glide.with(context)
+                    .asBitmap()
+                    .load(url)
+                    .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                    .get();
+        } catch (Exception e) {
+            FLog.e(TAG, "图片加载失败：" + url);
+            return null;
+        }
+    }
+    private static class MyHandler extends Handler {
+
+        private final WeakReference<ProdActivity> mFragment;
+
+        public MyHandler(ProdActivity fragment) {
+            mFragment = new WeakReference<>(fragment);
+        }
+
+        @Override
+        public void dispatchMessage(Message msg) {
+            super.dispatchMessage(msg);
+            ProdActivity fragment = mFragment.get();
+            if (fragment != null) {
+                int what = msg.what;
+                if (what == 0) {
+                    UserInfo  mUserInfo = SharedPrefUtils.get(UserInfo.class);
+
+                }
+            }
+        }
     }
 }

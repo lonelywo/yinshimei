@@ -40,7 +40,7 @@ public class ServiceCreator {
 
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                .connectTimeout(6, TimeUnit.SECONDS)
+                .connectTimeout(8, TimeUnit.SECONDS)
                 .writeTimeout(12, TimeUnit.SECONDS)
                 .readTimeout(12, TimeUnit.SECONDS);
 

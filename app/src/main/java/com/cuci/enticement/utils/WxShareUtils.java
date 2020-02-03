@@ -424,7 +424,7 @@ public class WxShareUtils {
             if (needRecycle)
                 bmp.recycle();
             ByteArrayOutputStream localByteArrayOutputStream = new ByteArrayOutputStream();
-            localBitmap.compress(Bitmap.CompressFormat.PNG, 100,
+            localBitmap.compress(Bitmap.CompressFormat.JPEG, 90,
                     localByteArrayOutputStream);
             localBitmap.recycle();
             byte[] arrayOfByte = localByteArrayOutputStream.toByteArray();

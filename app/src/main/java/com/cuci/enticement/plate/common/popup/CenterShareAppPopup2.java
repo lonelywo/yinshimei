@@ -2,11 +2,18 @@ package com.cuci.enticement.plate.common.popup;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.bean.UserInfo;
@@ -14,10 +21,12 @@ import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.FileUtils;
 import com.cuci.enticement.utils.ImageLoader;
 import com.cuci.enticement.utils.ImageUtils;
+import com.cuci.enticement.utils.ViewUtils;
 import com.cuci.enticement.utils.WxShareUtils;
 import com.lxj.xpopup.core.CenterPopupView;
 import java.io.File;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -74,8 +83,29 @@ public class CenterShareAppPopup2 extends CenterPopupView {
     protected void onCreate() {
         super.onCreate();
         ButterKnife.bind(this);
-        ImageLoader.loadPlaceholder(mposter, imgTupian);
+        ViewUtils.showView(progressBar);
+        Glide.with(this)
+                .load(mposter)
+                .placeholder(R.drawable.img_placeholder)
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        ViewUtils.hideView(progressBar);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        ViewUtils.hideView(progressBar);
+                        return false;
+                    }
+                })
+                .into(imgTupian);
+
+       // ImageLoader.loadPlaceholder(mposter, imgTupian);
         ImageLoader.loadPlaceholder(mqrcode, qrcode);
+       /* imgTupian.setImageBitmap(mposter);
+        qrcode.setImageBitmap(mqrcode);*/
         textName.setText(mUserInfo.getNickname());
 
     }
