@@ -2,6 +2,9 @@ package com.cuci.enticement.network;
 
 import android.text.TextUtils;
 import com.cuci.enticement.BuildConfig;
+
+import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -40,9 +43,9 @@ public class ServiceCreator {
 
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                .connectTimeout(8, TimeUnit.SECONDS)
-                .writeTimeout(12, TimeUnit.SECONDS)
-                .readTimeout(12, TimeUnit.SECONDS);
+                .connectTimeout(20, TimeUnit.SECONDS)
+                .writeTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS);
 
 
         if (BuildConfig.DEBUG) {

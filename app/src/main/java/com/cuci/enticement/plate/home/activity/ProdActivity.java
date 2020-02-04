@@ -1,5 +1,6 @@
 package com.cuci.enticement.plate.home.activity;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -137,6 +138,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
     private MyHandler mHandler = new MyHandler(this);
     private Bitmap bitmap1;
     private Bitmap bitmap2;
+    private ProgressDialog mProgressDialog;
 
     @Override
     public int getLayoutId() {
@@ -201,8 +203,8 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                                         @Override
                                         public void onPositive1() {
                                             mHomeViewModel.shareimg("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), String.valueOf(mProData.getId())).observe(ProdActivity.this, mObservershare);
-                                            ViewUtils.showView(progressBar);
-
+                                            //ViewUtils.showView(progressBar);
+                                            mProgressDialog = ProgressDialog.show(ProdActivity.this, "正在生成海报", "请稍等...");
                                         }
 
                                         @Override
@@ -715,12 +717,14 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
 
         switch (status.status) {
             case Status.SUCCESS:
-                ViewUtils.hideView(progressBar);
+                //ViewUtils.hideView(progressBar);
+                mProgressDialog.dismiss();
                 ResponseBody body = status.content;
                 opera(body);
                 break;
             case Status.ERROR:
-                ViewUtils.hideView(progressBar);
+               // ViewUtils.hideView(progressBar);
+                mProgressDialog.dismiss();
                 FToast.error("网络错误");
                 break;
             case Status.LOADING:
