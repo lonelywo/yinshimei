@@ -4,16 +4,14 @@ package com.cuci.enticement.plate.mine.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.cuci.enticement.R;
 import com.cuci.enticement.bean.MyTeamlbBean;
 import com.cuci.enticement.utils.ImageLoader;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -49,15 +47,15 @@ public class ItemMyTeamViewBinder extends ItemViewBinder<MyTeamlbBean.DataBean.L
 
         ImageLoader.loadPlaceholder1(item.getHeadimg(), holder.imgTuxiang);
         holder.textTime.setText(item.getCreate_at());
-        holder.textWenzi1.setText(item.getNickname());
-        if(item.getId()==2){
-            holder.textShuliang.setText(item.getTeams_total()+"人");
-            holder.textRzeng.setText("日新增：" + item.getDaily_teams_total()+"人");
-        }else {
-            holder.textShuliang.setText(item.getTeams()+"人");
-            holder.textRzeng.setText("日新增：" + item.getDaily_teams()+"人");
+        holder.textWenzi1.setText("("+item.getVip_level_name()+")"+item.getNickname());
+        if (item.getId() == 2) {
+            holder.textShuliang.setText(item.getTeams_total() + "人");
+            holder.textRzeng.setText("日新增：" + item.getDaily_teams_total() + "人");
+        } else {
+            holder.textShuliang.setText(item.getTeams() + "人");
+            holder.textRzeng.setText("日新增：" + item.getDaily_teams() + "人");
         }
-
+        //holder.textLevelName.setText(item.getVip_level_name());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +74,8 @@ public class ItemMyTeamViewBinder extends ItemViewBinder<MyTeamlbBean.DataBean.L
         CircleImageView imgTuxiang;
         @BindView(R.id.text_wenzi1)
         TextView textWenzi1;
+        @BindView(R.id.text_level_name)
+        TextView textLevelName;
         @BindView(R.id.text_time)
         TextView textTime;
         @BindView(R.id.text_rzeng)

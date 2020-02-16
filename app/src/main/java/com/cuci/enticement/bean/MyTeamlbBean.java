@@ -148,6 +148,16 @@ public class MyTeamlbBean implements Serializable {
             private String vip_date;
             private String create_at;
 
+            public String getVip_level_name() {
+                return vip_level_name;
+            }
+
+            public void setVip_level_name(String vip_level_name) {
+                this.vip_level_name = vip_level_name;
+            }
+
+            private String vip_level_name;
+
             public int getId() {
                 return id;
             }

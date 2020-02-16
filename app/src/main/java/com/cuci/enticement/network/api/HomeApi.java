@@ -16,7 +16,10 @@ public interface HomeApi {
      */
     @FormUrlEncoded
     @POST("store/api.page/slider")
-    Call<BaseList<BannerDataBean>> getBanner(  @Field("sign") String sign);
+    Call<BaseList<BannerDataBean>> getBanner(@Field("from_type") String from_type,
+                                             @Field("sign") String sign
+
+    );
     /**
      * 获取普通商品
      */

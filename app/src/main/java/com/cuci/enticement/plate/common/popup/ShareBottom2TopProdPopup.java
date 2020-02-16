@@ -196,7 +196,14 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
                     price_sell = mItem.getList().get(i).getPrice_selling();
                     text_money.setText(Html.fromHtml(strMsg));
                     selectedTv.setText(mItem.getList().get(i).getGoods_spec());
-                }else if(SharedPrefUtils.getisnew()==0){
+                }else {
+                    price_market = mItem.getList().get(i).getPrice_market();
+                    price_sell = mItem.getList().get(i).getPrice_selling();
+                    String strMsg = "<font color=\"#BF9964\">"+"¥" + price_sell+"</font>";
+                    text_money.setText(Html.fromHtml(strMsg));
+                    selectedTv.setText(mItem.getList().get(i).getGoods_spec());
+                }
+                /*else if(SharedPrefUtils.getisnew()==0){
                     price_market = mItem.getList().get(i).getPrice_market();
                     price_sell = mItem.getList().get(i).getPrice_selling();
                     String strMsg = "<font color=\"#000000\">"+"¥" + price_market+"</font>";
@@ -208,7 +215,7 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
                     String strMsg = "<font color=\"#BF9964\">"+"¥" + price_sell+"</font>";
                     text_money.setText(Html.fromHtml(strMsg));
                     selectedTv.setText(mItem.getList().get(i).getGoods_spec());
-                }
+                }*/
               break;
             }
         }

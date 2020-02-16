@@ -221,7 +221,7 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
     }
 
     private void load() {
-        mViewModel.getBanner().observe(this, mObserver);
+        mViewModel.getBanner("2").observe(this, mObserver);
 
     }
 
@@ -325,7 +325,7 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         mCanLoadMore = false;
         mMinId = 1;
-        mViewModel.getBanner().observe(this, mObserver);
+        mViewModel.getBanner("2").observe(this, mObserver);
 
     }
 /*    private Observer<Status<Splash>> mObserver = splashStatus -> {

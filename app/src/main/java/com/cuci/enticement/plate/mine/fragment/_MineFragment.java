@@ -350,13 +350,13 @@ public class _MineFragment extends BaseFragment {
                 int is_new = mDataUserInfo.getData().getIs_new();
                 if (is_new == 1) {
                     ViewUtils.showView(conYingchang);
-                    ViewUtils.showView(imgYqhy);
+                    //ViewUtils.showView(imgYqhy);
                     if (SharedPrefUtils.getisnew() != is_new) {
                         SharedPrefUtils.saveisnew(is_new);
                         EventBus.getDefault().post(new ProgoodsEvent());
                     }
                 } else {
-                    ViewUtils.hideView(imgYqhy);
+                   //ViewUtils.hideView(imgYqhy);
                     ViewUtils.hideView(conYingchang);
                 }
                 //礼品中心
@@ -479,7 +479,7 @@ public class _MineFragment extends BaseFragment {
             ViewUtils.hideView(dot3Tv);
             ViewUtils.hideView(dot4Tv);
             ViewUtils.hideView(conYingchang);
-            ViewUtils.hideView(imgYqhy);
+            //ViewUtils.hideView(imgYqhy);
             imgHeadwear.setVisibility(View.GONE);
             return;
         }

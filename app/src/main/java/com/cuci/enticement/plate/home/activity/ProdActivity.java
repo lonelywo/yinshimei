@@ -174,10 +174,10 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
             mHomeViewModel.getHomeDetails("2", "", "", url).observe(this, mObserver);
         }
         //显示隐藏分享
-        type = 1;
+        /*type = 1;
         if(mUserInfo != null){
             mHomeViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(ProdActivity.this, mdataObserver);
-        }
+        }*/
         imgShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -311,13 +311,15 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                 //cartIntentInfo.setOrder_no(Long.parseLong(orderResult.getData().getOrder().getOrder_no()));
                 cartIntentInfo.setList(items);
                 cartIntentInfo.setGoods_count(items.size());
-                if (is_new == 0 && mProData.getVip_mod() == 0 || is_new == 1 && mProData.getVip_mod() == 1) {
+               /* if (is_new == 0 && mProData.getVip_mod() == 0 || is_new == 1 && mProData.getVip_mod() == 1) {
                     String goodsPrice = MathExtend.multiply(mprice_market, String.valueOf(mNum));
                     cartIntentInfo.setPrice_goods(String.valueOf(goodsPrice));
                 } else {
                     String goodsPrice = MathExtend.multiply(mprice_sell, String.valueOf(mNum));
                     cartIntentInfo.setPrice_goods(String.valueOf(goodsPrice));
-                }
+                }*/
+                String goodsPrice = MathExtend.multiply(mprice_sell, String.valueOf(mNum));
+                cartIntentInfo.setPrice_goods(goodsPrice);
                 Intent intent = new Intent(ProdActivity.this, OrderActivity.class);
                 intent.putExtra("intentInfo", cartIntentInfo);
                 intent.putExtra("vip", is_new);

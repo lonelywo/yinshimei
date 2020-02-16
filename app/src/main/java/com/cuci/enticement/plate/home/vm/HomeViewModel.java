@@ -34,17 +34,14 @@ public class HomeViewModel extends ViewModel {
     public HomeViewModel() {
         mCreator = ServiceCreator.getInstance();
     }
-    public MutableLiveData<Status<BaseList<BannerDataBean>>> getBanner() {
+    public MutableLiveData<Status<BaseList<BannerDataBean>>> getBanner(String from_type) {
 
         final MutableLiveData<Status<BaseList<BannerDataBean>>> data = new MutableLiveData<>();
-        if(ServiceCreator.ConstantA==0){
-            sign = EncryptUtils.md5Encrypt("&key=O65dGdgf5Hf5GK6aF9JDFl5I9skPkd");
-        }else {
-            sign = EncryptUtils.md5Encrypt("&key=A8sUd9bqis3sN5GK6aF9JDFl5I9skPkd");
-        }
-        String signs = sign.toUpperCase();
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("from_type",from_type);
+        String signs = SignUtils.signParam(params);
         mCreator.create(HomeApi.class)
-                .getBanner(signs)
+                .getBanner(from_type,signs)
                 .enqueue(new Callback<BaseList<BannerDataBean>>() {
 
                     @Override

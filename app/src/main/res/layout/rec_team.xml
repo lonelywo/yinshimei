@@ -18,25 +18,37 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:src="@drawable/tuxiang"
-        android:paddingBottom="10dp"
         app:civ_border_color="#fff"
         app:civ_border_width="1dp"
         android:layout_marginLeft="10dp"
+
         />
      <TextView
           android:id="@+id/text_wenzi1"
          android:layout_width="0dp"
          android:layout_height="wrap_content"
          app:layout_constraintLeft_toRightOf="@+id/img_tuxiang"
-         app:layout_constraintBottom_toTopOf="@+id/text_time"
-         android:text="美美"
+         app:layout_constraintTop_toTopOf="parent"
+         android:text="(用户)美美"
          android:textColor="@color/hei"
-         android:textSize="20sp"
+         android:textSize="16sp"
+         android:layout_marginTop="5dp"
          android:layout_marginLeft="10dp"
          app:layout_constraintRight_toLeftOf="@+id/text_shuliang"
          android:singleLine="true"
          android:ellipsize = "end"
          />
+    <TextView
+        android:id="@+id/text_level_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@+id/img_tuxiang"
+        app:layout_constraintTop_toBottomOf="@+id/text_wenzi1"
+        android:text="用户"
+        android:layout_marginTop="1dp"
+        android:layout_marginLeft="10dp"
+        android:visibility="gone"
+        />
     <TextView
         android:id="@+id/text_time"
         android:layout_width="wrap_content"
@@ -44,7 +56,7 @@
         app:layout_constraintLeft_toRightOf="@+id/img_tuxiang"
         app:layout_constraintBottom_toTopOf="@+id/text_rzeng"
         android:text="2019-0-0 00:00:00"
-        android:layout_marginTop="20dp"
+        android:layout_marginBottom="1dp"
         android:layout_marginLeft="10dp"
         />
     <TextView
@@ -55,7 +67,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/img_tuxiang"
         android:text="日新增：0人"
         android:layout_marginLeft="10dp"
-        android:layout_marginBottom="5dp"
         />
 
     <TextView
