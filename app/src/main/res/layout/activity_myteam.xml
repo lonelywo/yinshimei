@@ -37,6 +37,17 @@
          app:layout_constraintTop_toTopOf="parent"
          app:layout_constraintBottom_toBottomOf="parent"
          />
+     <TextView
+         android:id="@+id/text_shuoming"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="美粉规则"
+         android:textColor="@color/orange"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintTop_toTopOf="@+id/text_biaoti"
+         app:layout_constraintBottom_toBottomOf="@+id/text_biaoti"
+         android:layout_marginRight="20dp"
+         />
  </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout

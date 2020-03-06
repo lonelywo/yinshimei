@@ -39,6 +39,7 @@ import com.cuci.enticement.bean.ZFBBean;
 import com.cuci.enticement.event.IsnewEvent;
 import com.cuci.enticement.plate.cart.activity.LogisticsActivity;
 import com.cuci.enticement.plate.cart.activity.OrderDetailsActivity;
+import com.cuci.enticement.plate.cart.activity.PayOfterActivity;
 import com.cuci.enticement.plate.common.eventbus.OrderEvent;
 import com.cuci.enticement.plate.common.popup.PayBottom2TopProdPopup;
 import com.cuci.enticement.plate.common.popup.TipsPopup;
@@ -154,8 +155,9 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                         //刷新is_new
                         EventBus.getDefault().post(new IsnewEvent());
                         //切换全部订单
-                        EventBus.getDefault().post(new OrderEvent(OrderEvent.INTENT_MY_ORDER));
-
+                       // EventBus.getDefault().post(new OrderEvent(OrderEvent.INTENT_MY_ORDER));
+                        //跳转支付成功页面
+                        startActivity(new Intent(mActivity, PayOfterActivity.class));
 
                     } else {
 

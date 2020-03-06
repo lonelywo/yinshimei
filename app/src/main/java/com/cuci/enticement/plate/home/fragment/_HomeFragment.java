@@ -6,25 +6,42 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseFragment;
 import com.cuci.enticement.bean.BannerDataBean;
 import com.cuci.enticement.bean.BaseList;
+import com.cuci.enticement.bean.CommissiontxBean;
 import com.cuci.enticement.bean.EssayBean;
+import com.cuci.enticement.bean.GeTuibean;
 import com.cuci.enticement.bean.GeneralGoods;
 import com.cuci.enticement.bean.GoodsItem;
+import com.cuci.enticement.bean.HomeLingQuanBean;
+import com.cuci.enticement.bean.IsYhjLingBean;
 import com.cuci.enticement.bean.ItemBanner;
+import com.cuci.enticement.bean.QyandYHJBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
+import com.cuci.enticement.event.CashEvent;
+import com.cuci.enticement.event.ClickMyEvent;
 import com.cuci.enticement.event.ProgoodsEvent;
 import com.cuci.enticement.plate.common.Agreement2Activity;
 import com.cuci.enticement.plate.common.AgreementActivity;
+import com.cuci.enticement.plate.common.MainActivity;
+import com.cuci.enticement.plate.common.popup.TipsPopup_kaquan;
+import com.cuci.enticement.plate.home.activity.CenterLingQuanActivity;
 import com.cuci.enticement.plate.home.activity.ProdActivity;
 import com.cuci.enticement.plate.home.adapter.ItemBannerViewBinder;
 import com.cuci.enticement.plate.home.adapter.ItemGoodsLongViewBinder;
+import com.cuci.enticement.plate.home.adapter.ItemLingQuanViewBinder;
+import com.cuci.enticement.plate.home.adapter.ItemQiYeViewBinder;
 import com.cuci.enticement.plate.home.vm.HomeViewModel;
+import com.cuci.enticement.plate.mine.activity.SettingsActivity;
+import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.MathExtend;
@@ -33,6 +50,7 @@ import com.cuci.enticement.widget.CustomRefreshHeader;
 import com.cuci.enticement.widget.HomeGridItemDecoration;
 import com.cuci.enticement.widget.HomeListSpanSizeLookup;
 import com.google.gson.Gson;
+import com.lxj.xpopup.XPopup;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
@@ -48,6 +66,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -59,13 +78,9 @@ import okhttp3.ResponseBody;
 /**
  * 首页外层Fragment
  */
-public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.OnBannerClickListener, OnRefreshLoadMoreListener {
+public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.OnBannerClickListener, OnRefreshLoadMoreListener, ItemLingQuanViewBinder.OnLingQuanClickListener,ItemQiYeViewBinder.OnQiYeClickListener {
 
     private static final String TAG = _HomeFragment.class.getSimpleName();
-    @BindView(R.id.text_home_title)
-    TextView textHomeTitle;
-    @BindView(R.id.heard_home)
-    ConstraintLayout heardHome;
     @BindView(R.id.rec_goods)
     RecyclerView recGoods;
     @BindView(R.id.refresh_home)
@@ -83,6 +98,7 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
     private HomeViewModel mViewModel;
     private boolean mCanLoadMore = true;
     private UserInfo mUserInfo;
+    private QyandYHJBean.DataBean.GroupbuyBean groupbuy;
 
 
 //    private LocalBroadcastManager mLocalBroadcastManager;
@@ -90,6 +106,7 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
     @Override
     protected void onLazyLoad() {
         load();
+        loadyhq();
     }
 
     @Override
@@ -112,16 +129,34 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
         mRefreshLayout.setEnableFooterFollowWhenNoMoreData(true);
         mRefreshLayout.setOnRefreshLoadMoreListener(this);
         mAdapter.register(ItemBanner.class, new ItemBannerViewBinder(this));
+        mAdapter.register(QyandYHJBean.DataBean.CouponBean.class, new ItemLingQuanViewBinder(this));
         mAdapter.register(GoodsItem.class, new ItemGoodsLongViewBinder(mActivity));
-
+        mAdapter.register(QyandYHJBean.DataBean.GroupbuyBean.class, new ItemQiYeViewBinder(this));
         mDecoration = new HomeGridItemDecoration(mActivity, 2, 6, true);
-        mDecoration.setHeaderCount(1);
-
+        mDecoration.setHeaderCount(2);
         mRecyclerView.addItemDecoration(mDecoration);
 
         mLayoutManager = new GridLayoutManager(mActivity, 2);
-        mSizeLookup = new HomeListSpanSizeLookup(mLayoutManager, 1);
-        mLayoutManager.setSpanSizeLookup(mSizeLookup);
+        mLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                int itemViewType = mAdapter.getItemViewType(position);
+                switch (itemViewType){
+                    case 0:
+                        return 2;
+                    case 1:
+                        return 2;
+                    case 2:
+                        return 1;
+                    case 3:
+                        return 2;
+
+                }
+                  return 0;
+            }
+        });
+       /* mSizeLookup = new HomeListSpanSizeLookup(mLayoutManager, 2);
+        mLayoutManager.setSpanSizeLookup(mSizeLookup);*/
 
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -142,11 +177,7 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
 
     }
 
-    //刷新isnew显示数据
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onClickProgoodsEvent(ProgoodsEvent event) {
-        load();
-    }
+
 
     private Observer<Status<ResponseBody>> essayObserver = status -> {
 
@@ -202,7 +233,6 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
                 break;
         }
 
-
     }
 
     @Override
@@ -212,17 +242,20 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-       /* if (mCanLoadMore) {
-            mCanLoadMore = false;
-            mViewModel.getGeneralGoods( mMinId, Status.LOAD_MORE).observe(this, GoodsmObserver);
-        } else {*/
-        mRefreshLayout.finishLoadMore();
-        //   }
-    }
 
+        mRefreshLayout.finishLoadMore();
+
+    }
+    private void loadyhq() {
+        MineViewModel  mViewModel = ViewModelProviders.of(this).get(MineViewModel.class);
+        if (mUserInfo != null) {
+            mViewModel.isyhjdailing("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, misyhjObserver);
+        } else {
+            mViewModel.isyhjdailing("2", "", "").observe(this, misyhjObserver);
+        }
+    }
     private void load() {
         mViewModel.getBanner("2").observe(this, mObserver);
-
     }
 
 
@@ -245,9 +278,9 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
                         mItems.clear();
                         mItems.add(itemBanner);
                         if (mUserInfo != null) {
-                            mViewModel.getGeneralGoods("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), Status.LOAD_REFRESH).observe(_HomeFragment.this, GoodsmObserver);
+                            mViewModel.getyhjandqiye("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(_HomeFragment.this, YhjandQymObserver);
                         } else {
-                            mViewModel.getGeneralGoods("2", "", "", Status.LOAD_REFRESH).observe(_HomeFragment.this, GoodsmObserver);
+                            mViewModel.getyhjandqiye("2", "", "").observe(_HomeFragment.this, YhjandQymObserver);
                         }
 
                     } else {
@@ -284,15 +317,13 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
 
                     if (data.getCode() == 1) {
                         mCanLoadMore = true;
+
                         if (status.loadType == Status.LOAD_REFRESH) {
                             mItems.addAll(list);
+                            mItems.add(groupbuy);
                             mAdapter.notifyDataSetChanged();
                             mRefreshLayout.finishRefresh();
                         } else {
-                            int o = mItems.size();
-                            mItems.addAll(list);
-                            int c = mItems.size();
-                            mAdapter.notifyItemRangeInserted(o, c);
                             mRefreshLayout.finishLoadMore();
                         }
                     } else {
@@ -328,24 +359,149 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
         mViewModel.getBanner("2").observe(this, mObserver);
 
     }
-/*    private Observer<Status<Splash>> mObserver = splashStatus -> {
-        switch (splashStatus.status) {
-            case Status.LOADING:
-                mStatusView.showLoading();
-                break;
+
+    @Override
+    public void onLingQuanClick(QyandYHJBean.DataBean.CouponBean DataBean) {
+        Intent intentProd1 = new Intent(mActivity, Agreement2Activity.class);
+        intentProd1.putExtra("url", DataBean.getLink());
+        mActivity.startActivity(intentProd1);
+    }
+    private Observer<Status<ResponseBody>> YhjandQymObserver = status -> {
+
+        switch (status.status) {
             case Status.SUCCESS:
-                mStatusView.showContent();
-                Splash splash = splashStatus.content;
-                if (splash == null) return;
-                SharedPrefUtils.saveUserAgreement(splash.getUserAgreement());
-                initTopTab(splash);
-                saveSplash(splash);
+                ResponseBody body = status.content;
+                opera(body);
                 break;
             case Status.ERROR:
-                mStatusView.showError();
+                FToast.error("网络错误");
+                break;
+            case Status.LOADING:
+
                 break;
         }
-    };*/
+    };
+    private void opera(ResponseBody body) {
+        try {
+            String b = body.string();
+           QyandYHJBean mCommissiontxBean = new Gson().fromJson(b, QyandYHJBean.class);
+            if (mCommissiontxBean.getCode() == 1) {
+                if (mUserInfo != null) {
+                    mViewModel.getGeneralGoods("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), Status.LOAD_REFRESH).observe(_HomeFragment.this, GoodsmObserver);
+                } else {
+                    mViewModel.getGeneralGoods("2", "", "", Status.LOAD_REFRESH).observe(_HomeFragment.this, GoodsmObserver);
+                }
+
+                QyandYHJBean.DataBean.CouponBean couponBean = mCommissiontxBean.getData().getCoupon().get(0);
+                QyandYHJBean.DataBean.CouponBean couponBean1 = mCommissiontxBean.getData().getCoupon().get(1);
+                groupbuy = mCommissiontxBean.getData().getGroupbuy();
+                if(mUserInfo!=null){
+                    if(mUserInfo.getVip_level()==0){
+                        mItems.add(couponBean1);
+                    }else {
+                        mItems.add(couponBean);
+                    }
+                }else {
+                    mItems.add(couponBean1);
+                }
+            } else {
+                FToast.error(mCommissiontxBean.getInfo());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            FToast.error("数据错误");
+        }
+    }
 
 
+    @Override
+    public void onQiYeClick(QyandYHJBean.DataBean.GroupbuyBean DataBean) {
+        Intent intentProd1 = new Intent(mActivity, Agreement2Activity.class);
+        intentProd1.putExtra("url", DataBean.getLink());
+        mActivity.startActivity(intentProd1);
+    }
+
+
+    //切换此页面请求是否有券
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onClickMyEvent(ClickMyEvent event) {
+        if(event.getCode()== ClickMyEvent.CHECK_ITEM0){
+            MineViewModel  mViewModel = ViewModelProviders.of(this).get(MineViewModel.class);
+            if (mUserInfo != null) {
+                mViewModel.isyhjdailing("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, misyhjObserver);
+            } else {
+                mViewModel.isyhjdailing("2", "", "").observe(this, misyhjObserver);
+            }
+        }
+
+    }
+    private Observer<Status<ResponseBody>> misyhjObserver = status -> {
+
+        switch (status.status) {
+            case Status.SUCCESS:
+
+                ResponseBody body = status.content;
+                operaYhq(body);
+                break;
+            case Status.ERROR:
+
+                FToast.error("网络错误");
+                break;
+            case Status.LOADING:
+
+                break;
+        }
+
+    };
+
+    private void operaYhq(ResponseBody body) {
+        try {
+            String b = body.string();
+            IsYhjLingBean mIsYhjLingBean = new Gson().fromJson(b, IsYhjLingBean.class);
+            if (mIsYhjLingBean.getCode() == 1) {
+                if(mIsYhjLingBean.getData().getIs_coupon()==1){
+                    IsYhjLingBean.DataBean data = mIsYhjLingBean.getData();
+                    if(mIsYhjLingBean.getData().getType()==-1){
+                        if(SharedPrefUtils.getyhqtype()==0){
+                            new XPopup.Builder(mActivity)
+                                    .dismissOnTouchOutside(false)
+                                    .dismissOnBackPressed(false)
+                                    .asCustom(new TipsPopup_kaquan(mActivity,data, new TipsPopup_kaquan.OnExitListener() {
+                                        @Override
+                                        public void onPositive() {
+                                            if(AppUtils.isAllowPermission(mActivity)){
+
+                                            }
+                                        }
+                                    }))
+                                    .show();
+                        }
+                        SharedPrefUtils.saveyhqtype(1);
+                    }else {
+                        new XPopup.Builder(mActivity)
+                                .dismissOnTouchOutside(false)
+                                .dismissOnBackPressed(false)
+                                .asCustom(new TipsPopup_kaquan(mActivity,data, new TipsPopup_kaquan.OnExitListener() {
+                                    @Override
+                                    public void onPositive() {
+                                        if(AppUtils.isAllowPermission(mActivity)){
+                                            Intent intentRank = new Intent(MainActivity.ACTION_GO_TO_HOME);
+                                            LocalBroadcastManager.getInstance(mActivity)
+                                                    .sendBroadcast(intentRank);
+                                        }
+                                    }
+                                }))
+                                .show();
+
+                    }
+
+                }
+            } else {
+                FToast.error(mIsYhjLingBean.getInfo());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            FToast.error("数据错误");
+        }
+    }
 }

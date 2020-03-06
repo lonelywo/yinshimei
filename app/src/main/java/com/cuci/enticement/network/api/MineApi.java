@@ -8,6 +8,22 @@ import retrofit2.http.POST;
 
 
 public interface MineApi {
+
+    /**
+     * 会员优惠券列表
+     */
+    @FormUrlEncoded
+    @POST("store/api.member.coupon/get")
+    Call<ResponseBody> kaquanlist(
+                                  @Field("token") String token,
+                                  @Field("mid") String mid,
+                                  @Field("from_type") String from_type,
+                                  @Field("page") String page,
+                                  @Field("page_size") String page_size,
+                                  @Field("status") String status,
+                                  @Field("sign") String sign
+    );
+
     /**
      * 公告详情
      */
@@ -205,6 +221,17 @@ public interface MineApi {
             @Field("sign") String sign
     );
     /**
+     * 是否有优惠卷可以领
+     */
+    @FormUrlEncoded
+    @POST("store/api.page/acceptCoupon")
+    Call<ResponseBody> isyhjdailing(
+            @Field("from_type") String from_type,
+            @Field("mid") String mid,
+            @Field("token") String token,
+            @Field("sign") String sign
+    );
+    /**
      * 当前用户信息
      */
     @FormUrlEncoded
@@ -246,6 +273,15 @@ public interface MineApi {
     @FormUrlEncoded
     @POST("store/api.page/protocol")
     Call<ResponseBody> clause(
+            @Field("from_type") String from_type,
+            @Field("sign") String sign
+    );
+    /**
+     * 开屏广告
+     */
+    @FormUrlEncoded
+    @POST("store/api.page/adshow")
+    Call<ResponseBody> openScreen(
             @Field("from_type") String from_type,
             @Field("sign") String sign
     );

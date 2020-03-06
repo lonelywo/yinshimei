@@ -1,7 +1,10 @@
 package com.cuci.enticement.plate.cart.activity;
 
 import android.annotation.SuppressLint;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -10,15 +13,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.alipay.sdk.app.PayTask;
 import com.cuci.enticement.BasicApp;
@@ -42,6 +36,7 @@ import com.cuci.enticement.plate.mine.adapter.ItemProdDetailsViewBinder;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.cuci.enticement.plate.mine.vm.OrderViewModel;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.MathExtend;
 import com.cuci.enticement.utils.PayResult;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.ViewUtils;
@@ -59,6 +54,15 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.OnClick;
 import me.drakeet.multitype.Items;
@@ -115,6 +119,10 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
     ConstraintLayout conBuju3;
     @BindView(R.id.bottom)
     LinearLayout bottom;
+    @BindView(R.id.tv_fuzhi)
+    TextView tvFuzhi;
+    @BindView(R.id.tv_yhj_money)
+    TextView tvYhjMoney;
 
 
     private OrderViewModel mViewModel;
@@ -196,12 +204,24 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
         tuikuanTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                  Intent intent = new Intent(OrderDetailsActivity.this, TuiTypeActivity.class);
-                  intent.putExtra("intentInfo",mInfo);
-                  startActivity(intent);
+                Intent intent = new Intent(OrderDetailsActivity.this, TuiTypeActivity.class);
+                intent.putExtra("intentInfo", mInfo);
+                startActivity(intent);
             }
         });
-
+        tvFuzhi.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onClick(View view) {
+                // 从API11开始android推荐使用android.content.ClipboardManager
+// 为了兼容低版本我们这里使用旧版的android.text.ClipboardManager，虽然提示deprecated，但不影响使用。
+                ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+// 将文本内容放到系统剪贴板里。
+                long order_no = mInfo.getOrder_no();
+                cm.setText("" + order_no);
+                FToast.success("订单号复制成功");
+            }
+        });
     }
 
     private void initContent() {
@@ -214,10 +234,11 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
                 .append(mInfo.getExpress_address());
         tvOrderNo.setText(String.format(Locale.CHINA, "订单编号: %s", mInfo.getOrder_no()));
         textDizi.setText(sb.toString());
-        tvGoodsMoney.setText(String.format(Locale.CHINA, "¥%s", mInfo.getPrice_goods()));
-        tvExpress.setText(String.format(Locale.CHINA, "¥%s", mInfo.getPrice_express()));
-        tvTotalMoney.setText(String.format(Locale.CHINA, "¥%s", mInfo.getPrice_total()));
+        tvGoodsMoney.setText(String.format(Locale.CHINA, "¥%s", MathExtend.moveone(mInfo.getPrice_goods())));
+        tvExpress.setText(String.format(Locale.CHINA, "¥%s", MathExtend.moveone(mInfo.getPrice_express())));
+        tvTotalMoney.setText(String.format(Locale.CHINA, "¥%s", MathExtend.moveone(mInfo.getPrice_total())));
         tvCreateTime.setText(mInfo.getCreate_at());
+        tvYhjMoney.setText("-¥"+mInfo.getDiscount_price());
 
     }
 
@@ -591,8 +612,9 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
                         //刷新is_new
                         EventBus.getDefault().post(new IsnewEvent());
                         //切换全部订单
-                        EventBus.getDefault().post(new OrderEvent(OrderEvent.INTENT_MY_ORDER));
-
+                        //EventBus.getDefault().post(new OrderEvent(OrderEvent.INTENT_MY_ORDER));
+                        //跳转支付成功页面
+                        startActivity(new Intent(OrderDetailsActivity.this, PayOfterActivity.class));
 
                         finish();
 

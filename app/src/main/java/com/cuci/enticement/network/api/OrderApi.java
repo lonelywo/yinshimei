@@ -105,6 +105,7 @@ public interface OrderApi {
     @POST("store/api.member.order/set")
     Call<ResponseBody> udpateAdress(@Field("from_type") String fromType, @Field("token") String token,
                                     @Field("mid") String mid,
+                                    @Field("m_coupon_id") String m_coupon_id,
                                     @Field("rule") String rule,
                                     @Field("address_id") String addressId,
                                     @Field("sign") String signs);

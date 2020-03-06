@@ -13,6 +13,7 @@ import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.Constant;
 import com.cuci.enticement.event.IsnewEvent;
 import com.cuci.enticement.plate.cart.activity.OrderActivity;
+import com.cuci.enticement.plate.cart.activity.PayOfterActivity;
 import com.cuci.enticement.plate.common.eventbus.OrderEvent;
 import com.cuci.enticement.plate.mine.activity.MyOrderActivity;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
@@ -79,8 +80,10 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
                     EventBus.getDefault().post(new IsnewEvent());
                     //3  跳转订单页面--全部
 
-                    startActivity(new Intent(WXPayEntryActivity.this, MyOrderActivity.class));
+                    //startActivity(new Intent(WXPayEntryActivity.this, MyOrderActivity.class));
 
+                    //跳转支付成功页面
+                    startActivity(new Intent(WXPayEntryActivity.this, PayOfterActivity.class));
                     //4  关闭页面
 
                     EventBus.getDefault().post(new OrderEvent(OrderEvent.FINISH_ACTIVITY));

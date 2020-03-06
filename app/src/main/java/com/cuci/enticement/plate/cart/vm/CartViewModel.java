@@ -32,7 +32,34 @@ public class CartViewModel extends ViewModel {
         mCreator = ServiceCreator.getInstance();
     }
 
+    public MutableLiveData<Status<ResponseBody>> payofter(String token,String mid,String is_first,String order_no) {
 
+        final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
+        data.setValue(Status.loading(null));
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("token",token);
+        params.put("mid",mid);
+        params.put("is_first",is_first);
+        params.put("order_no",order_no);
+        params.put("from_type","2");
+        String signs = SignUtils.signParam(params);
+        mCreator.create(CartApi.class)
+                .payofter("2",token,mid,is_first,order_no,signs)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(@NonNull Call<ResponseBody> call,
+                                           @NonNull Response<ResponseBody> response) {
+                        data.setValue(Status.success(response.body()));
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<ResponseBody> call,
+                                          @NonNull Throwable t) {
+                        data.setValue(Status.error(null, t.getMessage() == null ? "获取失败" : t.getMessage()));
+                    }
+                });
+        return data;
+    }
 
     public MutableLiveData<Status<Base<CartDataBean>>> getCartList(String token, String mid, String page, int loadType) {
 

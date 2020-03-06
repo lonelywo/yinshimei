@@ -12,6 +12,7 @@ import com.cuci.enticement.bean.AllOrderList;
 import com.cuci.enticement.bean.OrderGoods;
 import com.cuci.enticement.bean.OrderList;
 import com.cuci.enticement.utils.ImageLoader;
+import com.cuci.enticement.utils.MathExtend;
 import com.google.gson.Gson;
 
 import java.util.Locale;
@@ -58,7 +59,7 @@ public class ItemProdViewBinder extends ItemViewBinder<OrderGoods, ItemProdViewB
         ImageLoader.loadPlaceholder(item.getGoods_logo(),holder.imgTupian);
         holder.textBiaoti.setText(item.getGoods_title());
         holder.textNeirong.setText(item.getGoods_spec());
-        holder.textQian.setText(String.format(Locale.CHINA,"%s",item.getPrice_sales()));
+        holder.textQian.setText(String.format(Locale.CHINA,"%s", MathExtend.moveone(item.getPrice_sales())));
         holder.textNum.setText(String.format(Locale.CHINA,"x%s",item.getNumber()));
         holder.itemView.setOnClickListener(position -> {
             if (mOnProdClickListener != null) {

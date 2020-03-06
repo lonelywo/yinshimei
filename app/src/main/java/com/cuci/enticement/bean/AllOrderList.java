@@ -232,6 +232,16 @@ public class AllOrderList implements Serializable {
             private String price_goods;
             private String price_express;
             private String price_service;
+
+            public String getDiscount_price() {
+                return discount_price;
+            }
+
+            public void setDiscount_price(String discount_price) {
+                this.discount_price = discount_price;
+            }
+
+            private String discount_price;
             private String express_rule_desc;
             private String express_rule_type;
             private int express_rule_number;

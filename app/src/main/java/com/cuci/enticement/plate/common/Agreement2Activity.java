@@ -11,11 +11,14 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
+
 import com.cuci.enticement.utils.FToast;
 import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,8 +51,9 @@ public class Agreement2Activity extends BaseActivity {
             FToast.error("数据错误");
             return;
         }
-        url = intent.getStringExtra("url");
-        webContext.loadUrl(url);
+
+
+
         WebSettings webSettings = webContext.getSettings();
         //如果访问的页面中要与Javascript交互，则webview必须设置支持Javascript
         webSettings.setJavaScriptEnabled(true);
@@ -73,6 +77,8 @@ public class Agreement2Activity extends BaseActivity {
                 super.onProgressChanged(view, newProgress);
             }
         });
+        url = intent.getStringExtra("url");
+        webContext.loadUrl(url);
     }
 
     private String getHtmlData(String bodyHTML) {
@@ -94,6 +100,7 @@ public class Agreement2Activity extends BaseActivity {
         webContext.destroy();
         webContext = null;
         super.onDestroy();
+
     }
 
     @Override
@@ -102,4 +109,5 @@ public class Agreement2Activity extends BaseActivity {
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
     }
+
 }

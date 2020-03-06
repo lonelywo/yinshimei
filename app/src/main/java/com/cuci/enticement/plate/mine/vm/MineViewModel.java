@@ -23,6 +23,56 @@ public class MineViewModel extends ViewModel {
 
     private ServiceCreator mCreator;
 
+    /**
+     * 会员优惠券列表
+     * @param from_type
+     * @param page
+     * @return
+     */
+    public MutableLiveData<Status<ResponseBody>> kaquanlist(String token,String mid,String from_type,String page,String page_size,String status,int loadType) {
+
+        final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
+        liveData.setValue(Status.loading(null));
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("token",token);
+        params.put("mid",mid);
+        params.put("from_type",from_type);
+        params.put("page",page);
+        params.put("page_size",page_size);
+        params.put("status",status);
+        String signs = SignUtils.signParam(params);
+        mCreator.create(MineApi.class)
+                .kaquanlist(token,mid,from_type,page,page_size,status,signs)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(@NonNull Call<ResponseBody> call,
+                                           @NonNull Response<ResponseBody> response) {
+                        if (loadType == Status.LOAD_REFRESH) {
+                            liveData.setValue(Status.refreshSuccess(response.body()));
+                        } else {
+                            liveData.setValue(Status.moreSuccess(response.body()));
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<ResponseBody> call,
+                                          @NonNull Throwable t) {
+                        if (loadType == Status.LOAD_REFRESH) {
+                            liveData.setValue(Status.refreshError(null, t.getMessage() ==
+                                    null ? "加载失败" : t.getMessage()));
+                        } else {
+                            liveData.setValue(Status.moreError(null, t.getMessage() ==
+                                    null ? "加载失败" : t.getMessage()));
+                        }
+                    }
+                });
+        return liveData;
+
+    }
+
+
+
     public MineViewModel() {
         mCreator = ServiceCreator.getInstance();
     }
@@ -838,7 +888,40 @@ public class MineViewModel extends ViewModel {
         return liveData;
 
     }
+    /**
+     * 是否有优惠劵可以领
+     * @param from_type
+     * @param token
+     * @param mid
+     * @return
+     */
+    public MutableLiveData<Status<ResponseBody>> isyhjdailing(String from_type, String mid, String token) {
 
+        final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
+        liveData.setValue(Status.loading(null));
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("from_type",from_type);
+        params.put("token",token);
+        params.put("mid",mid);
+        String signs = SignUtils.signParamRemoveNull(params);
+        mCreator.create(MineApi.class)
+                .isyhjdailing(from_type,mid,token,signs)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(@NonNull Call<ResponseBody> call,
+                                           @NonNull Response<ResponseBody> response) {
+                        liveData.setValue(Status.success(response.body()));
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<ResponseBody> call,
+                                          @NonNull Throwable t) {
+                        liveData.setValue(Status.error(null, t.getMessage() == null ? "网络错误" : t.getMessage()));
+                    }
+                });
+        return liveData;
+
+    }
     /**
      * 获取当前用户信息
      * @param from_type

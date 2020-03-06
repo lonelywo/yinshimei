@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cuci.enticement.R;
 import com.cuci.enticement.bean.OrderGoods;
 import com.cuci.enticement.utils.ImageLoader;
+import com.cuci.enticement.utils.MathExtend;
 import com.cuci.enticement.utils.ViewUtils;
 import com.google.gson.Gson;
 
@@ -59,7 +60,7 @@ public class ItemProdDetailsViewBinder extends ItemViewBinder<OrderGoods, ItemPr
         ImageLoader.loadPlaceholder(item.getGoods_logo(), holder.imgTupian);
         holder.textBiaoti.setText(item.getGoods_title());
         holder.textNeirong.setText(item.getGoods_spec());
-        holder.textQian.setText(String.format(Locale.CHINA, "%s", item.getPrice_sales()));
+        holder.textQian.setText(String.format(Locale.CHINA, "%s", MathExtend.moveone(item.getPrice_sales()) ));
         holder.textNum.setText(String.format(Locale.CHINA, "x%s", item.getNumber()));
         holder.itemView.setOnClickListener(position -> {
             if (mOnProdClickListener != null) {

@@ -372,7 +372,7 @@ public class OrderViewModel extends ViewModel {
      * 补全或修改地址确认
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> udpateAdress(String token, String mid, String rule, String adressId) {
+    public MutableLiveData<Status<ResponseBody>> udpateAdress(String token, String mid,String m_coupon_id, String rule, String adressId) {
 
         final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
         data.setValue(Status.loading(null));
@@ -380,13 +380,14 @@ public class OrderViewModel extends ViewModel {
         Map<String, String> params = new HashMap<String, String>();
         params.put("token",token);
         params.put("mid",mid);
+        params.put("m_coupon_id",m_coupon_id);
         params.put("rule",rule);
         params.put("address_id",adressId);
         params.put("from_type","2");
 
-        String sign = SignUtils.signParam(params);
+        String sign = SignUtils.signParamRemoveNull(params);
         mCreator.create(OrderApi.class)
-                .udpateAdress("2",token,mid,rule,adressId,sign)
+                .udpateAdress("2",token,mid,m_coupon_id,rule,adressId,sign)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,

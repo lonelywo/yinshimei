@@ -50,7 +50,22 @@
             >
         </activity>
         <activity
+            android:name=".plate.mine.activity.KaQuanActivity"
+            android:screenOrientation="portrait"
+            >
+        </activity>
+        <activity
             android:name=".plate.common.Agreement2Activity"
+            android:screenOrientation="portrait"
+            >
+        </activity>
+        <activity
+            android:name=".plate.common.OpenScreenActivity"
+            android:screenOrientation="portrait"
+            >
+        </activity>
+        <activity
+            android:name=".plate.cart.activity.PayOfterActivity"
             android:screenOrientation="portrait"
             >
         </activity>
@@ -69,7 +84,11 @@
             android:screenOrientation="portrait"
             >
         </activity>
-
+        <activity
+            android:name=".plate.home.activity.CenterLingQuanActivity"
+            android:screenOrientation="portrait"
+            >
+        </activity>
         <activity
         android:name=".plate.mine.activity.NoticeActivity"
         android:screenOrientation="portrait"

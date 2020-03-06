@@ -25,7 +25,7 @@
     <com.cuci.enticement.widget.BottomBarView
         android:id="@+id/bottom_layout"
         android:layout_width="0dp"
-        android:layout_height="48dp"
+        android:layout_height="56dp"
         android:background="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -17,6 +17,7 @@ import com.cuci.enticement.bean.CartDataBean;
 import com.cuci.enticement.bean.OrderGoods;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.ImageLoader;
+import com.cuci.enticement.utils.MathExtend;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.UtilsForClick;
 import com.google.gson.Gson;
@@ -84,7 +85,7 @@ public class ItemCartViewBinder extends ItemViewBinder<OrderGoods, ItemCartViewB
         }else {
             holder.textJiage.setText(String.format(Locale.CHINA,"%s",item.getGoods_price_selling()));
         }*/
-        holder.textJiage.setText(String.format(Locale.CHINA,"%s",item.getGoods_price_selling()));
+        holder.textJiage.setText(String.format(Locale.CHINA,"%s", MathExtend.moveone(item.getGoods_price_selling())));
         holder.tvNum.setText(String.valueOf(item.getGoods_num()));
         ImageLoader.loadPlaceholder(item.getGoods_logo(),holder.imgTuxiang);
 

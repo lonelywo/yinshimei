@@ -8,13 +8,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+
 import com.classic.common.MultipleStatusView;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
@@ -22,6 +16,8 @@ import com.cuci.enticement.bean.MyTeamlbBean;
 import com.cuci.enticement.bean.MyTeamslBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
+import com.cuci.enticement.plate.common.popup.TipsPopupxieyi_cash;
+import com.cuci.enticement.plate.common.popup.TipsPopupxieyi_team;
 import com.cuci.enticement.plate.mine.adapter.ItemMyTeamViewBinder;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.FToast;
@@ -31,11 +27,21 @@ import com.cuci.enticement.widget.BrandItemDecoration;
 import com.cuci.enticement.widget.ClearEditText;
 import com.cuci.enticement.widget.CustomRefreshHeader;
 import com.google.gson.Gson;
+import com.lxj.xpopup.XPopup;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+
 import java.io.IOException;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -81,6 +87,8 @@ public class MyTeamActivity extends BaseActivity implements OnRefreshLoadMoreLis
     LinearLayout llWenzi;
     @BindView(R.id.text_name)
     TextView textName;
+    @BindView(R.id.text_shuoming)
+    TextView textShuoming;
     private MineViewModel mViewModel;
     private UserInfo mUserInfo;
     private MultiTypeAdapter mAdapter;
@@ -146,6 +154,19 @@ public class MyTeamActivity extends BaseActivity implements OnRefreshLoadMoreLis
             @Override
             public void onClick(View view) {
                 finish();
+            }
+        });
+        textShuoming.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new XPopup.Builder(MyTeamActivity.this)
+                        .dismissOnBackPressed(false)
+                        .dismissOnTouchOutside(false)
+                        .asCustom(new TipsPopupxieyi_team(MyTeamActivity.this,
+                                () -> {
+
+                                }))
+                        .show();
             }
         });
     }

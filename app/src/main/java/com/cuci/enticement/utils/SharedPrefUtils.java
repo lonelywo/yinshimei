@@ -43,7 +43,7 @@ public class SharedPrefUtils {
     private static final String SETTINGS_TITLE_POPUP = "settings_title_popup";
     private static final String SETTINGS_WITH_APP = "settings_with_app";
     private static final String DY_FIRST_GUIDE = "dy_first_guide";
-
+    private static final String SETTINGS_YHQ_TYPE = "settings_yhq_type";
 
     private SharedPrefUtils() {
     }
@@ -195,6 +195,22 @@ public class SharedPrefUtils {
         return sp.getBoolean(SETTINGS_FIRST_POPUP, true);
     }
 
+    /**
+     * 设置优惠券type=-1
+     */
+    public static void saveyhqtype(int flag) {
+        SharedPreferences sp = BasicApp.getContext().getSharedPreferences(NAME_SETTINGS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putInt(SETTINGS_YHQ_TYPE, flag);
+        editor.apply();
+    }
+    /**
+     * 设置优惠券type
+     */
+    public static int getyhqtype() {
+        SharedPreferences sp = BasicApp.getContext().getSharedPreferences(NAME_SETTINGS, Context.MODE_PRIVATE);
+        return sp.getInt(SETTINGS_YHQ_TYPE, 0);
+    }
     /**
      * 设置里面微信绑定是否绑定
      */

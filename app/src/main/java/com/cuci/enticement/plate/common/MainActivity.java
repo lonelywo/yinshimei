@@ -7,10 +7,14 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.cuci.enticement.R;
 import com.cuci.enticement.BasicApp;
@@ -31,7 +35,6 @@ import com.cuci.enticement.plate.common.popup.UpdateProgressPopup;
 import com.cuci.enticement.plate.common.vm.MainViewModel;
 import com.cuci.enticement.plate.home.fragment._HomeFragment;
 import com.cuci.enticement.plate.mall.fragment._MallFragment;
-import com.cuci.enticement.plate.mine.activity.NoticeActivity;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FLog;
@@ -99,14 +102,14 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //透明状态栏
-        //Window window = getWindow();
-        //window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        Window window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         //小米手机状态栏字体黑色
         //MIUIStatusBarUtils.MIUISetStatusBarLightMode(this, true);
         //魅族手机状态栏字体黑色
         // if (Rom.check(Rom.ROM_FLYME)) {
-        //   FlymeStatusBarColorUtils.setStatusBarDarkIcon(this, true);
-        // }
+       //    FlymeStatusBarColorUtils.setStatusBarDarkIcon(this, true);
+       //  }
 
 
         setContentView(R.layout.activity_main);
@@ -169,7 +172,10 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
             public void onPageSelected(int position) {
                 mBottomLayout.setSelected(position);
                 if (position == 3) {
-                    EventBus.getDefault().post(new ClickMyEvent());
+                    EventBus.getDefault().post(new ClickMyEvent(ClickMyEvent.CHECK_ITEM3));
+                }
+                if (position == 0) {
+                    EventBus.getDefault().post(new ClickMyEvent(ClickMyEvent.CHECK_ITEM0));
                 }
             }
 
@@ -574,5 +580,8 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
     public void onCheckHomeEvent(CheckHomeEvent event) {
         mBottomLayout.setSelected(0);
     }
+
+
+
 
 }

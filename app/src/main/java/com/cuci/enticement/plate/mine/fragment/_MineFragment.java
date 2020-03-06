@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -26,18 +25,29 @@ import com.cuci.enticement.base.BaseFragment;
 import com.cuci.enticement.bean.DataUserInfo;
 import com.cuci.enticement.bean.GeTuibean;
 import com.cuci.enticement.bean.HxBean;
+import com.cuci.enticement.bean.IsYhjLingBean;
 import com.cuci.enticement.bean.OrderStatistics;
+import com.cuci.enticement.bean.ProCheckLqBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.event.ClickMyEvent;
 import com.cuci.enticement.event.IsnewEvent;
 import com.cuci.enticement.event.ProgoodsEvent;
+import com.cuci.enticement.event.ReceiveEvent;
 import com.cuci.enticement.plate.common.DailyActivity;
 import com.cuci.enticement.plate.common.LoginActivity;
+import com.cuci.enticement.plate.common.MainActivity;
 import com.cuci.enticement.plate.common.popup.ShareImgTipsPopup;
+import com.cuci.enticement.plate.common.popup.SharegoodsImgTipsPopup;
 import com.cuci.enticement.plate.common.popup.TipsPopup;
+import com.cuci.enticement.plate.common.popup.TipsPopup1;
+import com.cuci.enticement.plate.common.popup.TipsPopup_kaquan;
+import com.cuci.enticement.plate.common.popup.TipsPopupxieyi;
+import com.cuci.enticement.plate.common.popup.UpdatePopup;
+import com.cuci.enticement.plate.common.popup.UpdateProgressPopup;
 import com.cuci.enticement.plate.mine.activity.AchievementActivity;
 import com.cuci.enticement.plate.mine.activity.CommissionActivity;
+import com.cuci.enticement.plate.mine.activity.KaQuanActivity;
 import com.cuci.enticement.plate.mine.activity.MyOrderActivity;
 import com.cuci.enticement.plate.mine.activity.MyTeamActivity;
 import com.cuci.enticement.plate.mine.activity.NoticeActivity;
@@ -79,7 +89,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.ResponseBody;
 
 import static androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance;
-import static com.cuci.enticement.plate.common.MainActivity.ACTION_GO_TO_HOME;
 import static com.superrtc.ContextUtils.getApplicationContext;
 
 
@@ -90,21 +99,14 @@ import static com.superrtc.ContextUtils.getApplicationContext;
 public class _MineFragment extends BaseFragment {
 
     private static final String TAG = _MineFragment.class.getSimpleName();
-
-    @BindView(R.id.img_kaiguan)
-    ImageView imgKaiguan;
     @BindView(R.id.con_toubu)
     ConstraintLayout conToubu;
-    @BindView(R.id.img_shape_huang)
-    ImageView imgShapeHuang;
     @BindView(R.id.img_shape_bai)
     ImageView imgShapeBai;
     @BindView(R.id.img_tuxiang)
     CircleImageView imgTuxiang;
     @BindView(R.id.img_jingxiao)
     ImageView imgJingxiao;
-    @BindView(R.id.btn_shengji)
-    Button btnShengji;
     @BindView(R.id.img_shape_bai2)
     ImageView imgShapeBai2;
     @BindView(R.id.text_dingdan)
@@ -158,7 +160,7 @@ public class _MineFragment extends BaseFragment {
     @BindView(R.id.dot4_tv)
     TextView dot4Tv;
     @BindView(R.id.img_yqhy)
-    ImageView imgYqhy;
+    TextView imgYqhy;
     @BindView(R.id.daifukuan_ll)
     ConstraintLayout daifukuanLl;
     @BindView(R.id.daifahuo_ll)
@@ -171,10 +173,6 @@ public class _MineFragment extends BaseFragment {
     ConstraintLayout conYingchang;
     @BindView(R.id.text_huiyuan)
     TextView textHuiyuan;
-    @BindView(R.id.text_huiyuan1)
-    TextView textHuiyuan1;
-    @BindView(R.id.text_huiyuan2)
-    TextView textHuiyuan2;
     @BindView(R.id.dot1_hx)
     TextView dot1Hx;
     @BindView(R.id.wodekefu_ll)
@@ -205,6 +203,14 @@ public class _MineFragment extends BaseFragment {
     ConstraintLayout goodsLl;
     @BindView(R.id.v6)
     View v6;
+    @BindView(R.id.text_wodekajuan)
+    TextView textWodekajuan;
+    @BindView(R.id.text_wodetuandui1)
+    TextView textWodetuandui1;
+    @BindView(R.id.text_pk1)
+    TextView textPk1;
+    @BindView(R.id.ll_fuwu1)
+    LinearLayout llFuwu1;
     private boolean mCouldChange = true;
     private LocalBroadcastManager mBroadcastManager;
     private UserInfo mUserInfo;
@@ -311,7 +317,22 @@ public class _MineFragment extends BaseFragment {
 
             }
         });
+        textWodekajuan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (AppUtils.isAllowPermission(mActivity)) {
+                   /* new XPopup.Builder(mActivity)
+                            .dismissOnTouchOutside(false)
+                            .dismissOnBackPressed(false)
+                            .asCustom(new TipsPopup_kaquan(mActivity,
+                                    () -> {
 
+                                    }))
+                            .show();*/
+                    startActivity(new Intent(mActivity, KaQuanActivity.class));
+                }
+            }
+        });
 
     }
 
@@ -341,22 +362,21 @@ public class _MineFragment extends BaseFragment {
             if (mDataUserInfo.getCode() == 1) {
                 //是否绑定微信
                 int is_bindingwx1 = mDataUserInfo.getData().getIs_bindingwx();
-                if(is_bindingwx1==1){
+                if (is_bindingwx1 == 1) {
                     SharedPrefUtils.saveWXBind(1);
-                }else {
+                } else {
                     SharedPrefUtils.saveWXBind(0);
                 }
                 //保存is_new
                 int is_new = mDataUserInfo.getData().getIs_new();
                 if (is_new == 1) {
                     ViewUtils.showView(conYingchang);
-                    //ViewUtils.showView(imgYqhy);
                     if (SharedPrefUtils.getisnew() != is_new) {
                         SharedPrefUtils.saveisnew(is_new);
                         EventBus.getDefault().post(new ProgoodsEvent());
                     }
                 } else {
-                   //ViewUtils.hideView(imgYqhy);
+                    //ViewUtils.hideView(imgYqhy);
                     ViewUtils.hideView(conYingchang);
                 }
                 //礼品中心
@@ -364,9 +384,9 @@ public class _MineFragment extends BaseFragment {
                 int gift = mDataUserInfo.getData().getMenu().getGift();
                 if (daily_activity == 1) {
                     ViewUtils.showView(goodsLl);
-                    if(gift==1){
+                    if (gift == 1) {
                         ViewUtils.showView(dot1Goods);
-                    }else {
+                    } else {
                         ViewUtils.hideView(dot1Goods);
                     }
                     final String daily_activity_url = mDataUserInfo.getData().getDaily_activity_url();
@@ -384,15 +404,10 @@ public class _MineFragment extends BaseFragment {
                 }
                 if (mDataUserInfo.getData().getVip_level() == 0) {
                     textHuiyuan.setText("用户");
-                    textHuiyuan1.setText("");
                 } else if (mDataUserInfo.getData().getVip_level() == 1) {
                     textHuiyuan.setText("美粉");
-                    textHuiyuan1.setText("");
                 } else if (mDataUserInfo.getData().getVip_level() == 2) {
                     textHuiyuan.setText("超级美粉");
-                    textHuiyuan1.setVisibility(View.GONE);
-                    textHuiyuan2.setVisibility(View.GONE);
-                    btnShengji.setVisibility(View.GONE);
                     imgHeadwear.setVisibility(View.VISIBLE);
                 }
 
@@ -537,41 +552,9 @@ public class _MineFragment extends BaseFragment {
 
     }
 
-    @OnClick({R.id.img_kaiguan, R.id.btn_shengji, R.id.text_quanbudingdan, R.id.text_tuiguangyongjing, R.id.text_wodetuandui, R.id.text_shouhuodizi, R.id.text_yejiyuefan, R.id.text_wodekefu})
+    @OnClick({R.id.text_quanbudingdan, R.id.text_tuiguangyongjing, R.id.text_wodetuandui, R.id.text_shouhuodizi, R.id.text_yejiyuefan, R.id.text_wodekefu})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.img_kaiguan:
-                if (AppUtils.isAllowPermission(mActivity)) {
-
-                }
-                break;
-            case R.id.btn_shengji:
-                if (AppUtils.isAllowPermission(mActivity)) {
-                  /*  if (mUserInfo.getVip_level() == 0) {
-                        new XPopup.Builder(mActivity)
-                                .dismissOnBackPressed(false)
-                                .dismissOnTouchOutside(false)
-                                .asCustom(new TipsPopup(mActivity,
-                                        "购买入会礼包即可升级成为会员", "关闭", "去购买", () -> {
-                                    LocalBroadcastManager broadcastManager = getInstance(mActivity);
-                                    broadcastManager.sendBroadcast(new Intent(ACTION_GO_TO_HOME));
-                                }))
-                                .show();
-                    } else if (mUserInfo.getVip_level() == 1) {
-                        new XPopup.Builder(mActivity)
-                                .dismissOnBackPressed(false)
-                                .dismissOnTouchOutside(false)
-                                .asCustom(new TipsPopup1(mActivity,
-                                        "团队满200人即可成为服务商", "关闭", () -> {
-                                }))
-                                .show();
-                    } else if (mUserInfo.getVip_level() == 2) {
-
-                    }*/
-                    LocalBroadcastManager broadcastManager = getInstance(mActivity);
-                    broadcastManager.sendBroadcast(new Intent(ACTION_GO_TO_HOME));
-                }
-                break;
             case R.id.text_quanbudingdan:
                 if (AppUtils.isAllowPermission(mActivity)) {
                     Intent intentProd = new Intent(mActivity, MyOrderActivity.class);
@@ -827,9 +810,13 @@ public class _MineFragment extends BaseFragment {
     //切换此页面请求当前用户信息
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onClickMyEvent(ClickMyEvent event) {
-        if (mUserInfo != null) {
-            mViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);
+        if(event.getCode()== ClickMyEvent.CHECK_ITEM3){
+            if (mUserInfo != null) {
+                mViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);
+            }
         }
+
+
     }
 
     //刷新isnew显示数据

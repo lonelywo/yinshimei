@@ -8,16 +8,8 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.alipay.sdk.app.PayTask;
 import com.cuci.enticement.BasicApp;
@@ -28,6 +20,7 @@ import com.cuci.enticement.bean.AllOrderList;
 import com.cuci.enticement.bean.CommitOrder;
 import com.cuci.enticement.bean.DataUserInfo;
 import com.cuci.enticement.bean.ExpressCost;
+import com.cuci.enticement.bean.KaQuanListBean;
 import com.cuci.enticement.bean.OrderGoods;
 import com.cuci.enticement.bean.OrderPay;
 import com.cuci.enticement.bean.Status;
@@ -36,8 +29,10 @@ import com.cuci.enticement.bean.Version;
 import com.cuci.enticement.bean.WxPayBean;
 import com.cuci.enticement.bean.ZFBBean;
 import com.cuci.enticement.event.IsnewEvent;
+import com.cuci.enticement.network.ServiceCreator;
 import com.cuci.enticement.plate.common.eventbus.CartEvent;
 import com.cuci.enticement.plate.common.eventbus.OrderEvent;
+import com.cuci.enticement.plate.common.popup.CheckKaQuanTipsPopup;
 import com.cuci.enticement.plate.common.popup.WarningPopup;
 import com.cuci.enticement.plate.common.vm.CommonViewModel;
 import com.cuci.enticement.plate.common.vm.MainViewModel;
@@ -64,11 +59,22 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.OnClick;
 import me.drakeet.multitype.Items;
@@ -140,6 +146,18 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
     TextView tv;
     @BindView(R.id.bottom)
     ConstraintLayout bottom;
+    @BindView(R.id.text_youhui)
+    TextView textYouhui;
+    @BindView(R.id.text_youhuimoney)
+    TextView textYouhuimoney;
+    @BindView(R.id.con_youhuiquan)
+    ConstraintLayout conYouhuiquan;
+    @BindView(R.id.line5)
+    View line5;
+    @BindView(R.id.progress_bar)
+    ProgressBar progressBar;
+    @BindView(R.id.text_youhuiset)
+    TextView textYouhuiset;
 
     private OrderViewModel mViewModel;
     private UserInfo mUserInfo;
@@ -153,6 +171,17 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
     private int is_new;
     private int number;
     private String rule;
+    //有无优惠卷
+    private int type = 0;
+
+    //总价
+    private String totalMoney;
+    //优惠券id
+    private String id_yhq;
+    //商品集合
+    private List<OrderGoods> items;
+    //可使用优惠卷集合
+    private ArrayList<KaQuanListBean.DataBean.ListBean> list;
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         @SuppressWarnings("unused")
@@ -173,12 +202,12 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                         Intent intent = new Intent(_MineFragment.ACTION_REFRESH_STATUS);
 
                         LocalBroadcastManager.getInstance(OrderActivity.this).sendBroadcast(intent);
-                       //刷新is_new
+                        //刷新is_new
                         EventBus.getDefault().post(new IsnewEvent());
                         //跳转订单页面--全部
-
-                        startActivity(new Intent(OrderActivity.this, MyOrderActivity.class));
-
+                       //startActivity(new Intent(OrderActivity.this, MyOrderActivity.class));
+                       //跳转支付成功页面
+                        startActivity(new Intent(OrderActivity.this, PayOfterActivity.class));
                         finish();
 
 
@@ -249,7 +278,8 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
 
         mInfo = (AllOrderList.DataBean.ListBeanX) intent.getSerializableExtra("intentInfo");
 
-        List<OrderGoods> items = mInfo.getList();
+        items = mInfo.getList();
+
         int vip = intent.getIntExtra("vip", 0);
         number = intent.getIntExtra("num", 0);
         rule = intent.getStringExtra("rule");
@@ -264,12 +294,60 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
         mViewModel1.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);*/
 
         //检测APP更新
-        MainViewModel  mMineViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-        mMineViewModel.getVersion("2").observe(this, mUpdateObserver);
+        MainViewModel mMainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        mMainViewModel.getVersion("2").observe(this, mUpdateObserver);
+
+       //可使用优惠卷
+        MineViewModel mMineViewModel = ViewModelProviders.of(OrderActivity.this).get(MineViewModel.class);
+        mMineViewModel.kaquanlist(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", "1", "", "0", Status.LOAD_REFRESH)
+                .observe(OrderActivity.this, mkaquanObserver);
+
+
+
+
+        conYouhuiquan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               if(type==1){
+                   new XPopup.Builder(OrderActivity.this)
+                           .dismissOnBackPressed(false)
+                           .dismissOnTouchOutside(false)
+                           .asCustom(new CheckKaQuanTipsPopup(OrderActivity.this, list, new CheckKaQuanTipsPopup.OnExitListener() {
+
+
+
+
+                               @Override
+                               public void onCommit(KaQuanListBean.DataBean.ListBean item) {
+                                   if(TextUtils.equals(item.getUsed_at(),"未知")){
+                                       textYouhuiset.setText( "不使用优惠券");
+                                       textYouhuimoney.setText("-¥0");
+                                       tvTotalMoney.setText(totalMoney);
+                                       id_yhq="";
+                                   }else {
+                                       String amount = item.getCoupon().getAmount();
+                                       String moveone_amount = MathExtend.moveone(amount);
+                                       id_yhq = item.getId();
+                                                   textYouhuiset.setText( "省"+moveone_amount+"元，"+item.getCoupon().getAmount_desc()+"优惠券");
+                                                   textYouhuimoney.setText("-¥"+moveone_amount);
+                                                   String subtract = MathExtend.subtract(totalMoney, moveone_amount);
+                                                   tvTotalMoney.setText(subtract);
+                                   }
+
+                               }
+
+                           }))
+                           .show();
+               }
+
+
+            }
+        });
+
         // ImageLoader.loadPlaceholder(mOrderBean.get);
         //设置商品总价，运费，订单总价
 
-
+        totalMoney=mInfo.getPrice_goods();
         textShangpingmoney.setText(mInfo.getPrice_goods());
         tvTotalMoney.setText(mInfo.getPrice_goods());
 
@@ -386,7 +464,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
 
             AddressBean.DataBean.ListBean item = list.get(num);
             SharedPrefUtils.saveDefaultAdressId(String.valueOf(item.getId()));
-            mAddressId=SharedPrefUtils.getDefaultAdressId();
+            mAddressId = SharedPrefUtils.getDefaultAdressId();
             StringBuilder sb = new StringBuilder();
             sb.append(item.getName()).append(" ")
                     .append(item.getPhone()).append(" ").append("\n")
@@ -398,7 +476,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
             ViewUtils.hideView(textDizi);
             ViewUtils.showView(tvAddress);
             tvAddress.setText(SharedPrefUtils.getDefaultAdress());
-            mViewModel.getExpressCost(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(number), mInfo.getPrice_goods(),mAddressId )
+            mViewModel.getExpressCost(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(number), mInfo.getPrice_goods(), mAddressId)
                     .observe(OrderActivity.this, mExpressCostObserver);
         } else {
             ViewUtils.showView(textDizi);
@@ -431,7 +509,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                 }
                 if (UtilsForClick.isFastClick()) {
                     //提交订单，成功后，去调用获取支付参数接口
-                    mViewModel.udpateAdress(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), rule, mAddressId)
+                    mViewModel.udpateAdress(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),id_yhq, rule, mAddressId)
                             .observe(OrderActivity.this, mCommitObserver);
                 }
                 break;
@@ -532,6 +610,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
     }
 
 
+
     /**
      * 获取运费接口
      */
@@ -545,9 +624,9 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                     ExpressCost expressCost = new Gson().fromJson(result, ExpressCost.class);
                     if (expressCost.getCode() == 1) {
                         String express_price = expressCost.getData().getExpress_price();
-                        textYunfeimoney.setText(String.format(Locale.CHINA, "¥%s", express_price));
+                        textYunfeimoney.setText(String.format(Locale.CHINA, "¥%s", MathExtend.moveone(express_price)));
                         //计算总价
-                        String totalMoney = MathExtend.addnum(mInfo.getPrice_goods(), express_price);
+                        totalMoney = MathExtend.addnum(mInfo.getPrice_goods(), express_price);
                         tvTotalMoney.setText(String.format(Locale.CHINA, "%s", totalMoney));
                     } else {
                         FToast.error(expressCost.getInfo());
@@ -593,9 +672,13 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
 
                         LocalBroadcastManager.getInstance(this).sendBroadcast(intent2);
 
-                            mViewModel.getOrderPay(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),
-                                    commitOrder.getData().getOrder().getOrder_no(), String.valueOf(mPayType))
-                                    .observe(this, mPayObserver);
+                        //赋值常量
+                        ServiceCreator.Constant_GOODS_ID=commitOrder.getData().getOrder().getOrder_no() ;
+                        ServiceCreator.Constant_IS_NEW=SharedPrefUtils.getisnew();
+                        ServiceCreator.Constant_ZONG_MONEY=totalMoney;
+                        mViewModel.getOrderPay(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),
+                                commitOrder.getData().getOrder().getOrder_no(), String.valueOf(mPayType))
+                                .observe(this, mPayObserver);
 
                     } else {
                         FToast.error(commitOrder.getInfo());
@@ -765,27 +848,27 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
             String b = body.string();
             Version mVersion = new Gson().fromJson(b, Version.class);
             if (mVersion.getCode() == 1) {
-                  if(mVersion.getData().getFull().getOpenfulle()==1){
-            ViewUtils.showView(conZengping);
-        }else {
-            ViewUtils.hideView(conZengping);
-            return;
-        }
+                if (mVersion.getData().getFull().getOpenfulle() == 1) {
+                    ViewUtils.showView(conZengping);
+                } else {
+                    ViewUtils.hideView(conZengping);
+                    return;
+                }
                 String price_goods = mInfo.getPrice_goods();
-                double total= Double.parseDouble(price_goods);
+                double total = Double.parseDouble(price_goods);
                 List<Version.DataBean.FullBean.FullinfoBean> fullinfo = mVersion.getData().getFull().getFullinfo();
-        if(total<fullinfo.get(0).getAmount()){
-            String chajia = Arith.sub(fullinfo.get(0).getAmount(),total);
-            textZengping.setText("再买"+chajia+"元"+fullinfo.get(0).getAppmargin());
-            return;
+                if (total < fullinfo.get(0).getAmount()) {
+                    String chajia = Arith.sub(fullinfo.get(0).getAmount(), total);
+                    textZengping.setText("再买" + chajia + "元" + fullinfo.get(0).getAppmargin());
+                    return;
 
-        }
-        for (int i = 0; i <fullinfo.size() ; i++) {
-            if(total>=fullinfo.get(i).getAmount()){
-                textZengping.setText(fullinfo.get(i).getDesc());
-            }
+                }
+                for (int i = 0; i < fullinfo.size(); i++) {
+                    if (total >= fullinfo.get(i).getAmount()) {
+                        textZengping.setText(fullinfo.get(i).getDesc());
+                    }
 
-        }
+                }
 
 
             } else {
@@ -796,4 +879,94 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
             FToast.error("数据错误");
         }
     }
+
+    private Observer<Status<ResponseBody>> mkaquanObserver = status -> {
+
+        switch (status.status) {
+            case Status.SUCCESS:
+                ResponseBody body = status.content;
+                opera1(body, status);
+               dismissLoading();
+                break;
+            case Status.ERROR:
+               dismissLoading();
+                FToast.error("网络错误");
+                break;
+            case Status.LOADING:
+                showLoading();
+                break;
+        }
+
+    };
+
+    private void opera1(ResponseBody body, Status status) {
+        try {
+            String b = body.string();
+            KaQuanListBean mKaQuanListBean = new Gson().fromJson(b, KaQuanListBean.class);
+            List<KaQuanListBean.DataBean.ListBean>   mcheckitems = mKaQuanListBean.getData().getList();
+            if (mcheckitems == null || mcheckitems.size() == 0) {
+                textYouhuiset.setText("暂无可使用优惠卷");
+                type=0;
+                return;
+            }
+            if (mKaQuanListBean.getCode() == 1) {
+                List<KaQuanListBean.DataBean.ListBean>   checkitems = mKaQuanListBean.getData().getList();
+                list = new ArrayList<>();
+
+                double total = Double.parseDouble(mInfo.getPrice_goods());
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                    }
+                });
+
+            //普通卷
+                for (int i = 0; i <checkitems.size() ; i++) {
+                   if(TextUtils.isEmpty(checkitems.get(i).getCoupon().getUse_goods())){
+                       for (int j = 0; j <items.size() ; j++) {
+                           String moveone_limit = MathExtend.moveone(checkitems.get(i).getCoupon().getLimit_amount());
+                           double total_man = Double.parseDouble(moveone_limit);
+                           if(items.get(j).getIs_join()==1&&total>=total_man){
+                               list.add(checkitems.get(i));
+                           }
+                       }
+                   }else {
+                       //特定券
+                       String use_goods = checkitems.get(i).getCoupon().getUse_goods();
+                       String muse_goods =use_goods+",";
+                       List<String> strings = Arrays.asList(muse_goods.split(","));
+                       for (int j = 0; j <items.size() ; j++) {
+                           String moveone_limit = MathExtend.moveone(checkitems.get(i).getCoupon().getLimit_amount());
+                           double total_man = Double.parseDouble(moveone_limit);
+                           boolean contains = strings.contains(items.get(j).getGoods_id());
+                           if(contains&&total>=total_man){
+                               list.add(checkitems.get(i));
+                           }
+                       }
+                   }
+                }
+                if(list.size()==0){
+                    textYouhuiset.setText("暂无可使用优惠卷");
+                    type=0;
+                    return;
+                }
+                   //装载完
+                KaQuanListBean.DataBean.ListBean listBean = new KaQuanListBean.DataBean.ListBean();
+                listBean.setUsed_at("未知");
+                list.add(listBean);
+                textYouhuiset.setText("点击选择优惠券");
+                type=1;
+
+            } else {
+                FToast.warning(mKaQuanListBean.getInfo());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            FToast.error("数据错误");
+        }
+    }
+
+
 }

@@ -57,7 +57,7 @@ public class HomeDetailsBean {
          * list : [{"id":5,"goods_id":4,"goods_spec":"颜色::白色;;尺寸::大","price_market":"22.00","price_selling":"11.00","number_sales":2,"number_stock":100,"number_virtual":19,"status":1,"create_at":"2019-01-22 17:45:36"},{"id":6,"goods_id":4,"goods_spec":"颜色::白色;;尺寸::中","price_market":"33.00","price_selling":"12.00","number_sales":1,"number_stock":110,"number_virtual":19,"status":1,"create_at":"2019-01-22 17:45:37"},{"id":7,"goods_id":4,"goods_spec":"颜色::白色;;尺寸::小","price_market":"44.00","price_selling":"13.00","number_sales":1,"number_stock":100,"number_virtual":19,"status":1,"create_at":"2019-01-22 17:45:37"},{"id":8,"goods_id":4,"goods_spec":"颜色::黑色;;尺寸::大","price_market":"55.00","price_selling":"10.00","number_sales":0,"number_stock":100,"number_virtual":19,"status":1,"create_at":"2019-01-22 17:45:37"},{"id":9,"goods_id":4,"goods_spec":"颜色::黑色;;尺寸::中","price_market":"66.00","price_selling":"17.00","number_sales":0,"number_stock":0,"number_virtual":19,"status":1,"create_at":"2019-01-22 17:45:37"},{"id":10,"goods_id":4,"goods_spec":"颜色::黑色;;尺寸::小","price_market":"88.00","price_selling":"9.00","number_sales":0,"number_stock":0,"number_virtual":19,"status":0,"create_at":"2019-01-22 17:45:37"}]
          */
 
-        private long id;
+        private String id;
 
         public int getStatus() {
             return status;
@@ -86,17 +86,37 @@ public class HomeDetailsBean {
         private int number_sales;
         private int number_stock;
         private int vip_mod;
+
+        public int getIs_join() {
+            return is_join;
+        }
+
+        public void setIs_join(int is_join) {
+            this.is_join = is_join;
+        }
+
+        private int is_join;
+
+        public String getCoupon_desc() {
+            return coupon_desc;
+        }
+
+        public void setCoupon_desc(String coupon_desc) {
+            this.coupon_desc = coupon_desc;
+        }
+
+        private String coupon_desc;
         private String content;
         private List<String> image;
         private List<SpecsBean> specs;
         private List<List<ListsBean>> lists;
         private List<ListBeanX> list;
 
-        public long getId() {
+        public String getId() {
             return id;
         }
 
-        public void setId(int id) {
+        public void setId(String id) {
             this.id = id;
         }
 

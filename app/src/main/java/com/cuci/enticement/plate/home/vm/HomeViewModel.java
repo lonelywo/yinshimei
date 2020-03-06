@@ -91,6 +91,84 @@ public class HomeViewModel extends ViewModel {
                 });
         return liveData;
     }
+    public MutableLiveData<Status<ResponseBody>> getyhjandqiye(String from_type, String mid, String token) {
+
+        final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("from_type",from_type);
+        params.put("token",token);
+        params.put("mid",mid);
+        String signs = SignUtils.signParamRemoveNull(params);
+        mCreator.create(HomeApi.class)
+                .getyhjandqiye(from_type, mid,token,signs)
+                .enqueue(new Callback<ResponseBody>() {
+
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        data.setValue(Status.success(response.body()));
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        data.setValue(Status.error(null, t.getMessage() ==
+                                null ? "加载失败" : t.getMessage()));
+                    }
+                });
+        return data;
+    }
+    public MutableLiveData<Status<ResponseBody>> getproyhq(String from_type, String mid, String token,String goods_id) {
+
+        final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("from_type",from_type);
+        params.put("token",token);
+        params.put("mid",mid);
+        params.put("goods_id",goods_id);
+        String signs = SignUtils.signParamRemoveNull(params);
+        mCreator.create(HomeApi.class)
+                .getproyhq(from_type, mid,token,goods_id,signs)
+                .enqueue(new Callback<ResponseBody>() {
+
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        data.setValue(Status.success(response.body()));
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        data.setValue(Status.error(null, t.getMessage() ==
+                                null ? "加载失败" : t.getMessage()));
+                    }
+                });
+        return data;
+    }
+    public MutableLiveData<Status<ResponseBody>> getprolingyhq(String from_type, String mid, String token,String coupon_id) {
+
+        final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("from_type",from_type);
+        params.put("token",token);
+        params.put("mid",mid);
+        params.put("coupon_id",coupon_id);
+        String signs = SignUtils.signParamRemoveNull(params);
+        mCreator.create(HomeApi.class)
+                .getprolingyhq(from_type, mid,token,coupon_id,signs)
+                .enqueue(new Callback<ResponseBody>() {
+
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        data.setValue(Status.success(response.body()));
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        data.setValue(Status.error(null, t.getMessage() ==
+                                null ? "加载失败" : t.getMessage()));
+                    }
+                });
+        return data;
+    }
+
     public MutableLiveData<Status<HomeDetailsBean>> getHomeDetails(String from_type, String mid, String token,String goods_id) {
 
         final MutableLiveData<Status<HomeDetailsBean>> data = new MutableLiveData<>();

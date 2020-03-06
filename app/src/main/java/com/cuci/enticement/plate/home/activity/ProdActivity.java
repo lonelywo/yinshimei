@@ -9,7 +9,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -23,33 +26,42 @@ import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.AllOrderList;
 import com.cuci.enticement.bean.CartChange;
 import com.cuci.enticement.bean.CartNum;
+import com.cuci.enticement.bean.CommissiontxBean;
 import com.cuci.enticement.bean.DataUserInfo;
 import com.cuci.enticement.bean.HomeDetailsBean;
+import com.cuci.enticement.bean.KaQuanListBean;
 import com.cuci.enticement.bean.OrderGoods;
 import com.cuci.enticement.bean.OrderResult;
+import com.cuci.enticement.bean.ProYhqBean;
 import com.cuci.enticement.bean.ShareimgBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
+
+
 import com.cuci.enticement.event.ProgoodsEvent;
 import com.cuci.enticement.plate.cart.activity.OrderActivity;
 import com.cuci.enticement.plate.cart.vm.CartViewModel;
 import com.cuci.enticement.plate.common.GlideImageLoader;
+import com.cuci.enticement.plate.common.MainActivity;
 import com.cuci.enticement.plate.common.eventbus.CartEvent;
 import com.cuci.enticement.plate.common.popup.CenterShareAppPopup2;
+import com.cuci.enticement.plate.common.popup.CheckKaQuanTipsPopup;
+import com.cuci.enticement.plate.common.popup.ProLingQuanTipsPopup;
 import com.cuci.enticement.plate.common.popup.ShareBottom2TopProdPopup;
-import com.cuci.enticement.plate.common.popup.ShareImgTipsPopup;
 import com.cuci.enticement.plate.common.popup.SharegoodsImgTipsPopup;
 import com.cuci.enticement.plate.home.vm.HomeViewModel;
 import com.cuci.enticement.utils.AppUtils;
-import com.cuci.enticement.utils.BitmapUitls;
 import com.cuci.enticement.utils.FLog;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.MathExtend;
 import com.cuci.enticement.utils.SharedPrefUtils;
+import com.cuci.enticement.utils.UtilsForClick;
 import com.cuci.enticement.utils.ViewUtils;
 import com.cuci.enticement.utils.WxShareUtils;
 import com.cuci.enticement.widget.SmoothScrollview;
 import com.google.gson.Gson;
+import com.hyphenate.chat.ChatClient;
+import com.hyphenate.helpdesk.easeui.util.IntentBuilder;
 import com.lxj.xpopup.XPopup;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
@@ -96,7 +108,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
     @BindView(R.id.text_jiage)
     TextView text_jiage;
     @BindView(R.id.img_share)
-    ImageView imgShare;
+    TextView imgShare;
     @BindView(R.id.con_info)
     ConstraintLayout conInfo;
     @BindView(R.id.web_details)
@@ -110,12 +122,11 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
 
     @BindView(R.id.cart_num_tv)
     TextView cartNumTv;
-    @BindView(R.id.text_share)
-    TextView textShare;
+
     @BindView(R.id.con_toubu)
     ConstraintLayout conToubu;
     @BindView(R.id.iv_cart)
-    ImageView ivCart;
+    TextView ivCart;
 
     private static final int THUMB_SIZE = 500;
     private static final int THUMB_SIZE1 = 400;
@@ -127,6 +138,26 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
     ConstraintLayout conXiajiabuju;
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
+    @BindView(R.id.text_tuijian)
+    TextView textTuijian;
+    @BindView(R.id.text_xiaoliang)
+    TextView textXiaoliang;
+    @BindView(R.id.con_youhuiquan)
+    ConstraintLayout conYouhuiquan;
+    @BindView(R.id.con_beijing)
+    ConstraintLayout conBeijing;
+    @BindView(R.id.con_xq_title)
+    ConstraintLayout conXqTitle;
+    @BindView(R.id.view_xian)
+    View viewXian;
+    @BindView(R.id.view_xian2)
+    View viewXian2;
+    @BindView(R.id.tv_kefu)
+    TextView tvKefu;
+    @BindView(R.id.tv_coupon_desc)
+    TextView tvCouponDesc;
+    @BindView(R.id.tv_lingquan)
+    TextView tvLingquan;
     private String url;
     private HomeDetailsBean.DataBean mProData;
     private HomeViewModel mHomeViewModel;
@@ -134,11 +165,15 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
     private long id;
     private int status;
     private int type;
+
     private String rule;
     private MyHandler mHandler = new MyHandler(this);
     private Bitmap bitmap1;
     private Bitmap bitmap2;
     private ProgressDialog mProgressDialog;
+    private String coupon_desc;
+    private List<ProYhqBean.DataBean> data;
+
 
     @Override
     public int getLayoutId() {
@@ -149,12 +184,15 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
 
     @Override
     public void initViews(Bundle savedInstanceState) {
+        Window window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         EventBus.getDefault().register(this);
         Intent intent = getIntent();
         if (intent == null) {
             FToast.error("数据错误");
             return;
         }
+
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
         url = intent.getStringExtra("bannerData");
 
@@ -169,8 +207,10 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
 
         mHomeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         if (mUserInfo != null) {
+
             mHomeViewModel.getHomeDetails("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), url).observe(this, mObserver);
         } else {
+
             mHomeViewModel.getHomeDetails("2", "", "", url).observe(this, mObserver);
         }
         //显示隐藏分享
@@ -196,30 +236,30 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                                 .show();*//*
                     }*/
                     if (mProData != null) {
-                            new XPopup.Builder(ProdActivity.this)
-                                    .dismissOnBackPressed(false)
-                                    .dismissOnTouchOutside(false)
-                                    .asCustom(new SharegoodsImgTipsPopup(ProdActivity.this, "取消", new SharegoodsImgTipsPopup.OnExitListener() {
-                                        @Override
-                                        public void onPositive1() {
-                                            mHomeViewModel.shareimg("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), String.valueOf(mProData.getId())).observe(ProdActivity.this, mObservershare);
-                                            //ViewUtils.showView(progressBar);
-                                            mProgressDialog = ProgressDialog.show(ProdActivity.this, "正在生成海报", "请稍等...");
-                                        }
+                        new XPopup.Builder(ProdActivity.this)
+                                .dismissOnBackPressed(false)
+                                .dismissOnTouchOutside(false)
+                                .asCustom(new SharegoodsImgTipsPopup(ProdActivity.this, "取消", new SharegoodsImgTipsPopup.OnExitListener() {
+                                    @Override
+                                    public void onPositive1() {
+                                        mHomeViewModel.shareimg("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), String.valueOf(mProData.getId())).observe(ProdActivity.this, mObservershare);
+                                        //ViewUtils.showView(progressBar);
+                                        mProgressDialog = ProgressDialog.show(ProdActivity.this, "正在生成海报", "请稍等...");
+                                    }
 
-                                        @Override
-                                        public void onPositive2() {
-                                            ShareXiaoChengnXu();
+                                    @Override
+                                    public void onPositive2() {
+                                        ShareXiaoChengnXu();
 
-                                        }
+                                    }
 
-                                        @Override
-                                        public void onCancel() {
+                                    @Override
+                                    public void onCancel() {
 
-                                        }
-                                    }))
-                                    .show();
-                        }
+                                    }
+                                }))
+                                .show();
+                    }
 
                 } else {
                     finish();
@@ -233,6 +273,51 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
         if (mUserInfo != null) {
             viewModel.cartNum(mUserInfo.getToken(), String.valueOf(mUserInfo.getId())).observe(ProdActivity.this, mNumObserver);
         }
+        tvKefu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (AppUtils.isAllowPermission(ProdActivity.this)) {
+                    if (ChatClient.getInstance().isLoggedInBefore()) {
+                        //已经登录，可以直接进入会话界面
+                        Intent intent = new IntentBuilder(ProdActivity.this)
+                                .setServiceIMNumber("kefuchannelimid_269943")
+                                .setTitleName("美美")
+                                .build();
+                        startActivity(intent);
+                    } else {
+                        //未登录，需要登录后，再进入会话界面
+                        FToast.error("联系客服失败，请退出重新登录");
+                    }
+
+                } else {
+                    finish();
+                }
+            }
+        });
+        //请求优惠券
+        if (mUserInfo != null) {
+            mHomeViewModel.getproyhq("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), url).observe(ProdActivity.this, myhqObserver);
+        }
+
+        conYouhuiquan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (AppUtils.isAllowPermission(ProdActivity.this)) {
+                   if(UtilsForClick.isFastClick()){
+                           new XPopup.Builder(ProdActivity.this)
+                                   .dismissOnBackPressed(false)
+                                   .dismissOnTouchOutside(false)
+                                   .asCustom(new ProLingQuanTipsPopup(ProdActivity.this, data,mUserInfo ) {
+
+                                   })
+                                   .show();
+                       }
+
+                } else {
+                    finish();
+                }
+            }
+        });
 
 
     }
@@ -270,12 +355,12 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
             if (mMyTeamslBean.getCode() == 1) {
                 int is_new = mMyTeamslBean.getData().getIs_new();
                 SharedPrefUtils.saveisnew(is_new);
-                if(is_new==1){
+                if (is_new == 1) {
                     ViewUtils.showView(imgShare);
-                    ViewUtils.showView(textShare);
-                }else {
+
+                } else {
                     ViewUtils.hideView(imgShare);
-                    ViewUtils.hideView(textShare);
+
                 }
             } else {
                 FToast.error(mMyTeamslBean.getInfo());
@@ -304,20 +389,15 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                 orderGoods.setGoods_price_selling(mprice_sell);
                 orderGoods.setGoods_price_market(mprice_market);
                 orderGoods.setVip_mod(mProData.getVip_mod());
+                orderGoods.setIs_join(mProData.getIs_join());
+                orderGoods.setGoods_id(mProData.getId());
                 items.add(orderGoods);
 
                 AllOrderList.DataBean.ListBeanX cartIntentInfo = new AllOrderList.DataBean.ListBeanX();
 
-                //cartIntentInfo.setOrder_no(Long.parseLong(orderResult.getData().getOrder().getOrder_no()));
                 cartIntentInfo.setList(items);
                 cartIntentInfo.setGoods_count(items.size());
-               /* if (is_new == 0 && mProData.getVip_mod() == 0 || is_new == 1 && mProData.getVip_mod() == 1) {
-                    String goodsPrice = MathExtend.multiply(mprice_market, String.valueOf(mNum));
-                    cartIntentInfo.setPrice_goods(String.valueOf(goodsPrice));
-                } else {
-                    String goodsPrice = MathExtend.multiply(mprice_sell, String.valueOf(mNum));
-                    cartIntentInfo.setPrice_goods(String.valueOf(goodsPrice));
-                }*/
+
                 String goodsPrice = MathExtend.multiply(mprice_sell, String.valueOf(mNum));
                 cartIntentInfo.setPrice_goods(goodsPrice);
                 Intent intent = new Intent(ProdActivity.this, OrderActivity.class);
@@ -364,6 +444,17 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                     if (content.getCode() == 1) {
                         mProData = content.getData();
                         status = mProData.getStatus();
+                        coupon_desc = mProData.getCoupon_desc();
+                        tvCouponDesc.setText(coupon_desc);
+                        int number_sales = mProData.getNumber_sales();
+                        if(number_sales>10000){
+                            String divide = MathExtend.division(number_sales, 10000);
+                            String moveone = MathExtend.moveone(divide);
+                            textXiaoliang.setText("销量"+moveone+"W+");
+                        }else {
+                            textXiaoliang.setText("销量"+number_sales);
+                        }
+
                         if (status == 1) {
                             ViewUtils.hideView(conXiajiabuju);
                         } else {
@@ -377,10 +468,11 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                         homeDetailGoodsname.setText(content.getData().getTitle());
 
                         if (mProData.getVip_mod() == 1) {
-                            String strMsg = "<font color=\"#BF9964\">" + mProData.getPricename() + "¥" + mProData.getInitial_price_selling() + "</font>";
+                            String strMsg = "<font color=\"#e1ad73\">" + mProData.getPricename() + "¥" + "<big><big>" + MathExtend.moveone(mProData.getInitial_price_selling()) + "</big></big>" + "</font>";
                             text_jiage.setText(Html.fromHtml(strMsg));
+
                         } else {
-                            String strMsg = "原价¥" + mProData.getInitial_price_market() + " " + "<font color=\"#BF9964\">" + "会员价¥" + mProData.getInitial_price_selling() + "</font>";
+                            String strMsg = "原价¥" + MathExtend.moveone(mProData.getInitial_price_market()) + " " + "<font color=\"#e1ad73\">" + "会员价¥" + "<big><big>" + MathExtend.moveone(mProData.getInitial_price_selling()) + "</big></big>" + "</font>";
                             text_jiage.setText(Html.fromHtml(strMsg));
                         }
 
@@ -489,7 +581,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
         mprice_sell = price_sell;
         mprice_market = price_market;
         if (code == PUT_IN_CART) {
-            long id = mProData.getId();
+            String id = mProData.getId();
             String s = spec;
             String numStr = String.valueOf(num);
             mViewModel.cartChange(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(id), spec, String.valueOf(num)).observe(this, mIntoCart);
@@ -541,6 +633,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                             orderGoods.setGoods_num(mNum);
                             orderGoods.setGoods_spec(mSpec);
                             orderGoods.setGoods_price_selling(mProData.getInitial_price_selling());
+
                             items.add(orderGoods);
 
                             AllOrderList.DataBean.ListBeanX cartIntentInfo = new AllOrderList.DataBean.ListBeanX();
@@ -671,7 +764,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
         }
         //刷新分享显示
         type = 1;
-        if(mUserInfo != null){
+        if (mUserInfo != null) {
             mHomeViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(ProdActivity.this, mdataObserver);
         }
 
@@ -694,14 +787,14 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                         miniProgramObj.miniprogramType = WXMiniProgramObject.MINIPTOGRAM_TYPE_RELEASE;// 正式版:0，测试版:1，体验版:2
                         miniProgramObj.userName = "gh_26859964eed3";     // 小程序原始id
                         miniProgramObj.path = "pages/goods/detail?g=" + mProData.getId() + "&p=" + mUserInfo.getPhone();
-                                   //小程序页面路径；对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"
+                        //小程序页面路径；对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"
                         // miniProgramObj.path = "";            //小程序页面路径；对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"
                         WXMediaMessage msg = new WXMediaMessage(miniProgramObj);
                         msg.title = mProData.getTitle();                    // 小程序消息title
                         msg.description = "因诗美，因你而美";               // 小程序消息desc
                         Bitmap bmp = BitmapFactory.decodeStream(new URL(mProData.getLogo()).openStream());
                         //Bitmap thumbBmp = BitmapUitls.drawWXMiniBitmap(bmp, 500, 500);
-                        Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, 500 , 500, true);
+                        Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, 500, 500, true);
                         bmp.recycle();
                         msg.thumbData = WxShareUtils.bmpToByteArray(thumbBmp, true); // 小程序消息封面图片，小于128k
                         SendMessageToWX.Req req = new SendMessageToWX.Req();
@@ -725,7 +818,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                 opera(body);
                 break;
             case Status.ERROR:
-               // ViewUtils.hideView(progressBar);
+                // ViewUtils.hideView(progressBar);
                 mProgressDialog.dismiss();
                 FToast.error("网络错误");
                 break;
@@ -743,13 +836,13 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
             if (mMyTeamslBean.getCode() == 1) {
                 String poster = mMyTeamslBean.getData().getPoster();
                 String qrcode = mMyTeamslBean.getData().getQrcode();
-                       //   bitmap1 = downloadImage(ProdActivity.this, poster);
-                       //   bitmap2 = downloadImage(ProdActivity.this, qrcode);
-                              new XPopup.Builder(ProdActivity.this)
-                                      .dismissOnTouchOutside(false)
-                                      .dismissOnBackPressed(false)
-                                      .asCustom(new CenterShareAppPopup2(ProdActivity.this, mUserInfo, poster, qrcode))
-                                      .show();
+                //   bitmap1 = downloadImage(ProdActivity.this, poster);
+                //   bitmap2 = downloadImage(ProdActivity.this, qrcode);
+                new XPopup.Builder(ProdActivity.this)
+                        .dismissOnTouchOutside(false)
+                        .dismissOnBackPressed(false)
+                        .asCustom(new CenterShareAppPopup2(ProdActivity.this, mUserInfo, poster, qrcode))
+                        .show();
             } else {
                 FToast.error(mMyTeamslBean.getInfo());
             }
@@ -768,6 +861,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
     }
+
     private Bitmap downloadImage(Context context, String url) {
 
         try {
@@ -781,6 +875,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
             return null;
         }
     }
+
     private static class MyHandler extends Handler {
 
         private final WeakReference<ProdActivity> mFragment;
@@ -796,10 +891,50 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
             if (fragment != null) {
                 int what = msg.what;
                 if (what == 0) {
-                    UserInfo  mUserInfo = SharedPrefUtils.get(UserInfo.class);
+                    UserInfo mUserInfo = SharedPrefUtils.get(UserInfo.class);
 
                 }
             }
         }
     }
+
+    private Observer<Status<ResponseBody>> myhqObserver = status -> {
+
+        switch (status.status) {
+            case Status.SUCCESS:
+                dismissLoading();
+                ResponseBody body = status.content;
+                operaYhq(body);
+                break;
+            case Status.ERROR:
+                dismissLoading();
+                FToast.error("网络错误");
+                break;
+            case Status.LOADING:
+               showLoading();
+                break;
+        }
+
+    };
+
+    private void operaYhq(ResponseBody body) {
+        try {
+            String b = body.string();
+            ProYhqBean mProYhqBean = new Gson().fromJson(b, ProYhqBean.class);
+            data = mProYhqBean.getData();
+            if(data==null||data.size()==0){
+                ViewUtils.hideView(conYouhuiquan);
+                return;
+            }
+            if (mProYhqBean.getCode() == 1) {
+                ViewUtils.showView(conYouhuiquan);
+            } else {
+                FToast.error(mProYhqBean.getInfo());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            FToast.error("数据错误");
+        }
+    }
+
 }

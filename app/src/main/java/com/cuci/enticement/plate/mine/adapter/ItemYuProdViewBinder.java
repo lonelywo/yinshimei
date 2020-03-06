@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.cuci.enticement.R;
 import com.cuci.enticement.bean.OrderGoods;
 import com.cuci.enticement.utils.ImageLoader;
+import com.cuci.enticement.utils.MathExtend;
 import com.cuci.enticement.utils.SharedPrefUtils;
 
 import java.util.Locale;
@@ -67,7 +68,7 @@ public class ItemYuProdViewBinder extends ItemViewBinder<OrderGoods, ItemYuProdV
         }else {
             holder.textQian.setText(String.format(Locale.CHINA,"%s",item.getGoods_price_selling()));
         }*/
-        holder.textQian.setText(String.format(Locale.CHINA,"%s",item.getGoods_price_selling()));
+        holder.textQian.setText(String.format(Locale.CHINA,"%s", MathExtend.moveone(item.getGoods_price_selling())));
         holder.textNum.setText(String.format(Locale.CHINA,"x%s",item.getGoods_num()));
         holder.itemView.setOnClickListener(position -> {
             if (mOnProdClickListener != null) {

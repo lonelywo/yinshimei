@@ -6,20 +6,20 @@
     <!-- rectangle表示为矩形 -->
 
     <!-- 填充的颜色 -->
-    <solid android:color="#BF9964" />
+    <solid android:color="#313131" />
 
 
-    <gradient
+    <!--<gradient
         android:startColor="#BF9964"
         android:endColor="@android:color/white"
         android:angle="270">
-    </gradient>
+    </gradient>-->
     <!-- android:radius 圆角的半径 -->
-    <corners
+    <!--<corners
 
         android:bottomRightRadius="25dp"
         android:bottomLeftRadius="25dp"
-        />
+        />-->
 
 
 </shape>

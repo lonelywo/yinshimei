@@ -10,7 +10,19 @@ import retrofit2.http.POST;
 
 public interface CartApi {
 
+    /**
+     * 支付订单后
+     */
+    @FormUrlEncoded
+    @POST("store/api.member.event/afterPay")
+    Call<ResponseBody> payofter(@Field("from_type") String from_type,
+                                 @Field("token") String token,
+                                  @Field("mid") String mid,
+                                  @Field("is_first") String is_first,
+                                  @Field("order_no") String order_no,
+                                  @Field("sign") String sign
 
+    );
 
     /**
      * 获取购物车列表

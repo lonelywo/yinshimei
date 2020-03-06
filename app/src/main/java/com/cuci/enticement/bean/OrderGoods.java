@@ -14,7 +14,7 @@ public class OrderGoods implements Serializable {
             */
     private int cart_id;
     private int mid;
-    private long goods_id;
+    private String goods_id;
     private String goods_title;
     private String goods_logo;
     private String goods_spec;
@@ -51,6 +51,15 @@ public class OrderGoods implements Serializable {
     private int number_limit;
     private int number_express;
     private int vip_mod;
+    public int getIs_join() {
+        return is_join;
+    }
+
+    public void setIs_join(int is_join) {
+        this.is_join = is_join;
+    }
+
+    private int is_join;
     private int vip_month;
     private String vip_discount;
     private int number;
@@ -85,11 +94,11 @@ public class OrderGoods implements Serializable {
         this.mid = mid;
     }
 
-    public long getGoods_id() {
+    public String getGoods_id() {
         return goods_id;
     }
 
-    public void setGoods_id(long goods_id) {
+    public void setGoods_id(String goods_id) {
         this.goods_id = goods_id;
     }
 

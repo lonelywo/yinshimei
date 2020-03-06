@@ -32,6 +32,39 @@ public interface HomeApi {
 
     );
     /**
+     * 领取优惠券
+     */
+    @FormUrlEncoded
+    @POST("store/api.member.coupon/receive")
+    Call<ResponseBody> getprolingyhq(@Field("from_type") String from_type,
+                                 @Field("mid") String mid,
+                                 @Field("token") String token,
+                                 @Field("coupon_id") String coupon_id,
+                                 @Field("sign") String sign
+    );
+    /**
+     * 获取优惠券和企业模块
+     */
+    @FormUrlEncoded
+    @POST("store/api.page/homeAssembly")
+    Call<ResponseBody> getyhjandqiye(@Field("from_type") String from_type,
+                                 @Field("mid") String mid,
+                                 @Field("token") String token,
+                                 @Field("sign") String sign
+    );
+    /**
+     * 获取优惠券列表
+     */
+    @FormUrlEncoded
+    @POST("store/api.member.coupon/getgoodscoupon")
+    Call<ResponseBody> getproyhq(@Field("from_type") String from_type,
+                                         @Field("mid") String mid,
+                                         @Field("token") String token,
+                                         @Field("goods_id") String goods_id,
+                                         @Field("sign") String sign
+    );
+
+    /**
      * 获取商品详情
      */
     @FormUrlEncoded

@@ -117,4 +117,34 @@ public class MainViewModel extends ViewModel {
         return liveData;
 
     }
+    /**
+     * 开屏广告
+     * @param from_type
+     * @return
+     */
+    public MutableLiveData<Status<ResponseBody>> openScreen(String from_type) {
+
+        final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
+        liveData.setValue(Status.loading(null));
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("from_type",from_type);
+        String signs = SignUtils.signParam(params);
+        mCreator.create(MineApi.class)
+                .openScreen(from_type,signs)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(@NonNull Call<ResponseBody> call,
+                                           @NonNull Response<ResponseBody> response) {
+                        liveData.setValue(Status.success(response.body()));
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<ResponseBody> call,
+                                          @NonNull Throwable t) {
+                        liveData.setValue(Status.error(null, t.getMessage() == null ? "网络错误" : t.getMessage()));
+                    }
+                });
+        return liveData;
+
+    }
 }

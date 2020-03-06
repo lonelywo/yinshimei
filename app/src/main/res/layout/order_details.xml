@@ -103,6 +103,21 @@
               android:padding="10dp"
               />
          <TextView
+             android:id="@+id/tv_fuzhi"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="复制"
+             android:textColor="@color/orange"
+             app:layout_constraintTop_toTopOf="@+id/tv_order_no"
+             app:layout_constraintBottom_toBottomOf="@+id/tv_order_no"
+             app:layout_constraintEnd_toEndOf="parent"
+             android:paddingLeft="15dp"
+             android:paddingRight="15dp"
+             android:paddingTop="2dp"
+             android:paddingBottom="2dp"
+             android:layout_marginRight="@dimen/dp_10"
+             />
+         <TextView
              android:id="@+id/tuikuan_tv"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
@@ -196,6 +211,23 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_express"
+            android:text="优惠券"
+            android:textColor="@color/hei"
+            />
+        <TextView
+            android:id="@+id/tv_yhj_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="-¥5"
+            android:textColor="#ff0000"
+            app:layout_constraintTop_toBottomOf="@id/tv_express"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_yhj_money"
             android:text="下单时间"
             android:textColor="@color/hei"
             />
@@ -206,7 +238,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="2019-07-09 12:06:33"
             android:textColor="@color/hei"
-            app:layout_constraintTop_toBottomOf="@id/tv_express"
+            app:layout_constraintTop_toBottomOf="@id/tv_yhj_money"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -224,7 +256,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="需付"
+        android:text="实付"
         android:textColor="@color/hei"
         />
     <TextView

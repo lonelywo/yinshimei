@@ -18,8 +18,10 @@ import com.cuci.enticement.R;
 import com.cuci.enticement.bean.GoodsItem;
 import com.cuci.enticement.plate.home.activity.ProdActivity;
 import com.cuci.enticement.utils.ImageLoader;
+import com.cuci.enticement.utils.MathExtend;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.UtilsForClick;
+import com.cuci.enticement.utils.ViewUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,7 +30,6 @@ import me.drakeet.multitype.ItemViewBinder;
 public class ItemGoodsLongViewBinder extends ItemViewBinder<GoodsItem, ItemGoodsLongViewBinder.ViewHolder> {
 
     private final Context mContext;
-
 
     public ItemGoodsLongViewBinder(Context context) {
         mContext = context;
@@ -45,15 +46,19 @@ public class ItemGoodsLongViewBinder extends ItemViewBinder<GoodsItem, ItemGoods
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull GoodsItem item) {
         ImageLoader.loadPlaceholder(item.getLogo(), holder.imageHome);
         holder.textHomeGoodsname.setText(item.getTitle());
-     /*   holder.textHomeMoney.setText("原价¥" + item.getInitial_price_market());
+      /*  holder.textHomeMoney.setText("原价¥" + item.getInitial_price_market());
         holder.textHomeMoneyVip.setText("会员价¥" + item.getInitial_price_selling());*/
 
        if(item.getVip_mod()==1){
-            String strMsg = "<font color=\"#BF9964\">"+item.getPricename()+"¥" + item.getInitial_price_selling()+"</font>";
+            String strMsg = "原价¥" +  MathExtend.moveone(item.getInitial_price_market());
             holder.textHomeMoney.setText(Html.fromHtml(strMsg));
+            String strMsg2 = "<font >"+item.getPricename()+"¥" +"<big><big>"+ MathExtend.moveone(item.getInitial_price_selling())+"</big></big>"+"</font>";
+            holder.textHomeMoneyVip.setText(Html.fromHtml(strMsg2));
         }else {
-            String strMsg = "原价¥" + item.getInitial_price_market()+" "+"<font color=\"#BF9964\">"+"会员价¥" + item.getInitial_price_selling()+"</font>";
+            String strMsg = "原价¥" +  MathExtend.moveone(item.getInitial_price_market());
             holder.textHomeMoney.setText(Html.fromHtml(strMsg));
+            String strMsg2 = "<font >"+"会员价¥" +"<big><big>"+ MathExtend.moveone(item.getInitial_price_selling())+"</big></big>"+"</font>";
+            holder.textHomeMoneyVip.setText(Html.fromHtml(strMsg2));
         }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -81,8 +86,8 @@ public class ItemGoodsLongViewBinder extends ItemViewBinder<GoodsItem, ItemGoods
         TextView textHomeGoodsname;
         @BindView(R.id.text_home_money)
         TextView textHomeMoney;
-       /* @BindView(R.id.text_home_money_vip)
-        TextView textHomeMoneyVip;*/
+        @BindView(R.id.text_home_money_vip)
+        TextView textHomeMoneyVip;
         @BindView(R.id.card_view)
         CardView cardView;
 

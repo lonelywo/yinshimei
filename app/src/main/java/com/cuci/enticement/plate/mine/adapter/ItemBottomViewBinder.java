@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.cuci.enticement.R;
 import com.cuci.enticement.bean.ItemOrderBottom;
+import com.cuci.enticement.utils.MathExtend;
 import com.cuci.enticement.utils.ViewUtils;
 
 import java.util.Locale;
@@ -89,9 +90,9 @@ public class ItemBottomViewBinder extends ItemViewBinder<ItemOrderBottom, ItemBo
         if(expressMoney==0){
             holder.textShuliang.setText(String.format(Locale.CHINA,"共%s件商品",itemOrderBottom.num));
         }else {
-            holder.textShuliang.setText(String.format(Locale.CHINA,"共%s件商品(含运费¥%s)",itemOrderBottom.num,itemOrderBottom.expressMoney));
+            holder.textShuliang.setText(String.format(Locale.CHINA,"共%s件商品(含运费¥%s)",itemOrderBottom.num, MathExtend.moveone(itemOrderBottom.expressMoney)));
         }
-        holder.textHeji.setText(String.format(Locale.CHINA,"合计:¥%s",itemOrderBottom.totalMoney));
+        holder.textHeji.setText(String.format(Locale.CHINA,"合计:¥%s",MathExtend.moveone(itemOrderBottom.totalMoney)));
 
 
 

@@ -333,7 +333,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
         if (checkAll) {
             mTvTotal.setText(String.format(Locale.CHINA, "%s", getCheckedsMoeny()));
         } else {
-            mTvTotal.setText("0.00");
+            mTvTotal.setText("0");
         }
     }
 
@@ -351,7 +351,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
     private String getCheckedsMoeny() {
 
-        String totalF = "0.00";
+        String totalF = "0";
         for (int i = 0; i < mItems.size(); i++) {
             OrderGoods item = (OrderGoods) mItems.get(i);
             if (item.isCheck()) {
@@ -365,7 +365,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
                    // totalF = totalF + item.getGoods_num() * itemMoeny;
                 }*/
                 double itemMoeny = Double.parseDouble(item.getGoods_price_selling());
-                totalF = MathExtend.addnum(totalF,MathExtend.multiply1(String.valueOf(item.getGoods_num()),item.getGoods_price_selling()));
+                totalF = MathExtend.addnum(totalF,MathExtend.multiply(String.valueOf(item.getGoods_num()),item.getGoods_price_selling()));
             }
         }
         return totalF;
@@ -395,7 +395,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
 
     private boolean mCanChange=true;
-    private long mGoodsId;
+    private String mGoodsId;
 
     @Override
     public void onAddClick(OrderGoods b,int position) {

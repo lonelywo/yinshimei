@@ -24,6 +24,7 @@ import com.cuci.enticement.plate.mine.vm.OrderViewModel;
 import com.cuci.enticement.utils.DimensionUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.ImageLoader;
+import com.cuci.enticement.utils.MathExtend;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.ViewUtils;
 import com.lxj.xpopup.core.BottomPopupView;
@@ -191,7 +192,7 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
         for (int i = 0; i <mItem.getList().size() ; i++) {
             if(TextUtils.equals(spec,mItem.getList().get(i).getGoods_spec())){
                 if(mItem.getVip_mod()==1){
-                    String strMsg = "<font color=\"#BF9964\">"+mItem.getPricename()+"¥" + mItem.getInitial_price_selling()+"</font>";
+                    String strMsg = "<font color=\"#BF9964\">"+mItem.getPricename()+"¥" + MathExtend.moveone(mItem.getInitial_price_selling())+"</font>";
                     price_market = mItem.getList().get(i).getPrice_market();
                     price_sell = mItem.getList().get(i).getPrice_selling();
                     text_money.setText(Html.fromHtml(strMsg));
@@ -199,7 +200,7 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
                 }else {
                     price_market = mItem.getList().get(i).getPrice_market();
                     price_sell = mItem.getList().get(i).getPrice_selling();
-                    String strMsg = "<font color=\"#BF9964\">"+"¥" + price_sell+"</font>";
+                    String strMsg = "<font color=\"#BF9964\">"+"¥" +MathExtend.moveone(price_sell) +"</font>";
                     text_money.setText(Html.fromHtml(strMsg));
                     selectedTv.setText(mItem.getList().get(i).getGoods_spec());
                 }
