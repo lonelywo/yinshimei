@@ -40,7 +40,7 @@ public class MineViewModel extends ViewModel {
         params.put("page",page);
         params.put("page_size",page_size);
         params.put("status",status);
-        String signs = SignUtils.signParam(params);
+        String signs = SignUtils.signParamRemoveNull(params);
         mCreator.create(MineApi.class)
                 .kaquanlist(token,mid,from_type,page,page_size,status,signs)
                 .enqueue(new Callback<ResponseBody>() {
@@ -392,54 +392,7 @@ public class MineViewModel extends ViewModel {
         return liveData;
 
     }
-    /**
-     * 获取团队统计列表
-     * @param from_type
-     * @param token
-     * @param mid
-     * @return
-     */
-    public MutableLiveData<Status<ResponseBody>> hqteamtj(String token, String mid, String from_type,String nickname,String page,int loadType) {
 
-        final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
-        liveData.setValue(Status.loading(null));
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("from_type",from_type);
-        params.put("token",token);
-        params.put("mid",mid);
-        if(!TextUtils.isEmpty(nickname)){
-            params.put("nickname",nickname);
-        }
-        params.put("page",page);
-        String signs = SignUtils.signParam(params);
-        mCreator.create(MineApi.class)
-                .hqteamtj(token,mid,from_type,nickname,page,signs)
-                .enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(@NonNull Call<ResponseBody> call,
-                                           @NonNull Response<ResponseBody> response) {
-                        if (loadType == Status.LOAD_REFRESH) {
-                            liveData.setValue(Status.refreshSuccess(response.body()));
-                        } else {
-                            liveData.setValue(Status.moreSuccess(response.body()));
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull Call<ResponseBody> call,
-                                          @NonNull Throwable t) {
-                        if (loadType == Status.LOAD_REFRESH) {
-                            liveData.setValue(Status.refreshError(null, t.getMessage() ==
-                                    null ? "加载失败" : t.getMessage()));
-                        } else {
-                            liveData.setValue(Status.moreError(null, t.getMessage() ==
-                                    null ? "加载失败" : t.getMessage()));
-                        }
-                    }
-                });
-        return liveData;
-
-    }
     /**
      * 获取团队统计列表
      * @param from_type

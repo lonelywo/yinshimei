@@ -17,6 +17,7 @@ import com.cuci.enticement.event.ProgoodsEvent;
 import com.cuci.enticement.plate.common.popup.TipsPopup;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.widget.ClearEditText;
 import com.google.gson.Gson;
@@ -130,6 +131,10 @@ public class BindTuiJinActivity extends BaseActivity {
             if (mBindTuijianBean.getCode() == 1) {
                 EventBus.getDefault().post(new ProgoodsEvent());
                 FToast.success(mBindTuijianBean.getInfo());
+            }else if(mBindTuijianBean.getCode() == HttpUtils.CODE_INVALID){
+                HttpUtils.Invalid(this);
+                finish();
+                FToast.error(mBindTuijianBean.getInfo());
             } else {
                 FToast.error(mBindTuijianBean.getInfo());
             }

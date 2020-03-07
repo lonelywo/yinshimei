@@ -31,6 +31,7 @@ import com.cuci.enticement.plate.mine.adapter.ItemPKViewBinder;
 import com.cuci.enticement.plate.mine.adapter.ItemPKViewBinder1;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.ImageLoader;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.ViewUtils;
@@ -270,6 +271,10 @@ public class _PKFragment01 extends BaseFragment implements OnRefreshLoadMoreList
                     mAdapter.notifyDataSetChanged();
                     refreshLayout.finishLoadMore();
                 }
+            }else if(mPKbean1.getCode() == HttpUtils.CODE_INVALID){
+                 HttpUtils.Invalid(mActivity);
+                 mActivity.finish();
+                 FToast.error(mPKbean1.getInfo());
             } else {
                 if (status.loadType == Status.LOAD_MORE) {
                     mCanLoadMore = true;
@@ -278,7 +283,7 @@ public class _PKFragment01 extends BaseFragment implements OnRefreshLoadMoreList
 
                     refreshLayout.finishRefresh();
                 }
-                FToast.warning(mPKbean1.getInfo());
+                FToast.error(mPKbean1.getInfo());
 
             }
         } catch (IOException e) {

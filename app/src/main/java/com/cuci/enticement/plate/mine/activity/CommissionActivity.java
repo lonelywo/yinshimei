@@ -33,6 +33,7 @@ import com.cuci.enticement.plate.common.eventbus.OrderEvent;
 import com.cuci.enticement.plate.mine.adapter.ItemCommissionJLViewBinder;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.ImageLoader;
 import com.cuci.enticement.utils.MathExtend;
 import com.cuci.enticement.utils.SharedPrefUtils;
@@ -425,6 +426,10 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
                     mAdapter.notifyDataSetChanged();
                     refreshLayout.finishLoadMore();
                 }
+            }else if(mCommissionjlBean.getCode() == HttpUtils.CODE_INVALID){
+                HttpUtils.Invalid(this);
+                finish();
+                FToast.error(mCommissionjlBean.getInfo());
             } else {
                 if (status.loadType == Status.LOAD_MORE) {
                     mCanLoadMore = true;
@@ -469,6 +474,10 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
                 textYongjing.setText("¥" + mCommissiontjBean.getData().getTotal());
                 textYitixian.setText("¥" + mCommissiontjBean.getData().getUsed());
                 textKetixian.setText("¥" + subtract);
+            }else if(mCommissiontjBean.getCode() == HttpUtils.CODE_INVALID){
+                HttpUtils.Invalid(this);
+                finish();
+                FToast.error(mCommissiontjBean.getInfo());
             } else {
                 FToast.error(mCommissiontjBean.getInfo());
             }

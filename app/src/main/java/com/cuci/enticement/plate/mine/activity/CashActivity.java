@@ -31,6 +31,7 @@ import com.cuci.enticement.plate.common.popup.TipsPopup1;
 import com.cuci.enticement.plate.common.popup.TipsPopupxieyi_cash;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.MathExtend;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.ViewUtils;
@@ -206,6 +207,10 @@ public class CashActivity extends BaseActivity {
                     mViewModel.hqcommissiontj(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2")
                             .observe(this, mObserver1);
                 }
+            }else if(mCommissiontxBean.getCode() == HttpUtils.CODE_INVALID){
+                HttpUtils.Invalid(this);
+                finish();
+                FToast.error(mCommissiontxBean.getInfo());
             } else {
                 FToast.error(mCommissiontxBean.getInfo());
             }
@@ -268,6 +273,10 @@ public class CashActivity extends BaseActivity {
                 }else {
                     ViewUtils.hideView(conLock);
                 }
+            }else if(mCommissiontjBean.getCode() == HttpUtils.CODE_INVALID){
+                HttpUtils.Invalid(this);
+                finish();
+                FToast.error(mCommissiontjBean.getInfo());
             } else {
                 FToast.error(mCommissiontjBean.getInfo());
             }
@@ -415,6 +424,10 @@ public class CashActivity extends BaseActivity {
             if (mModifyInfo.getCode() == 1) {
                 FToast.success(mModifyInfo.getInfo());
                 SharedPrefUtils.saveWXBind(1);
+            }else if(mModifyInfo.getCode() == HttpUtils.CODE_INVALID){
+                HttpUtils.Invalid(this);
+                finish();
+                FToast.error(mModifyInfo.getInfo());
             }else {
                 FToast.error(mModifyInfo.getInfo());
             }

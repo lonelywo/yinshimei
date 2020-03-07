@@ -27,6 +27,7 @@ import com.cuci.enticement.plate.common.eventbus.AddressEvent;
 import com.cuci.enticement.plate.common.vm.CommonViewModel;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.GetJsonDataUtil;
+import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.widget.ClearEditText;
 import com.google.gson.Gson;
@@ -283,6 +284,10 @@ public class ZengAddressActivity extends BaseActivity {
                         EventBus.getDefault().post(new AddressEvent(AddressEvent.REFRESH_ADRESS_LIST));
                         FToast.success(updateAddress.getInfo());
                         finish();
+                    }else if(updateAddress.getCode() == HttpUtils.CODE_INVALID){
+                        HttpUtils.Invalid(this);
+                        finish();
+                        FToast.error(updateAddress.getInfo());
                     } else {
                         FToast.error(updateAddress.getInfo());
 

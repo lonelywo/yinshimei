@@ -21,6 +21,7 @@ import com.cuci.enticement.plate.common.popup.TipsPopupxieyi_team;
 import com.cuci.enticement.plate.mine.adapter.ItemMyTeamViewBinder;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.ImageLoader;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.widget.BrandItemDecoration;
@@ -237,6 +238,10 @@ public class MyTeamActivity extends BaseActivity implements OnRefreshLoadMoreLis
                     mAdapter.notifyDataSetChanged();
                     refreshLayout.finishLoadMore();
                 }
+            }else if(mMyTeamlbBean.getCode() == HttpUtils.CODE_INVALID){
+                HttpUtils.Invalid(this);
+                finish();
+                FToast.error(mMyTeamlbBean.getInfo());
             } else {
                 if (status.loadType == Status.LOAD_MORE) {
                     mCanLoadMore = true;
@@ -245,7 +250,7 @@ public class MyTeamActivity extends BaseActivity implements OnRefreshLoadMoreLis
 
                     refreshLayout.finishRefresh();
                 }
-                FToast.warning(mMyTeamlbBean.getInfo());
+                FToast.error(mMyTeamlbBean.getInfo());
 
             }
         } catch (IOException e) {
@@ -281,6 +286,10 @@ public class MyTeamActivity extends BaseActivity implements OnRefreshLoadMoreLis
                 textZhongrenshu.setText("" + mMyTeamslBean.getData().getTotal_all());
                 textXinzengrenshu.setText("" + mMyTeamslBean.getData().getTotal_mon());
                 textRzengrenshu.setText("" + mMyTeamslBean.getData().getTotal_day());
+            }else if(mMyTeamslBean.getCode() == HttpUtils.CODE_INVALID){
+                HttpUtils.Invalid(this);
+                finish();
+                FToast.error(mMyTeamslBean.getInfo());
             } else {
                 FToast.error(mMyTeamslBean.getInfo());
             }

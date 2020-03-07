@@ -42,7 +42,7 @@ public class HomeGridItemDecoration extends RecyclerView.ItemDecoration {
 
         if (p < headerCount) {
            // super.getItemOffsets(outRect, view, parent, state);
-            outRect.set(0, 0, 0, DimensionUtils.dp2px(context, 6));
+            outRect.set(0, 0, 0, DimensionUtils.dp2px(context, 3));
             return;
         }
 

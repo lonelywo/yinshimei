@@ -25,26 +25,17 @@ import com.cuci.enticement.base.BaseFragment;
 import com.cuci.enticement.bean.DataUserInfo;
 import com.cuci.enticement.bean.GeTuibean;
 import com.cuci.enticement.bean.HxBean;
-import com.cuci.enticement.bean.IsYhjLingBean;
+import com.cuci.enticement.bean.KaQuanListBean;
 import com.cuci.enticement.bean.OrderStatistics;
-import com.cuci.enticement.bean.ProCheckLqBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.event.ClickMyEvent;
 import com.cuci.enticement.event.IsnewEvent;
 import com.cuci.enticement.event.ProgoodsEvent;
-import com.cuci.enticement.event.ReceiveEvent;
 import com.cuci.enticement.plate.common.DailyActivity;
 import com.cuci.enticement.plate.common.LoginActivity;
-import com.cuci.enticement.plate.common.MainActivity;
 import com.cuci.enticement.plate.common.popup.ShareImgTipsPopup;
-import com.cuci.enticement.plate.common.popup.SharegoodsImgTipsPopup;
 import com.cuci.enticement.plate.common.popup.TipsPopup;
-import com.cuci.enticement.plate.common.popup.TipsPopup1;
-import com.cuci.enticement.plate.common.popup.TipsPopup_kaquan;
-import com.cuci.enticement.plate.common.popup.TipsPopupxieyi;
-import com.cuci.enticement.plate.common.popup.UpdatePopup;
-import com.cuci.enticement.plate.common.popup.UpdateProgressPopup;
 import com.cuci.enticement.plate.mine.activity.AchievementActivity;
 import com.cuci.enticement.plate.mine.activity.CommissionActivity;
 import com.cuci.enticement.plate.mine.activity.KaQuanActivity;
@@ -59,6 +50,7 @@ import com.cuci.enticement.plate.mine.vm.OrderViewModel;
 import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FLog;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.ImageLoader;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.UnicodeUitls;
@@ -79,6 +71,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.IOException;
 import java.util.List;
 
+import androidx.constraintlayout.widget.Barrier;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -211,6 +204,34 @@ public class _MineFragment extends BaseFragment {
     TextView textPk1;
     @BindView(R.id.ll_fuwu1)
     LinearLayout llFuwu1;
+    @BindView(R.id.text_wodekajuan1)
+    TextView textWodekajuan1;
+    @BindView(R.id.shouhuodizi_ll)
+    ConstraintLayout shouhuodiziLl;
+    @BindView(R.id.dot1_kajuan)
+    TextView dot1Kajuan;
+    @BindView(R.id.wodekajuan_ll)
+    ConstraintLayout wodekajuanLl;
+    @BindView(R.id.wodeshezhi_ll)
+    ConstraintLayout wodeshezhiLl;
+    @BindView(R.id.wodegonggao_ll)
+    ConstraintLayout wodegonggaoLl;
+    @BindView(R.id.text_shouhuodizi0)
+    TextView textShouhuodizi0;
+    @BindView(R.id.shouhuodizi_ll0)
+    ConstraintLayout shouhuodiziLl0;
+    @BindView(R.id.text_wodekajuan0)
+    TextView textWodekajuan0;
+    @BindView(R.id.wodekajuan_ll0)
+    ConstraintLayout wodekajuanLl0;
+    @BindView(R.id.text_wodeshezhi0)
+    TextView textWodeshezhi0;
+    @BindView(R.id.wodeshezhi_ll0)
+    ConstraintLayout wodeshezhiLl0;
+    @BindView(R.id.ll_fuwu20)
+    LinearLayout llFuwu20;
+    @BindView(R.id.barrier)
+    Barrier barrier;
     private boolean mCouldChange = true;
     private LocalBroadcastManager mBroadcastManager;
     private UserInfo mUserInfo;
@@ -376,7 +397,6 @@ public class _MineFragment extends BaseFragment {
                         EventBus.getDefault().post(new ProgoodsEvent());
                     }
                 } else {
-                    //ViewUtils.hideView(imgYqhy);
                     ViewUtils.hideView(conYingchang);
                 }
                 //礼品中心
@@ -437,8 +457,10 @@ public class _MineFragment extends BaseFragment {
                             .show();
                 }
 
+            } else if (mDataUserInfo.getCode() == HttpUtils.CODE_INVALID) {
+                HttpUtils.Invalid(mActivity);
+                FToast.error(mDataUserInfo.getInfo());
             } else {
-
                 FToast.error(mDataUserInfo.getInfo());
             }
         } catch (IOException e) {
@@ -762,6 +784,9 @@ public class _MineFragment extends BaseFragment {
                             }
                         }
 
+                    } else if (orderStatus.content.getCode() == HttpUtils.CODE_INVALID) {
+                        HttpUtils.Invalid(mActivity);
+                        FToast.error(orderStatus.content.getInfo());
                     } else {
                         FToast.error("获取订单状态失败");
                     }
@@ -806,13 +831,52 @@ public class _MineFragment extends BaseFragment {
         }
     };
 
+    private Observer<Status<ResponseBody>> mkaquanObserver = status -> {
+
+        switch (status.status) {
+            case Status.SUCCESS:
+                ResponseBody body = status.content;
+                operyhj(body, status);
+                break;
+            case Status.ERROR:
+                FToast.error("网络错误");
+                break;
+            case Status.LOADING:
+                break;
+        }
+
+    };
+
+    private void operyhj(ResponseBody body, Status status) {
+        try {
+            String b = body.string();
+            KaQuanListBean mKaQuanListBean = new Gson().fromJson(b, KaQuanListBean.class);
+
+            if (mKaQuanListBean.getCode() == 1) {
+                List<KaQuanListBean.DataBean.ListBean> checkitems = mKaQuanListBean.getData().getList();
+                if (checkitems == null || checkitems.size() == 0) {
+                    ViewUtils.hideView(dot1Kajuan);
+                }else {
+                    ViewUtils.showView(dot1Kajuan);
+                }
+            } else {
+                FToast.warning(mKaQuanListBean.getInfo());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            FToast.error("数据错误");
+        }
+    }
 
     //切换此页面请求当前用户信息
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onClickMyEvent(ClickMyEvent event) {
-        if(event.getCode()== ClickMyEvent.CHECK_ITEM3){
+        if (event.getCode() == ClickMyEvent.CHECK_ITEM3) {
             if (mUserInfo != null) {
                 mViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);
+                //可使用优惠卷
+                mViewModel.kaquanlist(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", "1", "", "0", Status.LOAD_REFRESH)
+                        .observe(this, mkaquanObserver);
             }
         }
 

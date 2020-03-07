@@ -163,46 +163,6 @@ public class CartViewModel extends ViewModel {
                 });
         return data;
     }
-
-
-
-    public MutableLiveData<Status<ResponseBody>> commitOrder(String token, String mid, String rule, String fromMid) {
-
-        final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
-        data.setValue(Status.loading(null));
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("token",token);
-        params.put("mid",mid);
-        params.put("rule",rule);
-
-        params.put("from_type","2");
-        if(!TextUtils.isEmpty(fromMid)){
-            params.put("from_mid",fromMid);
-        }
-        String signs = SignUtils.signParam(params);
-
-        mCreator.create(CartApi.class)
-                .commitOrder("2",token,mid,rule,fromMid,signs)
-                .enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(@NonNull Call<ResponseBody> call,
-                                           @NonNull Response<ResponseBody> response) {
-                        data.setValue(Status.success(response.body()));
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull Call<ResponseBody> call,
-                                          @NonNull Throwable t) {
-                        data.setValue(Status.error(null, t.getMessage() == null ? "获取失败" : t.getMessage()));
-                    }
-                });
-        return data;
-    }
-
-
-
-
-
     public MutableLiveData<Status<ResponseBody>> cartNum(String token,String mid) {
 
         final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();

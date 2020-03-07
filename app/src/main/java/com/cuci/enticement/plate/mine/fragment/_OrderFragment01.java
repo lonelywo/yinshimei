@@ -48,6 +48,7 @@ import com.cuci.enticement.plate.mine.adapter.ItemProdViewBinder;
 import com.cuci.enticement.plate.mine.adapter.ItemTitleViewBinder;
 import com.cuci.enticement.plate.mine.vm.OrderViewModel;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.PayResult;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.ViewUtils;
@@ -299,6 +300,10 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                             mRefreshLayout.finishLoadMore();
                         }
 
+                    }else if(allOrderList.getCode() == HttpUtils.CODE_INVALID){
+                        HttpUtils.Invalid(mActivity);
+                        mActivity.finish();
+                        FToast.error(allOrderList.getInfo());
                     } else {
                         if (status.loadType == Status.LOAD_MORE) {
                             mCanLoadMore = true;
@@ -546,6 +551,10 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
 
                         FToast.success(orderConfirm.getInfo());
 
+                    }else if(orderConfirm.getCode()==HttpUtils.CODE_INVALID){
+                        HttpUtils.Invalid(mActivity);
+                        mActivity.finish();
+                        FToast.error(orderConfirm.getInfo());
                     }else {
                         FToast.error(orderConfirm.getInfo());
                     }
@@ -614,6 +623,10 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
 
 
                         FToast.success(orderCancel.getInfo());
+                    }else if(orderCancel.getCode()==HttpUtils.CODE_INVALID){
+                        HttpUtils.Invalid(mActivity);
+                        mActivity.finish();
+                        FToast.error(orderCancel.getInfo());
                     }else {
                         FToast.error("订单取消失败");
                     }
@@ -712,6 +725,10 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                             wxPayBean.setPackageX(packageX);
                             sendReq2WX(wxPayBean);
 
+                        }else if(orderPay.getCode()==HttpUtils.CODE_INVALID){
+                            HttpUtils.Invalid(mActivity);
+                            mActivity.finish();
+                            FToast.error(orderPay.getInfo());
                         }else {
                             FToast.error(orderPay.getInfo());
                         }

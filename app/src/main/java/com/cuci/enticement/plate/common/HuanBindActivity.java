@@ -21,6 +21,7 @@ import com.cuci.enticement.plate.common.vm.RegActivityViewModel;
 import com.cuci.enticement.plate.mine.activity.SettingsActivity;
 import com.cuci.enticement.utils.FLog;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.widget.ClearEditText;
 import com.google.gson.Gson;
@@ -171,6 +172,10 @@ public class HuanBindActivity extends BaseActivity {
                 intent.putExtra(SettingsActivity.DATA_USER_INFO, phone);
                 setResult(Activity.RESULT_OK, intent);
                 finish();
+            }else if(mModifyInfo.getCode() == HttpUtils.CODE_INVALID){
+                HttpUtils.Invalid(this);
+                finish();
+                FToast.error(mModifyInfo.getInfo());
             }else {
                 FToast.error(mModifyInfo.getInfo());
             }

@@ -15,6 +15,7 @@ import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.plate.home.adapter.ProYhqViewBinder;
 import com.cuci.enticement.plate.home.vm.HomeViewModel;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.widget.BrandItemDecoration;
 import com.cuci.enticement.widget.CartItemDecoration;
 import com.google.gson.Gson;
@@ -161,6 +162,10 @@ public class ProLingQuanTipsPopup extends BottomPopupView implements ProYhqViewB
               //  proYhqViewBinder.setdata(true);
                 mitem.setIscheck(true);
                         mAdapter.notifyDataSetChanged();
+            }else if(mProCheckLqBean.getCode() == HttpUtils.CODE_INVALID){
+                HttpUtils.Invalid(mContext);
+                dismiss();
+                FToast.error(mProCheckLqBean.getInfo());
             } else {
                 FToast.error(mProCheckLqBean.getInfo());
             }

@@ -41,6 +41,7 @@ import com.cuci.enticement.plate.common.vm.CommonViewModel;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.GetJsonDataUtil;
+import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.ImageLoader;
 import com.cuci.enticement.utils.ImageUtils;
 import com.cuci.enticement.utils.RxImageLoader;
@@ -541,7 +542,11 @@ public class InfoActivity extends BaseActivity {
                 }
                 FToast.success(modifyInfo.getInfo());
 
-            } else {
+            }else if (modifyInfo.getCode() == HttpUtils.CODE_INVALID){
+                HttpUtils.Invalid(this);
+                finish();
+                FToast.error(modifyInfo.getInfo());
+            }else {
                 FToast.error(modifyInfo.getInfo());
             }
         } catch (IOException e) {

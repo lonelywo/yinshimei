@@ -147,7 +147,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="3dp"
-                    android:text="超级美粉"
+                    android:text="用户"
                     android:textColor="#E1AD73"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -497,7 +497,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_weight="1"
-                        android:visibility="visible">
+                        android:visibility="gone">
 
                         <TextView
                             android:id="@+id/text_shareliwu"
@@ -515,16 +515,16 @@
 
                         <TextView
                             android:id="@+id/dot1_goods"
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
+                            android:layout_width="6dp"
+                            android:layout_height="6dp"
                             android:background="@drawable/shape_mine_hx_status_num"
                             android:gravity="center"
-                            android:text="!"
+                            android:text=""
                             android:textColor="@color/colorWhite"
-                            android:textSize="11sp"
+                            android:textSize="12sp"
                             android:visibility="gone"
-                            app:layout_constraintEnd_toEndOf="@+id/goods_ll"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintEnd_toEndOf="@+id/text_shareliwu"
+                            app:layout_constraintTop_toTopOf="@+id/text_shareliwu" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <TextView
@@ -636,16 +636,15 @@
 
                         <TextView
                             android:id="@+id/dot1_hx"
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
+                            android:layout_width="6dp"
+                            android:layout_height="6dp"
                             android:background="@drawable/shape_mine_hx_status_num"
                             android:gravity="center"
-                            android:text="!"
-                            android:textColor="@color/colorWhite"
-                            android:textSize="11sp"
+                            android:text=""
+                            android:textSize="12sp"
                             android:visibility="gone"
                             app:layout_constraintEnd_toEndOf="@+id/text_wodekefu"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="@+id/text_wodekefu" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -691,6 +690,17 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
+                        <TextView
+                            android:id="@+id/dot1_kajuan"
+                            android:layout_width="6dp"
+                            android:layout_height="6dp"
+                            android:background="@drawable/shape_mine_hx_status_num"
+                            android:gravity="center"
+                            android:text=""
+                            android:textSize="12sp"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toEndOf="@+id/text_wodekajuan"
+                            app:layout_constraintTop_toTopOf="@+id/text_wodekajuan" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 

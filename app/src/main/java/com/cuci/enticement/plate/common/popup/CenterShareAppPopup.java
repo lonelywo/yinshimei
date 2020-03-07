@@ -32,6 +32,7 @@ import com.cuci.enticement.plate.home.vm.HomeViewModel;
 import com.cuci.enticement.utils.EncryptUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.FileUtils;
+import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.ImageLoader;
 import com.cuci.enticement.utils.ImageUtils;
 import com.cuci.enticement.utils.SharedPrefUtils;
@@ -271,6 +272,10 @@ public class CenterShareAppPopup extends CenterPopupView {
                     }
                 });
 
+            }else if(mMyTeamslBean.getCode() == HttpUtils.CODE_INVALID){
+                HttpUtils.Invalid(mContext);
+                dismiss();
+                FToast.error(mMyTeamslBean.getInfo());
             } else {
                 close.setOnClickListener(new OnClickListener() {
                     @Override

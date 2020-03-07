@@ -23,6 +23,7 @@ import com.cuci.enticement.plate.common.popup.TipsPopup;
 import com.cuci.enticement.plate.common.vm.CommonViewModel;
 import com.cuci.enticement.plate.mine.adapter.ItemAdressViewBinder;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.widget.CartItemDecoration;
 import com.cuci.enticement.widget.CustomRefreshHeader;
@@ -179,8 +180,6 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
                     dismissLoading();
                     AddressBean data = status.content;
                     List<AddressBean.DataBean.ListBean> list = data.getData().getList();
-
-
                     if (list == null||list.size()==0) {
 
                         if (status.loadType == Status.LOAD_MORE) {
@@ -193,8 +192,6 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
                                 SharedPrefUtils.saveDefaultAdress("");
                                 //置空地址
                                 EventBus.getDefault().post(new OrderEvent(OrderEvent.SET_ADDRESS));
-
-
 
                         }
                         return;
@@ -221,7 +218,11 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
                             mAdapter.notifyItemRangeInserted(o, c);
                             mRefreshLayout.finishLoadMore();
                         }
-                    } else {
+                    }else if (data.getCode() == HttpUtils.CODE_INVALID){
+                        HttpUtils.Invalid(RecAddressActivity.this);
+                        finish();
+                        FToast.error(data.getInfo());
+                    }else {
                         if (status.loadType == Status.LOAD_MORE) {
                             mCanLoadMore = true;
                             mRefreshLayout.finishLoadMore();
@@ -353,6 +354,10 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
 
 
                         FToast.success(deleteAddress.getInfo());
+                    }else if(deleteAddress.getCode()==HttpUtils.CODE_INVALID){
+                        HttpUtils.Invalid(this);
+                        finish();
+                        FToast.error(deleteAddress.getInfo());
                     }else {
                         FToast.error(deleteAddress.getInfo());
                     }

@@ -156,46 +156,6 @@ public class CommonViewModel extends ViewModel {
         return data;
     }
 
-
-    public MutableLiveData<Status<ResponseBody>> setDefaultAddress(String token, String mid,String addressId) {
-
-        final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
-
-        data.setValue(Status.loading(null));
-
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("token",token);
-        params.put("mid",mid);
-        params.put("address_id",addressId);
-        params.put("from_type","2");
-
-
-
-        String sign = SignUtils.signParam(params);
-
-        mCreator.create(UserApi.class)
-                .setDefaultAddress("2",token,mid,addressId,sign)
-                .enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(@NonNull Call<ResponseBody> call,
-                                           @NonNull Response<ResponseBody> response) {
-
-                        data.setValue(Status.success(response.body()));
-
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull Call<ResponseBody> call,
-                                          @NonNull Throwable t) {
-
-                        data.setValue(Status.error(null, t.getMessage() ==
-                                null ? "加载失败" : t.getMessage()));
-
-                    }
-                });
-        return data;
-    }
-
     public MutableLiveData<Status<ResponseBody>> modifyInfo(String token,String mid,String openid,String headimg,String headimgapp,String nickname,
                                                             String sex,String unionid,String province,String city,String area) {
 

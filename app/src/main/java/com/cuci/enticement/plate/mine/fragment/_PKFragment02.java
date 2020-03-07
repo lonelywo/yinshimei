@@ -28,6 +28,7 @@ import com.cuci.enticement.event.PKEvent3;
 import com.cuci.enticement.plate.mine.adapter.ItemPKViewBinder2;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.ImageLoader;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.ViewUtils;
@@ -265,7 +266,11 @@ public class _PKFragment02 extends BaseFragment implements OnRefreshLoadMoreList
                     mAdapter.notifyDataSetChanged();
                     refreshLayout.finishLoadMore();
                 }
-            } else {
+            }else if(mPKbean1.getCode() == HttpUtils.CODE_INVALID){
+                HttpUtils.Invalid(mActivity);
+                mActivity.finish();
+                FToast.error(mPKbean1.getInfo());
+            }  else {
                 if (status.loadType == Status.LOAD_MORE) {
                     mCanLoadMore = true;
                     refreshLayout.finishLoadMore();

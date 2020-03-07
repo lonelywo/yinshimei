@@ -36,6 +36,7 @@ import com.cuci.enticement.plate.mine.adapter.ItemProdDetailsViewBinder;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.cuci.enticement.plate.mine.vm.OrderViewModel;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.MathExtend;
 import com.cuci.enticement.utils.PayResult;
 import com.cuci.enticement.utils.SharedPrefUtils;
@@ -373,8 +374,12 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
 
                             sendReq2ZFB(orderPay.getData());
 
+                        }else if(orderPay.getCode() == HttpUtils.CODE_INVALID){
+                            HttpUtils.Invalid(this);
+                            finish();
+                            FToast.error(orderPay.getInfo());
                         } else {
-                            FToast.warning(orderPay.getInfo());
+                            FToast.error(orderPay.getInfo());
                         }
 
                     } else if (mPayType == 1) {
@@ -400,8 +405,12 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
                             wxPayBean.setPackageX(packageX);
                             sendReq2WX(wxPayBean);
 
-                        } else {
-                            FToast.warning("");
+                        }else if(orderPay.getCode() == HttpUtils.CODE_INVALID){
+                            HttpUtils.Invalid(this);
+                            finish();
+                            FToast.error(orderPay.getInfo());
+                        }  else {
+                            FToast.error(orderPay.getInfo());
                         }
 
 
@@ -459,8 +468,12 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
 
                         finish();
 
+                    }else if(orderConfirm.getCode() == HttpUtils.CODE_INVALID){
+                        HttpUtils.Invalid(this);
+                        finish();
+                        FToast.error(orderConfirm.getInfo());
                     } else {
-                        FToast.warning(orderConfirm.getInfo());
+                        FToast.error(orderConfirm.getInfo());
                     }
 
 
@@ -509,6 +522,10 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
 
 
                         finish();
+                    }else if(orderCancel.getCode() == HttpUtils.CODE_INVALID){
+                        HttpUtils.Invalid(this);
+                        finish();
+                        FToast.error(orderCancel.getInfo());
                     } else {
                         FToast.error(orderCancel.getInfo());
                     }

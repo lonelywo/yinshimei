@@ -14,6 +14,7 @@ import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.plate.common.vm.CommonViewModel;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.widget.ClearEditText;
 import com.google.gson.Gson;
@@ -103,6 +104,10 @@ public class NickModifyActivity extends BaseActivity {
                 LocalBroadcastManager.getInstance(this).sendBroadcast(intentRefresh);
                 finish();
                 FToast.success(modifyInfo.getInfo());
+            }else if(modifyInfo.getCode() == HttpUtils.CODE_INVALID){
+                HttpUtils.Invalid(this);
+                finish();
+                FToast.error(modifyInfo.getInfo());
             } else {
                 FToast.error(modifyInfo.getInfo());
             }

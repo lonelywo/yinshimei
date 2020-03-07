@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.cuci.enticement.R;
@@ -99,6 +100,12 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
     private boolean mCanLoadMore = true;
     private UserInfo mUserInfo;
     private QyandYHJBean.DataBean.GroupbuyBean groupbuy;
+    private QyandYHJBean.DataBean.CouponBean userlevel;
+    private QyandYHJBean.DataBean.CouponBean userlevelno;
+    private boolean is_show_kj=false;
+    private boolean is_show_qy=false;
+    private int type=1;
+
 
 
 //    private LocalBroadcastManager mLocalBroadcastManager;
@@ -135,8 +142,10 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
         mDecoration = new HomeGridItemDecoration(mActivity, 2, 6, true);
         mDecoration.setHeaderCount(2);
         mRecyclerView.addItemDecoration(mDecoration);
-
         mLayoutManager = new GridLayoutManager(mActivity, 2);
+
+       /* mSizeLookup = new HomeListSpanSizeLookup(mLayoutManager, 1);
+        mLayoutManager.setSpanSizeLookup(mSizeLookup);*/
         mLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
@@ -150,19 +159,16 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
                         return 1;
                     case 3:
                         return 2;
-
                 }
-                  return 0;
+                return 0;
             }
         });
-       /* mSizeLookup = new HomeListSpanSizeLookup(mLayoutManager, 2);
-        mLayoutManager.setSpanSizeLookup(mSizeLookup);*/
-
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
     }
+
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -255,7 +261,12 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
         }
     }
     private void load() {
-        mViewModel.getBanner("2").observe(this, mObserver);
+        if (mUserInfo != null) {
+            mViewModel.getyhjandqiye("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(_HomeFragment.this, YhjandQymObserver);
+        } else {
+            mViewModel.getyhjandqiye("2", "", "").observe(_HomeFragment.this, YhjandQymObserver);
+        }
+
     }
 
 
@@ -277,10 +288,25 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
                         ItemBanner itemBanner = new ItemBanner(items);
                         mItems.clear();
                         mItems.add(itemBanner);
+                     if(is_show_kj){
+                         if(mUserInfo!=null){
+                             if(mUserInfo.getVip_level()==0){
+                                 mItems.add(userlevelno);
+                             }else {
+                                 mItems.add(userlevel);
+                             }
+                         }else {
+                             mItems.add(userlevelno);
+                         }
+                     }else {
+                         QyandYHJBean.DataBean.CouponBean couponBean = new QyandYHJBean.DataBean.CouponBean();
+                         couponBean.setAlias("pidan");
+                         mItems.add(couponBean);
+                     }
                         if (mUserInfo != null) {
-                            mViewModel.getyhjandqiye("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(_HomeFragment.this, YhjandQymObserver);
+                            mViewModel.getGeneralGoods("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), Status.LOAD_REFRESH).observe(_HomeFragment.this, GoodsmObserver);
                         } else {
-                            mViewModel.getyhjandqiye("2", "", "").observe(_HomeFragment.this, YhjandQymObserver);
+                            mViewModel.getGeneralGoods("2", "", "", Status.LOAD_REFRESH).observe(_HomeFragment.this, GoodsmObserver);
                         }
 
                     } else {
@@ -314,13 +340,18 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
                         }
                         return;
                     }
-
                     if (data.getCode() == 1) {
                         mCanLoadMore = true;
-
                         if (status.loadType == Status.LOAD_REFRESH) {
                             mItems.addAll(list);
-                            mItems.add(groupbuy);
+                            if(is_show_qy){
+                                mItems.add(groupbuy);
+                            }else {
+                                QyandYHJBean.DataBean.GroupbuyBean groupbuyBean = new QyandYHJBean.DataBean.GroupbuyBean();
+                                groupbuyBean.setAlias("pidan");
+                                mItems.add(groupbuyBean);
+                            }
+                           // loadtype(type);
                             mAdapter.notifyDataSetChanged();
                             mRefreshLayout.finishRefresh();
                         } else {
@@ -356,7 +387,7 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         mCanLoadMore = false;
         mMinId = 1;
-        mViewModel.getBanner("2").observe(this, mObserver);
+        load();
 
     }
 
@@ -384,28 +415,26 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
     private void opera(ResponseBody body) {
         try {
             String b = body.string();
-           QyandYHJBean mCommissiontxBean = new Gson().fromJson(b, QyandYHJBean.class);
-            if (mCommissiontxBean.getCode() == 1) {
-                if (mUserInfo != null) {
-                    mViewModel.getGeneralGoods("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), Status.LOAD_REFRESH).observe(_HomeFragment.this, GoodsmObserver);
-                } else {
-                    mViewModel.getGeneralGoods("2", "", "", Status.LOAD_REFRESH).observe(_HomeFragment.this, GoodsmObserver);
+           QyandYHJBean mQyandYHJBean = new Gson().fromJson(b, QyandYHJBean.class);
+            if (mQyandYHJBean.getCode() == 1) {
+                mViewModel.getBanner("2").observe(this, mObserver);
+                if(mQyandYHJBean.getData().getCoupon_show()==1){
+                    is_show_kj=true;
+                    userlevel = mQyandYHJBean.getData().getCoupon().get(0);
+                    userlevelno = mQyandYHJBean.getData().getCoupon().get(1);
+                }else {
+                    is_show_kj=false;
+                }
+                if(mQyandYHJBean.getData().getGroup_show()==1){
+                    is_show_qy=true;
+                    groupbuy = mQyandYHJBean.getData().getGroupbuy();
+                }else {
+                    is_show_qy=false;
                 }
 
-                QyandYHJBean.DataBean.CouponBean couponBean = mCommissiontxBean.getData().getCoupon().get(0);
-                QyandYHJBean.DataBean.CouponBean couponBean1 = mCommissiontxBean.getData().getCoupon().get(1);
-                groupbuy = mCommissiontxBean.getData().getGroupbuy();
-                if(mUserInfo!=null){
-                    if(mUserInfo.getVip_level()==0){
-                        mItems.add(couponBean1);
-                    }else {
-                        mItems.add(couponBean);
-                    }
-                }else {
-                    mItems.add(couponBean1);
-                }
+
             } else {
-                FToast.error(mCommissiontxBean.getInfo());
+                FToast.error(mQyandYHJBean.getInfo());
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -417,7 +446,7 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
     @Override
     public void onQiYeClick(QyandYHJBean.DataBean.GroupbuyBean DataBean) {
         Intent intentProd1 = new Intent(mActivity, Agreement2Activity.class);
-        intentProd1.putExtra("url", DataBean.getLink());
+        intentProd1.putExtra("url", DataBean.getLink()+"url?mid="+mUserInfo.getId());
         mActivity.startActivity(intentProd1);
     }
 

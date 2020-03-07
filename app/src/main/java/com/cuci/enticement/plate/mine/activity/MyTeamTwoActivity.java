@@ -25,6 +25,7 @@ import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.plate.mine.adapter.ItemMyTeamTwoViewBinder;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.ImageLoader;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.widget.BrandItemDecoration;
@@ -229,6 +230,10 @@ public class MyTeamTwoActivity extends BaseActivity implements OnRefreshLoadMore
                     mAdapter.notifyDataSetChanged();
                     refreshLayout.finishLoadMore();
                 }
+            }else if(mMyTeamlbBean.getCode() == HttpUtils.CODE_INVALID){
+                HttpUtils.Invalid(this);
+                finish();
+                FToast.error(mMyTeamlbBean.getInfo());
             } else {
                 if (status.loadType == Status.LOAD_MORE) {
                     mCanLoadMore = true;
@@ -272,7 +277,11 @@ public class MyTeamTwoActivity extends BaseActivity implements OnRefreshLoadMore
                 textZhongrenshu.setText("" + mMyTeamslBean.getData().getTotal_all());
                 textXinzengrenshu.setText("" + mMyTeamslBean.getData().getTotal_mon());
                 textRzengrenshu.setText("" + mMyTeamslBean.getData().getTotal_day());
-            } else {
+            } else if(mMyTeamslBean.getCode() == HttpUtils.CODE_INVALID){
+                HttpUtils.Invalid(this);
+                finish();
+                FToast.error(mMyTeamslBean.getInfo());
+            }else {
                 FToast.error(mMyTeamslBean.getInfo());
             }
         } catch (IOException e) {

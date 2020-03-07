@@ -28,6 +28,7 @@ import com.cuci.enticement.plate.common.popup.TipsPopup;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.google.gson.Gson;
 import com.hyphenate.chat.ChatClient;
@@ -359,6 +360,10 @@ public class SettingsActivity extends BaseActivity {
                 FToast.success(mModifyInfo.getInfo());
                 bindStatusTv.setText("已绑定");
                 SharedPrefUtils.saveWXBind(1);
+            }else if(mModifyInfo.getCode() == HttpUtils.CODE_INVALID){
+                HttpUtils.Invalid(this);
+                finish();
+                FToast.error(mModifyInfo.getInfo());
             }else {
                 FToast.error(mModifyInfo.getInfo());
             }
@@ -391,8 +396,11 @@ public class SettingsActivity extends BaseActivity {
                 bindStatusTv.setText("未绑定");
 
                 SharedPrefUtils.saveWXBind(0);
+            }else if(mModifyInfo.getCode() == HttpUtils.CODE_INVALID){
+                HttpUtils.Invalid(this);
+                finish();
+                FToast.error(mModifyInfo.getInfo());
             }else {
-
                 FToast.error(mModifyInfo.getInfo());
             }
         } catch (IOException e) {

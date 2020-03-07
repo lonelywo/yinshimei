@@ -12,22 +12,6 @@ import retrofit2.http.POST;
 
 public interface CommonApi {
 
-
-
-
-    /**
-     * 获取版本更新信息
-     */
-    @FormUrlEncoded
-    @POST("store/api.page/appVersion")
-    Call<Base<Version>> getVersion1(@Field("is_force") boolean is_force,
-                                         @Field("version") int version,
-                                         @Field("versionName") String versionName,
-                                         @Field("url") String url,
-                                         @Field("content") String content
-
-    );
-
     /**
      * 获取版本更新信息
      */

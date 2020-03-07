@@ -23,6 +23,7 @@ import com.cuci.enticement.plate.mine.fragment._PKFragment02;
 import com.cuci.enticement.plate.mine.fragment._PKFragment03;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.flyco.tablayout.SlidingTabLayout;
 
@@ -137,6 +138,10 @@ public class KaQuanActivity extends BaseActivity {
                 mViewPager.setAdapter(adapter);
                 mTabLayout.setViewPager(mViewPager, titles);
                 mViewPager.setCurrentItem(0);
+            }else if(mKaQuanListBean.getCode() == HttpUtils.CODE_INVALID){
+                HttpUtils.Invalid(this);
+                finish();
+                FToast.error(mKaQuanListBean.getInfo());
             } else {
 
                 FToast.error(mKaQuanListBean.getInfo());

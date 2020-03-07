@@ -15,6 +15,7 @@ import com.cuci.enticement.plate.common.popup.TipsPopupxieyi1;
 import com.cuci.enticement.plate.mine.adapter.ItemYsmViewBinder;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.widget.BrandItemDecoration;
 import com.google.gson.Gson;
@@ -143,6 +144,10 @@ public class YinshimeiActivity extends BaseActivity implements ItemYsmViewBinder
                 mItems.clear();
                 mItems.addAll(data);
                 mAdapter.notifyDataSetChanged();
+            }else if(mModifyInfo.getCode() == HttpUtils.CODE_INVALID){
+                HttpUtils.Invalid(this);
+                finish();
+                FToast.error(mModifyInfo.getInfo());
             } else {
                 FToast.error(mModifyInfo.getInfo());
             }

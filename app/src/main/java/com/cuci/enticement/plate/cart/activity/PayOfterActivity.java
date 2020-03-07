@@ -22,6 +22,7 @@ import com.cuci.enticement.plate.mine.activity.MyOrderActivity;
 import com.cuci.enticement.plate.mine.activity.SettingsActivity;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.ImageLoader;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.ViewUtils;
@@ -147,7 +148,11 @@ public class PayOfterActivity extends BaseActivity {
                     ViewUtils.hideView(ok);
                 }
 
-            } else {
+            } else if(mPayOfterBean.getCode()==HttpUtils.CODE_INVALID) {
+                HttpUtils.Invalid(this);
+                finish();
+                FToast.error(mPayOfterBean.getInfo());
+            }else {
                 FToast.error(mPayOfterBean.getInfo());
             }
         } catch (IOException e) {

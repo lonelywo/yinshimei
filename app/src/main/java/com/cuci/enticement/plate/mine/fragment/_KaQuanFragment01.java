@@ -18,6 +18,7 @@ import com.cuci.enticement.plate.common.MainActivity;
 import com.cuci.enticement.plate.mine.adapter.ItemKaQuanViewBinder1;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.widget.BrandItemDecoration;
 import com.cuci.enticement.widget.CustomRefreshHeader;
@@ -171,7 +172,11 @@ public class _KaQuanFragment01 extends BaseFragment implements OnRefreshLoadMore
                     mAdapter.notifyDataSetChanged();
                     refreshLayout.finishLoadMore();
                 }
-            } else {
+            } else if(mKaQuanListBean.getCode() == HttpUtils.CODE_INVALID){
+                HttpUtils.Invalid(mActivity);
+                mActivity.finish();
+                FToast.error(mKaQuanListBean.getInfo());
+            }else {
                 if (status.loadType == Status.LOAD_MORE) {
                     mCanLoadMore = true;
                     refreshLayout.finishLoadMore();
@@ -179,8 +184,7 @@ public class _KaQuanFragment01 extends BaseFragment implements OnRefreshLoadMore
 
                     refreshLayout.finishRefresh();
                 }
-                FToast.warning(mKaQuanListBean.getInfo());
-
+                FToast.error(mKaQuanListBean.getInfo());
             }
         } catch (IOException e) {
             e.printStackTrace();

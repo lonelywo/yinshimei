@@ -21,6 +21,7 @@ import com.cuci.enticement.plate.cart.activity.LogisticsActivity;
 import com.cuci.enticement.plate.common.popup.WarningPopup;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.ViewUtils;
 import com.google.gson.Gson;
@@ -215,6 +216,10 @@ public class AchievementActivity extends BaseActivity {
                     }
                 }
 
+            }else if(mYeJiYueFanBean.getCode() == HttpUtils.CODE_INVALID){
+                HttpUtils.Invalid(this);
+                finish();
+                FToast.error(mYeJiYueFanBean.getInfo());
             } else {
                 FToast.error(mYeJiYueFanBean.getInfo());
             }
@@ -313,6 +318,10 @@ public class AchievementActivity extends BaseActivity {
                         num=2;
                         FToast.success("保存地址成功");
 
+                    }else if(commitOrder.getCode() == HttpUtils.CODE_INVALID){
+                        HttpUtils.Invalid(this);
+                        finish();
+                        FToast.error(commitOrder.getInfo());
                     } else {
                         FToast.error("保存地址失败");
                     }

@@ -20,6 +20,7 @@ import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.plate.mine.adapter.ItemCommissionMXViewBinder;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.widget.CartItemDecoration;
 import com.cuci.enticement.widget.CustomRefreshHeader;
@@ -148,6 +149,10 @@ public class CashMXActivity extends BaseActivity implements OnRefreshLoadMoreLis
                     mAdapter.notifyDataSetChanged();
                     refreshLayout.finishLoadMore();
                 }
+            }else if(mCommissionjlBean.getCode() == HttpUtils.CODE_INVALID){
+                HttpUtils.Invalid(this);
+                finish();
+                FToast.error(mCommissionjlBean.getInfo());
             } else {
                 if (status.loadType == Status.LOAD_MORE) {
                     mCanLoadMore = true;

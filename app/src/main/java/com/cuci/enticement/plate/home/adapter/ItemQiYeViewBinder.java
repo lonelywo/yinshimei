@@ -1,6 +1,7 @@
 package com.cuci.enticement.plate.home.adapter;
 
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import com.cuci.enticement.R;
 import com.cuci.enticement.bean.HomeLingQuanBean;
 import com.cuci.enticement.bean.QyandYHJBean;
 import com.cuci.enticement.utils.ImageLoader;
+import com.cuci.enticement.utils.ViewUtils;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -45,8 +47,12 @@ public class ItemQiYeViewBinder extends ItemViewBinder<QyandYHJBean.DataBean.Gro
 
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull QyandYHJBean.DataBean.GroupbuyBean item) {
-
-        ImageLoader.loadPlaceholder(item.getImgs(),holder.imgOnclick);
+        if(TextUtils.equals(item.getAlias(),"pidan")){
+            ViewUtils.hideView(holder.imgOnclick);
+        }else {
+            ViewUtils.showView(holder.container);
+            ImageLoader.loadPlaceholder(item.getImgs(),holder.imgOnclick);
+        }
         holder.imgOnclick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

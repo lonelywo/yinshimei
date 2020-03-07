@@ -22,7 +22,7 @@ public class ServiceCreator {
     public static  int Constant_IS_NEW = 0;
 //总金额
 public static  String Constant_ZONG_MONEY = "";
-     private static final String BASE_URL = "https://test.enticementchina.com/";
+      private static final String BASE_URL = "https://test.enticementchina.com/";
     //  private static final String BASE_URL = "https://app.enticementchina.com/";
 
     private final Retrofit mRetrofit;

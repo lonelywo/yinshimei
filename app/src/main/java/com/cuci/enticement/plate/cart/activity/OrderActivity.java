@@ -44,6 +44,7 @@ import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.plate.mine.vm.OrderViewModel;
 import com.cuci.enticement.utils.Arith;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.MathExtend;
 import com.cuci.enticement.utils.PayResult;
 import com.cuci.enticement.utils.SharedPrefUtils;
@@ -60,6 +61,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.time.chrono.MinguoDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -181,7 +183,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
     //商品集合
     private List<OrderGoods> items;
     //可使用优惠卷集合
-    private ArrayList<KaQuanListBean.DataBean.ListBean> list;
+    private ArrayList<KaQuanListBean.DataBean.ListBean> list ;
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         @SuppressWarnings("unused")
@@ -426,6 +428,10 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                         saveDefault(list);
 
 
+                    }else if(data.getCode() == HttpUtils.CODE_INVALID){
+                        HttpUtils.Invalid(OrderActivity.this);
+                        finish();
+                        FToast.error(data.getInfo());
                     } else {
                         ViewUtils.showView(textDizi);
                         ViewUtils.hideView(tvAddress);
@@ -535,6 +541,10 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
 
                             sendReq2ZFB(orderPay.getData());
 
+                        }else if(orderPay.getCode() == HttpUtils.CODE_INVALID){
+                            HttpUtils.Invalid(this);
+                            finish();
+                            FToast.error(orderPay.getInfo());
                         } else {
                             FToast.error(orderPay.getInfo());
                         }
@@ -562,6 +572,10 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                             wxPayBean.setPackageX(packageX);
                             sendReq2WX(wxPayBean);
 
+                        }else if(orderPay.getCode() == HttpUtils.CODE_INVALID){
+                            HttpUtils.Invalid(this);
+                            finish();
+                            FToast.error(orderPay.getInfo());
                         } else {
                             FToast.error(orderPay.getInfo());
                         }
@@ -628,6 +642,10 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                         //计算总价
                         totalMoney = MathExtend.addnum(mInfo.getPrice_goods(), express_price);
                         tvTotalMoney.setText(String.format(Locale.CHINA, "%s", totalMoney));
+                    }else if(expressCost.getCode() == HttpUtils.CODE_INVALID){
+                        HttpUtils.Invalid(this);
+                        finish();
+                        FToast.error(expressCost.getInfo());
                     } else {
                         FToast.error(expressCost.getInfo());
                     }
@@ -680,6 +698,10 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                                 commitOrder.getData().getOrder().getOrder_no(), String.valueOf(mPayType))
                                 .observe(this, mPayObserver);
 
+                    }else if(commitOrder.getCode() == HttpUtils.CODE_INVALID){
+                        HttpUtils.Invalid(this);
+                        finish();
+                        FToast.error(commitOrder.getInfo());
                     } else {
                         FToast.error(commitOrder.getInfo());
                     }
@@ -911,25 +933,18 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
             }
             if (mKaQuanListBean.getCode() == 1) {
                 List<KaQuanListBean.DataBean.ListBean>   checkitems = mKaQuanListBean.getData().getList();
-                list = new ArrayList<>();
-
-                double total = Double.parseDouble(mInfo.getPrice_goods());
-
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                    }
-                });
-
+              list = new ArrayList<KaQuanListBean.DataBean.ListBean>();
             //普通卷
                 for (int i = 0; i <checkitems.size() ; i++) {
                    if(TextUtils.isEmpty(checkitems.get(i).getCoupon().getUse_goods())){
                        for (int j = 0; j <items.size() ; j++) {
-                           String moveone_limit = MathExtend.moveone(checkitems.get(i).getCoupon().getLimit_amount());
+                           String moveone_limit =checkitems.get(i).getCoupon().getLimit_amount();
                            double total_man = Double.parseDouble(moveone_limit);
-                           if(items.get(j).getIs_join()==1&&total>=total_man){
+                           String total = MathExtend.multiply(items.get(j).getGoods_price_selling(), String.valueOf(items.get(j).getGoods_num()));
+                           double totals = Double.parseDouble(total);
+                           if(items.get(j).getIs_join()==1&&totals>=total_man){
                                list.add(checkitems.get(i));
+                               break;
                            }
                        }
                    }else {
@@ -940,9 +955,12 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                        for (int j = 0; j <items.size() ; j++) {
                            String moveone_limit = MathExtend.moveone(checkitems.get(i).getCoupon().getLimit_amount());
                            double total_man = Double.parseDouble(moveone_limit);
+                           String total = MathExtend.multiply(items.get(j).getGoods_price_selling(), String.valueOf(items.get(j).getGoods_num()));
+                           double totals = Double.parseDouble(total);
                            boolean contains = strings.contains(items.get(j).getGoods_id());
-                           if(contains&&total>=total_man){
+                           if(contains&&totals>=total_man){
                                list.add(checkitems.get(i));
+                               break;
                            }
                        }
                    }
@@ -959,6 +977,10 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                 textYouhuiset.setText("点击选择优惠券");
                 type=1;
 
+            }else if(mKaQuanListBean.getCode() == HttpUtils.CODE_INVALID){
+                HttpUtils.Invalid(this);
+                finish();
+                FToast.warning(mKaQuanListBean.getInfo());
             } else {
                 FToast.warning(mKaQuanListBean.getInfo());
             }

@@ -53,6 +53,7 @@ import com.cuci.enticement.plate.home.vm.HomeViewModel;
 import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FLog;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.MathExtend;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.UtilsForClick;
@@ -362,7 +363,12 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                     ViewUtils.hideView(imgShare);
 
                 }
-            } else {
+            }else if (mMyTeamslBean.getCode() == HttpUtils.CODE_INVALID){
+                HttpUtils.Invalid(ProdActivity.this);
+                finish();
+                FToast.error(mMyTeamslBean.getInfo());
+            }
+            else {
                 FToast.error(mMyTeamslBean.getInfo());
             }
         } catch (IOException e) {
@@ -406,6 +412,10 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                 intent.putExtra("num", mNum);
                 intent.putExtra("rule", rule);
                 startActivity(intent);
+            }else if(mMyTeamslBean.getCode() == HttpUtils.CODE_INVALID){
+                HttpUtils.Invalid(ProdActivity.this);
+                finish();
+                FToast.error(mMyTeamslBean.getInfo());
             } else {
                 FToast.error(mMyTeamslBean.getInfo());
             }
@@ -687,11 +697,12 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                             viewModel.cartNum(mUserInfo.getToken(), String.valueOf(mUserInfo.getId())).observe(ProdActivity.this, mNumObserver);
                             //刷新购物车列表
                             EventBus.getDefault().post(new CartEvent(CartEvent.REFRESH_CART_LIST));
-                           /* LocalBroadcastManager broadcastManager = getInstance(ProdActivity.this);
-                            broadcastManager.sendBroadcast(new Intent(ACTION_REFRESH_DATA));*/
 
-
-                        } else {
+                        }else if (bean.getCode()==HttpUtils.CODE_INVALID){
+                            HttpUtils.Invalid(ProdActivity.this);
+                            finish();
+                            FToast.error(bean.getInfo());
+                        }else {
                             FToast.error(bean.getInfo());
                         }
 
@@ -735,6 +746,10 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                                 cartNumTv.setText(String.valueOf(numResult.getData().getC_num()));
                             }
 
+                        }else if(numResult.getCode() == HttpUtils.CODE_INVALID){
+                            HttpUtils.Invalid(ProdActivity.this);
+                            finish();
+                            FToast.error(numResult.getInfo());
                         } else {
                             FToast.error(numResult.getInfo());
                         }
@@ -843,6 +858,10 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                         .dismissOnBackPressed(false)
                         .asCustom(new CenterShareAppPopup2(ProdActivity.this, mUserInfo, poster, qrcode))
                         .show();
+            }else if(mMyTeamslBean.getCode() == HttpUtils.CODE_INVALID){
+               HttpUtils.Invalid(ProdActivity.this);
+               finish();
+               FToast.error(mMyTeamslBean.getInfo());
             } else {
                 FToast.error(mMyTeamslBean.getInfo());
             }
@@ -921,19 +940,22 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
         try {
             String b = body.string();
             ProYhqBean mProYhqBean = new Gson().fromJson(b, ProYhqBean.class);
-            data = mProYhqBean.getData();
-            if(data==null||data.size()==0){
-                ViewUtils.hideView(conYouhuiquan);
-                return;
-            }
             if (mProYhqBean.getCode() == 1) {
+                data = mProYhqBean.getData();
+                if(data==null||data.size()==0){
+                    ViewUtils.hideView(conYouhuiquan);
+                    return;
+                }
                 ViewUtils.showView(conYouhuiquan);
+            }else if(mProYhqBean.getCode() == HttpUtils.CODE_INVALID){
+                HttpUtils.Invalid(ProdActivity.this);
+                finish();
+                FToast.error(mProYhqBean.getInfo());
             } else {
                 FToast.error(mProYhqBean.getInfo());
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-            FToast.error("数据错误");
+        } catch (Exception e) {
+          FLog.e("pidan","商品详情优惠券列表数据解析异常");
         }
     }
 

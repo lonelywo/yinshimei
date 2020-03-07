@@ -36,6 +36,7 @@ import com.cuci.enticement.plate.cart.vm.CartViewModel;
 import com.cuci.enticement.plate.common.eventbus.CartEvent;
 import com.cuci.enticement.plate.common.popup.CartTipsPopup;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.MathExtend;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.ViewUtils;
@@ -285,6 +286,9 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
                         }
                         //删除商品刷新视图和底部总价
                         mTvTotal.setText(String.format(Locale.CHINA, "%s", getCheckedsMoeny()));
+                    }else if(status.content.code==HttpUtils.CODE_INVALID){
+                        HttpUtils.Invalid(mActivity);
+                        FToast.error(content.info);
                     } else {
                         if (status.loadType == Status.LOAD_MORE) {
                             mCanLoadMore = true;
@@ -505,6 +509,9 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
                                 ViewUtils.hideView(bottomLyaout);
                                 mStatusView.showEmpty();
                             }
+                        }else if(cartDelete.code==HttpUtils.CODE_INVALID){
+                            HttpUtils.Invalid(mActivity);
+                            FToast.warning(cartDelete.info);
                         }else {
                             FToast.warning(cartDelete.info);
                         }
@@ -547,10 +554,11 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
                         if (bean.getCode() == 1) {
 
-
-
-                        } else {
-                            FToast.warning(bean.getInfo());
+                        } else if(bean.getCode()==HttpUtils.CODE_INVALID){
+                            HttpUtils.Invalid(mActivity);
+                            FToast.error(bean.getInfo());
+                        }else {
+                            FToast.error(bean.getInfo());
                         }
 
                     } catch (IOException e) {

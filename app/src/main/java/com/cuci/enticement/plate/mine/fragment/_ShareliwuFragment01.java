@@ -40,6 +40,7 @@ import com.cuci.enticement.plate.mine.adapter.ItemReceiveTitleViewBinder;
 import com.cuci.enticement.plate.mine.adapter.ItemReceiveViewBinder;
 import com.cuci.enticement.plate.mine.vm.LiwuViewModel;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.ViewUtils;
 import com.cuci.enticement.widget.CustomRefreshHeader;
@@ -224,6 +225,10 @@ public class _ShareliwuFragment01 extends BaseFragment implements OnRefreshLoadM
                             mRefreshLayout.finishLoadMore();
                         }
 
+                    }else if(allOrderList.getCode() == HttpUtils.CODE_INVALID){
+                        HttpUtils.Invalid(mActivity);
+                        mActivity.finish();
+                        FToast.error(allOrderList.getInfo());
                     } else {
                         if (status.loadType == Status.LOAD_MORE) {
                             mCanLoadMore = true;
@@ -343,6 +348,10 @@ public class _ShareliwuFragment01 extends BaseFragment implements OnRefreshLoadM
                 EventBus.getDefault().post(new ReceiveEvent(ReceiveEvent.CHECK_ITEM));
                 //刷新角标
                 EventBus.getDefault().post(new IsnewEvent());
+            }else if(mReceiveBean.getCode() == HttpUtils.CODE_INVALID){
+                HttpUtils.Invalid(mActivity);
+                mActivity.finish();
+                FToast.error(mReceiveBean.getInfo());
             } else {
                 FToast.error(mReceiveBean.getInfo());
             }
