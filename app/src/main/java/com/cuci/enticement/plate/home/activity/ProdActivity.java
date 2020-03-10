@@ -81,6 +81,7 @@ import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
@@ -175,7 +176,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
     private ProgressDialog mProgressDialog;
     private String coupon_desc;
     private List<ProYhqBean.DataBean> data;
-
+    private String total;
 
     @Override
     public int getLayoutId() {
@@ -459,9 +460,19 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                         tvCouponDesc.setText(coupon_desc);
                         int number_sales = mProData.getNumber_sales();
                         if(number_sales>10000){
-                            String divide = MathExtend.division(number_sales, 10000);
-                            String moveone = MathExtend.moveone(divide);
-                            textXiaoliang.setText("销量"+moveone+"W+");
+                            int w = number_sales / 10000;
+                            int q = number_sales / 1000;
+                            String t = String.valueOf(q);
+                            char[] chars = t.toCharArray();
+                            char aChar = chars[chars.length - 1];
+                            int i = Integer.parseInt(String.valueOf(aChar));
+                            if(i==0){
+                               total = String.format(Locale.CHINA, "%dW+", w);
+                          }else {
+                               total = String.format(Locale.CHINA, "%d.%sW+", w, chars[chars.length - 1]);
+                          }
+                            textXiaoliang.setText("销量"+total);
+
                         }else {
                             textXiaoliang.setText("销量"+number_sales);
                         }

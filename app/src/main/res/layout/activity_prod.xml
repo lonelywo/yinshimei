@@ -146,10 +146,9 @@
           android:layout_height="wrap_content"
           app:layout_constraintRight_toRightOf="parent"
           app:layout_constraintTop_toTopOf="@+id/text_tuijian"
-          android:text="销量5W+"
+          tools:text="销量5W+"
           android:textSize="18dp"
           android:textColor="#8E8E8E"
-          android:visibility="visible"
           android:layout_marginRight="10dp"
           />
       <View

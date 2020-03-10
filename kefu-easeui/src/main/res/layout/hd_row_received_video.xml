@@ -52,7 +52,6 @@
                 android:scaleType="fitXY" />
 
             <LinearLayout
-                android:id="@+id/chatting_video_data_area"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/hd_chat_video_mask_to"

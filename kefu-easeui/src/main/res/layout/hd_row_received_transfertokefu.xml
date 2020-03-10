@@ -45,7 +45,6 @@
             android:textSize="15sp" />
 
         <RelativeLayout
-            android:id="@+id/relativeLayout1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_chatcontent"

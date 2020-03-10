@@ -20,7 +20,6 @@
         android:layout_marginTop="@dimen/margin_chat_activity" >
 
         <LinearLayout
-            android:id="@+id/ll_loading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -53,7 +52,6 @@
             android:visibility="gone" />
 
         <TextView
-            android:id="@+id/tv_ack"
             style="@style/chat_text_name_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -63,7 +61,6 @@
             android:visibility="gone"/>
 
         <TextView
-            android:id="@+id/tv_delivered"
             style="@style/chat_text_name_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

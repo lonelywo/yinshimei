@@ -13,56 +13,5 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
-
-    <style name="my_text_view_style2">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingTop">14dp</item>
-        <item name="android:paddingBottom">14dp</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:drawablePadding">14dp</item>
-        <item name="android:gravity">center_vertical|left</item>
-    </style>
-
-    <style name="settings_text_view_style">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingTop">14dp</item>
-        <item name="android:paddingBottom">14dp</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:drawablePadding">14dp</item>
-        <item name="android:gravity">center_vertical|left</item>
-    </style>
-
-
-
-    <style name="CustomBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/CustomBottomSheetStyle</item>
-    </style>
-
-    <style name="CustomBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@android:color/transparent</item>
-    </style>
-
-    <style name="DailyPictureDialogAnimation">
-        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
-        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
-    </style>
-
-    <style name="AlibcLoginTheme" parent="android:Theme.NoTitleBar.Fullscreen">
-        <item name="android:windowIsTranslucent">false</item>
-        <item name="android:windowDisablePreview">true</item>
-    </style>
-
-    <style name="HomeTabStyle">
-        <item name="android:layout_weight">1</item>
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_marginTop">4dp</item>
-        <item name="android:layout_marginBottom">4dp</item>
-    </style>
 
 </resources>

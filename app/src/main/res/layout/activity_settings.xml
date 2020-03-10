@@ -85,8 +85,7 @@
         </LinearLayout>
 
         <View
-          android:id="@+id/view_contract"
-          android:layout_width="match_parent"
+            android:layout_width="match_parent"
           android:layout_height="1dp"
           android:background="#F3F4F6"
           android:paddingStart="16dp"
@@ -209,7 +208,6 @@
                   android:textSize="14sp" />
 
               <TextView
-                  android:id="@+id/bindtuijian_status_tv"
                   android:layout_width="0dp"
                   android:layout_weight="1"
                   android:layout_height="wrap_content"

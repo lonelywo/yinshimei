@@ -1,6 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name_test" tools:ignore="MissingTranslation">因诗美</string>
-    <string name="action_settings" translatable="false">Settings</string>
 
 
     <string name="tab_home" translatable="false">首页</string>
@@ -12,7 +11,6 @@
     <string name="channel_name" translatable="false">因诗美更新</string>
     <string name="channel_description" translatable="false">因诗美正在更新，请稍后…</string>
 
-    <string name="bind_alias" translatable="false">绑定别名</string>
     <string name="bind_alias_unknown_exception" translatable="false">绑定别名失败，未知异常</string>
     <string name="bind_alias_success" translatable="false">绑定别名成功</string>
     <string name="bind_alias_error_frequency" translatable="false">绑定别名失败，请求频次超限</string>
@@ -22,14 +20,4 @@
     <string name="bind_alias_error_connect_lost" translatable="false">绑定别名失败，网络错误</string>
     <string name="bind_alias_error_alias_invalid" translatable="false">绑定别名失败，别名无效</string>
     <string name="bind_alias_error_sn_invalid" translatable="false">绑定别名失败，sn无效</string>
-    <string name="unbind_alias" translatable="false">解绑别名</string>
-    <string name="unbind_alias_unknown_exception" translatable="false">取消绑定别名失败，未知异常</string>
-    <string name="unbind_alias_success" translatable="false">取消绑定别名成功</string>
-    <string name="unbind_alias_error_frequency" translatable="false">取消绑定别名失败，请求频次超限</string>
-    <string name="unbind_alias_error_param_error" translatable="false">取消绑定别名失败，参数错误</string>
-    <string name="unbind_alias_error_request_filter" translatable="false">取消绑定别名失败，请求被过滤</string>
-    <string name="unbind_alias_error_cid_lost" translatable="false">取消绑定别名失败，未获取到cid</string>
-    <string name="unbind_alias_error_connect_lost" translatable="false">取消绑定别名失败，网络错误</string>
-    <string name="unbind_alias_error_alias_invalid" translatable="false">取消绑定别名失败，别名无效</string>
-    <string name="unbind_alias_error_sn_invalid" translatable="false">取消绑定别名失败，sn无效</string>
 </resources>

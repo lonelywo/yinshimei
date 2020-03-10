@@ -30,8 +30,7 @@
 
 
 	<LinearLayout
-		android:id="@+id/video_data_area"
-		android:layout_width="fill_parent"
+        android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
 		android:gravity="bottom"
 		android:orientation="horizontal"
