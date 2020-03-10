@@ -107,7 +107,11 @@ public class PayOfterActivity extends BaseActivity {
         });
     }
     private void load() {
-        mViewModel.payofter(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()), ""+ServiceCreator.Constant_IS_NEW,ServiceCreator.Constant_GOODS_ID).observe(this, mObserver);
+        if(ServiceCreator.Constant_IS_NEW==0){
+            mViewModel.payofter(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()), "1",ServiceCreator.Constant_GOODS_ID).observe(this, mObserver);
+        }else {
+            mViewModel.payofter(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()), "0",ServiceCreator.Constant_GOODS_ID).observe(this, mObserver);
+        }
     }
     private Observer<Status<ResponseBody>> mObserver = status -> {
 
@@ -133,18 +137,17 @@ public class PayOfterActivity extends BaseActivity {
             String b = body.string();
             PayOfterBean mPayOfterBean = new Gson().fromJson(b, PayOfterBean.class);
             if (mPayOfterBean.getCode() == 1) {
+                String img = mPayOfterBean.getData().getImg();
+                String desc = mPayOfterBean.getData().getDesc();
+                String replace = desc.replace("\\n", "\n");
+
                 if(mPayOfterBean.getData().getIs_coupon()==1){
-                    String img = mPayOfterBean.getData().getImg();
-                    String desc = mPayOfterBean.getData().getDesc();
-                    String replace = desc.replace("\\n", "\n");
                     ImageLoader.loadPlaceholder1(img,imgLogo);
                     tv1.setText(replace);
-                    ViewUtils.showView(imgLogo);
-                    ViewUtils.showView(tv1);
                     ViewUtils.showView(ok);
                 }else {
-                    ViewUtils.hideView(imgLogo);
-                    ViewUtils.hideView(tv1);
+                    ImageLoader.loadPlaceholder1(img,imgLogo);
+                    tv1.setText(replace);
                     ViewUtils.hideView(ok);
                 }
 

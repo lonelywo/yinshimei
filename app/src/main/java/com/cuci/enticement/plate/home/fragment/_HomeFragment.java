@@ -393,9 +393,14 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
 
     @Override
     public void onLingQuanClick(QyandYHJBean.DataBean.CouponBean DataBean) {
-        Intent intentProd1 = new Intent(mActivity, Agreement2Activity.class);
-        intentProd1.putExtra("url", DataBean.getLink());
-        mActivity.startActivity(intentProd1);
+      if(AppUtils.isAllowPermission(mActivity)){
+          Intent intentProd1 = new Intent(mActivity, Agreement2Activity.class);
+          intentProd1.putExtra("url", DataBean.getLink()+"?mid="+mUserInfo.getId());
+          mActivity.startActivity(intentProd1);
+      }
+
+
+
     }
     private Observer<Status<ResponseBody>> YhjandQymObserver = status -> {
 
@@ -446,7 +451,7 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
     @Override
     public void onQiYeClick(QyandYHJBean.DataBean.GroupbuyBean DataBean) {
         Intent intentProd1 = new Intent(mActivity, Agreement2Activity.class);
-        intentProd1.putExtra("url", DataBean.getLink()+"url?mid="+mUserInfo.getId());
+        intentProd1.putExtra("url", DataBean.getLink());
         mActivity.startActivity(intentProd1);
     }
 

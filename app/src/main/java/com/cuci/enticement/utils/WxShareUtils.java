@@ -424,7 +424,7 @@ public class WxShareUtils {
             if (needRecycle)
                 bmp.recycle();
             ByteArrayOutputStream localByteArrayOutputStream = new ByteArrayOutputStream();
-            localBitmap.compress(Bitmap.CompressFormat.JPEG, 90,
+            localBitmap.compress(Bitmap.CompressFormat.JPEG, 100,
                     localByteArrayOutputStream);
             localBitmap.recycle();
             byte[] arrayOfByte = localByteArrayOutputStream.toByteArray();
@@ -438,5 +438,33 @@ public class WxShareUtils {
             j = bmp.getHeight();
         }
     }
+
+    public static byte[] bmpToByteArray0(final Bitmap bmp, final boolean needRecycle) {
+
+          ByteArrayOutputStream output = new ByteArrayOutputStream();
+
+           bmp.compress(Bitmap.CompressFormat.JPEG, 90, output);
+
+              if (needRecycle) {
+
+                   bmp.recycle();
+
+               }
+
+               byte[] result = output.toByteArray();
+          try {
+
+               output.close();
+
+             } catch (Exception e) {
+
+                     e.printStackTrace();
+
+                 }
+
+             return result;
+
+             }
+
 
 }

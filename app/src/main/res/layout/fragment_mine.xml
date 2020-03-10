@@ -89,6 +89,8 @@
                 android:layout_height="60dp"
                 android:layout_marginLeft="20dp"
                 android:src="@drawable/tuxiang"
+                app:civ_border_color="@color/home_huang"
+                app:civ_border_width="2dp"
                 app:layout_constraintBottom_toBottomOf="@+id/img_shape_bai"
                 app:layout_constraintLeft_toLeftOf="@+id/img_shape_bai"
                 app:layout_constraintTop_toTopOf="@+id/img_shape_bai" />

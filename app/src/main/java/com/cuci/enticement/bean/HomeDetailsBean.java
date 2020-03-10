@@ -70,6 +70,16 @@ public class HomeDetailsBean {
         private int status;
         private String title;
         private String logo;
+
+        public String getMini_share_pic() {
+            return mini_share_pic;
+        }
+
+        public void setMini_share_pic(String mini_share_pic) {
+            this.mini_share_pic = mini_share_pic;
+        }
+
+        private String mini_share_pic;
         private int cate_id;
         private String initial_price_market;
         private String initial_price_selling;

@@ -22,21 +22,21 @@
       app:layout_constraintStart_toStartOf="parent"
       android:descendantFocusability="blocksDescendants"
     >
+      <com.youth.banner.Banner
+          android:id="@+id/banner"
+          android:layout_width="0dp"
+          android:layout_height="0dp"
+          app:delay_time="5000"
+          app:image_scale_type="fit_xy"
+          app:indicator_height="6dp"
+          app:indicator_margin="3dp"
+          app:indicator_width="6dp"
+          app:is_auto_play="false"
+          app:layout_constraintDimensionRatio="530:584"
+          app:layout_constraintLeft_toLeftOf="parent"
+          app:layout_constraintRight_toRightOf="parent"
+          app:layout_constraintTop_toTopOf="parent" />
 
-    <com.youth.banner.Banner
-        android:id="@+id/banner"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:delay_time="5000"
-        app:image_scale_type="fit_xy"
-        app:indicator_height="6dp"
-        app:indicator_margin="3dp"
-        app:indicator_width="6dp"
-        app:is_auto_play="false"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
   <androidx.constraintlayout.widget.ConstraintLayout
       android:id="@+id/con_beijing"
       android:layout_width="match_parent"
@@ -296,14 +296,15 @@
                android:id="@+id/cart_num_tv"
                android:layout_width="16dp"
                android:layout_height="16dp"
-               android:background="@drawable/shape_mine_order_status_num"
+               android:background="@drawable/shape_pro_cart_status_num"
                tools:text="3"
                android:gravity="center"
                android:textSize="11sp"
                android:visibility="gone"
-               android:textColor="@color/orange"
+               android:textColor="@color/white"
                app:layout_constraintTop_toTopOf="@+id/iv_cart"
                app:layout_constraintEnd_toEndOf="@+id/iv_cart"
+               android:layout_marginRight="10dp"
                />
 
        </androidx.constraintlayout.widget.ConstraintLayout>

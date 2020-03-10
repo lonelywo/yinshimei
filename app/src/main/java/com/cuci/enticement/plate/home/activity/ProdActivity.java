@@ -51,6 +51,7 @@ import com.cuci.enticement.plate.common.popup.ShareBottom2TopProdPopup;
 import com.cuci.enticement.plate.common.popup.SharegoodsImgTipsPopup;
 import com.cuci.enticement.plate.home.vm.HomeViewModel;
 import com.cuci.enticement.utils.AppUtils;
+import com.cuci.enticement.utils.BitmapUitls;
 import com.cuci.enticement.utils.FLog;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.HttpUtils;
@@ -130,7 +131,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
     TextView ivCart;
 
     private static final int THUMB_SIZE = 500;
-    private static final int THUMB_SIZE1 = 400;
+
     @BindView(R.id.ll_dibu)
     LinearLayout llDibu;
     @BindView(R.id.text_xiajia)
@@ -807,11 +808,11 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                         WXMediaMessage msg = new WXMediaMessage(miniProgramObj);
                         msg.title = mProData.getTitle();                    // 小程序消息title
                         msg.description = "因诗美，因你而美";               // 小程序消息desc
-                        Bitmap bmp = BitmapFactory.decodeStream(new URL(mProData.getLogo()).openStream());
-                        //Bitmap thumbBmp = BitmapUitls.drawWXMiniBitmap(bmp, 500, 500);
-                        Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, 500, 500, true);
+                        Bitmap bmp = BitmapFactory.decodeStream(new URL(mProData.getMini_share_pic()).openStream());
+                         Bitmap thumbBmp = BitmapUitls.drawWXMiniBitmap(bmp, 500, 400);
+                        //  Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, THUMB_SIZE, THUMB_SIZE, true);
                         bmp.recycle();
-                        msg.thumbData = WxShareUtils.bmpToByteArray(thumbBmp, true); // 小程序消息封面图片，小于128k
+                        msg.thumbData = WxShareUtils.bmpToByteArray0(thumbBmp, true); // 小程序消息封面图片，小于128k
                         SendMessageToWX.Req req = new SendMessageToWX.Req();
                         req.transaction = String.valueOf(System.currentTimeMillis());
                         req.message = msg;

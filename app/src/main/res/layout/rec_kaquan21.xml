@@ -46,7 +46,7 @@
         app:layout_constraintBottom_toTopOf="@+id/guideline1"
         app:layout_constraintStart_toStartOf="@+id/con_buju"
         app:layout_constraintEnd_toEndOf="@+id/con_buju"
-        android:textSize="15sp"
+        android:textSize="14sp"
         android:text="30"
         android:textColor="@color/white"
         />
@@ -93,18 +93,18 @@
         />
     <TextView
         android:id="@+id/tv_qushiyong"
-        android:layout_width="80dp"
-        android:layout_height="24dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/guideline1"
         android:background="@drawable/shape_mine_kaquan_anniu2"
         android:text="去使用"
         android:textSize="12sp"
         android:textColor="@color/white"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingTop="3dp"
-        android:paddingBottom="3dp"
+        android:paddingRight="5dp"
+        android:paddingLeft="5dp"
+        android:paddingTop="1dp"
+        android:paddingBottom="1dp"
         android:layout_marginRight="5dp"
         android:gravity="center"
         />
