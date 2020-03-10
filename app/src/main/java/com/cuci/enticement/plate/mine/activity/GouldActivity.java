@@ -170,7 +170,7 @@ public class GouldActivity extends BaseActivity implements
                     aMap.setMyLocationEnabled(true);
                     // 点击之后，我利用代码指定的方式改变了地图中心位置，所以也会调用 onCameraChangeFinish
                     // 只要地图发生改变，就会调用 onCameraChangeFinish ，不是说非要手动拖动屏幕才会调用该方法
-                    aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mFinalChoosePosition.latitude, mFinalChoosePosition.longitude), 20));
+                    aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mFinalChoosePosition.latitude, mFinalChoosePosition.longitude), 16));
 
                 }
             });
@@ -187,7 +187,7 @@ public class GouldActivity extends BaseActivity implements
             aMap.setMyLocationEnabled(true);// 设置为true表示启动显示定位蓝点，false表示隐藏定位蓝点并不进行定位，默认是false。
         }
         // 只要地图发生改变，就会调用 onCameraChangeFinish ，不是说非要手动拖动屏幕才会调用该方法
-        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lp.getLatitude(), lp.getLongitude()), 20));
+        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lp.getLatitude(), lp.getLongitude()), 16));
 
     }
 
@@ -247,7 +247,7 @@ public class GouldActivity extends BaseActivity implements
     protected void doSearchQuery() {
         type=1;
         currentPage = 0;
-        query = new PoiSearch.Query("", "", city);// 第一个参数表示搜索字符串，第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
+        query = new PoiSearch.Query("", "", "");// 第一个参数表示搜索字符串，第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
         query.setPageSize(20);// 设置每页最多返回多少条poiitem
         query.setPageNum(currentPage);// 设置查第一页
         LatLonPoint lpTemp = convertToLatLonPoint(mFinalChoosePosition);
@@ -358,7 +358,7 @@ public class GouldActivity extends BaseActivity implements
         showProgressDialog();// 显示进度框
         type=2;
         currentPage = 0;
-        query = new PoiSearch.Query(keyWord, "", city);// 第一个参数表示搜索字符串，第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
+        query = new PoiSearch.Query(keyWord, "", "");// 第一个参数表示搜索字符串，第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
         query.setPageSize(20);// 设置每页最多返回多少条poiitem
         query.setPageNum(currentPage);// 设置查第一页
         query.setCityLimit(true);
@@ -472,5 +472,17 @@ public class GouldActivity extends BaseActivity implements
         });
 
         builder.create().show();
+    }
+
+    @Override
+    public void onClick2(PoiItem bean, int position) {
+        LatLonPoint latLonPoint = bean.getLatLonPoint();
+        String provinceName = bean.getProvinceName();
+        String cityName = bean.getCityName();
+        String adName = bean.getAdName();
+        city=cityName;
+        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latLonPoint.getLatitude(),latLonPoint.getLongitude() ), 16));
+        ViewUtils.showView(conFragment1);
+        ViewUtils.hideView(conFragment2);
     }
 }

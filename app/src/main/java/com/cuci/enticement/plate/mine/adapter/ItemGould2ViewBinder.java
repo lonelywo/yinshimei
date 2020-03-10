@@ -26,7 +26,7 @@ public class ItemGould2ViewBinder extends ItemViewBinder<PoiItem, ItemGould2View
     public interface OnItemClickListener {
 
 
-        void onClick(PoiItem bean, int position);
+        void onClick2(PoiItem bean, int position);
     }
 
     private OnItemClickListener mOnItemClickListener;
@@ -56,7 +56,7 @@ public class ItemGould2ViewBinder extends ItemViewBinder<PoiItem, ItemGould2View
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mOnItemClickListener.onClick(item,adapterPosition);
+                mOnItemClickListener.onClick2(item,adapterPosition);
             }
         });
 
