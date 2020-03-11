@@ -166,9 +166,9 @@ public class LauncherActivity extends AppCompatActivity {
             String b = body.string();
             OpenGGBean mOpenGGBean = new Gson().fromJson(b, OpenGGBean.class);
             if (mOpenGGBean.getCode() == 1) {
-                data = mOpenGGBean.getData();
-                is_show = mOpenGGBean.getData().getIs_show();
                 if(is_show==1){
+                    data = mOpenGGBean.getData();
+                    is_show = mOpenGGBean.getData().getIs_show();
                   if(data.getAd_type()==0){
                       Glide.with(this)
                               .load(data.getUrl())
