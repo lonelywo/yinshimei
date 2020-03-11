@@ -295,13 +295,14 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_jia:
-                if(SharedPrefUtils.getisnew()==0&&mItem.getVip_mod()==1){
+               /* if(SharedPrefUtils.getisnew()==0&&mItem.getVip_mod()==1){
                     FToast.warning("新用户体验价只能购买一支哦");
                 }else {
                     mCount++;
                     textShuzi.setText(String.valueOf(mCount));
-                }
-
+                }*/
+                mCount++;
+                textShuzi.setText(String.valueOf(mCount));
 
                 break;
             case R.id.img_jian:

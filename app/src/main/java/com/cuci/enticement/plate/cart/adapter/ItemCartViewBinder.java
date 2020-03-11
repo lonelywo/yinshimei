@@ -93,7 +93,7 @@ public class ItemCartViewBinder extends ItemViewBinder<OrderGoods, ItemCartViewB
 
         holder.ivJia.setOnClickListener(v -> {
             if (UtilsForClick.isFastClick()) {
-                if(item.getVip_mod()==1&&mis_new==0){
+                /*if(item.getVip_mod()==1&&mis_new==0){
                    FToast.warning("新用户体验价只能购买一支哦");
                 }else {
                     int num = item.getGoods_num() + 1;
@@ -101,8 +101,12 @@ public class ItemCartViewBinder extends ItemViewBinder<OrderGoods, ItemCartViewB
                     if (mOnItemClickListener != null) {
                         mOnItemClickListener.onAddClick(item, position);
                     }
+                }*/
+                int num = item.getGoods_num() + 1;
+                item.setGoods_num(num);
+                if (mOnItemClickListener != null) {
+                    mOnItemClickListener.onAddClick(item, position);
                 }
-
             }
 
 
