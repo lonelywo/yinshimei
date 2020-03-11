@@ -244,8 +244,8 @@
 
 
 
-        <activity android:name=".plate.common.LauncherActivity">
-
+        <activity android:name=".plate.common.LauncherActivity"
+            android:theme="@style/AppTheme.NoActionBarWithBackGround">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />

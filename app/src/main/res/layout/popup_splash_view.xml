@@ -16,7 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/img_splash"
+        tools:src="@color/orange"
         />
 
     <LinearLayout
@@ -24,21 +24,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="64dp"
+        android:layout_marginTop="64dp"
         android:background="@drawable/shape_splash_close_button_bg"
         android:orientation="horizontal"
         android:paddingStart="12dp"
         android:paddingTop="4dp"
         android:paddingEnd="12dp"
         android:paddingBottom="4dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"
+        >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="跳过 "
-            android:textColor="#999999"
+            android:text="跳过广告"
+            android:textColor="@color/white"
             android:textSize="14sp"/>
 
         <TextView
@@ -46,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="3s"
-            android:textColor="#B3B3B3"
+            android:textColor="@color/white"
             android:textSize="12sp"/>
 
     </LinearLayout>

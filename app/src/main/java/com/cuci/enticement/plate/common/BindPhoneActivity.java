@@ -76,14 +76,7 @@ public class BindPhoneActivity extends BaseActivity {
     TextView ok;
     @BindView(R.id.con_zhongjian)
     ConstraintLayout conZhongjian;
-    @BindView(R.id.text_suosu)
-    TextView textSuosu;
-    @BindView(R.id.text_guojia)
-    TextView textGuojia;
-    @BindView(R.id.img_youjiantou)
-    ImageView imgYoujiantou;
-    @BindView(R.id.viem_line0)
-    View viemLine0;
+
     private Handler mTimeHandler = new Handler();
     private RegActivityViewModel mViewModel;
 
@@ -130,7 +123,7 @@ public class BindPhoneActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.tv_code, R.id.ok, R.id.image_back,R.id.text_guojia})
+    @OnClick({R.id.tv_code, R.id.ok, R.id.image_back,R.id.text_shoujihao})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_code:
@@ -149,7 +142,7 @@ public class BindPhoneActivity extends BaseActivity {
 
                 }
                 break;
-            case R.id.text_guojia:
+            case R.id.text_shoujihao:
                 showQrCodeDialog();
                 break;
             case R.id.image_back:
@@ -415,8 +408,9 @@ public class BindPhoneActivity extends BaseActivity {
 
         builder.setPositiveButton("确定", (dialog, which) -> {
 
-            textGuojia.setText(mQrItems[mQrCodeChoice]);
+           // textGuojia.setText(mQrItems[mQrCodeChoice]);
             guojiacode=mQrItems2[mQrCodeChoice];
+            textShoujihao.setText("+"+guojiacode);
         });
 
         builder.setNegativeButton("取消", null);

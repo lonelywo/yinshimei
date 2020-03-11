@@ -27,6 +27,7 @@ import com.cuci.enticement.bean.GeTuibean;
 import com.cuci.enticement.bean.HxBean;
 import com.cuci.enticement.bean.KaQuanListBean;
 import com.cuci.enticement.bean.OrderStatistics;
+import com.cuci.enticement.bean.ReceiveCodeBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.event.ClickMyEvent;
@@ -812,14 +813,15 @@ public class _MineFragment extends BaseFragment {
                 ResponseBody body = status.content;
                 try {
                     String result = body.string();
-                    GeTuibean mbean = new Gson().fromJson(result, GeTuibean.class);
+                    ReceiveCodeBean mbean = new Gson().fromJson(result, ReceiveCodeBean.class);
+               //     GeTuibean mbean = new Gson().fromJson(result, GeTuibean.class);
                     if (mbean.getCode() == 1) {
                         FLog.e(TAG, mbean.getInfo());
                     } else {
                         FLog.e(TAG, mbean.getInfo());
                     }
 
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 break;

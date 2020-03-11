@@ -53,7 +53,7 @@ public class OpenGGBean implements Serializable {
         private int ad_type;
         private String url;
         private int type;
-        private long link;
+        private String link;
         private String endtime;
 
         public int getIs_show() {
@@ -88,11 +88,11 @@ public class OpenGGBean implements Serializable {
             this.type = type;
         }
 
-        public long getLink() {
+        public String getLink() {
             return link;
         }
 
-        public void setLink(long link) {
+        public void setLink(String link) {
             this.link = link;
         }
 

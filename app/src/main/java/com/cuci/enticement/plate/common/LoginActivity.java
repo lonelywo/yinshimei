@@ -67,14 +67,6 @@ public class LoginActivity extends BaseActivity {
     ImageView imgShoutu;
     @BindView(R.id.image_back)
     ImageView imageBack;
-    @BindView(R.id.text_suosu)
-    TextView textSuosu;
-    @BindView(R.id.text_guojia)
-    TextView textGuojia;
-    @BindView(R.id.img_youjiantou)
-    ImageView imgYoujiantou;
-    @BindView(R.id.view_zeng)
-    View viewZeng;
     @BindView(R.id.edt_phone)
     ClearEditText edtPhone;
     @BindView(R.id.view_zeng1)
@@ -174,7 +166,7 @@ public class LoginActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.tv_code, R.id.ok, R.id.text_zhuce, R.id.weixin, R.id.text_dibuwenzi1,R.id.text_dibuwenzi3, R.id.text_guojia})
+    @OnClick({R.id.tv_code, R.id.ok, R.id.text_zhuce, R.id.weixin, R.id.text_dibuwenzi1,R.id.text_dibuwenzi3, R.id.text_shoujihao})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_code:
@@ -187,12 +179,6 @@ public class LoginActivity extends BaseActivity {
                 startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
                 break;
             case R.id.weixin:
-               /* if (checkbox.isChecked()) {
-                    SharedPrefUtils.saveWechatAuth("login");
-                    startWxLogin();
-                } else {
-                    FToast.warning("请先勾选同意后再登录");
-                }*/
                 SharedPrefUtils.saveWechatAuth("login");
                 startWxLogin();
                 break;
@@ -218,7 +204,7 @@ public class LoginActivity extends BaseActivity {
                         .show();
 
                 break;
-            case R.id.text_guojia:
+            case R.id.text_shoujihao:
                 showQrCodeDialog();
                 break;
         }
@@ -254,11 +240,7 @@ public class LoginActivity extends BaseActivity {
         String mloginBean = new Gson().toJson(loginBean);
         String data = RSAUtil.encryptByPublic(this, mloginBean);
 
-        /*if (checkbox.isChecked()) {
-            mViewModel.login(data).observe(this, mObserver);
-        } else {
-            FToast.warning("请先勾选同意后再登录");
-        }*/
+
         mViewModel.login(data).observe(this, mObserver);
 
     }
@@ -316,7 +298,6 @@ public class LoginActivity extends BaseActivity {
     private void getSmsCodelogin() {
 
         String phone = edtPhone.getText().toString().trim();
-        String guojia = textGuojia.getText().toString();
         if (TextUtils.isEmpty(phone)) {
             FToast.warning("请填写手机号");
             return;
@@ -570,8 +551,9 @@ public class LoginActivity extends BaseActivity {
 
         builder.setPositiveButton("确定", (dialog, which) -> {
 
-            textGuojia.setText(mQrItems[mQrCodeChoice]);
+           // textGuojia.setText(mQrItems[mQrCodeChoice]);
             guojiacode = mQrItems2[mQrCodeChoice];
+            textShoujihao.setText("+"+guojiacode);
         });
 
         builder.setNegativeButton("取消", null);

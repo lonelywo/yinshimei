@@ -29,7 +29,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginLeft="10dp"
         />
-    <TextView
+    <!--<TextView
         android:id="@+id/text_suosu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -67,13 +67,13 @@
         android:layout_width="0dp"
         android:layout_height="0.5dp"
         android:background="@drawable/shape_login_edit_bottom_line"
-        app:layout_constraintTop_toBottomOf="@+id/text_suosu"
+        app:layout_constraintTop_toBottomOf="@+id/img_shoutu"
         android:layout_marginTop="10dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        />
+        />-->
 
 
         <com.cuci.enticement.widget.ClearEditText
@@ -91,7 +91,7 @@
             android:layout_marginRight="24dp"
             app:layout_constraintBottom_toBottomOf="@+id/text_shoujihao"
             app:layout_constraintEnd_toEndOf="@+id/view_zeng1"
-            app:layout_constraintStart_toEndOf="@+id/text_suosu"
+            app:layout_constraintStart_toEndOf="@+id/text_shoujihao"
             app:layout_constraintTop_toTopOf="@+id/text_shoujihao"
             />
     <View
@@ -111,28 +111,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
-            android:text="手机号"
+            android:text="+86"
+            android:textColor="@color/hei"
+            android:drawableRight="@drawable/jiantou_quhao"
             android:layout_marginLeft="24dp"
             android:layout_marginTop="24dp"
             android:textSize="16sp"
-            app:layout_constraintTop_toBottomOf="@+id/view_zeng"
+            app:layout_constraintTop_toBottomOf="@+id/img_shoutu"
             app:layout_constraintStart_toStartOf="parent"
-
+            android:gravity="center"
             />
-
     <TextView
         android:id="@+id/text_yanzhengma"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="验证码"
+        android:textColor="@color/hei"
         android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@+id/view_zeng1"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
-
         />
-
     <EditText
         android:id="@+id/edt_code"
         android:layout_width="0dp"
@@ -147,7 +147,7 @@
         android:textColor="#C6C6C6"
         android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@+id/tv_code"
-        app:layout_constraintStart_toEndOf="@+id/text_suosu"
+        app:layout_constraintStart_toEndOf="@+id/text_shoujihao"
         app:layout_constraintTop_toBottomOf="@+id/view_zeng1"/>
 
     <TextView

@@ -1,9 +1,13 @@
 package com.cuci.enticement.plate.common;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.text.TextUtils;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -17,16 +21,26 @@ import androidx.lifecycle.ViewModelProviders;
 import okhttp3.ResponseBody;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.cuci.enticement.R;
 import com.cuci.enticement.bean.ClauseBean;
 import com.cuci.enticement.bean.OpenGGBean;
 import com.cuci.enticement.bean.Status;
+import com.cuci.enticement.network.DownloadManager;
 import com.cuci.enticement.plate.common.popup.TipsPopupxieyi2;
 import com.cuci.enticement.plate.common.vm.MainViewModel;
+import com.cuci.enticement.plate.home.activity.ProdActivity;
 import com.cuci.enticement.plate.home.vm.HomeViewModel;
+import com.cuci.enticement.utils.EncryptUtils;
+import com.cuci.enticement.utils.FLog;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.SharedPrefUtils;
+import com.cuci.enticement.utils.ViewUtils;
 import com.google.gson.Gson;
+import com.hp.hpl.sparta.xpath.ThisNodeTest;
 import com.lxj.xpopup.XPopup;
 
 
@@ -37,7 +51,7 @@ import java.lang.ref.WeakReference;
 import java.util.Locale;
 
 public class LauncherActivity extends AppCompatActivity {
-
+    private static final String TAG = LauncherActivity.class.getSimpleName();
     private ImageView mImageView;
     private TextView mTvTime;
     private LinearLayout mLayout;
@@ -45,12 +59,10 @@ public class LauncherActivity extends AppCompatActivity {
     private MyCountDownTimer mCountDownTimer;
     private static int is_show=0;
     private static OpenGGBean.DataBean data;
+    private static boolean isAdClicked=false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        Window window = getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         if (!isTaskRoot() && intent != null) {
@@ -60,43 +72,25 @@ public class LauncherActivity extends AppCompatActivity {
                 return;
             }
         }
-
-            setContentView(R.layout.popup_splash_view);
-        MainViewModel    mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-     //   mViewModel.openScreen("2").observe(this, clauseObserver);
-
-        mImageView = findViewById(R.id.image_view);
-
-            File folder = new File(getFilesDir(), "ysm_splash");
-            if (!folder.exists()) {
-                Glide.with(this).load(R.drawable.img_splash).into(mImageView);
-            } else {
-                File[] fa = folder.listFiles();
-                if (fa.length <= 0) {
-                    Glide.with(this).load(R.drawable.img_splash).into(mImageView);
-                } else {
-                    Uri uri = Uri.parse("file://" + fa[0].getPath());
-                    Glide.with(this).load(uri).into(mImageView);
-                }
+        setContentView(R.layout.popup_splash_view);
+        MainViewModel   mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        mViewModel.openScreen("2").observe(this, clauseObserver);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //延迟三秒再启动 app
+                start();
             }
+        }, 3000);
+        mImageView = findViewById(R.id.image_view);
 
             mTvTime = findViewById(R.id.tv_time);
             mLayout = findViewById(R.id.ll_close);
-
             mLayout.setOnClickListener(v -> {
-                if(is_show==1){
-                    Intent mintent = new Intent(LauncherActivity.this, OpenScreenActivity.class);
-                    mintent.putExtra("Data",  data);
-                    startActivity(mintent);
-                    finish();
-                }else {
                     startActivity(new Intent(LauncherActivity.this, MainActivity.class));
                     finish();
-                }
-
             });
-            mCountDownTimer = new MyCountDownTimer(this, 4000, 1000);
-            mCountDownTimer.start();
+
 
     }
 
@@ -123,24 +117,22 @@ public class LauncherActivity extends AppCompatActivity {
             long m = millisUntilFinished  / 1000L;
 
             LauncherActivity activity = mActivityWeakReference.get();
+
             activity.mTvTime.setText(String.format(Locale.getDefault(), "%ds", m));
+
         }
 
         @Override
         public void onFinish() {
-            if(is_show==1){
-                LauncherActivity activity = mActivityWeakReference.get();
-                Intent intent = new Intent(activity, OpenScreenActivity.class);
-                intent.putExtra("Data",  data);
-                activity.startActivity(intent);
-                activity.finish();
-            }else {
-                LauncherActivity activity = mActivityWeakReference.get();
-                activity.startActivity(new Intent(activity, MainActivity.class));
-                activity.finish();
+            if(isAdClicked){
+               return;
             }
-
+            LauncherActivity activity = mActivityWeakReference.get();
+            activity.startActivity(new Intent(activity, MainActivity.class));
+            activity.finish();
+            isAdClicked=false;
         }
+
     }
 
     @Override
@@ -168,9 +160,7 @@ public class LauncherActivity extends AppCompatActivity {
                 break;
         }
 
-
     };
-
     private void opera(ResponseBody body) {
         try {
             String b = body.string();
@@ -178,6 +168,58 @@ public class LauncherActivity extends AppCompatActivity {
             if (mOpenGGBean.getCode() == 1) {
                 data = mOpenGGBean.getData();
                 is_show = mOpenGGBean.getData().getIs_show();
+                if(is_show==1){
+                  if(data.getAd_type()==0){
+                      Glide.with(this)
+                              .load(data.getUrl())
+                              .placeholder(R.drawable.img_splash)
+                              .listener(new RequestListener<Drawable>() {
+                                  @Override
+                                  public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                      startActivity(new Intent(LauncherActivity.this, MainActivity.class));
+                                      finish();
+                                      return false;
+                                  }
+
+                                  @Override
+                                  public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                      ViewUtils.showView(mLayout);
+                                      mCountDownTimer = new MyCountDownTimer(LauncherActivity.this, 5000, 1000);
+                                      mCountDownTimer.start();
+                                      return false;
+                                  }
+                              })
+                              .into(mImageView);
+
+                      mImageView.setOnClickListener(new View.OnClickListener() {
+                          @Override
+                          public void onClick(View v) {
+                              //点击广告图片设置标记并跳转页面
+                              isAdClicked=true;
+                              switch (data.getType()) {
+                                  case 0:
+                                      Intent intentProd = new Intent(LauncherActivity.this, ProdActivity.class);
+                                      intentProd.putExtra("bannerData", data.getLink());
+                                      startActivity(intentProd);
+                                      break;
+                                  case 1:
+                                  case 2:
+                                      Intent intentProd1 = new Intent(LauncherActivity.this, Agreement2Activity.class);
+                                      intentProd1.putExtra("url", data.getLink());
+                                      startActivity(intentProd1);
+                                      break;
+                              }
+                          }
+                      });
+                  } else {
+
+                  }
+
+                }else {
+
+                    ViewUtils.hideView(mLayout);
+                }
+
             } else {
                 FToast.error(mOpenGGBean.getInfo());
             }
@@ -186,4 +228,82 @@ public class LauncherActivity extends AppCompatActivity {
             FToast.error("数据错误");
         }
     }
+
+    private void start() {
+        //如果点击了广告那么停止启动应用，没点广告的话就按正常情况启动
+        if (is_show==1) {
+            return;
+        } else {
+            startActivity(new Intent(this, MainActivity.class));
+        }
+        finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //从广告页回退时再延迟一点执行启动程序，并改变标记状态
+        if (isAdClicked) {
+            is_show = 0;
+            isAdClicked=false;
+            start();
+        }
+
+    }
+
+   /* private void saveSplash(OpenGGBean.DataBean splash) {
+
+        if (splash.getUrl() == null) return;
+
+        String url = splash.getUrl();
+        String oldSplash = SharedPrefUtils.getSplashUrl();
+        if (!TextUtils.isEmpty(url) && !url.equals(oldSplash)) {
+
+            File folder = new File(this.getFilesDir(), "ysm_splash");
+
+            if (!folder.exists()) {
+                boolean mkdirs = folder.mkdirs();
+            } else {
+                File[] fa = folder.listFiles();
+                if (fa != null && fa.length > 0) {
+                    for (File f : fa) {
+                        if (f.exists()) {
+                            boolean delete = f.delete();
+                        }
+                    }
+                }
+            }
+
+            File file = new File(folder, EncryptUtils.md5Encrypt(url) + ".png");
+
+            if (file.exists()) {
+                boolean delete = file.delete();
+                if (delete) {
+                    FLog.e(TAG, "Splash图片已删除");
+                } else {
+                    FLog.e(TAG, "Splash删除失败");
+                }
+            }
+
+            DownloadManager.getInstance().download(url, file.getAbsolutePath(), new DownloadManager.DownloadListener() {
+                @Override
+                public void onDownloadSucceed(String savePath) {
+                    FLog.e(TAG, "Splash图片已下载成功：" + savePath);
+                    SharedPrefUtils.saveSplashUrl(url);
+                }
+
+                @Override
+                public void onDownloading(int progress) {
+
+                }
+
+                @Override
+                public void onDownloadFailure(Exception e) {
+                    FLog.e(TAG, "Splash图片下载失败" + (e.getMessage() == null ? "" : e.getMessage()));
+                }
+            });
+
+        }
+    }*/
+
 }
