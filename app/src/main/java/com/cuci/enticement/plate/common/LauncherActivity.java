@@ -60,6 +60,7 @@ public class LauncherActivity extends AppCompatActivity {
     private static int is_show=0;
     private static OpenGGBean.DataBean data;
     private static boolean isAdClicked=false;
+    private static boolean isdown=false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,13 +76,7 @@ public class LauncherActivity extends AppCompatActivity {
         setContentView(R.layout.popup_splash_view);
         MainViewModel   mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         mViewModel.openScreen("2").observe(this, clauseObserver);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //延迟三秒再启动 app
-                start();
-            }
-        }, 3000);
+
         mImageView = findViewById(R.id.image_view);
 
             mTvTime = findViewById(R.id.tv_time);
@@ -90,7 +85,24 @@ public class LauncherActivity extends AppCompatActivity {
                     startActivity(new Intent(LauncherActivity.this, MainActivity.class));
                     finish();
             });
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //延迟三秒再启动 app
+                start();
+                if(isdown){
+                    isdown=false;
+                    ViewUtils.showView(mImageView);
+                    ViewUtils.showView(mLayout);
+                    mCountDownTimer = new MyCountDownTimer(LauncherActivity.this, 5000, 1000);
+                    mCountDownTimer.start();
+                }else {
+                    startActivity(new Intent(LauncherActivity.this, MainActivity.class));
+                    finish();
+                }
 
+            }
+        }, 3000);
 
     }
 
@@ -166,9 +178,9 @@ public class LauncherActivity extends AppCompatActivity {
             String b = body.string();
             OpenGGBean mOpenGGBean = new Gson().fromJson(b, OpenGGBean.class);
             if (mOpenGGBean.getCode() == 1) {
+                data = mOpenGGBean.getData();
+                is_show = mOpenGGBean.getData().getIs_show();
                 if(is_show==1){
-                    data = mOpenGGBean.getData();
-                    is_show = mOpenGGBean.getData().getIs_show();
                   if(data.getAd_type()==0){
                       Glide.with(this)
                               .load(data.getUrl())
@@ -180,12 +192,9 @@ public class LauncherActivity extends AppCompatActivity {
                                       finish();
                                       return false;
                                   }
-
                                   @Override
                                   public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                      ViewUtils.showView(mLayout);
-                                      mCountDownTimer = new MyCountDownTimer(LauncherActivity.this, 5000, 1000);
-                                      mCountDownTimer.start();
+                                      isdown=true;
                                       return false;
                                   }
                               })

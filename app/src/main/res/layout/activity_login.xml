@@ -112,6 +112,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
             android:text="+86"
+            android:drawablePadding="3dp"
             android:textColor="@color/hei"
             android:drawableRight="@drawable/jiantou_quhao"
             android:layout_marginLeft="24dp"
