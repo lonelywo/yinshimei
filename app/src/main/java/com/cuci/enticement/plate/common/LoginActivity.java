@@ -64,7 +64,7 @@ public class LoginActivity extends BaseActivity {
     public static final String ACTION_WX_LOGIN_SUCCEED = "com.example.enticement.plate.user.ACTION_WX_LOGIN_SUCCEED";
     public static final String DATA_UNION_ID = "data_union_id";
     @BindView(R.id.img_shoutu)
-    ImageView imgShoutu;
+    TextView imgShoutu;
     @BindView(R.id.image_back)
     ImageView imageBack;
     @BindView(R.id.edt_phone)
@@ -73,8 +73,6 @@ public class LoginActivity extends BaseActivity {
     View viewZeng1;
     @BindView(R.id.text_shoujihao)
     TextView textShoujihao;
-    @BindView(R.id.text_yanzhengma)
-    TextView textYanzhengma;
     @BindView(R.id.edt_code)
     EditText edtCode;
     @BindView(R.id.tv_code)
@@ -91,8 +89,6 @@ public class LoginActivity extends BaseActivity {
     ImageView weixin;
     @BindView(R.id.text_weixindenglu)
     TextView textWeixindenglu;
-    @BindView(R.id.checkbox)
-    CheckBox checkbox;
     @BindView(R.id.text_dibuwenzi1)
     TextView textDibuwenzi1;
     @BindView(R.id.con_dibu)
@@ -176,7 +172,7 @@ public class LoginActivity extends BaseActivity {
                 login();
                 break;
             case R.id.text_zhuce:
-                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+               // startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
                 break;
             case R.id.weixin:
                 SharedPrefUtils.saveWechatAuth("login");

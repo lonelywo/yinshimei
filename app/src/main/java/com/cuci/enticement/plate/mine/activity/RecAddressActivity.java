@@ -134,11 +134,14 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
         mRefreshLayout.setEnableFooterFollowWhenNoMoreData(true);
         mRefreshLayout.setOnRefreshLoadMoreListener(this);
 
-        mRefreshLayout.autoRefresh();
+        load();
 
     }
 
-
+    private void load() {
+        mViewModel.getAdressList(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),Status.LOAD_REFRESH)
+                .observe(this,mObserver);
+    }
 
 
     @OnClick({R.id.img_back, R.id.btn_add_new_adress})
@@ -159,8 +162,7 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
 
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-        mViewModel.getAdressList(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),Status.LOAD_REFRESH)
-                .observe(this,mObserver);
+       load();
     }
 
 

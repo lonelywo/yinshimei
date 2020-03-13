@@ -136,7 +136,7 @@ public class MyTeamTwoActivity extends BaseActivity implements OnRefreshLoadMore
 
         mViewModel.hqteamsl(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2")
                 .observe(this, mObserver);
-        refreshLayout.autoRefresh();
+        load();
 
         edtShousuo.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 

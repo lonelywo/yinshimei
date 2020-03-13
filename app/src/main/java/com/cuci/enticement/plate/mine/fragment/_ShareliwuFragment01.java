@@ -108,8 +108,7 @@ public class _ShareliwuFragment01 extends BaseFragment implements OnRefreshLoadM
 
     @Override
     protected void onLazyLoad() {
-        mRefreshLayout.autoRefresh();
-
+       load();
     }
 
     @Override

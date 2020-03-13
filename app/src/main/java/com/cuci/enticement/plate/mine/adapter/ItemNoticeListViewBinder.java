@@ -51,7 +51,7 @@ public class ItemNoticeListViewBinder extends ItemViewBinder<NoticeListBean.Data
         holder.textTime.setText(item.getCreate_at());
         holder.textNeirong.setText(item.getBrief());
         holder.textQian.setText(item.getCatetitle());
-        ImageLoader.loadPlaceholder1(item.getLogo(),holder.imgTupian);
+        ImageLoader.loadPlaceholder(item.getLogo(),holder.imgTupian);
         holder.itemView.setOnClickListener(position -> {
             if (mOnProdClickListener != null) {
                 mOnProdClickListener.onProdClick(id);

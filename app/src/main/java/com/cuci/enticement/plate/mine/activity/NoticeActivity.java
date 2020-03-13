@@ -80,7 +80,7 @@ public class NoticeActivity extends BaseActivity implements OnRefreshLoadMoreLis
         mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(mAdapter);
-        refreshLayout.autoRefresh();
+        load();
     }
 
     @Override

@@ -118,8 +118,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
     }
     @Override
     protected void onLazyLoad() {
-        mRefreshLayout.autoRefresh();
-
+       load();
     }
 
     @Override

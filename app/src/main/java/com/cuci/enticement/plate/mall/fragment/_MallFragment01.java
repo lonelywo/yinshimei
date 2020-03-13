@@ -72,8 +72,7 @@ public class _MallFragment01 extends BaseFragment implements OnRefreshLoadMoreLi
     }
     @Override
     protected void onLazyLoad() {
-        mRefreshLayout.autoRefresh();
-
+       load();
     }
 
     @Override

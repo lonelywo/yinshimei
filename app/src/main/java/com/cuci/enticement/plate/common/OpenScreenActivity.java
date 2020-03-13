@@ -63,14 +63,10 @@ public class OpenScreenActivity extends AppCompatActivity {
                     startActivity(intentProd);
                     break;
                 case 1:
+                case 2:
                     Intent intentProd1 = new Intent(this, Agreement2Activity.class);
                     intentProd1.putExtra("url", mdata.getLink());
                     startActivity(intentProd1);
-                    break;
-                case 2:
-                    Intent intentProd2 = new Intent(this, Agreement2Activity.class);
-                    intentProd2.putExtra("url", mdata.getLink());
-                    startActivity(intentProd2);
                     break;
             }
             finish();

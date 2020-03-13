@@ -158,11 +158,11 @@ public class LoginViewModel extends ViewModel {
         params.put("phone",phone);
         params.put("secure",secure);
         params.put("region",region);
-        params.put("type","3");
+        params.put("type","6");
         String signs = SignUtils.signParam(params);
 
         mCreator.create(UserApi.class)
-                .getSmsCodelogin(phone, secure, region,"3",signs)
+                .getSmsCodelogin(phone, secure, region,"6",signs)
                 .enqueue(new Callback<Base>() {
                     @Override
                     public void onResponse(@NonNull Call<Base> call,

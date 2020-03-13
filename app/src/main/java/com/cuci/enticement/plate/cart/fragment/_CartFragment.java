@@ -98,10 +98,9 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
         if(mUserInfo==null){
             ViewUtils.hideView(bottomLyaout);
             mStatusView.showEmpty();
-
             return;
         }
-        mRefreshLayout.autoRefresh();
+       load();
     }
 
     @Override

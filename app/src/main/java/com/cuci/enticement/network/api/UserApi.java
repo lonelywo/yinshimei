@@ -52,12 +52,22 @@ public interface UserApi {
     );
     /**
      * 登录
-     */
+     *//*
     @FormUrlEncoded
     @POST("store/api.user/login")
     Call<Base<UserInfo>> login(
                                @Field("data") String data,
                                @Field("sign") String sign
+
+    );*/
+    /**
+     * 登录注册统一
+     */
+    @FormUrlEncoded
+    @POST("store/api.user/signinmerge")
+    Call<Base<UserInfo>> login(
+            @Field("data") String data,
+            @Field("sign") String sign
 
     );
     /**

@@ -73,7 +73,7 @@ public class _KaQuanFragment03 extends BaseFragment implements OnRefreshLoadMore
     }
     @Override
     protected void onLazyLoad() {
-        refreshLayout.autoRefresh();
+        load();
     }
 
     @Override

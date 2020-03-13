@@ -60,8 +60,6 @@ public class BindPhoneActivity extends BaseActivity {
     View viemLine1;
     @BindView(R.id.text_shoujihao)
     TextView textShoujihao;
-    @BindView(R.id.text_yanzhengma)
-    TextView textYanzhengma;
     @BindView(R.id.edt_code)
     EditText edtCode;
     @BindView(R.id.tv_code)
