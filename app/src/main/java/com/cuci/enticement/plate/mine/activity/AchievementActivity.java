@@ -99,14 +99,6 @@ public class AchievementActivity extends BaseActivity {
             FToast.error("数据错误");
             return;
         }
-       /* int is_month = intent.getIntExtra("Data", 0);
-        if (is_month == 1) {
-            ViewUtils.showView(conDibu);
-
-        }else {
-            ViewUtils.hideView(conDibu);
-
-        }*/
 
         mViewModel = ViewModelProviders.of(this).get(MineViewModel.class);
         mUserInfo = SharedPrefUtils.get(UserInfo.class);

@@ -9,10 +9,11 @@
     <com.cuci.enticement.widget.SmoothScrollview
         android:id="@+id/scroll_details"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/con_toubu"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
 
         >
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,7 +26,7 @@
     <com.tencent.smtt.sdk.WebView
         android:id="@+id/web_guize"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -261,7 +262,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
             android:padding="10dp"
             />
         <TextView

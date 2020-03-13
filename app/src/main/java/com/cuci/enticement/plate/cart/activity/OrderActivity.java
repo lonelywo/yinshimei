@@ -175,9 +175,12 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
     private String rule;
     //有无优惠卷
     private int type = 0;
-
+    //优惠卷
+    private String moveone_amount="0";
     //总价
-    private String totalMoney;
+    private String totalMoney="0";
+    //邮费
+    private String express_price="0";
     //优惠券id
     private String id_yhq;
     //商品集合
@@ -259,7 +262,10 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
             tvAddress.setText("");
             ViewUtils.hideView(tvAddress);
             ViewUtils.showView(textDizi);
-            tvTotalMoney.setText(mInfo.getPrice_goods());
+            //计算总价
+            String totalMoney1 = MathExtend.addnum(mInfo.getPrice_goods(), express_price);
+            totalMoney = MathExtend.subtract(totalMoney1,moveone_amount);
+            tvTotalMoney.setText(String.format(Locale.CHINA, "%s", totalMoney));
         }
 
 
@@ -316,24 +322,27 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                            .dismissOnTouchOutside(false)
                            .asCustom(new CheckKaQuanTipsPopup(OrderActivity.this, list, new CheckKaQuanTipsPopup.OnExitListener() {
 
-
-
-
                                @Override
                                public void onCommit(KaQuanListBean.DataBean.ListBean item) {
                                    if(TextUtils.equals(item.getUsed_at(),"未知")){
                                        textYouhuiset.setText( "不使用优惠券");
                                        textYouhuimoney.setText("-¥0");
-                                       tvTotalMoney.setText(totalMoney);
+                                       moveone_amount="0";
+                                       //计算总价
+                                       String totalMoney1 = MathExtend.addnum(mInfo.getPrice_goods(), express_price);
+                                       totalMoney = MathExtend.subtract(totalMoney1,moveone_amount);
+                                       tvTotalMoney.setText(String.format(Locale.CHINA, "%s", totalMoney));
                                        id_yhq="";
                                    }else {
                                        String amount = item.getCoupon().getAmount();
-                                       String moveone_amount = MathExtend.moveone(amount);
+                                       moveone_amount = MathExtend.moveone(amount);
                                        id_yhq = item.getId();
                                                    textYouhuiset.setText( "省"+moveone_amount+"元，"+item.getCoupon().getAmount_desc()+"优惠券");
                                                    textYouhuimoney.setText("-¥"+moveone_amount);
-                                                   String subtract = MathExtend.subtract(totalMoney, moveone_amount);
-                                                   tvTotalMoney.setText(subtract);
+                                       //计算总价
+                                       String totalMoney1 = MathExtend.addnum(mInfo.getPrice_goods(), express_price);
+                                       totalMoney = MathExtend.subtract(totalMoney1,moveone_amount);
+                                       tvTotalMoney.setText(String.format(Locale.CHINA, "%s", totalMoney));
                                    }
 
                                }
@@ -637,10 +646,11 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                     String result = body.string();
                     ExpressCost expressCost = new Gson().fromJson(result, ExpressCost.class);
                     if (expressCost.getCode() == 1) {
-                        String express_price = expressCost.getData().getExpress_price();
+                        express_price = expressCost.getData().getExpress_price();
                         textYunfeimoney.setText(String.format(Locale.CHINA, "¥%s", MathExtend.moveone(express_price)));
                         //计算总价
-                        totalMoney = MathExtend.addnum(mInfo.getPrice_goods(), express_price);
+                      String totalMoney1 = MathExtend.addnum(mInfo.getPrice_goods(), express_price);
+                        totalMoney = MathExtend.subtract(totalMoney1,moveone_amount);
                         tvTotalMoney.setText(String.format(Locale.CHINA, "%s", totalMoney));
                     }else if(expressCost.getCode() == HttpUtils.CODE_INVALID){
                         HttpUtils.Invalid(this);

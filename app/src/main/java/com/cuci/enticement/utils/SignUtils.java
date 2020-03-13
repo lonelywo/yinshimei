@@ -2,6 +2,7 @@ package com.cuci.enticement.utils;
 
 import android.text.TextUtils;
 
+import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.network.ServiceCreator;
 
 import java.io.Serializable;
@@ -14,6 +15,8 @@ public class SignUtils {
 
     public static String signParam( Map<String, String> params){
         String result=null;
+
+       // params.put("new_version", String.valueOf(AppUtils.getVersionCode(BasicApp.getContext())));
 
         String[] keys = params.keySet().toArray(new String[0]);
         //排序

@@ -74,7 +74,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginTop="10dp"
-        android:text="原价"
+        tools:text="原价"
         android:textSize="14sp"
         android:textColor="@color/hei"
         app:layout_constraintTop_toBottomOf="@id/home_detail_goodsname"
@@ -248,6 +248,7 @@
     app:layout_constraintLeft_toLeftOf="parent"
     app:layout_constraintRight_toRightOf="parent"
     app:layout_constraintBottom_toBottomOf="parent"
+    android:visibility="gone"
   >
    <LinearLayout
        android:layout_width="0dp"
@@ -375,8 +376,8 @@
         android:id="@+id/con_xiajiabuju"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/shape_login_edit_bottom_line"
-        app:layout_constraintBottom_toTopOf="@+id/ll_dibu"
+        android:background="#FAF8DD"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:visibility="gone"
     >
         <TextView
@@ -384,8 +385,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="#ffffff"
-            android:text="商品已经下架啦~"
+            android:textColor="@color/home_huang"
+            android:text="该商品暂未上架，非常抱歉"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"

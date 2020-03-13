@@ -216,28 +216,12 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
 
             mHomeViewModel.getHomeDetails("2", "", "", url).observe(this, mObserver);
         }
-        //显示隐藏分享
-        /*type = 1;
-        if(mUserInfo != null){
-            mHomeViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(ProdActivity.this, mdataObserver);
-        }*/
+
         imgShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (AppUtils.isAllowPermission(ProdActivity.this)) {
                     mUserInfo = SharedPrefUtils.get(UserInfo.class);
-                   /* if (mProData != null) {
-                        WxShareUtils.shareToWX(WxShareUtils.WX_SCENE_SESSION,
-                                "http://web.enticementchina.com/present.html?mid="
-                                        + mUserInfo.getId() + "&goods_id=" + mProData.getId()+"&phone=" + mUserInfo.getPhone()
-                                , ProdActivity.this.getString(R.string.app_name_test),
-                                "因诗美，我的质感美学", mProData.getLogo());
-                        *//* new XPopup.Builder(ProdActivity.this)
-                                .dismissOnTouchOutside(false)
-                                .dismissOnBackPressed(false)
-                                .asCustom(new CenterShareAppPopup(ProdActivity.this, mProData))
-                                .show();*//*
-                    }*/
                     if (mProData != null) {
                         new XPopup.Builder(ProdActivity.this)
                                 .dismissOnBackPressed(false)
@@ -479,8 +463,10 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
 
                         if (status == 1) {
                             ViewUtils.hideView(conXiajiabuju);
+                            ViewUtils.showView(llDibu);
                         } else {
                             ViewUtils.showView(conXiajiabuju);
+                            ViewUtils.hideView(llDibu);
                         }
 
                         final List<String> images = content.getData().getImage();
@@ -525,19 +511,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
             case R.id.text_cart:
                 if (AppUtils.isAllowPermission(ProdActivity.this)) {
                     if (status == 1) {
-                        /*if (SharedPrefUtils.getisnew() == 1 && mProData.getVip_mod() == 1) {
-                            FToast.warning("该活动仅限新美粉");
-                        } else {
-                            if (mProData.getNumber_stock() == 0) {
-                                FToast.warning("库存没啦~");
-                                return;
-                            }
-                            new XPopup.Builder(ProdActivity.this)
-                                    .dismissOnTouchOutside(true)
-                                    .dismissOnBackPressed(true)
-                                    .asCustom(new ShareBottom2TopProdPopup(ProdActivity.this, mProData, PUT_IN_CART, this))
-                                    .show();
-                        }*/
+
                         if (mProData.getNumber_stock() == 0) {
                             FToast.warning("库存没啦~");
                             return;
@@ -548,7 +522,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                                 .asCustom(new ShareBottom2TopProdPopup(ProdActivity.this, mProData, PUT_IN_CART, this))
                                 .show();
                     } else {
-                        FToast.warning("商品已经下架啦~");
+                        FToast.warning("该商品暂未上架，非常抱歉");
 
                     }
 
@@ -560,19 +534,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
             case R.id.text_buy:
                 if (AppUtils.isAllowPermission(ProdActivity.this)) {
                     if (status == 1) {
-                       /* if (SharedPrefUtils.getisnew() == 1 && mProData.getVip_mod() == 1) {
-                            FToast.warning("该活动仅限新美粉");
-                        } else {
-                            if (mProData.getNumber_stock() == 0) {
-                                FToast.warning("库存没啦~");
-                                return;
-                            }
-                            new XPopup.Builder(ProdActivity.this)
-                                    .dismissOnTouchOutside(true)
-                                    .dismissOnBackPressed(true)
-                                    .asCustom(new ShareBottom2TopProdPopup(ProdActivity.this, mProData, QUICK_BUY, this))
-                                    .show();
-                        }*/
+
                         if (mProData.getNumber_stock() == 0) {
                             FToast.warning("库存没啦~");
                             return;
@@ -584,7 +546,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                                 .show();
                     } else {
 
-                        FToast.warning("商品已经下架啦~");
+                        FToast.warning("该商品暂未上架，非常抱歉");
                     }
 
                 } else {

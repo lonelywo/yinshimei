@@ -75,7 +75,20 @@ public class MathExtend {
         return s;
 
     }
+    //加
+    public static String addnum(String v1, String v2,String v3)
 
+    {
+        BigDecimal b1 = new BigDecimal(v1);
+
+        BigDecimal b2 = new BigDecimal(v2);
+
+        BigDecimal b3 = new BigDecimal(v3);
+
+        String s = b1.add(b2).add(b3).stripTrailingZeros().toPlainString();
+        return s;
+
+    }
     public static String moveone(double v1){
         String s = Double.toString(v1);
         if(s.indexOf(".") > 0){
