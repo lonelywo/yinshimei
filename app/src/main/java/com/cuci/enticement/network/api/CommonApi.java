@@ -19,6 +19,7 @@ public interface CommonApi {
     @POST("store/api.page/appVersion")
     Call<ResponseBody> getVersion(
             @Field("from_type") String fromType,
+            @Field("new_version") String new_version,
             @Field("sign") String sign
 
     );

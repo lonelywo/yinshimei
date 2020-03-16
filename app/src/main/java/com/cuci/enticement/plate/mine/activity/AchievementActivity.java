@@ -10,6 +10,8 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+
+import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.AddressBean;
@@ -20,6 +22,7 @@ import com.cuci.enticement.bean.YeJiYueFanBean;
 import com.cuci.enticement.plate.cart.activity.LogisticsActivity;
 import com.cuci.enticement.plate.common.popup.WarningPopup;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
+import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.SharedPrefUtils;
@@ -102,7 +105,7 @@ public class AchievementActivity extends BaseActivity {
 
         mViewModel = ViewModelProviders.of(this).get(MineViewModel.class);
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
-        mViewModel.achievement(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2")
+        mViewModel.achievement(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2",""+ AppUtils.getVersionCode(BasicApp.getContext()))
                 .observe(this, mObserver);
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -263,7 +266,7 @@ public class AchievementActivity extends BaseActivity {
                     return;
                 }
                 //提交月返地址
-                mViewModel.monbackdizi("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), mAddressId)
+                mViewModel.monbackdizi("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), mAddressId,""+ AppUtils.getVersionCode(BasicApp.getContext()))
                         .observe(AchievementActivity.this, mCommitObserver);
                 break;
         }
@@ -305,7 +308,8 @@ public class AchievementActivity extends BaseActivity {
                     MonBackBean commitOrder = new Gson().fromJson(result, MonBackBean.class);
                     if (commitOrder.getCode() == 1) {
                         ViewUtils.hideView(editTv);
-                        mViewModel.achievement(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2")
+                        mViewModel.achievement(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2",""+ AppUtils.getVersionCode(BasicApp.getContext())
+                        )
                                 .observe(this, mObserver);
                         num=2;
                         FToast.success("保存地址成功");

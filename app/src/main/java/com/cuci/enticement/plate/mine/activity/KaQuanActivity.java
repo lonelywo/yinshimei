@@ -22,6 +22,7 @@ import com.cuci.enticement.plate.mine.fragment._PKFragment01;
 import com.cuci.enticement.plate.mine.fragment._PKFragment02;
 import com.cuci.enticement.plate.mine.fragment._PKFragment03;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
+import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.SharedPrefUtils;
@@ -90,7 +91,7 @@ public class KaQuanActivity extends BaseActivity {
 
     private void load() {
 
-        mViewModel.kaquanlist(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"2", "1", "2", "0", Status.LOAD_REFRESH)
+        mViewModel.kaquanlist(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"2", "1", "2", "0",""+ AppUtils.getVersionCode(this), Status.LOAD_REFRESH)
                 .observe(this, mObserver);
 
     }

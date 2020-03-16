@@ -39,6 +39,7 @@ import com.cuci.enticement.plate.common.popup.HeadImageBottom2TopProdPopup;
 import com.cuci.enticement.plate.common.popup.SexBottom2TopProdPopup;
 import com.cuci.enticement.plate.common.vm.CommonViewModel;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
+import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.GetJsonDataUtil;
 import com.cuci.enticement.utils.HttpUtils;
@@ -189,7 +190,7 @@ public class InfoActivity extends BaseActivity {
                 mPostType=CHANGE_ADDRESS;
                 mViewModel.modifyInfo(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),mUserInfo.getOpenid(),
                         mUserInfo.getHeadimg(),"",mUserInfo.getNickname(),mUserInfo.getSex(),mUserInfo.getUnionid()
-                        ,mProvince,mCity,mArea)
+                        ,mProvince,mCity,mArea,""+ AppUtils.getVersionCode(BasicApp.getContext()))
                         .observe(InfoActivity.this, mObserver);
             }
 
@@ -241,7 +242,7 @@ public class InfoActivity extends BaseActivity {
                             mPostType=CHANGE_SEX;
                             mViewModel.modifyInfo(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),mUserInfo.getOpenid(),
                                     mUserInfo.getHeadimg(),"",mUserInfo.getNickname(),sex,mUserInfo.getUnionid()
-                                    ,mUserInfo.getProvince(),mUserInfo.getCity(),mUserInfo.getArea())
+                                    ,mUserInfo.getProvince(),mUserInfo.getCity(),mUserInfo.getArea(),""+ AppUtils.getVersionCode(BasicApp.getContext()))
                                     .observe(this, mObserver);
                         }))
                         .show();
@@ -291,7 +292,7 @@ public class InfoActivity extends BaseActivity {
                                           mPostType=CHANGE_HEAD_IMAG;
                                           mViewModel.modifyInfo(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),mUserInfo.getOpenid(),
                                                   mUserInfo.getHeadimg(),base64Str,mUserInfo.getNickname(),mUserInfo.getSex(),mUserInfo.getUnionid()
-                                                  ,mUserInfo.getProvince(),mUserInfo.getCity(),mUserInfo.getArea())
+                                                  ,mUserInfo.getProvince(),mUserInfo.getCity(),mUserInfo.getArea(),""+ AppUtils.getVersionCode(BasicApp.getContext()))
                                                   .observe(InfoActivity.this, mObserver);
                                       }
                                   });
@@ -340,7 +341,7 @@ public class InfoActivity extends BaseActivity {
             mPostType=CHANGE_HEAD_IMAG;
             mViewModel.modifyInfo(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),mUserInfo.getOpenid(),
                     mUserInfo.getHeadimg(),base64Str,mUserInfo.getNickname(),mUserInfo.getSex(),mUserInfo.getUnionid()
-                    ,mUserInfo.getProvince(),mUserInfo.getCity(),mUserInfo.getArea())
+                    ,mUserInfo.getProvince(),mUserInfo.getCity(),mUserInfo.getArea(),""+ AppUtils.getVersionCode(BasicApp.getContext()))
                     .observe(InfoActivity.this, mObserver);
         }
 
@@ -358,7 +359,7 @@ public class InfoActivity extends BaseActivity {
             mPostType=CHANGE_HEAD_IMAG;
             mViewModel.modifyInfo(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),mUserInfo.getOpenid(),
                     mUserInfo.getHeadimg(),base64Str,mUserInfo.getNickname(),mUserInfo.getSex(),mUserInfo.getUnionid()
-                    ,mUserInfo.getProvince(),mUserInfo.getCity(),mUserInfo.getArea())
+                    ,mUserInfo.getProvince(),mUserInfo.getCity(),mUserInfo.getArea(),""+ AppUtils.getVersionCode(BasicApp.getContext()))
                     .observe(InfoActivity.this, mObserver);
         }
     };
@@ -393,7 +394,7 @@ public class InfoActivity extends BaseActivity {
                 mPostType=CHANGE_ADDRESS;
                 mViewModel.modifyInfo(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),mUserInfo.getOpenid(),
                         mUserInfo.getHeadimg(),"",mUserInfo.getNickname(),mUserInfo.getSex(),mUserInfo.getUnionid()
-                        ,mProvince,mCity,mArea)
+                        ,mProvince,mCity,mArea,""+ AppUtils.getVersionCode(BasicApp.getContext()))
                         .observe(InfoActivity.this, mObserver);
 
 
@@ -616,7 +617,7 @@ public class InfoActivity extends BaseActivity {
                             mPostType=CHANGE_HEAD_IMAG;
                             mViewModel.modifyInfo(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),mUserInfo.getOpenid(),
                                     mUserInfo.getHeadimg(),base64Str,mUserInfo.getNickname(),mUserInfo.getSex(),mUserInfo.getUnionid()
-                                    ,mUserInfo.getProvince(),mUserInfo.getCity(),mUserInfo.getArea())
+                                    ,mUserInfo.getProvince(),mUserInfo.getCity(),mUserInfo.getArea(),""+ AppUtils.getVersionCode(BasicApp.getContext()))
                                     .observe(InfoActivity.this, mObserver);
                         }
                     });

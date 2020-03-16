@@ -37,7 +37,7 @@ public class OrderViewModel extends ViewModel {
 
 
 
-    public MutableLiveData<Status<ResponseBody>> getOrderList(String token, String mid, String page,String status,String orderNum, int loadType) {
+    public MutableLiveData<Status<ResponseBody>> getOrderList(String token, String mid, String page,String status,String orderNum,String new_version, int loadType) {
 
         final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
         data.setValue(Status.loading(null));
@@ -54,10 +54,10 @@ public class OrderViewModel extends ViewModel {
             params.put("order_no",orderNum);
         }
         params.put("from_type","2");
-
+        params.put("new_version",new_version);
         String sign = SignUtils.signParam(params);
         mCreator.create(OrderApi.class)
-                .getOrderList("2",token,mid,page,status,orderNum,sign)
+                .getOrderList("2",token,mid,page,status,orderNum,new_version,sign)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,
@@ -95,7 +95,7 @@ public class OrderViewModel extends ViewModel {
      * @param orderNum
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> orderConfirm(String token,String mid,String orderNum) {
+    public MutableLiveData<Status<ResponseBody>> orderConfirm(String token,String mid,String orderNum,String new_version) {
 
         final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
         data.setValue(Status.loading(null));
@@ -106,9 +106,10 @@ public class OrderViewModel extends ViewModel {
 
         params.put("order_no",orderNum);
         params.put("from_type","2");
+        params.put("new_version",new_version);
         String sign = SignUtils.signParam(params);
         mCreator.create(OrderApi.class)
-                .confirmOrder("2",token,mid,orderNum,sign)
+                .confirmOrder("2",token,mid,orderNum,new_version,sign)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,
@@ -133,7 +134,7 @@ public class OrderViewModel extends ViewModel {
      * @param orderNum
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> orderCancel(String token,String mid,String orderNum) {
+    public MutableLiveData<Status<ResponseBody>> orderCancel(String token,String mid,String orderNum,String new_version) {
 
         final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
         data.setValue(Status.loading(null));
@@ -142,9 +143,10 @@ public class OrderViewModel extends ViewModel {
         params.put("mid",mid);
         params.put("order_no",orderNum);
         params.put("from_type","2");
+        params.put("new_version",new_version);
         String sign = SignUtils.signParam(params);
         mCreator.create(OrderApi.class)
-                .cancelOrder("2",token,mid,orderNum,sign)
+                .cancelOrder("2",token,mid,orderNum,new_version,sign)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,
@@ -165,7 +167,7 @@ public class OrderViewModel extends ViewModel {
      * 统计订单状态
      * @return
      */
-    public MutableLiveData<Status<OrderStatistics>> getStatisticsOrder(String token, String mid) {
+    public MutableLiveData<Status<OrderStatistics>> getStatisticsOrder(String token, String mid,String new_version) {
 
         final MutableLiveData<Status<OrderStatistics>> data = new MutableLiveData<>();
         data.setValue(Status.loading(null));
@@ -174,10 +176,10 @@ public class OrderViewModel extends ViewModel {
         params.put("token",token);
         params.put("mid",mid);
         params.put("from_type","2");
-
+        params.put("new_version",new_version);
         String sign = SignUtils.signParam(params);
         mCreator.create(OrderApi.class)
-                .getTotalOrder("2",token,mid,sign)
+                .getTotalOrder("2",token,mid,new_version,sign)
                 .enqueue(new Callback<OrderStatistics>() {
                     @Override
                     public void onResponse(@NonNull Call<OrderStatistics> call,
@@ -202,7 +204,7 @@ public class OrderViewModel extends ViewModel {
      * 获取快递信息
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> getExpressInfo(String expressNo, String expressCode,int loadType) {
+    public MutableLiveData<Status<ResponseBody>> getExpressInfo(String expressNo, String expressCode,String new_version,int loadType) {
 
         final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
         data.setValue(Status.loading(null));
@@ -210,10 +212,10 @@ public class OrderViewModel extends ViewModel {
         Map<String, String> params = new HashMap<String, String>();
         params.put("express_no",expressNo);
         params.put("express_code",expressCode);
-
+        params.put("new_version",new_version);
         String sign = SignUtils.signParam(params);
         mCreator.create(OrderApi.class)
-                .getExpressInfo(expressNo,expressCode,sign)
+                .getExpressInfo(expressNo,expressCode,new_version,sign)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,
@@ -248,7 +250,7 @@ public class OrderViewModel extends ViewModel {
      * 快递费用
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> getExpressCost(String token,String mid,String number,String priceGoods,String adressId) {
+    public MutableLiveData<Status<ResponseBody>> getExpressCost(String token,String mid,String number,String priceGoods,String adressId,String new_version) {
 
         final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
         data.setValue(Status.loading(null));
@@ -260,10 +262,10 @@ public class OrderViewModel extends ViewModel {
         params.put("priceGoods",priceGoods);
         params.put("address_id",adressId);
         params.put("from_type","2");
-
+        params.put("new_version",new_version);
         String sign = SignUtils.signParam(params);
         mCreator.create(OrderApi.class)
-                .getExpressCost("2",token,mid,number,priceGoods,adressId,sign)
+                .getExpressCost("2",token,mid,number,priceGoods,adressId,new_version,sign)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,
@@ -286,7 +288,7 @@ public class OrderViewModel extends ViewModel {
      * 获取订单支付参数
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> getOrderPay(String token, String mid, String orderNo, String payType) {
+    public MutableLiveData<Status<ResponseBody>> getOrderPay(String token, String mid, String orderNo, String payType,String new_version) {
 
         final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
         data.setValue(Status.loading(null));
@@ -297,10 +299,10 @@ public class OrderViewModel extends ViewModel {
         params.put("order_no",orderNo);
         params.put("pay_type",payType);
         params.put("from_type","2");
-
+        params.put("new_version",new_version);
         String sign = SignUtils.signParam(params);
         mCreator.create(OrderApi.class)
-                .getOrderPay("2",token,mid,orderNo,payType,sign)
+                .getOrderPay("2",token,mid,orderNo,payType,new_version,sign)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,
@@ -323,7 +325,7 @@ public class OrderViewModel extends ViewModel {
      * 补全或修改地址确认
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> udpateAdress(String token, String mid,String m_coupon_id, String rule, String adressId) {
+    public MutableLiveData<Status<ResponseBody>> udpateAdress(String token, String mid,String m_coupon_id, String rule, String adressId,String new_version) {
 
         final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
         data.setValue(Status.loading(null));
@@ -335,10 +337,10 @@ public class OrderViewModel extends ViewModel {
         params.put("rule",rule);
         params.put("address_id",adressId);
         params.put("from_type","2");
-
+        params.put("new_version",new_version);
         String sign = SignUtils.signParamRemoveNull(params);
         mCreator.create(OrderApi.class)
-                .udpateAdress("2",token,mid,m_coupon_id,rule,adressId,sign)
+                .udpateAdress("2",token,mid,m_coupon_id,rule,adressId,new_version,sign)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,

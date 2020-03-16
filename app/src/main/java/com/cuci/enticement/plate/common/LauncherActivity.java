@@ -25,6 +25,7 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.bean.ClauseBean;
 import com.cuci.enticement.bean.OpenGGBean;
@@ -34,6 +35,7 @@ import com.cuci.enticement.plate.common.popup.TipsPopupxieyi2;
 import com.cuci.enticement.plate.common.vm.MainViewModel;
 import com.cuci.enticement.plate.home.activity.ProdActivity;
 import com.cuci.enticement.plate.home.vm.HomeViewModel;
+import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.EncryptUtils;
 import com.cuci.enticement.utils.FLog;
 import com.cuci.enticement.utils.FToast;
@@ -75,7 +77,7 @@ public class LauncherActivity extends AppCompatActivity {
         }
         setContentView(R.layout.popup_splash_view);
         MainViewModel   mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-        mViewModel.openScreen("2").observe(this, clauseObserver);
+        mViewModel.openScreen("2",""+ AppUtils.getVersionCode(BasicApp.getContext())).observe(this, clauseObserver);
 
         mImageView = findViewById(R.id.image_view);
 

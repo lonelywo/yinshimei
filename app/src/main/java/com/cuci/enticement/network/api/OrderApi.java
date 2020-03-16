@@ -21,6 +21,7 @@ public interface OrderApi {
                                  @Field("page") String page,
                                  @Field("status") String status,
                                  @Field("order_no") String orderNum,
+                                    @Field("new_version") String new_version,
                                  @Field("sign") String signs);
 
 
@@ -32,6 +33,7 @@ public interface OrderApi {
     Call<ResponseBody> confirmOrder(@Field("from_type") String fromType,@Field("token") String token,
                                  @Field("mid") String mid,
                                  @Field("order_no") String orderNum,
+                                    @Field("new_version") String new_version,
                                    @Field("sign") String signs);
 
 
@@ -43,6 +45,7 @@ public interface OrderApi {
     Call<ResponseBody> cancelOrder(@Field("from_type") String fromType,@Field("token") String token,
                                    @Field("mid") String mid,
                                    @Field("order_no") String orderNum,
+                                   @Field("new_version") String new_version,
                                   @Field("sign") String signs);
 
 
@@ -54,6 +57,7 @@ public interface OrderApi {
     @POST("store/api.member.order/total")
     Call<OrderStatistics> getTotalOrder(@Field("from_type") String fromType,@Field("token") String token,
                                       @Field("mid") String mid,
+                                        @Field("new_version") String new_version,
                                         @Field("sign") String signs);
 
     /**
@@ -64,6 +68,7 @@ public interface OrderApi {
     @POST("store/api.express/query")
     Call<ResponseBody> getExpressInfo(@Field("express_no") String num,
                                  @Field("express_code") String code,
+                                      @Field("new_version") String new_version,
                                      @Field("sign") String signs);
 
 
@@ -80,6 +85,7 @@ public interface OrderApi {
                                          @Field("number") String number,
                                          @Field("priceGoods") String priceGoods,
                                          @Field("address_id") String addressId,
+                                      @Field("new_version") String new_version,
                                           @Field("sign") String signs);
 
 
@@ -92,6 +98,7 @@ public interface OrderApi {
                                @Field("mid") String mid,
                                @Field("order_no") String orderNum,
                                @Field("pay_type") String payType,
+                                   @Field("new_version") String new_version,
                                @Field("sign") String signs);
 
 
@@ -108,6 +115,7 @@ public interface OrderApi {
                                     @Field("m_coupon_id") String m_coupon_id,
                                     @Field("rule") String rule,
                                     @Field("address_id") String addressId,
+                                    @Field("new_version") String new_version,
                                     @Field("sign") String signs);
 
 

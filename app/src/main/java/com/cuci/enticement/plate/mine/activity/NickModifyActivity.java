@@ -6,6 +6,8 @@ import android.view.View;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.ModifyInfo;
@@ -13,6 +15,7 @@ import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.plate.common.vm.CommonViewModel;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
+import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.SharedPrefUtils;
@@ -56,7 +59,7 @@ public class NickModifyActivity extends BaseActivity {
             case R.id.tv_commit:
                String nickStr = nickEt.getText().toString().trim();
                 mViewModel.modifyInfo(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),mUserInfo.getOpenid(),mUserInfo.getHeadimg(),"",nickStr,mUserInfo.getSex(),mUserInfo.getUnionid()
-                ,mUserInfo.getProvince(),mUserInfo.getCity(),mUserInfo.getArea())
+                ,mUserInfo.getProvince(),mUserInfo.getCity(),mUserInfo.getArea(),""+ AppUtils.getVersionCode(BasicApp.getContext()))
                         .observe(this, mObserver);
 
                 break;

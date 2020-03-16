@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.Status;
@@ -14,6 +16,7 @@ import com.cuci.enticement.bean.YsmBean;
 import com.cuci.enticement.plate.common.popup.TipsPopupxieyi1;
 import com.cuci.enticement.plate.mine.adapter.ItemYsmViewBinder;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
+import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.SharedPrefUtils;
@@ -73,7 +76,7 @@ public class YinshimeiActivity extends BaseActivity implements ItemYsmViewBinder
         String versionName = getVerName(this);
         textBanbenhao.setText("版本号v" + versionName);
 
-        mViewModel.ysm("2", "" + mUserInfo.getId(), mUserInfo.getToken()).observe(this, mjiebindwxObserver);
+        mViewModel.ysm("2", "" + mUserInfo.getId(), mUserInfo.getToken(),""+ AppUtils.getVersionCode(BasicApp.getContext())).observe(this, mjiebindwxObserver);
 
 
         mAdapter = new MultiTypeAdapter();

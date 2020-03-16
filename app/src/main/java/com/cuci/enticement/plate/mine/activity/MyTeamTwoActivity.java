@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.classic.common.MultipleStatusView;
+import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.MyTeamlbBean;
@@ -24,6 +25,7 @@ import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.plate.mine.adapter.ItemMyTeamTwoViewBinder;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
+import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.ImageLoader;
@@ -134,7 +136,7 @@ public class MyTeamTwoActivity extends BaseActivity implements OnRefreshLoadMore
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(mAdapter);
 
-        mViewModel.hqteamsl(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2")
+        mViewModel.hqteamsl(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2",""+ AppUtils.getVersionCode(BasicApp.getContext()))
                 .observe(this, mObserver);
         load();
 
@@ -170,7 +172,7 @@ public class MyTeamTwoActivity extends BaseActivity implements OnRefreshLoadMore
             return;
         }
         s = edtShousuo.getText().toString();
-        mViewModel.hqteamtj2(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", String.valueOf(data.getId()), s, "1", Status.LOAD_REFRESH)
+        mViewModel.hqteamtj2(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", String.valueOf(data.getId()), s, "1",""+ AppUtils.getVersionCode(BasicApp.getContext()), Status.LOAD_REFRESH)
                 .observe(this, mObserver1);
 
     }
@@ -294,7 +296,7 @@ public class MyTeamTwoActivity extends BaseActivity implements OnRefreshLoadMore
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
         if (mCanLoadMore) {
             mCanLoadMore = false;
-            mViewModel.hqteamtj2(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", "" + data.getId(), s, "" + page, Status.LOAD_MORE)
+            mViewModel.hqteamtj2(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", "" + data.getId(), s, "" + page,""+ AppUtils.getVersionCode(BasicApp.getContext()), Status.LOAD_MORE)
                     .observe(this, mObserver1);
         } else {
             refreshLayout.finishLoadMore();

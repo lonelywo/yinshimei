@@ -35,6 +35,7 @@ import com.cuci.enticement.plate.mine.activity.TuiTypeActivity;
 import com.cuci.enticement.plate.mine.adapter.ItemProdDetailsViewBinder;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.cuci.enticement.plate.mine.vm.OrderViewModel;
+import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.MathExtend;
@@ -299,7 +300,7 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
                             .dismissOnTouchOutside(false)
                             .asCustom(new TipsPopup(OrderDetailsActivity.this,
                                     "亲，确定要取消订单吗？", "取消", "确定", () -> {
-                                mViewModel.orderCancel(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(mInfo.getOrder_no()))
+                                mViewModel.orderCancel(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(mInfo.getOrder_no()),""+ AppUtils.getVersionCode(BasicApp.getContext()))
                                         .observe(this, mCancelObserver);
                             }))
                             .show();
@@ -325,7 +326,7 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
 
                                 mPayType = type;
                                 mViewModel.getOrderPay(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),
-                                        String.valueOf(mInfo.getOrder_no()), String.valueOf(type))
+                                        String.valueOf(mInfo.getOrder_no()), String.valueOf(type),""+ AppUtils.getVersionCode(BasicApp.getContext()))
                                         .observe(this, mPayObserver);
 
                             }))
@@ -342,7 +343,7 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
                             .asCustom(new TipsPopup(OrderDetailsActivity.this,
                                     "亲，确定要确认收货吗？", "取消", "确定", () -> {
                                 mViewModel.orderConfirm(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),
-                                        String.valueOf(mInfo.getOrder_no()))
+                                        String.valueOf(mInfo.getOrder_no()),""+ AppUtils.getVersionCode(BasicApp.getContext()))
                                         .observe(this, mConfirmObserver);
                             }))
                             .show();

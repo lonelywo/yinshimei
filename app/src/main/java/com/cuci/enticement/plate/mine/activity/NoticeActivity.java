@@ -19,6 +19,7 @@ import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.plate.mine.adapter.ItemNoticeListViewBinder;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
+import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.widget.CartItemDecoration;
@@ -98,7 +99,7 @@ public class NoticeActivity extends BaseActivity implements OnRefreshLoadMoreLis
 
     private void load() {
 
-        mViewModel.Noticelist( "2", "1", Status.LOAD_REFRESH)
+        mViewModel.Noticelist( "2", "1",""+ AppUtils.getVersionCode(this), Status.LOAD_REFRESH)
                 .observe(this, mObserver);
 
     }
@@ -179,7 +180,7 @@ public class NoticeActivity extends BaseActivity implements OnRefreshLoadMoreLis
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
         if (mCanLoadMore) {
             mCanLoadMore = false;
-            mViewModel.Noticelist( "2",  "" + page, Status.LOAD_MORE)
+            mViewModel.Noticelist( "2",  "" + page,""+ AppUtils.getVersionCode(this), Status.LOAD_MORE)
                     .observe(this, mObserver);
         } else {
             refreshLayout.finishLoadMore();

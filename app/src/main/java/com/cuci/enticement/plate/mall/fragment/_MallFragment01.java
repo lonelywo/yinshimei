@@ -15,6 +15,7 @@ import com.cuci.enticement.event.ClickMallpopEvent;
 import com.cuci.enticement.plate.common.popup.ImageViewerPopup;
 import com.cuci.enticement.plate.mall.adapter.NineAdapter;
 import com.cuci.enticement.plate.mall.vm.MallViewModel;
+import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.ViewUtils;
 import com.cuci.enticement.widget.CustomRefreshHeader;
@@ -145,7 +146,7 @@ public class _MallFragment01 extends BaseFragment implements OnRefreshLoadMoreLi
 
     private void load() {
 
-        mViewModel.getSource01(mtype,"1",PAGE_SIZE,Status.LOAD_REFRESH).observe(this, mObserver);
+        mViewModel.getSource01(mtype,"1",PAGE_SIZE,""+ AppUtils.getVersionCode(mActivity),Status.LOAD_REFRESH).observe(this, mObserver);
     }
 
 
@@ -219,7 +220,7 @@ public class _MallFragment01 extends BaseFragment implements OnRefreshLoadMoreLi
         if(mCanLoadMore){
             mCanLoadMore = false;
             mViewModel.getSource01(mtype, String.valueOf(page),PAGE_SIZE,
-                    Status.LOAD_MORE).observe(this, mObserver);
+                    ""+ AppUtils.getVersionCode(mActivity),    Status.LOAD_MORE).observe(this, mObserver);
         }else {
             mRefreshLayout.finishLoadMore();
         }
@@ -237,7 +238,7 @@ public class _MallFragment01 extends BaseFragment implements OnRefreshLoadMoreLi
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onClickMyEvent(ClickMallpopEvent event) {
             mViewModel.getSource01(mtype, String.valueOf(page),PAGE_SIZE,
-                    Status.LOAD_MORE).observe(this, mObserver);
+                    ""+ AppUtils.getVersionCode(mActivity),  Status.LOAD_MORE).observe(this, mObserver);
     }
     @Override
     public void onDestroy() {

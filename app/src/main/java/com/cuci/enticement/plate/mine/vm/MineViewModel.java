@@ -29,7 +29,7 @@ public class MineViewModel extends ViewModel {
      * @param page
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> kaquanlist(String token,String mid,String from_type,String page,String page_size,String status,int loadType) {
+    public MutableLiveData<Status<ResponseBody>> kaquanlist(String token,String mid,String from_type,String page,String page_size,String status,String new_version,int loadType) {
 
         final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
         liveData.setValue(Status.loading(null));
@@ -40,9 +40,10 @@ public class MineViewModel extends ViewModel {
         params.put("page",page);
         params.put("page_size",page_size);
         params.put("status",status);
+        params.put("new_version",new_version);
         String signs = SignUtils.signParamRemoveNull(params);
         mCreator.create(MineApi.class)
-                .kaquanlist(token,mid,from_type,page,page_size,status,signs)
+                .kaquanlist(token,mid,from_type,page,page_size,status,new_version,signs)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,
@@ -116,16 +117,17 @@ public class MineViewModel extends ViewModel {
      * @param page
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> Noticelist(String from_type,String page,int loadType) {
+    public MutableLiveData<Status<ResponseBody>> Noticelist(String from_type,String page,String new_version,int loadType) {
 
         final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
         liveData.setValue(Status.loading(null));
         Map<String, String> params = new HashMap<String, String>();
         params.put("from_type",from_type);
         params.put("page",page);
+        params.put("new_version",new_version);
         String signs = SignUtils.signParam(params);
         mCreator.create(MineApi.class)
-                .Noticelist(from_type,page,signs)
+                .Noticelist(from_type,page,new_version,signs)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,
@@ -162,7 +164,7 @@ public class MineViewModel extends ViewModel {
      * @param cid
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> getui(String from_type,String mid,String token,String aims, String cid) {
+    public MutableLiveData<Status<ResponseBody>> getui(String from_type,String mid,String token,String aims, String cid,String new_version) {
 
         final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
         liveData.setValue(Status.loading(null));
@@ -172,9 +174,10 @@ public class MineViewModel extends ViewModel {
         params.put("token",token);
         params.put("aims",aims);
         params.put("cid",cid);
+        params.put("new_version",new_version);
         String signs = SignUtils.signParam(params);
         mCreator.create(MineApi.class)
-                .getui(from_type,mid,token,aims,cid,signs)
+                .getui(from_type,mid,token,aims,cid,new_version,signs)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,
@@ -199,7 +202,7 @@ public class MineViewModel extends ViewModel {
      * @param mid
      * @return
      */
-    public MutableLiveData<Status<Base>> loginOut(String from_type, String token, String mid) {
+    public MutableLiveData<Status<Base>> loginOut(String from_type, String token, String mid,String new_version) {
 
         final MutableLiveData<Status<Base>> liveData = new MutableLiveData<>();
         liveData.setValue(Status.loading(null));
@@ -207,9 +210,10 @@ public class MineViewModel extends ViewModel {
         params.put("from_type",from_type);
         params.put("token",token);
         params.put("mid",mid);
+        params.put("new_version",new_version);
         String signs = SignUtils.signParam(params);
         mCreator.create(UserApi.class)
-                .loginOut(from_type,token,mid,signs)
+                .loginOut(from_type,token,mid,new_version,signs)
                 .enqueue(new Callback<Base>() {
                     @Override
                     public void onResponse(@NonNull Call<Base> call,
@@ -235,7 +239,7 @@ public class MineViewModel extends ViewModel {
      * @param mid
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> hqcommissiontj(String token, String mid, String from_type) {
+    public MutableLiveData<Status<ResponseBody>> hqcommissiontj(String token, String mid, String from_type,String new_version) {
 
         final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
         liveData.setValue(Status.loading(null));
@@ -243,9 +247,10 @@ public class MineViewModel extends ViewModel {
         params.put("from_type",from_type);
         params.put("token",token);
         params.put("mid",mid);
+        params.put("new_version",new_version);
         String signs = SignUtils.signParam(params);
         mCreator.create(MineApi.class)
-                .hqcommissiontj(token,mid,from_type,signs)
+                .hqcommissiontj(token,mid,from_type,new_version,signs)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,
@@ -269,7 +274,7 @@ public class MineViewModel extends ViewModel {
      * @param mid
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> hqcommissionjl(String token, String mid, String from_type,String date,String page,int loadType) {
+    public MutableLiveData<Status<ResponseBody>> hqcommissionjl(String token, String mid, String from_type,String date,String page,String new_version,int loadType) {
 
         final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
         liveData.setValue(Status.loading(null));
@@ -279,9 +284,10 @@ public class MineViewModel extends ViewModel {
         params.put("mid",mid);
         params.put("date",date);
         params.put("page",page);
+        params.put("new_version",new_version);
         String signs = SignUtils.signParam(params);
         mCreator.create(MineApi.class)
-                .hqcommissionjl(token,mid,from_type,date,page,signs)
+                .hqcommissionjl(token,mid,from_type,date,page,new_version,signs)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,
@@ -317,7 +323,7 @@ public class MineViewModel extends ViewModel {
      * @param mid
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> txcommissionsq(String token, String mid, String from_type,String price) {
+    public MutableLiveData<Status<ResponseBody>> txcommissionsq(String token, String mid, String from_type,String price,String new_version) {
 
         final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
         liveData.setValue(Status.loading(null));
@@ -326,9 +332,10 @@ public class MineViewModel extends ViewModel {
         params.put("token",token);
         params.put("mid",mid);
         params.put("price",price);
+        params.put("new_version",new_version);
         String signs = SignUtils.signParam(params);
         mCreator.create(MineApi.class)
-                .txcommissionsq(token,mid,from_type,price,signs)
+                .txcommissionsq(token,mid,from_type,price,new_version,signs)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,
@@ -353,7 +360,7 @@ public class MineViewModel extends ViewModel {
      * @param mid
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> txcommissionjl(String token, String mid, String from_type,int loadType) {
+    public MutableLiveData<Status<ResponseBody>> txcommissionjl(String token, String mid, String from_type,String new_version,int loadType) {
 
         final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
         liveData.setValue(Status.loading(null));
@@ -361,9 +368,10 @@ public class MineViewModel extends ViewModel {
         params.put("from_type",from_type);
         params.put("token",token);
         params.put("mid",mid);
+        params.put("new_version",new_version);
         String signs = SignUtils.signParam(params);
         mCreator.create(MineApi.class)
-                .txcommissionjl(token,mid,from_type,signs)
+                .txcommissionjl(token,mid,from_type,new_version,signs)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,
@@ -400,7 +408,7 @@ public class MineViewModel extends ViewModel {
      * @param mid
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> hqteamtj2(String token, String mid, String from_type,String pid,String nickname,String page,int loadType) {
+    public MutableLiveData<Status<ResponseBody>> hqteamtj2(String token, String mid, String from_type,String pid,String nickname,String page,String new_version,int loadType) {
 
         final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
         liveData.setValue(Status.loading(null));
@@ -413,9 +421,10 @@ public class MineViewModel extends ViewModel {
             params.put("nickname",nickname);
         }
         params.put("page",page);
+        params.put("new_version",new_version);
         String signs = SignUtils.signParam(params);
         mCreator.create(MineApi.class)
-                .hqteamtj2(token,mid,from_type,pid,nickname,page,signs)
+                .hqteamtj2(token,mid,from_type,pid,nickname,page,new_version,signs)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,
@@ -449,7 +458,7 @@ public class MineViewModel extends ViewModel {
      * @param mid
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> hqteamsl(String token, String mid, String from_type) {
+    public MutableLiveData<Status<ResponseBody>> hqteamsl(String token, String mid, String from_type,String new_version) {
 
         final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
         liveData.setValue(Status.loading(null));
@@ -457,9 +466,10 @@ public class MineViewModel extends ViewModel {
         params.put("from_type",from_type);
         params.put("token",token);
         params.put("mid",mid);
+        params.put("new_version",new_version);
         String signs = SignUtils.signParam(params);
         mCreator.create(MineApi.class)
-                .hqteamsl(token,mid,from_type,signs)
+                .hqteamsl(token,mid,from_type,new_version,signs)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,
@@ -484,7 +494,7 @@ public class MineViewModel extends ViewModel {
      * @param mid
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> achievement(String token, String mid, String from_type) {
+    public MutableLiveData<Status<ResponseBody>> achievement(String token, String mid, String from_type,String new_version) {
 
         final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
         liveData.setValue(Status.loading(null));
@@ -492,9 +502,10 @@ public class MineViewModel extends ViewModel {
         params.put("from_type",from_type);
         params.put("token",token);
         params.put("mid",mid);
+        params.put("new_version",new_version);
         String signs = SignUtils.signParam(params);
         mCreator.create(MineApi.class)
-                .achievement(token,mid,from_type,signs)
+                .achievement(token,mid,from_type,new_version,signs)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,
@@ -520,7 +531,7 @@ public class MineViewModel extends ViewModel {
      * @param mid
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> hxreg(String phone, String from_type, String token,String mid) {
+    public MutableLiveData<Status<ResponseBody>> hxreg(String phone, String from_type, String token,String mid,String new_version) {
 
         final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
        // liveData.setValue(Status.loading(null));
@@ -529,9 +540,10 @@ public class MineViewModel extends ViewModel {
         params.put("from_type",from_type);
         params.put("token",token);
         params.put("mid",mid);
+        params.put("new_version",new_version);
         String signs = SignUtils.signParam(params);
         mCreator.create(MineApi.class)
-                .hxreg(phone,from_type,token,mid,signs)
+                .hxreg(phone,from_type,token,mid,new_version,signs)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,
@@ -555,7 +567,7 @@ public class MineViewModel extends ViewModel {
      * @param mid
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> pk1(String token, String mid, String from_type,String page,int loadType) {
+    public MutableLiveData<Status<ResponseBody>> pk1(String token, String mid, String from_type,String page,String new_version,int loadType) {
 
         final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
         liveData.setValue(Status.loading(null));
@@ -564,9 +576,10 @@ public class MineViewModel extends ViewModel {
         params.put("token",token);
         params.put("mid",mid);
         params.put("page",page);
+        params.put("new_version",new_version);
         String signs = SignUtils.signParam(params);
         mCreator.create(MineApi.class)
-                .pk1(token,from_type,mid,page,signs)
+                .pk1(token,from_type,mid,page,new_version,signs)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,
@@ -602,7 +615,7 @@ public class MineViewModel extends ViewModel {
      * @param mid
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> pk2(String token, String mid, String from_type,String page,int loadType) {
+    public MutableLiveData<Status<ResponseBody>> pk2(String token, String mid, String from_type,String page,String new_version,int loadType) {
 
         final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
         liveData.setValue(Status.loading(null));
@@ -611,9 +624,10 @@ public class MineViewModel extends ViewModel {
         params.put("token",token);
         params.put("mid",mid);
         params.put("page",page);
+        params.put("new_version",new_version);
         String signs = SignUtils.signParam(params);
         mCreator.create(MineApi.class)
-                .pk2(token,from_type,mid,page,signs)
+                .pk2(token,from_type,mid,page,new_version,signs)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,
@@ -649,7 +663,7 @@ public class MineViewModel extends ViewModel {
      * @param mid
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> pk3(String token, String mid, String from_type,String page,int loadType) {
+    public MutableLiveData<Status<ResponseBody>> pk3(String token, String mid, String from_type,String page,String new_version,int loadType) {
 
         final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
         liveData.setValue(Status.loading(null));
@@ -658,9 +672,10 @@ public class MineViewModel extends ViewModel {
         params.put("token",token);
         params.put("mid",mid);
         params.put("page",page);
+        params.put("new_version",new_version);
         String signs = SignUtils.signParam(params);
         mCreator.create(MineApi.class)
-                .pk3(token,from_type,mid,page,signs)
+                .pk3(token,from_type,mid,page,new_version,signs)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,
@@ -697,7 +712,7 @@ public class MineViewModel extends ViewModel {
      * @param mid
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> bindwx(String from_type, String mid, String token, String unionId, String openId, String avatarUrl, String nickname) {
+    public MutableLiveData<Status<ResponseBody>> bindwx(String from_type, String mid, String token, String unionId, String openId, String avatarUrl, String nickname,String new_version) {
 
         final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
         liveData.setValue(Status.loading(null));
@@ -709,9 +724,10 @@ public class MineViewModel extends ViewModel {
         params.put("openId",openId);
         params.put("avatarUrl",avatarUrl);
         params.put("nickname",nickname);
+        params.put("new_version",new_version);
         String signs = SignUtils.signParam(params);
         mCreator.create(MineApi.class)
-                .bindwx(from_type,mid,token,unionId,openId,avatarUrl,nickname,signs)
+                .bindwx(from_type,mid,token,unionId,openId,avatarUrl,nickname,new_version,signs)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,
@@ -735,7 +751,7 @@ public class MineViewModel extends ViewModel {
      * @param mid
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> jiebindwx(String from_type, String mid, String token) {
+    public MutableLiveData<Status<ResponseBody>> jiebindwx(String from_type, String mid, String token,String new_version) {
 
         final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
         liveData.setValue(Status.loading(null));
@@ -743,9 +759,10 @@ public class MineViewModel extends ViewModel {
         params.put("from_type",from_type);
         params.put("token",token);
         params.put("mid",mid);
+        params.put("new_version",new_version);
         String signs = SignUtils.signParam(params);
         mCreator.create(MineApi.class)
-                .jiebindwx(from_type,mid,token,signs)
+                .jiebindwx(from_type,mid,token,new_version,signs)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,
@@ -814,7 +831,7 @@ public class MineViewModel extends ViewModel {
      * @param mid
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> ysm(String from_type, String mid, String token) {
+    public MutableLiveData<Status<ResponseBody>> ysm(String from_type, String mid, String token,String new_version) {
 
         final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
         liveData.setValue(Status.loading(null));
@@ -822,9 +839,10 @@ public class MineViewModel extends ViewModel {
         params.put("from_type",from_type);
         params.put("token",token);
         params.put("mid",mid);
+        params.put("new_version",new_version);
         String signs = SignUtils.signParam(params);
         mCreator.create(MineApi.class)
-                .ysm(from_type,mid,token,signs)
+                .ysm(from_type,mid,token,new_version,signs)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,
@@ -848,7 +866,7 @@ public class MineViewModel extends ViewModel {
      * @param mid
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> isyhjdailing(String from_type, String mid, String token) {
+    public MutableLiveData<Status<ResponseBody>> isyhjdailing(String from_type, String mid, String token,String new_version) {
 
         final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
         liveData.setValue(Status.loading(null));
@@ -856,9 +874,10 @@ public class MineViewModel extends ViewModel {
         params.put("from_type",from_type);
         params.put("token",token);
         params.put("mid",mid);
+        params.put("new_version",new_version);
         String signs = SignUtils.signParamRemoveNull(params);
         mCreator.create(MineApi.class)
-                .isyhjdailing(from_type,mid,token,signs)
+                .isyhjdailing(from_type,mid,token,new_version,signs)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,
@@ -882,7 +901,7 @@ public class MineViewModel extends ViewModel {
      * @param mid
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> dataUserinfo(String from_type, String mid, String token) {
+    public MutableLiveData<Status<ResponseBody>> dataUserinfo(String from_type, String mid, String token,String new_version) {
 
         final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
         liveData.setValue(Status.loading(null));
@@ -890,9 +909,10 @@ public class MineViewModel extends ViewModel {
         params.put("from_type",from_type);
         params.put("token",token);
         params.put("mid",mid);
+        params.put("new_version",new_version);
         String signs = SignUtils.signParam(params);
         mCreator.create(MineApi.class)
-                .dataUserinfo(from_type,mid,token,signs)
+                .dataUserinfo(from_type,mid,token,new_version,signs)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,
@@ -916,7 +936,7 @@ public class MineViewModel extends ViewModel {
      * @param mid
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> monbackdizi(String from_type, String mid, String token, String address_id) {
+    public MutableLiveData<Status<ResponseBody>> monbackdizi(String from_type, String mid, String token, String address_id,String new_version) {
 
         final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
         liveData.setValue(Status.loading(null));
@@ -925,9 +945,10 @@ public class MineViewModel extends ViewModel {
         params.put("token",token);
         params.put("mid",mid);
         params.put("address_id",address_id);
+        params.put("new_version",new_version);
         String signs = SignUtils.signParam(params);
         mCreator.create(MineApi.class)
-                .monbackdizi(from_type,mid,token,address_id,signs)
+                .monbackdizi(from_type,mid,token,address_id,new_version,signs)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,
@@ -951,7 +972,7 @@ public class MineViewModel extends ViewModel {
      * @param mid
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> bindTuijian(String token, String mid, String from_type,String phone) {
+    public MutableLiveData<Status<ResponseBody>> bindTuijian(String token, String mid, String from_type,String phone,String new_version) {
 
         final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
         liveData.setValue(Status.loading(null));
@@ -960,9 +981,10 @@ public class MineViewModel extends ViewModel {
         params.put("token",token);
         params.put("mid",mid);
         params.put("phone",phone);
+        params.put("new_version",new_version);
         String signs = SignUtils.signParam(params);
         mCreator.create(MineApi.class)
-                .bindTuijian(token,mid,from_type,phone,signs)
+                .bindTuijian(token,mid,from_type,phone,new_version,signs)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,

@@ -6,8 +6,8 @@ android {
         applicationId "com.cuci.enticement"
         minSdkVersion 22
         targetSdkVersion 29
-        versionCode 207
-        versionName "2.0.7"
+        versionCode 208
+        versionName "2.0.8"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [
                 GETUI_APP_ID    : "Cn2PZHiD5N6MpOYVrd9N95",

@@ -16,6 +16,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.Base;
@@ -27,6 +28,7 @@ import com.cuci.enticement.bean.WxInfo;
 import com.cuci.enticement.event.LoginSucceedEvent;
 import com.cuci.enticement.plate.common.vm.RegActivityViewModel;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
+import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FLog;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.Re;
@@ -159,7 +161,7 @@ public class BindPhoneActivity extends BaseActivity {
             return;
         }
 
-        mViewModel.wxCheckBindPhone(phone)
+        mViewModel.wxCheckBindPhone(phone,""+ AppUtils.getVersionCode(BasicApp.getContext()))
                 .observe(this, mObservercheck);
 
     }
@@ -214,7 +216,7 @@ public class BindPhoneActivity extends BaseActivity {
             return;
         }
 
-        mViewModel.getSmsCode(phone, "cuci", ""+guojiacode, type).observe(this, mSmsCodeObserver);
+        mViewModel.getSmsCode(phone, "cuci", ""+guojiacode, type,""+ AppUtils.getVersionCode(BasicApp.getContext())).observe(this, mSmsCodeObserver);
 
     }
 
@@ -334,7 +336,7 @@ public class BindPhoneActivity extends BaseActivity {
             FToast.warning("请填写正确的推荐人手机号");
             return;
         }*/
-        mViewModel.register(smsCode, phone, inviteCode, minfo.getUnionId(), minfo.getOpenId(), minfo.getHeadImgUrl(), minfo.getNickName(), String.valueOf(minfo.getSex())).observe(this, mObserver1);
+        mViewModel.register(smsCode, phone, inviteCode, minfo.getUnionId(), minfo.getOpenId(), minfo.getHeadImgUrl(), minfo.getNickName(), String.valueOf(minfo.getSex()),""+ AppUtils.getVersionCode(BasicApp.getContext())).observe(this, mObserver1);
 
     }
 
@@ -348,8 +350,8 @@ public class BindPhoneActivity extends BaseActivity {
             FToast.warning("请填写手机号和验证码");
             return;
         }
-        mViewModel.wxBindPhone(phone,smsCode, minfo.getUnionId(), minfo.getOpenId(), minfo.getHeadImgUrl(), minfo.getNickName(), "2", String.valueOf(minfo.getSex())
-        ).observe(this, mObservercheck1);
+        mViewModel.wxBindPhone(phone,smsCode, minfo.getUnionId(), minfo.getOpenId(), minfo.getHeadImgUrl(), minfo.getNickName(), "2", String.valueOf(minfo.getSex()),
+                ""+ AppUtils.getVersionCode(BasicApp.getContext())  ).observe(this, mObservercheck1);
 
     }
 

@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.classic.common.MultipleStatusView;
+import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.Constant;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseFragment;
@@ -30,6 +31,7 @@ import com.cuci.enticement.event.PKEvent3;
 import com.cuci.enticement.plate.mine.adapter.ItemPKViewBinder;
 import com.cuci.enticement.plate.mine.adapter.ItemPKViewBinder1;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
+import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.ImageLoader;
@@ -175,7 +177,7 @@ public class _PKFragment01 extends BaseFragment implements OnRefreshLoadMoreList
 
     private void load() {
         page = 1;
-        mViewModel.pk1(mUserInfo.getToken(), "" + mUserInfo.getId(), "2", "" + page, Status.LOAD_REFRESH).observe(this, mObserver);
+        mViewModel.pk1(mUserInfo.getToken(), "" + mUserInfo.getId(), "2", "" + page,""+ AppUtils.getVersionCode(BasicApp.getContext()), Status.LOAD_REFRESH).observe(this, mObserver);
         ViewUtils.showView(progressBar);
     }
 
@@ -296,7 +298,7 @@ public class _PKFragment01 extends BaseFragment implements OnRefreshLoadMoreList
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
         if (mCanLoadMore) {
             mCanLoadMore = false;
-            mViewModel.pk1(mUserInfo.getToken(), "" + mUserInfo.getId(), "2", "" + page, Status.LOAD_MORE).observe(this, mObserver);
+            mViewModel.pk1(mUserInfo.getToken(), "" + mUserInfo.getId(), "2", "" + page,""+ AppUtils.getVersionCode(BasicApp.getContext()), Status.LOAD_MORE).observe(this, mObserver);
             ViewUtils.showView(progressBar);
         } else {
             refreshLayout.finishLoadMore();

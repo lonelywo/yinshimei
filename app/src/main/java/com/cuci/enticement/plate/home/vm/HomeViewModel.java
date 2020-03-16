@@ -34,14 +34,15 @@ public class HomeViewModel extends ViewModel {
     public HomeViewModel() {
         mCreator = ServiceCreator.getInstance();
     }
-    public MutableLiveData<Status<BaseList<BannerDataBean>>> getBanner(String from_type) {
+    public MutableLiveData<Status<BaseList<BannerDataBean>>> getBanner(String from_type,String new_version) {
 
         final MutableLiveData<Status<BaseList<BannerDataBean>>> data = new MutableLiveData<>();
         Map<String, String> params = new HashMap<String, String>();
         params.put("from_type",from_type);
+        params.put("new_version",new_version);
         String signs = SignUtils.signParam(params);
         mCreator.create(HomeApi.class)
-                .getBanner(from_type,signs)
+                .getBanner(from_type,new_version,signs)
                 .enqueue(new Callback<BaseList<BannerDataBean>>() {
 
                     @Override
@@ -57,16 +58,17 @@ public class HomeViewModel extends ViewModel {
                 });
         return data;
     }
-    public MutableLiveData<Status<GeneralGoods>> getGeneralGoods(String from_type, String mid, String token, int loadType) {
+    public MutableLiveData<Status<GeneralGoods>> getGeneralGoods(String from_type, String mid, String token,String new_version, int loadType) {
 
         final MutableLiveData<Status<GeneralGoods>> liveData = new MutableLiveData<>();
         Map<String, String> params = new HashMap<String, String>();
         params.put("from_type",from_type);
         params.put("token",token);
         params.put("mid",mid);
+        params.put("new_version",new_version);
         String signs = SignUtils.signParamRemoveNull(params);
         mCreator.create(HomeApi.class)
-                .getGeneralGoods(from_type,  mid,  token,signs)
+                .getGeneralGoods(from_type,  mid,  token,new_version,signs)
                 .enqueue(new Callback<GeneralGoods>() {
 
                     @Override
@@ -91,16 +93,17 @@ public class HomeViewModel extends ViewModel {
                 });
         return liveData;
     }
-    public MutableLiveData<Status<ResponseBody>> getyhjandqiye(String from_type, String mid, String token) {
+    public MutableLiveData<Status<ResponseBody>> getyhjandqiye(String from_type, String mid, String token,String new_version) {
 
         final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
         Map<String, String> params = new HashMap<String, String>();
         params.put("from_type",from_type);
         params.put("token",token);
         params.put("mid",mid);
+        params.put("new_version",new_version);
         String signs = SignUtils.signParamRemoveNull(params);
         mCreator.create(HomeApi.class)
-                .getyhjandqiye(from_type, mid,token,signs)
+                .getyhjandqiye(from_type, mid,token,new_version,signs)
                 .enqueue(new Callback<ResponseBody>() {
 
                     @Override
@@ -116,7 +119,7 @@ public class HomeViewModel extends ViewModel {
                 });
         return data;
     }
-    public MutableLiveData<Status<ResponseBody>> getproyhq(String from_type, String mid, String token,String goods_id) {
+    public MutableLiveData<Status<ResponseBody>> getproyhq(String from_type, String mid, String token,String goods_id,String new_version) {
 
         final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
         Map<String, String> params = new HashMap<String, String>();
@@ -124,9 +127,10 @@ public class HomeViewModel extends ViewModel {
         params.put("token",token);
         params.put("mid",mid);
         params.put("goods_id",goods_id);
+        params.put("new_version",new_version);
         String signs = SignUtils.signParamRemoveNull(params);
         mCreator.create(HomeApi.class)
-                .getproyhq(from_type, mid,token,goods_id,signs)
+                .getproyhq(from_type, mid,token,goods_id,new_version,signs)
                 .enqueue(new Callback<ResponseBody>() {
 
                     @Override
@@ -142,7 +146,7 @@ public class HomeViewModel extends ViewModel {
                 });
         return data;
     }
-    public MutableLiveData<Status<ResponseBody>> getprolingyhq(String from_type, String mid, String token,String coupon_id) {
+    public MutableLiveData<Status<ResponseBody>> getprolingyhq(String from_type, String mid, String token,String coupon_id,String new_version) {
 
         final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
         Map<String, String> params = new HashMap<String, String>();
@@ -150,9 +154,10 @@ public class HomeViewModel extends ViewModel {
         params.put("token",token);
         params.put("mid",mid);
         params.put("coupon_id",coupon_id);
+        params.put("new_version",new_version);
         String signs = SignUtils.signParamRemoveNull(params);
         mCreator.create(HomeApi.class)
-                .getprolingyhq(from_type, mid,token,coupon_id,signs)
+                .getprolingyhq(from_type, mid,token,coupon_id,new_version,signs)
                 .enqueue(new Callback<ResponseBody>() {
 
                     @Override
@@ -169,7 +174,7 @@ public class HomeViewModel extends ViewModel {
         return data;
     }
 
-    public MutableLiveData<Status<HomeDetailsBean>> getHomeDetails(String from_type, String mid, String token,String goods_id) {
+    public MutableLiveData<Status<HomeDetailsBean>> getHomeDetails(String from_type, String mid, String token,String goods_id,String new_version) {
 
         final MutableLiveData<Status<HomeDetailsBean>> data = new MutableLiveData<>();
         Map<String, String> params = new HashMap<String, String>();
@@ -177,9 +182,10 @@ public class HomeViewModel extends ViewModel {
         params.put("token",token);
         params.put("mid",mid);
         params.put("goods_id",goods_id);
+        params.put("new_version",new_version);
         String signs = SignUtils.signParamRemoveNull(params);
         mCreator.create(HomeApi.class)
-                .getHomeDetails(from_type, mid,token,goods_id,signs)
+                .getHomeDetails(from_type, mid,token,goods_id,new_version,signs)
                 .enqueue(new Callback<HomeDetailsBean>() {
 
                     @Override
@@ -202,7 +208,7 @@ public class HomeViewModel extends ViewModel {
      * @param mid
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> shareimg(String from_type, String mid, String token,String goods_id) {
+    public MutableLiveData<Status<ResponseBody>> shareimg(String from_type, String mid, String token,String goods_id,String new_version) {
 
         final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
         liveData.setValue(Status.loading(null));
@@ -211,9 +217,10 @@ public class HomeViewModel extends ViewModel {
         params.put("token",token);
         params.put("mid",mid);
         params.put("goods_id",goods_id);
+        params.put("new_version",new_version);
         String signs = SignUtils.signParam(params);
         mCreator.create(HomeApi.class)
-                .shareimg(from_type,mid,token,goods_id,signs)
+                .shareimg(from_type,mid,token,goods_id,new_version,signs)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,
@@ -238,7 +245,7 @@ public class HomeViewModel extends ViewModel {
      * @param mid
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> dataUserinfo(String from_type, String mid, String token) {
+    public MutableLiveData<Status<ResponseBody>> dataUserinfo(String from_type, String mid, String token,String new_version) {
 
         final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
         liveData.setValue(Status.loading(null));
@@ -246,9 +253,10 @@ public class HomeViewModel extends ViewModel {
         params.put("from_type",from_type);
         params.put("token",token);
         params.put("mid",mid);
+        params.put("new_version",new_version);
         String signs = SignUtils.signParam(params);
         mCreator.create(HomeApi.class)
-                .dataUserinfo(from_type,mid,token,signs)
+                .dataUserinfo(from_type,mid,token,new_version,signs)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,

@@ -26,6 +26,7 @@ import com.cuci.enticement.plate.common.eventbus.MessageEvent1;
 import com.cuci.enticement.plate.common.popup.ImageViewerPopup;
 import com.cuci.enticement.plate.mall.adapter.NineAdapter;
 import com.cuci.enticement.plate.mall.vm.MallViewModel;
+import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.ViewUtils;
@@ -187,7 +188,7 @@ public class YuLanActivity extends BaseActivity implements OnRefreshLoadMoreList
         }*/
     }
     private void load() {
-        mViewModel.getSource02(type,"1",PAGE_SIZE, Status.LOAD_REFRESH).observe(this, mObserver);
+        mViewModel.getSource02(type,"1",PAGE_SIZE,""+ AppUtils.getVersionCode(this), Status.LOAD_REFRESH).observe(this, mObserver);
     }
 
 
@@ -264,7 +265,7 @@ public class YuLanActivity extends BaseActivity implements OnRefreshLoadMoreList
         if(mCanLoadMore){
             mCanLoadMore = false;
             mViewModel.getSource02(type, String.valueOf(page),PAGE_SIZE,
-                    Status.LOAD_MORE).observe(this, mObserver);
+                    ""+ AppUtils.getVersionCode(this),  Status.LOAD_MORE).observe(this, mObserver);
         }else {
             mRefreshLayout.finishLoadMore();
         }

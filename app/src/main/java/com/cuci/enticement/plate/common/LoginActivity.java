@@ -38,6 +38,7 @@ import com.cuci.enticement.plate.common.eventbus.CartEvent;
 import com.cuci.enticement.plate.common.popup.TipsPopupxieyi;
 import com.cuci.enticement.plate.common.popup.TipsPopupxieyi3;
 import com.cuci.enticement.plate.common.vm.LoginViewModel;
+import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FLog;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.RSAUtil;
@@ -299,7 +300,7 @@ public class LoginActivity extends BaseActivity {
             return;
         }
 
-        mViewModel.getSmsCodelogin(phone, "cuci", "" + guojiacode).observe(this, mSmsCodeObserver);
+        mViewModel.getSmsCodelogin(phone, "cuci", "" + guojiacode,""+ AppUtils.getVersionCode(BasicApp.getContext())).observe(this, mSmsCodeObserver);
     }
 
     private Observer<Status<Base>> mSmsCodeObserver = new Observer<Status<Base>>() {
@@ -440,8 +441,8 @@ public class LoginActivity extends BaseActivity {
                 minfo = new Gson().fromJson(b, WxInfo.class);
                 mUnionId = minfo.getUnionId();
 
-                mViewModel.checkUserInfo(minfo.getUnionId(), minfo.getOpenId(), minfo.getHeadImgUrl(), minfo.getNickName(), "2", String.valueOf(minfo.getSex())
-                ).observe(this, mCheckWxInfoObserver);
+                mViewModel.checkUserInfo(minfo.getUnionId(), minfo.getOpenId(), minfo.getHeadImgUrl(), minfo.getNickName(), "2", String.valueOf(minfo.getSex()),
+                        ""+ AppUtils.getVersionCode(BasicApp.getContext())).observe(this, mCheckWxInfoObserver);
             }
         } catch (IOException e) {
             e.printStackTrace();

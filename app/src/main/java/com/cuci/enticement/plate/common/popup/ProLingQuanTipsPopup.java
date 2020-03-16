@@ -14,6 +14,7 @@ import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.plate.home.adapter.ProYhqViewBinder;
 import com.cuci.enticement.plate.home.vm.HomeViewModel;
+import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.widget.BrandItemDecoration;
@@ -128,7 +129,7 @@ public class ProLingQuanTipsPopup extends BottomPopupView implements ProYhqViewB
 
     public void load(ProYhqBean.DataBean item) {
         HomeViewModel mHomeViewModel = ViewModelProviders.of((FragmentActivity) mContext).get(HomeViewModel.class);
-        mHomeViewModel.getprolingyhq("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), ""+item.getId()).observe((LifecycleOwner) mContext, myhqLObserver);
+        mHomeViewModel.getprolingyhq("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), ""+item.getId(),""+ AppUtils.getVersionCode(mContext)).observe((LifecycleOwner) mContext, myhqLObserver);
 
     }
 

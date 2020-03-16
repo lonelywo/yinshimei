@@ -30,6 +30,7 @@ import com.cuci.enticement.plate.common.popup.TipsPopup;
 import com.cuci.enticement.plate.common.popup.TipsPopup1;
 import com.cuci.enticement.plate.common.popup.TipsPopupxieyi_cash;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
+import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.MathExtend;
@@ -42,6 +43,7 @@ import com.tencent.mm.opensdk.modelmsg.SendAuth;
 
 import org.greenrobot.eventbus.EventBus;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -96,7 +98,7 @@ public class CashActivity extends BaseActivity {
         mViewModel = ViewModelProviders.of(this).get(MineViewModel.class);
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
         if(mUserInfo!=null){
-            mViewModel.hqcommissiontj(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2")
+            mViewModel.hqcommissiontj(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2",""+ AppUtils.getVersionCode(this))
                     .observe(this, mObserver1);
         }
         ok.setOnClickListener(new View.OnClickListener() {
@@ -170,7 +172,7 @@ public class CashActivity extends BaseActivity {
         }
         if (isclick) {
             isclick = false;
-            mViewModel.txcommissionsq(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", meony)
+            mViewModel.txcommissionsq(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", meony,""+AppUtils.getVersionCode(BasicApp.getContext()))
                     .observe(this, mObserver);
         }
 
@@ -204,7 +206,7 @@ public class CashActivity extends BaseActivity {
                 FToast.success(mCommissiontxBean.getInfo());
                 EventBus.getDefault().post(new CashEvent());
                 if(mUserInfo!=null){
-                    mViewModel.hqcommissiontj(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2")
+                    mViewModel.hqcommissiontj(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2",""+ AppUtils.getVersionCode(this))
                             .observe(this, mObserver1);
                 }
             }else if(mCommissiontxBean.getCode() == HttpUtils.CODE_INVALID){
@@ -395,7 +397,7 @@ public class CashActivity extends BaseActivity {
             } else {
                 WxInfo minfo = new Gson().fromJson(b, WxInfo.class);
 
-                mViewModel.bindwx("2",""+mUserInfo.getId(),mUserInfo.getToken(),minfo.getUnionId(), minfo.getOpenId(), minfo.getHeadImgUrl(), minfo.getNickName()).observe(this, mbindwxObserver);
+                mViewModel.bindwx("2",""+mUserInfo.getId(),mUserInfo.getToken(),minfo.getUnionId(), minfo.getOpenId(), minfo.getHeadImgUrl(), minfo.getNickName(),""+ AppUtils.getVersionCode(BasicApp.getContext())).observe(this, mbindwxObserver);
             }
         } catch (IOException e) {
             e.printStackTrace();

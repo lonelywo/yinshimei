@@ -686,7 +686,7 @@
                             android:layout_marginTop="5dp"
                             android:drawableTop="@drawable/kaquan"
                             android:drawablePadding="6dp"
-                            android:text="我的卡卷"
+                            android:text="我的卡券"
                             android:textColor="#646262"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"

@@ -14,6 +14,7 @@ import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.plate.mine.adapter.ItemKaQuanViewBinder3;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
+import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.SharedPrefUtils;
@@ -108,7 +109,7 @@ public class _KaQuanFragment03 extends BaseFragment implements OnRefreshLoadMore
 
     private void load() {
         page = 1;
-        mViewModel.kaquanlist(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"2", "1", "10", "2", Status.LOAD_REFRESH)
+        mViewModel.kaquanlist(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"2", "1", "10", "2",""+ AppUtils.getVersionCode(mActivity), Status.LOAD_REFRESH)
                 .observe(this, mObserver);
       //  ViewUtils.showView(progressBar);
     }
@@ -192,7 +193,7 @@ public class _KaQuanFragment03 extends BaseFragment implements OnRefreshLoadMore
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
         if (mCanLoadMore) {
             mCanLoadMore = false;
-            mViewModel.kaquanlist(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"2", page+"", "10", "2", Status.LOAD_MORE)
+            mViewModel.kaquanlist(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"2", page+"", "10", "2",""+ AppUtils.getVersionCode(mActivity), Status.LOAD_MORE)
                     .observe(this, mObserver);
 
         } else {

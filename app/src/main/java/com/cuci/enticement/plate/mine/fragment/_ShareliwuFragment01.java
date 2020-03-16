@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseFragment;
 import com.cuci.enticement.bean.AddressBean;
@@ -39,6 +40,7 @@ import com.cuci.enticement.plate.mine.adapter.ItemReceiveBottomViewBinder;
 import com.cuci.enticement.plate.mine.adapter.ItemReceiveTitleViewBinder;
 import com.cuci.enticement.plate.mine.adapter.ItemReceiveViewBinder;
 import com.cuci.enticement.plate.mine.vm.LiwuViewModel;
+import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.SharedPrefUtils;
@@ -159,7 +161,7 @@ public class _ShareliwuFragment01 extends BaseFragment implements OnRefreshLoadM
     }
 
     private void load() {
-        mViewModel.ReceiveQueue(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "1", mtype, Status.LOAD_REFRESH)
+        mViewModel.ReceiveQueue(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "1", mtype,""+ AppUtils.getVersionCode(BasicApp.getContext()), Status.LOAD_REFRESH)
                 .observe(this, mObserver);
     }
 
@@ -290,7 +292,7 @@ public class _ShareliwuFragment01 extends BaseFragment implements OnRefreshLoadM
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
         if (mCanLoadMore = true) {
             mCanLoadMore = false;
-            mViewModel.ReceiveQueue(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "" + page, mtype, Status.LOAD_MORE)
+            mViewModel.ReceiveQueue(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "" + page, mtype, ""+ AppUtils.getVersionCode(BasicApp.getContext()),Status.LOAD_MORE)
                     .observe(this, mObserver);
 
         } else {
@@ -368,7 +370,7 @@ public class _ShareliwuFragment01 extends BaseFragment implements OnRefreshLoadM
             AddressBean.DataBean.ListBean bean = data.getParcelableExtra("addressBean");
             String mAddressId = String.valueOf(bean.getId());
 
-            mViewModel.ReceiveCommit(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), mAddressId)
+            mViewModel.ReceiveCommit(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), mAddressId,""+ AppUtils.getVersionCode(BasicApp.getContext()))
                     .observe(this, mObserver1);
         }
     }

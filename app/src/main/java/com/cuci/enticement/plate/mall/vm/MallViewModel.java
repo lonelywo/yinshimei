@@ -30,7 +30,7 @@ public class MallViewModel extends ViewModel {
         mCreator = ServiceCreator.getInstance();
     }
 
-    public MutableLiveData<Status<MallSourceBean>> getSource(String type,String page,String pagesize) {
+    public MutableLiveData<Status<MallSourceBean>> getSource(String type,String page,String pagesize,String new_version) {
 
         final MutableLiveData<Status<MallSourceBean>> data = new MutableLiveData<>();
 
@@ -39,9 +39,10 @@ public class MallViewModel extends ViewModel {
         params.put("type",type);
         params.put("page",page);
         params.put("pagesize",pagesize);
+        params.put("new_version",new_version);
         String signs = SignUtils.signParam(params);
         mCreator.create(MallApi.class)
-                .getSource(type,page,pagesize,signs)
+                .getSource(type,page,pagesize,new_version,signs)
                 .enqueue(new Callback<MallSourceBean>() {
                     @Override
                     public void onResponse(@NonNull Call<MallSourceBean> call,
@@ -57,7 +58,7 @@ public class MallViewModel extends ViewModel {
                 });
         return data;
     }
-    public MutableLiveData<Status<MallSourceBean>> getSource01(String type,String page,String pagesize, int loadType) {
+    public MutableLiveData<Status<MallSourceBean>> getSource01(String type,String page,String pagesize,String new_version, int loadType) {
 
         final MutableLiveData<Status<MallSourceBean>> data = new MutableLiveData<>();
 
@@ -68,9 +69,10 @@ public class MallViewModel extends ViewModel {
         }
         params.put("page",page);
         params.put("pagesize",pagesize);
+        params.put("new_version",new_version);
         String signs = SignUtils.signParam(params);
         mCreator.create(MallApi.class)
-                .getSource01(type,page,pagesize,signs)
+                .getSource01(type,page,pagesize,new_version,signs)
                 .enqueue(new Callback<MallSourceBean>() {
                     @Override
                     public void onResponse(@NonNull Call<MallSourceBean> call,
@@ -94,22 +96,21 @@ public class MallViewModel extends ViewModel {
                 });
         return data;
     }
-    public MutableLiveData<Status<MallSourceBean>> getSource02(String type,String page,String pagesize, int loadType) {
+    public MutableLiveData<Status<MallSourceBean>> getSource02(String type,String page,String pagesize,String new_version, int loadType) {
 
         final MutableLiveData<Status<MallSourceBean>> data = new MutableLiveData<>();
 
         data.setValue(Status.loading(null));
-      /*  String sign = EncryptUtils.md5Encrypt("&key=A8sUd9bqis3sN5GK6aF9JDFl5I9skPkd");
-        String signs = sign.toUpperCase();*/
         Map<String, String> params = new HashMap<String, String>();
         if(!TextUtils.isEmpty(type)){
             params.put("type",type);
         }
         params.put("page",page);
         params.put("pagesize",pagesize);
+        params.put("new_version",new_version);
         String signs = SignUtils.signParam(params);
         mCreator.create(MallApi.class)
-                .getSource02(type,page,pagesize,signs)
+                .getSource02(type,page,pagesize,new_version,signs)
                 .enqueue(new Callback<MallSourceBean>() {
                     @Override
                     public void onResponse(@NonNull Call<MallSourceBean> call,

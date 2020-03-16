@@ -34,7 +34,7 @@ public class LoginViewModel extends ViewModel {
 
 
     public MutableLiveData<Status<Base<UserInfo>>> checkUserInfo(String unionId, String openId,
-                                                                   String avatarUrl, String nickname, String from_type, String gender) {
+                                                                   String avatarUrl, String nickname, String from_type, String gender,String new_version) {
 
         final MutableLiveData<Status<Base<UserInfo>>> liveData = new MutableLiveData<>();
 
@@ -46,10 +46,11 @@ public class LoginViewModel extends ViewModel {
         params.put("nickname",nickname);
         params.put("from_type",from_type);
         params.put("gender",gender);
+        params.put("new_version",new_version);
         String signs = SignUtils.signParam(params);
 
         mCreator.create(UserApi.class)
-                .checkUserInfo(unionId, openId, avatarUrl, nickname,from_type,gender,signs)
+                .checkUserInfo(unionId, openId, avatarUrl, nickname,from_type,gender,new_version,signs)
                 .enqueue(new Callback<Base<UserInfo>>() {
                     @Override
                     public void onResponse(@NonNull Call<Base<UserInfo>> call,
@@ -149,7 +150,7 @@ public class LoginViewModel extends ViewModel {
 
 
 
-    public MutableLiveData<Status<Base>> getSmsCodelogin(String phone, String secure, String region) {
+    public MutableLiveData<Status<Base>> getSmsCodelogin(String phone, String secure, String region,String new_version) {
 
         final MutableLiveData<Status<Base>> liveData = new MutableLiveData<>();
 
@@ -159,10 +160,11 @@ public class LoginViewModel extends ViewModel {
         params.put("secure",secure);
         params.put("region",region);
         params.put("type","6");
+        params.put("new_version",new_version);
         String signs = SignUtils.signParam(params);
 
         mCreator.create(UserApi.class)
-                .getSmsCodelogin(phone, secure, region,"6",signs)
+                .getSmsCodelogin(phone, secure, region,"6",new_version,signs)
                 .enqueue(new Callback<Base>() {
                     @Override
                     public void onResponse(@NonNull Call<Base> call,

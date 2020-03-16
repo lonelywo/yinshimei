@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.Base;
@@ -19,6 +21,7 @@ import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.plate.common.vm.RegActivityViewModel;
 import com.cuci.enticement.plate.mine.activity.SettingsActivity;
+import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FLog;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.HttpUtils;
@@ -139,7 +142,7 @@ public class HuanBindActivity extends BaseActivity {
             return;
         }
 
-        mViewModel.huanBindPhone("2", ""+mUserInfo.getId(), mUserInfo.getToken(), phone, smsCode).observe(this, mObserver);
+        mViewModel.huanBindPhone("2", ""+mUserInfo.getId(), mUserInfo.getToken(), phone, smsCode,""+ AppUtils.getVersionCode(BasicApp.getContext())).observe(this, mObserver);
 
     }
 
@@ -195,7 +198,7 @@ public class HuanBindActivity extends BaseActivity {
             return;
         }
 
-        mViewModel.getSmsCode(phone, "cuci", ""+guojiacode, "4").observe(this, mSmsCodeObserver);
+        mViewModel.getSmsCode(phone, "cuci", ""+guojiacode, "4",""+ AppUtils.getVersionCode(BasicApp.getContext())).observe(this, mSmsCodeObserver);
 
     }
 

@@ -26,6 +26,7 @@ public interface UserApi {
                         @Field("avatarUrl") String avatarUrl,
                         @Field("nickname") String nickname,
                         @Field("gender") String gender,
+                                  @Field("new_version") String new_version,
                                           @Field("sign") String sign
                                                           );
     /**
@@ -37,6 +38,7 @@ public interface UserApi {
                         @Field("secure") String secure,
                         @Field("region") String region,
                         @Field("type") String type,
+                          @Field("new_version") String new_version,
                         @Field("sign") String sign
     );
     /**
@@ -48,6 +50,7 @@ public interface UserApi {
                                @Field("secure") String secure,
                                @Field("region") String region,
                                @Field("type") String type,
+                               @Field("new_version") String new_version,
                                @Field("sign") String sign
     );
     /**
@@ -78,6 +81,7 @@ public interface UserApi {
     Call<Base> loginOut(@Field("from_type") String from_type,
                      @Field("token") String token,
                      @Field("mid") String mid,
+                     @Field("new_version") String new_version,
                      @Field("sign") String sign
 
     );
@@ -91,6 +95,7 @@ public interface UserApi {
     @POST("store/api.member.address/gets")
     Call<AddressBean> getAdressList(@Field("from_type") String fromType, @Field("token") String token,
                                     @Field("mid") String mid,
+                                    @Field("new_version") String new_version,
                                     @Field("sign") String sign);
 
 
@@ -110,6 +115,7 @@ public interface UserApi {
                                @Field("address") String address,
                                @Field("is_default") String is_default,
                                @Field("id") String addressId,
+                               @Field("new_version") String new_version,
                                @Field("sign") String sign);
 
 
@@ -121,6 +127,7 @@ public interface UserApi {
     Call<ResponseBody> deleteAddress(@Field("from_type") String fromType, @Field("token") String token,
                                @Field("mid") String mid,
                                @Field("address_id") String addressId,
+                                     @Field("new_version") String new_version,
                                @Field("sign") String sign);
 
 
@@ -133,6 +140,7 @@ public interface UserApi {
     Call<ResponseBody> setDefaultAddress(@Field("from_type") String fromType, @Field("token") String token,
                                      @Field("mid") String mid,
                                      @Field("address_id") String addressId,
+                                         @Field("new_version") String new_version,
                                      @Field("sign") String sign);
 
 
@@ -148,6 +156,7 @@ public interface UserApi {
                                        @Field("nickname") String nickname,
                                        @Field("from_type") String from_type,
                                        @Field("gender") String gender,
+                                       @Field("new_version") String new_version,
                                        @Field("sign") String sign
     );
     /**
@@ -173,6 +182,7 @@ public interface UserApi {
     @POST("store/api.user/checkphone")
     Call<ResponseBody> wxCheckBindPhone(
                                      @Field("phone") String phone,
+                                     @Field("new_version") String new_version,
                                      @Field("sign") String sign
                                    );
 
@@ -190,6 +200,7 @@ public interface UserApi {
             @Field("nickname") String nickname,
             @Field("from_type") String from_type,
             @Field("gender") String gender,
+            @Field("new_version") String new_version,
                     @Field("sign") String sign
     );
 
@@ -213,6 +224,7 @@ public interface UserApi {
                                @Field("province") String province,
                                @Field("city") String city,
                                @Field("area") String area,
+                                  @Field("new_version") String new_version,
                                @Field("sign") String sign);
     /**
      * 换绑手机
@@ -224,6 +236,7 @@ public interface UserApi {
                                   @Field("token") String token,
                                   @Field("phone") String phone,
                                   @Field("code") String code,
+                                     @Field("new_version") String new_version,
                                   @Field("sign") String sign);
 
     /**
@@ -232,7 +245,7 @@ public interface UserApi {
     @FormUrlEncoded
     @POST("store/api.page/getRegionCompile")
     Call<ResponseBody> getGuoJiaCode(@Field("from_type") String fromType,
-
+                                     @Field("new_version") String new_version,
                                      @Field("sign") String sign);
 
 

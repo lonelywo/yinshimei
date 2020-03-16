@@ -29,6 +29,7 @@ import com.cuci.enticement.bean.ShareimgBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.plate.home.vm.HomeViewModel;
+import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.EncryptUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.FileUtils;
@@ -112,7 +113,7 @@ public class CenterShareAppPopup extends CenterPopupView {
         ButterKnife.bind(this);
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
         mHomeViewModel = ViewModelProviders.of((FragmentActivity) mContext).get(HomeViewModel.class);
-        mHomeViewModel.shareimg("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), String.valueOf(mmProData.getId())).observe((LifecycleOwner) mContext, mObserver);
+        mHomeViewModel.shareimg("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), String.valueOf(mmProData.getId()),""+ AppUtils.getVersionCode(mContext)).observe((LifecycleOwner) mContext, mObserver);
         ViewUtils.showView(progressBar);
         // ImageLoader.loadPlaceholder(R.drawable.poster, imgTupian);
 

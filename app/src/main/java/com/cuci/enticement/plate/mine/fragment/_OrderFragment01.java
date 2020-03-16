@@ -47,6 +47,7 @@ import com.cuci.enticement.plate.mine.adapter.ItemBottomViewBinder;
 import com.cuci.enticement.plate.mine.adapter.ItemProdViewBinder;
 import com.cuci.enticement.plate.mine.adapter.ItemTitleViewBinder;
 import com.cuci.enticement.plate.mine.vm.OrderViewModel;
+import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.PayResult;
@@ -228,7 +229,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
     private void load() {
         String token = mUserInfo.getToken();
         int id = mUserInfo.getId();
-        mViewModel.getOrderList(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"1",mtype,"",Status.LOAD_REFRESH)
+        mViewModel.getOrderList(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"1",mtype,"",""+ AppUtils.getVersionCode(BasicApp.getContext()),Status.LOAD_REFRESH)
                 .observe(this, mObserver);
     }
 
@@ -379,7 +380,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
         if(mCanLoadMore=true){
             mCanLoadMore = false;
-            mViewModel.getOrderList(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),String.valueOf(page),mtype,"",Status.LOAD_MORE).observe(this, mObserver);
+            mViewModel.getOrderList(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),String.valueOf(page),mtype,"",""+ AppUtils.getVersionCode(BasicApp.getContext()),Status.LOAD_MORE).observe(this, mObserver);
 
         }else {
             mRefreshLayout.finishLoadMore();
@@ -417,7 +418,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                         "亲，确定要取消订单吗？", "取消", "确定", () -> {
                     String orderNum = itemOrderBottom.orderNum;
                     mCancelItem=itemOrderBottom;
-                    mViewModel.orderCancel(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),orderNum).observe(this, mCancelObserver);
+                    mViewModel.orderCancel(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),orderNum,""+ AppUtils.getVersionCode(BasicApp.getContext())).observe(this, mCancelObserver);
 
 
                 }))
@@ -446,7 +447,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
 
                     mPayType=type;
                     mViewModel.getOrderPay(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),
-                            String.valueOf(itemOrderBottom.orderNum),String.valueOf(type))
+                            String.valueOf(itemOrderBottom.orderNum),String.valueOf(type),""+ AppUtils.getVersionCode(BasicApp.getContext()))
                             .observe(this,mPayObserver);
 
 
@@ -472,7 +473,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                 .asCustom(new TipsPopup(mActivity,
                         "亲，确定要确认收货吗？", "取消", "确定", () -> {
                     mViewModel.orderConfirm(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),
-                            itemOrderBottom.orderNum)
+                            itemOrderBottom.orderNum,""+ AppUtils.getVersionCode(BasicApp.getContext()))
                             .observe(this,mConfirmObserver);
                 }))
                 .show();

@@ -21,6 +21,7 @@ import com.cuci.enticement.plate.mine.activity.KaQuanActivity;
 import com.cuci.enticement.plate.mine.activity.MyOrderActivity;
 import com.cuci.enticement.plate.mine.activity.SettingsActivity;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
+import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.ImageLoader;
@@ -108,9 +109,9 @@ public class PayOfterActivity extends BaseActivity {
     }
     private void load() {
         if(ServiceCreator.Constant_IS_NEW==0){
-            mViewModel.payofter(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()), "1",ServiceCreator.Constant_GOODS_ID).observe(this, mObserver);
+            mViewModel.payofter(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()), "1",ServiceCreator.Constant_GOODS_ID,""+ AppUtils.getVersionCode(this)).observe(this, mObserver);
         }else {
-            mViewModel.payofter(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()), "0",ServiceCreator.Constant_GOODS_ID).observe(this, mObserver);
+            mViewModel.payofter(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()), "0",ServiceCreator.Constant_GOODS_ID,""+ AppUtils.getVersionCode(this)).observe(this, mObserver);
         }
     }
     private Observer<Status<ResponseBody>> mObserver = status -> {

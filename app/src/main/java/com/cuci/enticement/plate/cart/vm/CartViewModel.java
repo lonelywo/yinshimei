@@ -32,7 +32,7 @@ public class CartViewModel extends ViewModel {
         mCreator = ServiceCreator.getInstance();
     }
 
-    public MutableLiveData<Status<ResponseBody>> payofter(String token,String mid,String is_first,String order_no) {
+    public MutableLiveData<Status<ResponseBody>> payofter(String token,String mid,String is_first,String order_no,String new_version) {
 
         final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
         data.setValue(Status.loading(null));
@@ -42,9 +42,10 @@ public class CartViewModel extends ViewModel {
         params.put("is_first",is_first);
         params.put("order_no",order_no);
         params.put("from_type","2");
+        params.put("new_version",new_version);
         String signs = SignUtils.signParam(params);
         mCreator.create(CartApi.class)
-                .payofter("2",token,mid,is_first,order_no,signs)
+                .payofter("2",token,mid,is_first,order_no,new_version,signs)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,
@@ -61,7 +62,7 @@ public class CartViewModel extends ViewModel {
         return data;
     }
 
-    public MutableLiveData<Status<Base<CartDataBean>>> getCartList(String token, String mid, String page, int loadType) {
+    public MutableLiveData<Status<Base<CartDataBean>>> getCartList(String token, String mid, String page,String new_version, int loadType) {
 
         final MutableLiveData<Status<Base<CartDataBean>>> data = new MutableLiveData<>();
         data.setValue(Status.loading(null));
@@ -70,11 +71,12 @@ public class CartViewModel extends ViewModel {
         params.put("mid",mid);
         params.put("page",page);
         params.put("from_type","2");
+        params.put("new_version",new_version);
 
         String signs = SignUtils.signParam(params);
 
         mCreator.create(CartApi.class)
-                .getCartList("2",token,mid,page,signs)
+                .getCartList("2",token,mid,page,new_version,signs)
                 .enqueue(new Callback<Base<CartDataBean>>() {
                     @Override
                     public void onResponse(@NonNull Call<Base<CartDataBean>> call,
@@ -105,7 +107,7 @@ public class CartViewModel extends ViewModel {
 
 
 
-    public MutableLiveData<Status<ResponseBody>> cartChange(String token,String mid,String goodsId,String goodsSpec,String goodsNum) {
+    public MutableLiveData<Status<ResponseBody>> cartChange(String token,String mid,String goodsId,String goodsSpec,String goodsNum,String new_version) {
 
         final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
         data.setValue(Status.loading(null));
@@ -116,9 +118,10 @@ public class CartViewModel extends ViewModel {
         params.put("goods_spec",goodsSpec);
         params.put("goods_num",goodsNum);
         params.put("from_type","2");
+        params.put("new_version",new_version);
         String signs = SignUtils.signParam(params);
         mCreator.create(CartApi.class)
-                .cartChange("2",token,mid,goodsId,goodsSpec,goodsNum,signs)
+                .cartChange("2",token,mid,goodsId,goodsSpec,goodsNum,new_version,signs)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,
@@ -136,7 +139,7 @@ public class CartViewModel extends ViewModel {
     }
 
 
-    public MutableLiveData<Status<ResponseBody>> cartDelete(String token,String mid,String cartId) {
+    public MutableLiveData<Status<ResponseBody>> cartDelete(String token,String mid,String cartId,String new_version) {
 
         final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
         data.setValue(Status.loading(null));
@@ -145,9 +148,10 @@ public class CartViewModel extends ViewModel {
         params.put("mid",mid);
         params.put("cart_id",cartId);
         params.put("from_type","2");
+        params.put("new_version",new_version);
         String signs = SignUtils.signParam(params);
         mCreator.create(CartApi.class)
-                .cartDelete("2",token,mid,cartId,signs)
+                .cartDelete("2",token,mid,cartId,new_version,signs)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,
@@ -163,7 +167,7 @@ public class CartViewModel extends ViewModel {
                 });
         return data;
     }
-    public MutableLiveData<Status<ResponseBody>> cartNum(String token,String mid) {
+    public MutableLiveData<Status<ResponseBody>> cartNum(String token,String mid,String new_version) {
 
         final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
         data.setValue(Status.loading(null));
@@ -171,9 +175,10 @@ public class CartViewModel extends ViewModel {
         params.put("token",token);
         params.put("mid",mid);
         params.put("from_type","2");
+        params.put("new_version",new_version);
         String signs = SignUtils.signParam(params);
         mCreator.create(CartApi.class)
-                .cartNum("2",token,mid,signs)
+                .cartNum("2",token,mid,new_version,signs)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,

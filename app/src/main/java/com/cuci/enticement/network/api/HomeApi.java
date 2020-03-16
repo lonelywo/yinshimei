@@ -17,6 +17,7 @@ public interface HomeApi {
     @FormUrlEncoded
     @POST("store/api.page/slider")
     Call<BaseList<BannerDataBean>> getBanner(@Field("from_type") String from_type,
+                                             @Field("new_version") String new_version,
                                              @Field("sign") String sign
 
     );
@@ -28,6 +29,7 @@ public interface HomeApi {
     Call<GeneralGoods> getGeneralGoods(@Field("from_type") String from_type,
                                        @Field("mid") String mid,
                                        @Field("token") String token,
+                                       @Field("new_version") String new_version,
                                        @Field("sign") String sign
 
     );
@@ -40,6 +42,7 @@ public interface HomeApi {
                                  @Field("mid") String mid,
                                  @Field("token") String token,
                                  @Field("coupon_id") String coupon_id,
+                                     @Field("new_version") String new_version,
                                  @Field("sign") String sign
     );
     /**
@@ -50,6 +53,7 @@ public interface HomeApi {
     Call<ResponseBody> getyhjandqiye(@Field("from_type") String from_type,
                                  @Field("mid") String mid,
                                  @Field("token") String token,
+                                     @Field("new_version") String new_version,
                                  @Field("sign") String sign
     );
     /**
@@ -61,6 +65,7 @@ public interface HomeApi {
                                          @Field("mid") String mid,
                                          @Field("token") String token,
                                          @Field("goods_id") String goods_id,
+                                 @Field("new_version") String new_version,
                                          @Field("sign") String sign
     );
 
@@ -73,6 +78,7 @@ public interface HomeApi {
                                          @Field("mid") String mid,
                                          @Field("token") String token,
                                          @Field("goods_id") String goods_id,
+                                         @Field("new_version") String new_version,
                                          @Field("sign") String sign
 
     );
@@ -85,6 +91,7 @@ public interface HomeApi {
                                       @Field("mid") String mid,
                                       @Field("token") String token,
                                       @Field("goods_id") String goods_id,
+                                     @Field("new_version") String new_version,
                                       @Field("sign") String sign
 
     );
@@ -97,6 +104,7 @@ public interface HomeApi {
             @Field("from_type") String from_type,
             @Field("mid") String mid,
             @Field("token") String token,
+            @Field("new_version") String new_version,
             @Field("sign") String sign
     );
     /**

@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.classic.common.MultipleStatusView;
+import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.CommissionmxBean;
@@ -13,6 +14,7 @@ import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.plate.mine.adapter.ItemCommissionMXViewBinder;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
+import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.SharedPrefUtils;
@@ -96,7 +98,7 @@ public class CenterLingQuanActivity extends BaseActivity implements OnRefreshLoa
             refreshLayout.finishRefresh();
             return;
         }
-        mViewModel.txcommissionjl(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2",Status.LOAD_REFRESH)
+        mViewModel.txcommissionjl(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2",""+ AppUtils.getVersionCode(BasicApp.getContext()),Status.LOAD_REFRESH)
                 .observe(this, mObserver1);
     }
 

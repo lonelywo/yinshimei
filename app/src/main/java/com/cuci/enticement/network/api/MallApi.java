@@ -16,6 +16,7 @@ public interface MallApi {
     Call<MallSourceBean> getSource(@Field("type") String type,
                                    @Field("page") String page,
                                    @Field("pagesize") String pagesize,
+                                   @Field("new_version") String new_version,
                                    @Field("sign") String sign
 
     );
@@ -27,6 +28,7 @@ public interface MallApi {
     Call<MallSourceBean> getSource01(@Field("type") String type,
                                      @Field("page") String page,
                                      @Field("pagesize") String pagesize,
+                                     @Field("new_version") String new_version,
                                      @Field("sign") String sign
                                     );
     /**
@@ -38,6 +40,7 @@ public interface MallApi {
                                @Field("type") String type,
                                @Field("page") String page,
                                @Field("pagesize") String pagesize,
+                               @Field("new_version") String new_version,
                                @Field("sign") String sign
     );
 }

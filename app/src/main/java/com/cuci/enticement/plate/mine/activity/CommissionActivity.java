@@ -22,6 +22,7 @@ import com.bigkoo.pickerview.listener.CustomListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.classic.common.MultipleStatusView;
+import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.CommissionjlBean;
@@ -32,6 +33,7 @@ import com.cuci.enticement.event.CashEvent;
 import com.cuci.enticement.plate.common.eventbus.OrderEvent;
 import com.cuci.enticement.plate.mine.adapter.ItemCommissionJLViewBinder;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
+import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.ImageLoader;
@@ -192,7 +194,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
 
             }
         });
-        mViewModel.hqcommissiontj(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2")
+        mViewModel.hqcommissiontj(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2",""+ AppUtils.getVersionCode(this))
                 .observe(this, mObserver);
 
         Date a = new Date();
@@ -228,7 +230,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
                     textXiageyue.setEnabled(false);
                 } else {
                     textXiageyue.setEnabled(true);
-                    mViewModel.hqcommissionjl(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", format, "1", Status.LOAD_REFRESH)
+                    mViewModel.hqcommissionjl(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", format, "1",""+AppUtils.getVersionCode(BasicApp.getContext()), Status.LOAD_REFRESH)
                             .observe(CommissionActivity.this, mObserver1);
                     ViewUtils.showView(progressBar);
                 }
@@ -251,7 +253,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
                 } else {
                     textXiageyue.setEnabled(true);
                 }
-                mViewModel.hqcommissionjl(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", format, "1", Status.LOAD_REFRESH)
+                mViewModel.hqcommissionjl(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", format, "1",""+AppUtils.getVersionCode(BasicApp.getContext()), Status.LOAD_REFRESH)
                         .observe(CommissionActivity.this, mObserver1);
                 ViewUtils.showView(progressBar);
             }
@@ -313,7 +315,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
 
 
                 pvTime.dismiss();
-                mViewModel.hqcommissionjl(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", format, "1", Status.LOAD_REFRESH)
+                mViewModel.hqcommissionjl(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", format, "1",""+AppUtils.getVersionCode(BasicApp.getContext()), Status.LOAD_REFRESH)
                         .observe(CommissionActivity.this, mObserver1);
                 ViewUtils.showView(progressBar);
 
@@ -366,7 +368,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
         if (mUserInfo == null) {
             return;
         }
-        mViewModel.hqcommissionjl(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", format, "1", Status.LOAD_REFRESH)
+        mViewModel.hqcommissionjl(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", format, "1", ""+AppUtils.getVersionCode(BasicApp.getContext()),Status.LOAD_REFRESH)
                 .observe(this, mObserver1);
         ViewUtils.showView(progressBar);
     }
@@ -492,7 +494,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
         if (mCanLoadMore) {
             mCanLoadMore = false;
-            mViewModel.hqcommissionjl(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", format, "" + page, Status.LOAD_MORE)
+            mViewModel.hqcommissionjl(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", format, "" + page, ""+AppUtils.getVersionCode(BasicApp.getContext()),Status.LOAD_MORE)
                     .observe(CommissionActivity.this, mObserver1);
         } else {
             refreshLayout.finishLoadMore();
@@ -522,7 +524,7 @@ public class CommissionActivity extends BaseActivity implements OnRefreshLoadMor
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onCashEventMessage(CashEvent event) {
-        mViewModel.hqcommissiontj(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2")
+        mViewModel.hqcommissiontj(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2",""+ AppUtils.getVersionCode(this))
                 .observe(this, mObserver);
     }
 }

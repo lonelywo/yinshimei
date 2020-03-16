@@ -30,7 +30,7 @@ public class CommonViewModel extends ViewModel {
     }
 
 
-    public MutableLiveData<Status<AddressBean>> getAdressList(String token, String mid, int loadType) {
+    public MutableLiveData<Status<AddressBean>> getAdressList(String token, String mid, String new_version,int loadType) {
 
         final MutableLiveData<Status<AddressBean>> data = new MutableLiveData<>();
 
@@ -40,10 +40,11 @@ public class CommonViewModel extends ViewModel {
         params.put("token",token);
         params.put("mid",mid);
         params.put("from_type","2");
+        params.put("new_version",new_version);
         String sign = SignUtils.signParam(params);
 
         mCreator.create(UserApi.class)
-                .getAdressList("2",token,mid,sign)
+                .getAdressList("2",token,mid,new_version,sign)
                 .enqueue(new Callback<AddressBean>() {
                     @Override
                     public void onResponse(@NonNull Call<AddressBean> call,
@@ -71,7 +72,7 @@ public class CommonViewModel extends ViewModel {
     }
 
     public MutableLiveData<Status<ResponseBody>> addAdress(String token, String mid,String name,String phone,String province,String city,
-                                                           String area,String address,String isDeafult,String addressId) {
+                                                           String area,String address,String isDeafult,String addressId,String new_version) {
 
         final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
 
@@ -91,10 +92,11 @@ public class CommonViewModel extends ViewModel {
         if(!TextUtils.isEmpty(addressId)){
             params.put("id",addressId);
         }
+        params.put("new_version",new_version);
         String sign = SignUtils.signParam(params);
 
         mCreator.create(UserApi.class)
-                .address("2",token,mid,name,phone,province,city,area,address,isDeafult,addressId,sign)
+                .address("2",token,mid,name,phone,province,city,area,address,isDeafult,addressId,new_version,sign)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,
@@ -117,7 +119,7 @@ public class CommonViewModel extends ViewModel {
     }
 
 
-    public MutableLiveData<Status<ResponseBody>> deleteAddress(String token, String mid,String addressId) {
+    public MutableLiveData<Status<ResponseBody>> deleteAddress(String token, String mid,String addressId,String new_version) {
 
         final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
 
@@ -130,11 +132,11 @@ public class CommonViewModel extends ViewModel {
         params.put("from_type","2");
 
 
-
+        params.put("new_version",new_version);
         String sign = SignUtils.signParam(params);
 
         mCreator.create(UserApi.class)
-                .deleteAddress("2",token,mid,addressId,sign)
+                .deleteAddress("2",token,mid,addressId,new_version,sign)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,
@@ -157,7 +159,7 @@ public class CommonViewModel extends ViewModel {
     }
 
     public MutableLiveData<Status<ResponseBody>> modifyInfo(String token,String mid,String openid,String headimg,String headimgapp,String nickname,
-                                                            String sex,String unionid,String province,String city,String area) {
+                                                            String sex,String unionid,String province,String city,String area,String new_version) {
 
         final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
 
@@ -177,11 +179,11 @@ public class CommonViewModel extends ViewModel {
         params.put("city",city);
         params.put("area",area);
         params.put("from_type","2");
-
+        params.put("new_version",new_version);
         String sign = SignUtils.signParamRemoveNull(params);
 
         mCreator.create(UserApi.class)
-                .modifyInfo("2",token,mid,openid,headimg,headimgapp,sex,nickname,unionid,province,city,area,sign)
+                .modifyInfo("2",token,mid,openid,headimg,headimgapp,sex,nickname,unionid,province,city,area,new_version,sign)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,

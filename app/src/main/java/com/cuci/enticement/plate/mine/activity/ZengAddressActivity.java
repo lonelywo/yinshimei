@@ -15,6 +15,7 @@ import com.amap.api.services.core.PoiItem;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
+import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.AddressBean;
@@ -25,6 +26,7 @@ import com.cuci.enticement.bean.UpdateAddress;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.plate.common.eventbus.AddressEvent;
 import com.cuci.enticement.plate.common.vm.CommonViewModel;
+import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.GetJsonDataUtil;
 import com.cuci.enticement.utils.HttpUtils;
@@ -262,7 +264,7 @@ public class ZengAddressActivity extends BaseActivity {
                     }
 
                     mViewModel.addAdress(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),
-                            name, phone, mProvince, mCity, mArea, detailAdress, mIsDefault, mAddressId)
+                            name, phone, mProvince, mCity, mArea, detailAdress, mIsDefault, mAddressId,""+ AppUtils.getVersionCode(BasicApp.getContext()))
                             .observe(this, mObserver);
 
 

@@ -32,7 +32,7 @@ public class LiwuViewModel extends ViewModel {
      * 领取列表
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> ReceiveQueue(String token, String mid, String page,String get_state, int loadType) {
+    public MutableLiveData<Status<ResponseBody>> ReceiveQueue(String token, String mid, String page,String get_state,String new_version, int loadType) {
 
         final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
         data.setValue(Status.loading(null));
@@ -43,10 +43,10 @@ public class LiwuViewModel extends ViewModel {
         params.put("page",page);
         params.put("get_state",get_state);
         params.put("from_type","2");
-
+        params.put("new_version",new_version);
         String sign = SignUtils.signParam(params);
         mCreator.create(MineApi.class)
-                .ReceiveQueue(token,mid,"2",get_state,page,sign)
+                .ReceiveQueue(token,mid,"2",get_state,page,new_version,sign)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,
@@ -78,7 +78,7 @@ public class LiwuViewModel extends ViewModel {
      * 领取提交
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> ReceiveCommit(String token, String mid, String address_id) {
+    public MutableLiveData<Status<ResponseBody>> ReceiveCommit(String token, String mid, String address_id,String new_version) {
 
         final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
         data.setValue(Status.loading(null));
@@ -87,9 +87,10 @@ public class LiwuViewModel extends ViewModel {
         params.put("mid",mid);
         params.put("from_type","2");
         params.put("address_id",address_id);
+        params.put("new_version",new_version);
         String sign = SignUtils.signParam(params);
         mCreator.create(MineApi.class)
-                .ReceiveCommit(token,mid,"2",address_id,sign)
+                .ReceiveCommit(token,mid,"2",address_id,new_version,sign)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,

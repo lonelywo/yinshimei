@@ -19,6 +19,7 @@ import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.event.ClickMallpopEvent;
 import com.cuci.enticement.plate.common.adapter.ImageViewerPagerAdapter;
 import com.cuci.enticement.plate.mall.vm.MallViewModel;
+import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.widget.ViewPagerFixed;
 import com.lxj.xpopup.XPopup;
@@ -87,7 +88,7 @@ public class ImageViewerPopup extends FullScreenPopupView {
                    // EventBus.getDefault().post(new ClickMallpopEvent());
                     MallViewModel  mViewModel = ViewModelProviders.of((FragmentActivity) mContext).get(MallViewModel.class);
                     mViewModel.getSource01(mtype, ""+mpage,mPAGE_SIZE,
-                            Status.LOAD_MORE).observe((LifecycleOwner) mContext, mObserver);
+                            ""+ AppUtils.getVersionCode(mContext),  Status.LOAD_MORE).observe((LifecycleOwner) mContext, mObserver);
                 }
             }
 

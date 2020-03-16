@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseFragment;
 import com.cuci.enticement.bean.BannerDataBean;
@@ -255,16 +256,16 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
     private void loadyhq() {
         MineViewModel  mViewModel = ViewModelProviders.of(this).get(MineViewModel.class);
         if (mUserInfo != null) {
-            mViewModel.isyhjdailing("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, misyhjObserver);
+            mViewModel.isyhjdailing("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(),""+ AppUtils.getVersionCode(BasicApp.getContext())).observe(this, misyhjObserver);
         } else {
-            mViewModel.isyhjdailing("2", "", "").observe(this, misyhjObserver);
+            mViewModel.isyhjdailing("2", "", "",""+ AppUtils.getVersionCode(BasicApp.getContext())).observe(this, misyhjObserver);
         }
     }
     private void load() {
         if (mUserInfo != null) {
-            mViewModel.getyhjandqiye("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(_HomeFragment.this, YhjandQymObserver);
+            mViewModel.getyhjandqiye("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(),""+AppUtils.getVersionCode(mActivity)).observe(_HomeFragment.this, YhjandQymObserver);
         } else {
-            mViewModel.getyhjandqiye("2", "", "").observe(_HomeFragment.this, YhjandQymObserver);
+            mViewModel.getyhjandqiye("2", "", "",""+AppUtils.getVersionName(mActivity)).observe(_HomeFragment.this, YhjandQymObserver);
         }
 
     }
@@ -304,9 +305,9 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
                          mItems.add(couponBean);
                      }
                         if (mUserInfo != null) {
-                            mViewModel.getGeneralGoods("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), Status.LOAD_REFRESH).observe(_HomeFragment.this, GoodsmObserver);
+                            mViewModel.getGeneralGoods("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), ""+AppUtils.getVersionCode(mActivity),Status.LOAD_REFRESH).observe(_HomeFragment.this, GoodsmObserver);
                         } else {
-                            mViewModel.getGeneralGoods("2", "", "", Status.LOAD_REFRESH).observe(_HomeFragment.this, GoodsmObserver);
+                            mViewModel.getGeneralGoods("2", "", "",""+AppUtils.getVersionCode(mActivity), Status.LOAD_REFRESH).observe(_HomeFragment.this, GoodsmObserver);
                         }
 
                     } else {
@@ -422,7 +423,7 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
             String b = body.string();
            QyandYHJBean mQyandYHJBean = new Gson().fromJson(b, QyandYHJBean.class);
             if (mQyandYHJBean.getCode() == 1) {
-                mViewModel.getBanner("2").observe(this, mObserver);
+                mViewModel.getBanner("2",""+AppUtils.getVersionCode(mActivity)).observe(this, mObserver);
                 if(mQyandYHJBean.getData().getCoupon_show()==1){
                     is_show_kj=true;
                     userlevel = mQyandYHJBean.getData().getCoupon().get(0);
@@ -462,9 +463,10 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
         if(event.getCode()== ClickMyEvent.CHECK_ITEM0){
             MineViewModel  mViewModel = ViewModelProviders.of(this).get(MineViewModel.class);
             if (mUserInfo != null) {
-                mViewModel.isyhjdailing("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, misyhjObserver);
+                mViewModel.isyhjdailing("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(),""+ AppUtils.getVersionCode(BasicApp.getContext())
+                ).observe(this, misyhjObserver);
             } else {
-                mViewModel.isyhjdailing("2", "", "").observe(this, misyhjObserver);
+                mViewModel.isyhjdailing("2", "", "",""+ AppUtils.getVersionCode(BasicApp.getContext())).observe(this, misyhjObserver);
             }
         }
 

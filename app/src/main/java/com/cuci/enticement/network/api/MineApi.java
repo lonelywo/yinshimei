@@ -21,6 +21,7 @@ public interface MineApi {
                                   @Field("page") String page,
                                   @Field("page_size") String page_size,
                                   @Field("status") String status,
+                                  @Field("new_version") String new_version,
                                   @Field("sign") String sign
     );
 
@@ -41,6 +42,7 @@ public interface MineApi {
     @POST("store/api.Placard/announce")
     Call<ResponseBody> Noticelist(@Field("from_type") String from_type,
                                       @Field("page") String page,
+                                  @Field("new_version") String new_version,
                                       @Field("sign") String sign
     );
 
@@ -52,6 +54,7 @@ public interface MineApi {
     Call<ResponseBody> hqcommissiontj(@Field("token") String token,
                                       @Field("mid") String mid,
                                       @Field("from_type") String from_type,
+                                      @Field("new_version") String new_version,
                                       @Field("sign") String sign
     );
     /**
@@ -64,6 +67,7 @@ public interface MineApi {
                               @Field("from_type") String from_type,
                               @Field("date") String date,
                               @Field("page") String page,
+                                      @Field("new_version") String new_version,
                               @Field("sign") String sign
     );
     /**
@@ -75,6 +79,7 @@ public interface MineApi {
                               @Field("mid") String mid,
                               @Field("from_type") String from_type,
                               @Field("price") String price,
+                                      @Field("new_version") String new_version,
                               @Field("sign") String sign
     );
     /**
@@ -85,6 +90,7 @@ public interface MineApi {
     Call<ResponseBody> txcommissionjl(@Field("token") String token,
                               @Field("mid") String mid,
                               @Field("from_type") String from_type,
+                                      @Field("new_version") String new_version,
                               @Field("sign") String sign
     );
 
@@ -98,6 +104,7 @@ public interface MineApi {
                                 @Field("from_type") String from_type,
                                 @Field("nickname") String nickname,
                                 @Field("page") String page,
+                                @Field("new_version") String new_version,
                                 @Field("sign") String sign
     );
     /**
@@ -111,6 +118,7 @@ public interface MineApi {
                                 @Field("pid") String pid,
                                 @Field("nickname") String nickname,
                                 @Field("page") String page,
+                                 @Field("new_version") String new_version,
                                 @Field("sign") String sign
     );
     /**
@@ -121,6 +129,7 @@ public interface MineApi {
     Call<ResponseBody> hqteamsl(@Field("token") String token,
                               @Field("mid") String mid,
                               @Field("from_type") String from_type,
+                                @Field("new_version") String new_version,
                               @Field("sign") String sign
     );
     /**
@@ -131,6 +140,7 @@ public interface MineApi {
     Call<ResponseBody> achievement(@Field("token") String token,
                         @Field("mid") String mid,
                         @Field("from_type") String from_type,
+                                   @Field("new_version") String new_version,
                         @Field("sign") String sign
     );
 
@@ -144,6 +154,7 @@ public interface MineApi {
             @Field("from_type") String from_type,
             @Field("token") String token,
             @Field("mid") String mid,
+            @Field("new_version") String new_version,
             @Field("sign") String sign
     );
     /**
@@ -156,6 +167,7 @@ public interface MineApi {
             @Field("from_type") String from_type,
             @Field("mid") String mid,
             @Field("page") String page,
+            @Field("new_version") String new_version,
             @Field("sign") String sign
     );
     /**
@@ -168,6 +180,7 @@ public interface MineApi {
             @Field("from_type") String from_type,
             @Field("mid") String mid,
             @Field("page") String page,
+            @Field("new_version") String new_version,
             @Field("sign") String sign
     );
     /**
@@ -180,6 +193,7 @@ public interface MineApi {
             @Field("from_type") String from_type,
             @Field("mid") String mid,
             @Field("page") String page,
+            @Field("new_version") String new_version,
             @Field("sign") String sign
     );
 
@@ -196,6 +210,7 @@ public interface MineApi {
             @Field("openId") String openId,
             @Field("avatarUrl") String avatarUrl,
             @Field("nickname") String nickname,
+            @Field("new_version") String new_version,
             @Field("sign") String sign
     );
     /**
@@ -207,6 +222,7 @@ public interface MineApi {
             @Field("from_type") String from_type,
             @Field("mid") String mid,
             @Field("token") String token,
+            @Field("new_version") String new_version,
             @Field("sign") String sign
     );
     /**
@@ -218,6 +234,7 @@ public interface MineApi {
             @Field("from_type") String from_type,
             @Field("mid") String mid,
             @Field("token") String token,
+            @Field("new_version") String new_version,
             @Field("sign") String sign
     );
     /**
@@ -229,6 +246,7 @@ public interface MineApi {
             @Field("from_type") String from_type,
             @Field("mid") String mid,
             @Field("token") String token,
+            @Field("new_version") String new_version,
             @Field("sign") String sign
     );
     /**
@@ -240,6 +258,7 @@ public interface MineApi {
             @Field("from_type") String from_type,
             @Field("mid") String mid,
             @Field("token") String token,
+            @Field("new_version") String new_version,
             @Field("sign") String sign
     );
     /**
@@ -252,6 +271,7 @@ public interface MineApi {
             @Field("mid") String mid,
             @Field("token") String token,
             @Field("address_id") String address_id,
+            @Field("new_version") String new_version,
             @Field("sign") String sign
     );
     /**
@@ -265,6 +285,7 @@ public interface MineApi {
             @Field("token") String token,
             @Field("aims") String aims,
             @Field("cid") String cid,
+            @Field("new_version") String new_version,
             @Field("sign") String sign
     );
     /**
@@ -274,6 +295,7 @@ public interface MineApi {
     @POST("store/api.page/protocol")
     Call<ResponseBody> clause(
             @Field("from_type") String from_type,
+            @Field("new_version") String new_version,
             @Field("sign") String sign
     );
     /**
@@ -283,6 +305,7 @@ public interface MineApi {
     @POST("store/api.page/adshow")
     Call<ResponseBody> openScreen(
             @Field("from_type") String from_type,
+            @Field("new_version") String new_version,
             @Field("sign") String sign
     );
     /**
@@ -294,6 +317,7 @@ public interface MineApi {
                                       @Field("mid") String mid,
                                       @Field("from_type") String from_type,
                                       @Field("phone") String phone,
+                                   @Field("new_version") String new_version,
                                       @Field("sign") String sign
     );
     /**
@@ -306,6 +330,7 @@ public interface MineApi {
                                    @Field("from_type") String from_type,
                                    @Field("get_state") String get_state,
                                    @Field("page") String page,
+                                    @Field("new_version") String new_version,
                                    @Field("sign") String sign
     );
     /**
@@ -317,6 +342,7 @@ public interface MineApi {
                                    @Field("mid") String mid,
                                    @Field("from_type") String from_type,
                                    @Field("address_id") String address_id,
+                                     @Field("new_version") String new_version,
                                    @Field("sign") String sign
     );
 }

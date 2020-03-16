@@ -13,7 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ServiceCreator {
 
     private static final String TAG = ServiceCreator.class.getSimpleName();
-
+    private HeaderInterceptor mHeaderInterceptor;
     private volatile static ServiceCreator mInstance;
     public static  int ConstantA = 0;
 //商品id
@@ -22,8 +22,8 @@ public class ServiceCreator {
     public static  int Constant_IS_NEW = 0;
 //总金额
 public static  String Constant_ZONG_MONEY = "";
-    //  private static final String BASE_URL = "https://test.enticementchina.com/";
-      private static final String BASE_URL = "https://app.enticementchina.com/";
+      private static final String BASE_URL = "https://test.enticementchina.com/";
+    //  private static final String BASE_URL = "https://app.enticementchina.com/";
 
     private final Retrofit mRetrofit;
 
@@ -45,13 +45,13 @@ public static  String Constant_ZONG_MONEY = "";
 
     private ServiceCreator() {
 
-
+        mHeaderInterceptor = new HeaderInterceptor();
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
                 .connectTimeout(20, TimeUnit.SECONDS)
                 .writeTimeout(20, TimeUnit.SECONDS)
-                .readTimeout(20, TimeUnit.SECONDS);
-
+                .readTimeout(20, TimeUnit.SECONDS)
+                .addInterceptor(mHeaderInterceptor);
 
         if (BuildConfig.DEBUG) {
             builder.addInterceptor(new LoggingInterceptor());

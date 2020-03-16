@@ -494,7 +494,7 @@ public class _MineFragment extends BaseFragment {
                     }
                 } else if (ACTION_REFRESH_STATUS.equals(intent.getAction())) {
                     OrderViewModel orderViewModel = ViewModelProviders.of(_MineFragment.this).get(OrderViewModel.class);
-                    orderViewModel.getStatisticsOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()))
+                    orderViewModel.getStatisticsOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),""+ AppUtils.getVersionCode(BasicApp.getContext()))
                             .observe(mActivity, mTotalOrderObserver);
                 } else if (ACTION_REFRESH_HX.equals(intent.getAction())) {
                     int data = intent.getIntExtra("data", 0);
@@ -534,7 +534,7 @@ public class _MineFragment extends BaseFragment {
 
         //注册环信
         if (SharedPrefUtils.getShowhxCode() == 0) {
-            mViewModel.hxreg(mUserInfo.getPhone(), "2", mUserInfo.getToken(), String.valueOf(mUserInfo.getId())).observe(this, mhxregObserver);
+            mViewModel.hxreg(mUserInfo.getPhone(), "2", mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),""+ AppUtils.getVersionCode(BasicApp.getContext())).observe(this, mhxregObserver);
         } else {
             ChatClient.getInstance().login(mUserInfo.getPhone(), "ysm6j351r6", new Callback() {
                 @Override
@@ -570,7 +570,7 @@ public class _MineFragment extends BaseFragment {
         }
 
         OrderViewModel orderViewModel = ViewModelProviders.of(this).get(OrderViewModel.class);
-        orderViewModel.getStatisticsOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()))
+        orderViewModel.getStatisticsOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),""+ AppUtils.getVersionCode(BasicApp.getContext()))
                 .observe(mActivity, mTotalOrderObserver);
 
     }
@@ -800,7 +800,7 @@ public class _MineFragment extends BaseFragment {
         String cid = PushManager.getInstance().getClientid(mActivity);
         Log.d(TAG, "当前应用的cid=" + cid);
         //提交个推cid
-        mViewModel.getui("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), cid)
+        mViewModel.getui("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), cid,""+AppUtils.getVersionCode(mActivity))
                 .observe(this, mCommitObserver);
     }
 
@@ -875,9 +875,9 @@ public class _MineFragment extends BaseFragment {
     public void onClickMyEvent(ClickMyEvent event) {
         if (event.getCode() == ClickMyEvent.CHECK_ITEM3) {
             if (mUserInfo != null) {
-                mViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);
+                mViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(),""+ AppUtils.getVersionCode(BasicApp.getContext())).observe(this, mdataObserver);
                 //可使用优惠卷
-                mViewModel.kaquanlist(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", "1", "", "0", Status.LOAD_REFRESH)
+                mViewModel.kaquanlist(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", "1", "", "0",""+ AppUtils.getVersionCode(mActivity), Status.LOAD_REFRESH)
                         .observe(this, mkaquanObserver);
             }
         }
@@ -890,7 +890,7 @@ public class _MineFragment extends BaseFragment {
     public void onClickIsnewEvent(IsnewEvent event) {
         //进入页面先请求是否会员
         if (mUserInfo != null) {
-            mViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);
+            mViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(),""+ AppUtils.getVersionCode(BasicApp.getContext())).observe(this, mdataObserver);
         }
 
     }

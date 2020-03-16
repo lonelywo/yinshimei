@@ -35,6 +35,7 @@ import com.cuci.enticement.plate.cart.adapter.ItemCartViewBinder;
 import com.cuci.enticement.plate.cart.vm.CartViewModel;
 import com.cuci.enticement.plate.common.eventbus.CartEvent;
 import com.cuci.enticement.plate.common.popup.CartTipsPopup;
+import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.MathExtend;
@@ -188,7 +189,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
     private void load() {
 
-        mViewModel.getCartList(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "1", Status.LOAD_REFRESH)
+        mViewModel.getCartList(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "1",""+ AppUtils.getVersionCode(mActivity) ,Status.LOAD_REFRESH)
                 .observe(this, mObserver);
 
     }
@@ -208,7 +209,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
         if (mCanLoadMore) {
             mCanLoadMore = false;
             mViewModel.getCartList(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(mPage),
-                    Status.LOAD_MORE).observe(this, mObserver);
+                    ""+ AppUtils.getVersionCode(mActivity),Status.LOAD_MORE).observe(this, mObserver);
         } else {
             mRefreshLayout.finishLoadMore();
         }
@@ -415,7 +416,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
             mAdapter.notifyItemChanged(position);
             mTvTotal.setText(String.format(Locale.CHINA, "%s", getCheckedsMoeny()));
             mViewModel.cartChange(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),
-                    goods_id,goods_spec,String.valueOf(bean.getGoods_num())).observe(this, mChangeObserver);
+                    goods_id,goods_spec,String.valueOf(bean.getGoods_num()),""+AppUtils.getVersionCode(mActivity)).observe(this, mChangeObserver);
             Log.d("east", "onAddClick: "+bean.getGoods_num());
         }
     }
@@ -438,7 +439,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
 
             mTvTotal.setText(String.format(Locale.CHINA, "%s", getCheckedsMoeny()));
             mViewModel.cartChange(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), goods_id,
-                    goods_spec, String.valueOf(bean.getGoods_num())).observe(this, mChangeObserver);
+                    goods_spec, String.valueOf(bean.getGoods_num()),""+AppUtils.getVersionCode(mActivity)).observe(this, mChangeObserver);
             Log.d("east", "onMinusClick: "+bean.getGoods_num());
         }
 
@@ -465,7 +466,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
                         int cart_id = bean.getCart_id();
                         Log.d("east", "cart_id: "+cart_id);
 
-                        mViewModel.cartDelete(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),String.valueOf(cart_id) )
+                        mViewModel.cartDelete(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),String.valueOf(cart_id),""+AppUtils.getVersionCode(mActivity) )
                                 .observe(mActivity, mDeleteObserver);
                     }
 
@@ -500,7 +501,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
                         CartDelete cartDelete = new Gson().fromJson(result, CartDelete.class);
                         if(cartDelete.code==1){
 
-                            mViewModel.getCartList(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "1", Status.LOAD_REFRESH)
+                            mViewModel.getCartList(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "1",""+ AppUtils.getVersionCode(mActivity), Status.LOAD_REFRESH)
                                     .observe(mActivity, mObserver);
 
                             FToast.success(cartDelete.info);

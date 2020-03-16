@@ -196,14 +196,14 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
 
 
         //检测APP更新
-        mViewModel.getVersion("2").observe(this, mUpdateObserver);
+        mViewModel.getVersion("2",""+AppUtils.getVersionCode(this)).observe(this, mUpdateObserver);
         //隐私政策
-        mViewModel.clause("2").observe(this, clauseObserver);
+        mViewModel.clause("2",""+ AppUtils.getVersionCode(BasicApp.getContext())).observe(this, clauseObserver);
         //打印设备信息
         FLog.e("设备信息",GetDeviceID());
 
 
-        mViewModel.getGuoJiaCode("2").observe(this, guojiamObserver);
+        mViewModel.getGuoJiaCode("2",""+ AppUtils.getVersionCode(BasicApp.getContext())).observe(this, guojiamObserver);
 
        
         MainActivityPermissionsDispatcher.needsPermissionWithPermissionCheck(this);

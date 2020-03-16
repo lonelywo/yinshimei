@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.classic.common.MultipleStatusView;
+import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.AddressBean;
@@ -22,6 +23,7 @@ import com.cuci.enticement.plate.common.eventbus.OrderEvent;
 import com.cuci.enticement.plate.common.popup.TipsPopup;
 import com.cuci.enticement.plate.common.vm.CommonViewModel;
 import com.cuci.enticement.plate.mine.adapter.ItemAdressViewBinder;
+import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.SharedPrefUtils;
@@ -139,7 +141,7 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
     }
 
     private void load() {
-        mViewModel.getAdressList(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),Status.LOAD_REFRESH)
+        mViewModel.getAdressList(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),""+ AppUtils.getVersionCode(BasicApp.getContext()),Status.LOAD_REFRESH)
                 .observe(this,mObserver);
     }
 
@@ -328,7 +330,7 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
                 .asCustom(new TipsPopup(RecAddressActivity.this,
                         "亲，确定要删除此收货地址吗？", "取消", "确定", () -> {
                     mPosition=position;
-                    mViewModel.deleteAddress(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),String.valueOf(bean.getId()))
+                    mViewModel.deleteAddress(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),String.valueOf(bean.getId()),""+ AppUtils.getVersionCode(BasicApp.getContext()))
                             .observe(this,mDeleteObserver);
                 }))
                 .show();
@@ -350,7 +352,7 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
                     if(deleteAddress.getCode()==1){
 
 
-                        mViewModel.getAdressList(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),Status.LOAD_REFRESH)
+                        mViewModel.getAdressList(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),""+ AppUtils.getVersionCode(BasicApp.getContext()),Status.LOAD_REFRESH)
                                 .observe(this,mObserver);
 
 

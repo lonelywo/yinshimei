@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.classic.common.MultipleStatusView;
+import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.ExpressInfo;
@@ -21,6 +22,7 @@ import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.plate.cart.adapter.ItemLogisticsViewBinder;
 import com.cuci.enticement.plate.mine.vm.OrderViewModel;
+import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.widget.CartItemDecoration;
@@ -119,7 +121,7 @@ public class LogisticsActivity extends BaseActivity implements OnRefreshLoadMore
             refreshLayout.finishRefresh();
             return;
         }
-        mViewModel.getExpressInfo(mExpressNo, mExpressCode, Status.LOAD_REFRESH)
+        mViewModel.getExpressInfo(mExpressNo, mExpressCode,""+ AppUtils.getVersionCode(BasicApp.getContext()), Status.LOAD_REFRESH)
                 .observe(this, mObserver1);
     }
 

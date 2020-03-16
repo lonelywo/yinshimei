@@ -20,6 +20,7 @@ import com.cuci.enticement.plate.common.eventbus.MessageEvent1;
 import com.cuci.enticement.plate.mall.activity.YuLanActivity;
 import com.cuci.enticement.plate.mall.vm.MallViewModel;
 import com.cuci.enticement.plate.mine.activity.MyTeamTwoActivity;
+import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
 import com.flyco.tablayout.SlidingTabLayout;
 import com.flyco.tablayout.listener.OnTabSelectListener;
@@ -76,7 +77,7 @@ public class _MallFragment extends BaseFragment {
     }
 
     private void load() {
-        mViewModel.getSource("产品图","1","20").observe(this, mObserver);
+        mViewModel.getSource("产品图","1","20",""+ AppUtils.getVersionCode(mActivity)).observe(this, mObserver);
     }
 
 

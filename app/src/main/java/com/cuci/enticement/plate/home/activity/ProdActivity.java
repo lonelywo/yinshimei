@@ -62,6 +62,7 @@ import com.cuci.enticement.utils.ViewUtils;
 import com.cuci.enticement.utils.WxShareUtils;
 import com.cuci.enticement.widget.SmoothScrollview;
 import com.google.gson.Gson;
+import com.hp.hpl.sparta.xpath.ThisNodeTest;
 import com.hyphenate.chat.ChatClient;
 import com.hyphenate.helpdesk.easeui.util.IntentBuilder;
 import com.lxj.xpopup.XPopup;
@@ -211,10 +212,10 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
         mHomeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         if (mUserInfo != null) {
 
-            mHomeViewModel.getHomeDetails("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), url).observe(this, mObserver);
+            mHomeViewModel.getHomeDetails("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), url,""+AppUtils.getVersionCode(this)).observe(this, mObserver);
         } else {
 
-            mHomeViewModel.getHomeDetails("2", "", "", url).observe(this, mObserver);
+            mHomeViewModel.getHomeDetails("2", "", "", url,""+AppUtils.getVersionCode(this)).observe(this, mObserver);
         }
 
         imgShare.setOnClickListener(new View.OnClickListener() {
@@ -229,7 +230,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                                 .asCustom(new SharegoodsImgTipsPopup(ProdActivity.this, "取消", new SharegoodsImgTipsPopup.OnExitListener() {
                                     @Override
                                     public void onPositive1() {
-                                        mHomeViewModel.shareimg("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), String.valueOf(mProData.getId())).observe(ProdActivity.this, mObservershare);
+                                        mHomeViewModel.shareimg("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), String.valueOf(mProData.getId()),""+AppUtils.getVersionCode(ProdActivity.this)).observe(ProdActivity.this, mObservershare);
                                         //ViewUtils.showView(progressBar);
                                         mProgressDialog = ProgressDialog.show(ProdActivity.this, "正在生成海报", "请稍等...");
                                     }
@@ -258,7 +259,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
         //进入页面先请求小脚本数字
         CartViewModel viewModel = ViewModelProviders.of(ProdActivity.this).get(CartViewModel.class);
         if (mUserInfo != null) {
-            viewModel.cartNum(mUserInfo.getToken(), String.valueOf(mUserInfo.getId())).observe(ProdActivity.this, mNumObserver);
+            viewModel.cartNum(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),""+AppUtils.getVersionCode(this)).observe(ProdActivity.this, mNumObserver);
         }
         tvKefu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -283,7 +284,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
         });
         //请求优惠券
         if (mUserInfo != null) {
-            mHomeViewModel.getproyhq("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), url).observe(ProdActivity.this, myhqObserver);
+            mHomeViewModel.getproyhq("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), url,""+AppUtils.getVersionCode(this)).observe(ProdActivity.this, myhqObserver);
         }
 
         conYouhuiquan.setOnClickListener(new View.OnClickListener() {
@@ -586,7 +587,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
             String id = mProData.getId();
             String s = spec;
             String numStr = String.valueOf(num);
-            mViewModel.cartChange(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(id), spec, String.valueOf(num)).observe(this, mIntoCart);
+            mViewModel.cartChange(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(id), spec, String.valueOf(num),""+AppUtils.getVersionCode(this)).observe(this, mIntoCart);
 
 
         } else if (code == QUICK_BUY) {
@@ -605,7 +606,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
             //进入页面先请求是否会员
             if (mUserInfo != null) {
                 type = 2;
-                mHomeViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);
+                mHomeViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(),""+AppUtils.getVersionCode(this)).observe(this, mdataObserver);
             }
         }
 
@@ -686,7 +687,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                             FToast.success(bean.getInfo());
                             //调用接口改变小车上的数量
                             CartViewModel viewModel = ViewModelProviders.of(ProdActivity.this).get(CartViewModel.class);
-                            viewModel.cartNum(mUserInfo.getToken(), String.valueOf(mUserInfo.getId())).observe(ProdActivity.this, mNumObserver);
+                            viewModel.cartNum(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),""+AppUtils.getVersionCode(ProdActivity.this)).observe(ProdActivity.this, mNumObserver);
                             //刷新购物车列表
                             EventBus.getDefault().post(new CartEvent(CartEvent.REFRESH_CART_LIST));
 
@@ -765,14 +766,14 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
     public void onClickProgoodsEvent(ProgoodsEvent event) {
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
         if (mUserInfo != null) {
-            mHomeViewModel.getHomeDetails("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), url).observe(this, mObserver);
+            mHomeViewModel.getHomeDetails("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), url,""+AppUtils.getVersionCode(this)).observe(this, mObserver);
         } else {
-            mHomeViewModel.getHomeDetails("2", "", "", url).observe(this, mObserver);
+            mHomeViewModel.getHomeDetails("2", "", "", url,""+AppUtils.getVersionCode(this)).observe(this, mObserver);
         }
         //刷新分享显示
         type = 1;
         if (mUserInfo != null) {
-            mHomeViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(ProdActivity.this, mdataObserver);
+            mHomeViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(),""+AppUtils.getVersionCode(this)).observe(ProdActivity.this, mdataObserver);
         }
 
 

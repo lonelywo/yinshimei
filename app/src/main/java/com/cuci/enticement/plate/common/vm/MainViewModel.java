@@ -35,15 +35,16 @@ public class MainViewModel extends ViewModel {
 
 
 
-    public MutableLiveData<Status<ResponseBody>> getVersion(String from_type ) {
+    public MutableLiveData<Status<ResponseBody>> getVersion(String from_type ,String new_version) {
 
         final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
         data.setValue(Status.loading(null));
         Map<String, String> params = new HashMap<String, String>();
         params.put("from_type",from_type);
+        params.put("new_version",new_version);
         String signs = SignUtils.signParam(params);
         mCreator.create(CommonApi.class)
-                .getVersion(from_type,signs)
+                .getVersion(from_type,new_version,signs)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,
@@ -60,17 +61,18 @@ public class MainViewModel extends ViewModel {
         return data;
     }
 
-    public MutableLiveData<Status<ResponseBody>> getGuoJiaCode(String from_type) {
+    public MutableLiveData<Status<ResponseBody>> getGuoJiaCode(String from_type,String new_version) {
 
         final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
 
         liveData.setValue(Status.loading(null));
         Map<String, String> params = new HashMap<String, String>();
         params.put("from_type",from_type);
+        params.put("new_version",new_version);
         String signs = SignUtils.signParam(params);
 
         mCreator.create(UserApi.class)
-                .getGuoJiaCode(from_type, signs)
+                .getGuoJiaCode(from_type,new_version, signs)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,
@@ -92,15 +94,16 @@ public class MainViewModel extends ViewModel {
      * @param from_type
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> clause(String from_type) {
+    public MutableLiveData<Status<ResponseBody>> clause(String from_type,String new_version ) {
 
         final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
         liveData.setValue(Status.loading(null));
         Map<String, String> params = new HashMap<String, String>();
         params.put("from_type",from_type);
+        params.put("new_version",new_version);
         String signs = SignUtils.signParam(params);
         mCreator.create(MineApi.class)
-                .clause(from_type,signs)
+                .clause(from_type,new_version,signs)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,
@@ -122,15 +125,16 @@ public class MainViewModel extends ViewModel {
      * @param from_type
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> openScreen(String from_type) {
+    public MutableLiveData<Status<ResponseBody>> openScreen(String from_type,String new_version) {
 
         final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
         liveData.setValue(Status.loading(null));
         Map<String, String> params = new HashMap<String, String>();
         params.put("from_type",from_type);
+        params.put("new_version",new_version);
         String signs = SignUtils.signParam(params);
         mCreator.create(MineApi.class)
-                .openScreen(from_type,signs)
+                .openScreen(from_type,new_version,signs)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,

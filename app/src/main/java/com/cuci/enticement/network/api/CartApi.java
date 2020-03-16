@@ -20,6 +20,7 @@ public interface CartApi {
                                   @Field("mid") String mid,
                                   @Field("is_first") String is_first,
                                   @Field("order_no") String order_no,
+                                  @Field("new_version") String new_version,
                                   @Field("sign") String sign
 
     );
@@ -31,7 +32,9 @@ public interface CartApi {
     @POST("store/api.member.Cart/cartList")
     Call<Base<CartDataBean>> getCartList(@Field("from_type") String fromType, @Field("token") String openId,
                                          @Field("mid") String mid,
-                                         @Field("page") String page, @Field("sign") String sign);
+                                         @Field("page") String page,
+                                         @Field("new_version") String new_version,
+                                         @Field("sign") String sign);
 
 
     /**
@@ -42,7 +45,9 @@ public interface CartApi {
     Call<ResponseBody> commitOrder(@Field("from_type") String fromType, @Field("token") String token,
                                    @Field("mid") String mid,
                                    @Field("rule") String rule,
-                                   @Field("from_mid") String fromMid, @Field("sign") String sign);
+                                   @Field("from_mid") String fromMid,
+                                   @Field("new_version") String new_version,
+                                   @Field("sign") String sign);
 
 
 
@@ -58,6 +63,7 @@ public interface CartApi {
                                   @Field("goods_id") String goodsId,
                                   @Field("goods_spec") String goodsSpec,
                                   @Field("goods_num") String goodsNum,
+                                  @Field("new_version") String new_version,
                                   @Field("sign") String sign
 
     );
@@ -69,7 +75,9 @@ public interface CartApi {
     @POST("store/api.member.Cart/del")
     Call<ResponseBody> cartDelete(@Field("from_type") String fromType,@Field("token") String token,
                                  @Field("mid") String mid,
-                                 @Field("cart_id") String cartId,  @Field("sign") String sign);
+                                 @Field("cart_id") String cartId,
+                                  @Field("new_version") String new_version,
+                                  @Field("sign") String sign);
 
     //
     /**
@@ -78,5 +86,7 @@ public interface CartApi {
     @FormUrlEncoded
     @POST("store/api.member.Cart/cartNum")
     Call<ResponseBody> cartNum(@Field("from_type") String fromType,@Field("token") String token,
-                                  @Field("mid") String mid, @Field("sign") String sign);
+                                  @Field("mid") String mid,
+                               @Field("new_version") String new_version,
+                               @Field("sign") String sign);
 }

@@ -107,7 +107,7 @@ public class SettingsActivity extends BaseActivity {
                                  "要解除与微信账号的绑定吗？", "取消", "解除绑定", () -> {
 
 
-                             mViewModel.jiebindwx("2", ""+mUserInfo.getId(), mUserInfo.getToken()).observe(this, mjiebindwxObserver);
+                             mViewModel.jiebindwx("2", ""+mUserInfo.getId(), mUserInfo.getToken(),""+ AppUtils.getVersionCode(BasicApp.getContext())).observe(this, mjiebindwxObserver);
 
                          }))
                          .show();
@@ -144,7 +144,7 @@ public class SettingsActivity extends BaseActivity {
 
                                 int mid = mUserInfo.getId();
                                 String token = mUserInfo.getToken();
-                                mViewModel.loginOut("2", token, String.valueOf(mid)).observe(this, mloginoutObserver);
+                                mViewModel.loginOut("2", token, String.valueOf(mid),""+AppUtils.getVersionCode(this)).observe(this, mloginoutObserver);
 
                             }))
                             .show();
@@ -330,7 +330,7 @@ public class SettingsActivity extends BaseActivity {
             } else {
                 WxInfo minfo = new Gson().fromJson(b, WxInfo.class);
 
-                mViewModel.bindwx("2",""+mUserInfo.getId(),mUserInfo.getToken(),minfo.getUnionId(), minfo.getOpenId(), minfo.getHeadImgUrl(), minfo.getNickName()).observe(this, mbindwxObserver);
+                mViewModel.bindwx("2",""+mUserInfo.getId(),mUserInfo.getToken(),minfo.getUnionId(), minfo.getOpenId(), minfo.getHeadImgUrl(), minfo.getNickName(),""+ AppUtils.getVersionCode(BasicApp.getContext())).observe(this, mbindwxObserver);
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -8,6 +8,8 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+
+import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.BindTuijianBean;
@@ -16,6 +18,7 @@ import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.event.ProgoodsEvent;
 import com.cuci.enticement.plate.common.popup.TipsPopup;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
+import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.SharedPrefUtils;
@@ -98,7 +101,7 @@ public class BindTuiJinActivity extends BaseActivity {
         }
         if (isclick) {
             isclick = false;
-            mViewModel.bindTuijian(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", phone)
+            mViewModel.bindTuijian(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", phone,""+ AppUtils.getVersionCode(BasicApp.getContext()))
                     .observe(this, mObserver);
         }
 

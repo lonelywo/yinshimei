@@ -42,6 +42,7 @@ import com.cuci.enticement.plate.mine.adapter.ItemYuProdViewBinder;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.plate.mine.vm.OrderViewModel;
+import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.Arith;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.HttpUtils;
@@ -303,11 +304,11 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
 
         //检测APP更新
         MainViewModel mMainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-        mMainViewModel.getVersion("2").observe(this, mUpdateObserver);
+        mMainViewModel.getVersion("2",""+ AppUtils.getVersionCode(this)).observe(this, mUpdateObserver);
 
        //可使用优惠卷
         MineViewModel mMineViewModel = ViewModelProviders.of(OrderActivity.this).get(MineViewModel.class);
-        mMineViewModel.kaquanlist(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", "1", "", "0", Status.LOAD_REFRESH)
+        mMineViewModel.kaquanlist(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", "1", "", "0",""+ AppUtils.getVersionCode(this), Status.LOAD_REFRESH)
                 .observe(OrderActivity.this, mkaquanObserver);
 
 
@@ -372,14 +373,14 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
             //默认地址id，不去选中就用这个
             mAddressId = SharedPrefUtils.getDefaultAdressId();
 
-            mViewModel.getExpressCost(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(number), mInfo.getPrice_goods(), mAddressId)
+            mViewModel.getExpressCost(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(number), mInfo.getPrice_goods(), mAddressId,""+ AppUtils.getVersionCode(BasicApp.getContext()))
                     .observe(OrderActivity.this, mExpressCostObserver);
 
         } else {
 
 
             CommonViewModel commonViewModel = ViewModelProviders.of(this).get(CommonViewModel.class);
-            commonViewModel.getAdressList(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), Status.LOAD_REFRESH)
+            commonViewModel.getAdressList(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),""+ AppUtils.getVersionCode(BasicApp.getContext()), Status.LOAD_REFRESH)
                     .observe(this, mObserver);
 
         }
@@ -491,7 +492,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
             ViewUtils.hideView(textDizi);
             ViewUtils.showView(tvAddress);
             tvAddress.setText(SharedPrefUtils.getDefaultAdress());
-            mViewModel.getExpressCost(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(number), mInfo.getPrice_goods(), mAddressId)
+            mViewModel.getExpressCost(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(number), mInfo.getPrice_goods(), mAddressId,""+ AppUtils.getVersionCode(BasicApp.getContext()))
                     .observe(OrderActivity.this, mExpressCostObserver);
         } else {
             ViewUtils.showView(textDizi);
@@ -524,7 +525,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                 }
                 if (UtilsForClick.isFastClick()) {
                     //提交订单，成功后，去调用获取支付参数接口
-                    mViewModel.udpateAdress(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),id_yhq, rule, mAddressId)
+                    mViewModel.udpateAdress(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),id_yhq, rule, mAddressId,""+ AppUtils.getVersionCode(BasicApp.getContext()))
                             .observe(OrderActivity.this, mCommitObserver);
                 }
                 break;
@@ -627,7 +628,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
             ViewUtils.hideView(textDizi);
             ViewUtils.showView(tvAddress);
             tvAddress.setText(adress);
-            mViewModel.getExpressCost(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(number), mInfo.getPrice_goods(), mAddressId)
+            mViewModel.getExpressCost(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(number), mInfo.getPrice_goods(), mAddressId,""+ AppUtils.getVersionCode(BasicApp.getContext()))
                     .observe(OrderActivity.this, mExpressCostObserver);
         }
     }
@@ -705,7 +706,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                         ServiceCreator.Constant_IS_NEW=SharedPrefUtils.getisnew();
                         ServiceCreator.Constant_ZONG_MONEY=totalMoney;
                         mViewModel.getOrderPay(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),
-                                commitOrder.getData().getOrder().getOrder_no(), String.valueOf(mPayType))
+                                commitOrder.getData().getOrder().getOrder_no(), String.valueOf(mPayType),""+ AppUtils.getVersionCode(BasicApp.getContext()))
                                 .observe(this, mPayObserver);
 
                     }else if(commitOrder.getCode() == HttpUtils.CODE_INVALID){
