@@ -37,6 +37,7 @@ public class HeaderInterceptor implements Interceptor {
 
         Request newRequest = chain.request().newBuilder()
                 .addHeader("new_version", String.valueOf(mVersionCode))
+                .addHeader("from_type", "2")
                 .build();
 
         return chain.proceed(newRequest);
