@@ -58,6 +58,7 @@ import com.cuci.enticement.utils.UnicodeUitls;
 import com.cuci.enticement.utils.ViewUtils;
 import com.cuci.enticement.utils.WxShareUtils;
 import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
 import com.hyphenate.chat.ChatClient;
 import com.hyphenate.chat.Conversation;
 import com.hyphenate.helpdesk.callback.Callback;
@@ -458,6 +459,34 @@ public class _MineFragment extends BaseFragment {
                             .show();
                 }
 
+                DataUserInfo.DataBean.OrdertotalBean ordertotal = mDataUserInfo.getData().getOrdertotal();
+                // 对订单状态设置数量
+                    if (ordertotal.get_$2() == 0) {
+                        ViewUtils.hideView(dot1Tv);
+                    } else {
+                        ViewUtils.showView(dot1Tv);
+                        dot1Tv.setText(String.valueOf(ordertotal.get_$2()));
+                    }
+
+                    if (ordertotal.get_$3() == 0) {
+                        ViewUtils.hideView(dot2Tv);
+                    } else {
+                        ViewUtils.showView(dot2Tv);
+                        dot2Tv.setText(String.valueOf(ordertotal.get_$3()));
+                    }
+
+                    if (ordertotal.get_$4() == 0) {
+                        ViewUtils.hideView(dot3Tv);
+                    } else {
+                        ViewUtils.showView(dot3Tv);
+                        dot3Tv.setText(String.valueOf(ordertotal.get_$4()));
+                    }
+                    if (ordertotal.get_$5() == 0) {
+                        ViewUtils.hideView(dot4Tv);
+                    } else {
+                        ViewUtils.showView(dot4Tv);
+                        dot4Tv.setText(String.valueOf(ordertotal.get_$5()));
+                    }
             } else if (mDataUserInfo.getCode() == HttpUtils.CODE_INVALID) {
                 HttpUtils.Invalid(mActivity);
                 FToast.error(mDataUserInfo.getInfo());

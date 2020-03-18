@@ -466,7 +466,7 @@ public class DataUserInfo implements Serializable {
             this.menu = menu;
         }
 
-        public static class OrdertotalBean {
+        public static class OrdertotalBean implements Serializable{
             /**
              * 2 : 0
              * 3 : 0
