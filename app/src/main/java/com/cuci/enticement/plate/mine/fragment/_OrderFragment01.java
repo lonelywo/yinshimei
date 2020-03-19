@@ -1,6 +1,7 @@
 package com.cuci.enticement.plate.mine.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -79,7 +80,7 @@ import okhttp3.ResponseBody;
  * 首页外层Fragment
  */
 public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreListener, ItemProdViewBinder.OnProdClickListener
-, ItemBottomViewBinder.OnItemClickListener {
+, ItemBottomViewBinder.OnItemClickListener ,ItemTitleViewBinder.OnProdTitleClickListener{
 
     private static final String TAG = _OrderFragment01.class.getSimpleName();
     private static final int SDK_PAY_FLAG = 1;
@@ -212,7 +213,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         //注册布局
-        mAdapter.register(ItemOrderTitle.class, new ItemTitleViewBinder());
+        mAdapter.register(ItemOrderTitle.class, new ItemTitleViewBinder(this));
 
         mAdapter.register(OrderGoods.class, new ItemProdViewBinder(this));
 
@@ -415,7 +416,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                 .dismissOnBackPressed(false)
                 .dismissOnTouchOutside(false)
                 .asCustom(new TipsPopup(mActivity,
-                        "亲，确定要取消订单吗？", "取消", "确定", () -> {
+                        "您确定要取消订单吗？", "取消", "确定", () -> {
                     String orderNum = itemOrderBottom.orderNum;
                     mCancelItem=itemOrderBottom;
                     mViewModel.orderCancel(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),orderNum,""+ AppUtils.getVersionCode(BasicApp.getContext())).observe(this, mCancelObserver);
@@ -471,7 +472,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                 .dismissOnBackPressed(false)
                 .dismissOnTouchOutside(false)
                 .asCustom(new TipsPopup(mActivity,
-                        "亲，确定要确认收货吗？", "取消", "确定", () -> {
+                        "您确定要收货吗？", "取消", "确定", () -> {
                     mViewModel.orderConfirm(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),
                             itemOrderBottom.orderNum,""+ AppUtils.getVersionCode(BasicApp.getContext()))
                             .observe(this,mConfirmObserver);
@@ -817,6 +818,14 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
     }
 
 
-
-
+    @Override
+    public void onProdTitleClick(ItemOrderTitle item) {
+        // 从API11开始android推荐使用android.content.ClipboardManager
+// 为了兼容低版本我们这里使用旧版的android.text.ClipboardManager，虽然提示deprecated，但不影响使用。
+        ClipboardManager cm = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
+// 将文本内容放到系统剪贴板里。
+        String order_no = item.getOrderNum();
+        cm.setText(order_no);
+        FToast.success("订单编号复制成功");
+    }
 }

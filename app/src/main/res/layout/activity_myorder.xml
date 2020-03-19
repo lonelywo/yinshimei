@@ -12,15 +12,15 @@
        android:layout_width="0dp"
        android:layout_height="65dp"
        app:layout_constraintTop_toTopOf="parent"
-
        app:layout_constraintStart_toStartOf="parent"
        app:layout_constraintEnd_toEndOf="parent"
+       android:background="@color/white"
        >
     <TextView
         android:id="@+id/title_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="我的消费记录"
+        android:text="我的消费"
         android:textColor="#000000"
         android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -44,6 +44,13 @@
         android:layout_marginLeft="10sp"
         />
    </androidx.constraintlayout.widget.ConstraintLayout>
+    <View
+        android:id="@+id/toubu_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/shape_myorder_line"
+        app:layout_constraintTop_toBottomOf="@+id/con_toubu"
+        />
       <com.classic.common.MultipleStatusView
         android:id="@+id/status_view"
         android:layout_width="0dp"
@@ -53,7 +60,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/con_toubu"
+        app:layout_constraintTop_toBottomOf="@+id/toubu_line"
         app:loadingView="@layout/custom_loading_view"
         app:noNetworkView="@layout/custom_no_network_view">
 
@@ -70,14 +77,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tl_indicator_height="4dp"
+            app:tl_indicator_height="2dp"
             app:tl_indicator_width="25dp"
             app:tl_tab_padding="1dp"
             app:tl_tab_space_equal="true"
             app:tl_textsize="15sp"
-            app:tl_indicator_color="@color/orange"
+            app:tl_indicator_color="@color/home_huang"
             app:tl_indicator_style="NORMAL"
-            app:tl_textSelectColor="@color/orange"
+            app:tl_textSelectColor="@color/home_huang"
             app:tl_textUnselectColor="@color/hei"
             android:background="@color/colorWhite"
             />

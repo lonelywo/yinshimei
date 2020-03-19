@@ -61,12 +61,12 @@ public class ItemBottomViewBinder extends ItemViewBinder<ItemOrderBottom, ItemBo
             ViewUtils.showView( holder.textQuxiao);
             ViewUtils.showView( holder.textZhifu);
             holder.textQuxiao.setText("取消订单");
-            holder.textZhifu.setText("立即支付");
+            holder.textZhifu.setText("立即付款");
         }else if(status==3){
             //待发货
             ViewUtils.hideView( holder.textQuxiao);
-            ViewUtils.hideView( holder.textZhifu);
-
+            ViewUtils.showView( holder.textZhifu);
+            holder.textZhifu.setText("提醒发货");
         }else if(status==4){
             //待收货  查看物流  确认收货
             ViewUtils.showView( holder.textQuxiao);
@@ -92,14 +92,14 @@ public class ItemBottomViewBinder extends ItemViewBinder<ItemOrderBottom, ItemBo
         }else {
             holder.textShuliang.setText(String.format(Locale.CHINA,"共%s件商品(含运费¥%s)",itemOrderBottom.num, MathExtend.moveone(itemOrderBottom.expressMoney)));
         }
-        holder.textHeji.setText(String.format(Locale.CHINA,"合计:¥%s",MathExtend.moveone(itemOrderBottom.totalMoney)));
+        holder.textHeji.setText(String.format(Locale.CHINA,"¥%s",MathExtend.moveone(itemOrderBottom.totalMoney)));
 
 
 
         holder.textQuxiao.setOnClickListener(v -> {
 
             if(mOnItemClickListener!=null){
-                if(status==2||status==3) {
+                if(status==2) {
                     // 取消订单
                     mOnItemClickListener.onCancel(itemOrderBottom);
                 }

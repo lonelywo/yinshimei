@@ -3,14 +3,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
+    >
+  <androidx.constraintlayout.widget.ConstraintLayout
+      android:id="@+id/con_toubu"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:layout_constraintTop_toTopOf="parent"
+      android:background="@color/home_huang"
+      >
     <TextView
         android:id="@+id/image_top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="订单详情"
-        android:textColor="#000000"
-        android:textSize="17sp"
+        android:textColor="@color/white"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/image_back"
@@ -25,16 +34,16 @@
         android:paddingRight="12dp"
         android:paddingBottom="16dp"
         android:layout_marginLeft="10dp"
-        android:src="@drawable/icon_back"
+        android:src="@drawable/jiantou"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
+  </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-  <com.cuci.enticement.widget.SmoothScrollview
+    <com.cuci.enticement.widget.SmoothScrollview
     android:layout_width="0dp"
     android:layout_height="0dp"
-    app:layout_constraintTop_toBottomOf="@+id/image_back"
+    app:layout_constraintTop_toBottomOf="@+id/con_toubu"
     app:layout_constraintBottom_toTopOf="@+id/bottom"
     android:layout_marginBottom="10dp"
     app:layout_constraintLeft_toLeftOf="parent"
@@ -45,77 +54,99 @@
     <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+        android:descendantFocusability="blocksDescendants"
       >
-      <TextView
-        android:id="@+id/text_zhuangtai"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:paddingLeft="12dp"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
-        tools:text="等待支付"
-        android:textColor="@color/colorWhite"
-        android:background="@color/orange"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+      <androidx.constraintlayout.widget.ConstraintLayout
+          android:id="@+id/con_zhuangtai"
+          android:layout_width="match_parent"
+          android:layout_height="120dp"
+          app:layout_constraintTop_toTopOf="parent"
+          android:background="@color/home_huang"
 
-        />
+          >
+
+          <TextView
+              android:id="@+id/text_zhuangtai"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              tools:text="待支付"
+              android:textColor="@color/colorWhite"
+              android:textSize="18sp"
+              app:layout_constraintLeft_toLeftOf="parent"
+              app:layout_constraintTop_toTopOf="parent"
+              app:layout_constraintBottom_toBottomOf="parent"
+              android:layout_marginLeft="42dp"
+              />
+       <ImageView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:src="@drawable/baoguo_pro"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintTop_toTopOf="parent"
+           app:layout_constraintBottom_toBottomOf="parent"
+           android:layout_marginRight="65dp"
+           />
+
+      </androidx.constraintlayout.widget.ConstraintLayout>
+
      <androidx.constraintlayout.widget.ConstraintLayout
          android:id="@+id/con_buju1"
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
-       app:layout_constraintTop_toBottomOf="@id/text_zhuangtai"
+       app:layout_constraintTop_toBottomOf="@id/con_zhuangtai"
          android:background="@color/colorWhite"
 
          >
       <TextView
           android:id="@+id/text_dizi"
           android:layout_width="0dp"
-          android:layout_height="85dp"
-          tools:text="美美 15999995555\n广州市天河区富力盈盛2905\n广州市天河区富力盈盛2905"
+          android:layout_height="wrap_content"
+          tools:text="美美 15999995555\n广州市天河区富力盈盛2905广州市天河区富力盈盛2905"
           android:lineSpacingExtra="4dp"
+          android:drawableLeft="@drawable/dizhi_pro"
+          android:drawablePadding="5dp"
           android:textColor="@color/hei"
           android:textSize="13sp"
           android:maxLines="3"
           android:ellipsize="end"
           app:layout_constraintTop_toTopOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          android:padding="13dp"
+          android:padding="10dp"
 
           />
 
          <View
              android:id="@+id/line"
              android:layout_width="match_parent"
-             android:layout_height="0.5dp"
-             android:background="@drawable/shape_login_edit_bottom_line"
+             android:layout_height="10dp"
+             android:background="#F2F2F2"
              app:layout_constraintTop_toBottomOf="@+id/text_dizi"
              />
           <TextView
               android:id="@+id/tv_order_no"
-              android:layout_width="match_parent"
+              android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               app:layout_constraintTop_toBottomOf="@+id/line"
+              app:layout_constraintStart_toStartOf="parent"
               tools:text="订单编号: 662645193409"
               android:textColor="@color/hei"
               android:padding="10dp"
+              android:textSize="13sp"
               />
          <TextView
              android:id="@+id/tv_fuzhi"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
              android:text="复制"
-             android:textColor="@color/orange"
-             app:layout_constraintTop_toTopOf="@+id/tv_order_no"
-             app:layout_constraintBottom_toBottomOf="@+id/tv_order_no"
-             app:layout_constraintEnd_toEndOf="parent"
-             android:paddingLeft="15dp"
-             android:paddingRight="15dp"
-             android:paddingTop="2dp"
-             android:paddingBottom="2dp"
-             android:layout_marginRight="@dimen/dp_10"
+             android:textSize="13sp"
+             android:background="@drawable/shape_myorder_title_fuzhi"
+             android:layout_marginLeft="5dp"
+             app:layout_constraintTop_toBottomOf="@+id/line"
+             app:layout_constraintBottom_toBottomOf="parent"
+             app:layout_constraintStart_toEndOf="@+id/tv_order_no"
+             android:paddingLeft="5dp"
+             android:paddingRight="5dp"
              />
          <TextView
              android:id="@+id/tuikuan_tv"
@@ -144,58 +175,68 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         />
+    <View
+        android:id="@+id/line2"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="#F2F2F2"
+        app:layout_constraintTop_toBottomOf="@id/recycler_view"
+        />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/con_buju3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/recycler_view"
+        app:layout_constraintTop_toBottomOf="@id/line2"
         android:padding="10dp"
         android:background="@color/colorWhite"
-        android:layout_marginTop="10dp"
         >
-       <TextView
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toTopOf="parent"
-           android:text="配送方式"
-           android:textColor="@color/hei"
-           />
         <TextView
-            android:id="@+id/jizhun1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="下单时间"
+            android:textSize="12sp"
+            android:textColor="#707070"
+            />
+        <TextView
+            android:id="@+id/tv_create_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
+            tools:text="2019-07-09 12:06:33"
+            android:textColor="#707070"
             app:layout_constraintTop_toTopOf="parent"
-            android:text="物流配送"
-            android:textColor="@color/hei"
+            android:textSize="12sp"
             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/jizhun1"
+            app:layout_constraintTop_toBottomOf="@+id/tv_create_time"
             android:text="商品总价"
-            android:textColor="@color/hei"
+            android:textColor="#707070"
+            android:textSize="12sp"
             />
         <TextView
             android:id="@+id/tv_goods_money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
-
             tools:text="3850"
-            android:textColor="@color/hei"
-            app:layout_constraintTop_toBottomOf="@id/jizhun1"
+            android:textColor="#707070"
+            android:textSize="12sp"
+            app:layout_constraintTop_toBottomOf="@+id/tv_create_time"
             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_goods_money"
-            android:text="运费"
-            android:textColor="@color/hei"
+            android:text="运费（顺丰快递）"
+            android:textColor="#707070"
+            android:textSize="12sp"
             />
         <TextView
             android:id="@+id/tv_express"
@@ -203,7 +244,8 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="50"
-            android:textColor="@color/hei"
+            android:textColor="#707070"
+            android:textSize="12sp"
             app:layout_constraintTop_toBottomOf="@id/tv_goods_money"
             />
         <TextView
@@ -212,7 +254,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_express"
             android:text="优惠券"
-            android:textColor="@color/hei"
+            android:textSize="12sp"
+            android:textColor="#707070"
             />
         <TextView
             android:id="@+id/tv_yhj_money"
@@ -220,38 +263,30 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="-¥5"
-            android:textColor="#ff0000"
+            android:textSize="12sp"
+            android:textColor="#707070"
             app:layout_constraintTop_toBottomOf="@id/tv_express"
             />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_yhj_money"
-            android:text="下单时间"
-            android:textColor="@color/hei"
-            />
-        <TextView
-            android:id="@+id/tv_create_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:text="2019-07-09 12:06:33"
-            android:textColor="@color/hei"
-            app:layout_constraintTop_toBottomOf="@id/tv_yhj_money"
-            />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+        <View
+            android:id="@+id/line3"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#F2F2F2"
+            app:layout_constraintTop_toBottomOf="@id/con_buju3"
+            />
 
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:layout_constraintTop_toBottomOf="@id/con_buju3"
+    app:layout_constraintTop_toBottomOf="@id/line3"
     android:background="@color/colorWhite"
     android:padding="10dp"
-    android:layout_marginTop="10dp"
     >
     <TextView
+        android:id="@+id/tv_shifu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -265,43 +300,74 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="3900"
-        android:textColor="@color/hei"
+        android:textColor="@color/red"
         app:layout_constraintTop_toTopOf="parent"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
   </com.cuci.enticement.widget.SmoothScrollview>
+    <View
+        android:id="@+id/line4"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#F2F2F2"
+        app:layout_constraintBottom_toTopOf="@id/bottom"
+        android:layout_marginBottom="@dimen/dp_10"
+        />
     <LinearLayout
       android:id="@+id/bottom"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="@dimen/dp_10"
         >
         <TextView
-            android:id="@+id/tv_left"
-            android:layout_width="0dp"
+            android:id="@+id/tv_zuileft"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="#ffffff"
-            android:text="取消订单"
+            android:textColor="#626262"
+            android:text="全部退款"
+            android:textSize="12sp"
             android:gravity="center"
-            android:background="#000000"
-            android:padding="15dp"
+            android:background="@drawable/shape_order_pro_anniu_bg"
+            android:layout_marginRight="10dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            />
+        <TextView
+            android:id="@+id/tv_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#626262"
+            android:text="取消订单"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:background="@drawable/shape_order_pro_anniu_bg"
+            android:layout_marginRight="10dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
             />
         <TextView
             android:id="@+id/tv_right"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:textColor="#ffffff"
-            android:text="立即支付"
+            android:text="立即付款"
+            android:textSize="12sp"
             android:gravity="center"
-            android:background="@color/orange"
-            android:padding="15dp"
+            android:background="@drawable/shape_order_pro_anniu_bg2"
+            android:layout_marginRight="10dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
             />
     </LinearLayout>
 

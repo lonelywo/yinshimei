@@ -10,12 +10,12 @@
 
     <stroke
         android:width="0.5dp"
-         android:color="#707070"
+         android:color="#626262"
         />
 
     <!-- android:radius 圆角的半径 -->
     <corners
-        android:radius="10dp"
+        android:radius="20dp"
         />
 
 

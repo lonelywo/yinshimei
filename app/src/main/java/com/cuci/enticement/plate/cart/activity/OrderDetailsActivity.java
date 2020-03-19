@@ -42,7 +42,6 @@ import com.cuci.enticement.utils.MathExtend;
 import com.cuci.enticement.utils.PayResult;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.ViewUtils;
-import com.cuci.enticement.widget.OrderItemDecoration;
 import com.google.gson.Gson;
 import com.lxj.xpopup.XPopup;
 import com.tencent.mm.opensdk.modelpay.PayReq;
@@ -115,8 +114,6 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
     TextView tuikuanTv;
     @BindView(R.id.con_buju1)
     ConstraintLayout conBuju1;
-    @BindView(R.id.jizhun1)
-    TextView jizhun1;
     @BindView(R.id.con_buju3)
     ConstraintLayout conBuju3;
     @BindView(R.id.bottom)
@@ -125,6 +122,20 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
     TextView tvFuzhi;
     @BindView(R.id.tv_yhj_money)
     TextView tvYhjMoney;
+    @BindView(R.id.con_toubu)
+    ConstraintLayout conToubu;
+    @BindView(R.id.con_zhuangtai)
+    ConstraintLayout conZhuangtai;
+    @BindView(R.id.line2)
+    View line2;
+    @BindView(R.id.line3)
+    View line3;
+    @BindView(R.id.tv_shifu)
+    TextView tvShifu;
+    @BindView(R.id.line4)
+    View line4;
+    @BindView(R.id.tv_zuileft)
+    TextView tvZuileft;
 
 
     private OrderViewModel mViewModel;
@@ -193,9 +204,9 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
         mAdapter.register(OrderGoods.class, new ItemProdDetailsViewBinder(this, mStatus));
 
 
-        OrderItemDecoration mDecoration = new OrderItemDecoration(this, 4);
+       /* OrderItemDecoration mDecoration = new OrderItemDecoration(this, 4);
 
-        mRecyclerView.addItemDecoration(mDecoration);
+        mRecyclerView.addItemDecoration(mDecoration);*/
         mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
@@ -221,7 +232,7 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
 // 将文本内容放到系统剪贴板里。
                 long order_no = mInfo.getOrder_no();
                 cm.setText("" + order_no);
-                FToast.success("订单号复制成功");
+                FToast.success("订单编号复制成功");
             }
         });
     }
@@ -240,7 +251,7 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
         tvExpress.setText(String.format(Locale.CHINA, "¥%s", MathExtend.moveone(mInfo.getPrice_express())));
         tvTotalMoney.setText(String.format(Locale.CHINA, "¥%s", MathExtend.moveone(mInfo.getPrice_total())));
         tvCreateTime.setText(mInfo.getCreate_at());
-        tvYhjMoney.setText("-¥"+mInfo.getDiscount_price());
+        tvYhjMoney.setText("-¥" + mInfo.getDiscount_price());
 
     }
 
@@ -249,58 +260,70 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
 
         if (status == 0) {
             //已取消          重新购买
+            ViewUtils.hideView(tvZuileft);
             ViewUtils.hideView(tvLeft);
             ViewUtils.hideView(tvRight);
-            textZhuangtai.setText("已取消");
+            textZhuangtai.setText("交易关闭");
+            tvShifu.setText("待付款");
         } else if (status == 2) {
             //待付款  取消订单  立即支付
+            ViewUtils.hideView(tvZuileft);
             ViewUtils.showView(tvLeft);
             ViewUtils.showView(tvRight);
             tvLeft.setText("取消订单");
-            tvRight.setText("立即支付");
-            textZhuangtai.setText("待支付");
+            tvRight.setText("立即付款");
+            textZhuangtai.setText("待付款");
+            tvShifu.setText("待付款");
         } else if (status == 3) {
             //待发货
+            ViewUtils.showView(tvZuileft);
             ViewUtils.hideView(tvLeft);
             ViewUtils.hideView(tvRight);
-
             textZhuangtai.setText("待发货");
+            tvShifu.setText("实付款");
         } else if (status == 4) {
             //待收货  查看物流  确认收货
+            ViewUtils.showView(tvZuileft);
             ViewUtils.showView(tvLeft);
             ViewUtils.showView(tvRight);
             tvLeft.setText("查看物流");
             tvRight.setText("确认收货");
             textZhuangtai.setText("待收货");
+            tvShifu.setText("实付款");
         } else if (status == 5) {
             //已完成  查看物流
             ViewUtils.showView(tvLeft);
             ViewUtils.hideView(tvRight);
             tvLeft.setText("查看物流");
             textZhuangtai.setText("已完成");
+            tvShifu.setText("实付款");
         } else if (status == 6) {
             //已退货  查看物流
             ViewUtils.hideView(tvLeft);
             ViewUtils.hideView(tvRight);
             textZhuangtai.setText("已退货");
+            tvShifu.setText("实付款");
         }
     }
 
-    @OnClick({R.id.image_back, R.id.tv_left, R.id.tv_right})
+    @OnClick({R.id.image_back,R.id.tv_zuileft, R.id.tv_left, R.id.tv_right})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.image_back:
                 finish();
                 break;
+            case R.id.tv_zuileft:
+
+                break;
             case R.id.tv_left:
-                if (mStatus == 2 || mStatus == 3) {
+                if (mStatus == 2 ) {
                     //待支付和收货  取消按钮
                     new XPopup.Builder(OrderDetailsActivity.this)
                             .dismissOnBackPressed(false)
                             .dismissOnTouchOutside(false)
                             .asCustom(new TipsPopup(OrderDetailsActivity.this,
-                                    "亲，确定要取消订单吗？", "取消", "确定", () -> {
-                                mViewModel.orderCancel(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(mInfo.getOrder_no()),""+ AppUtils.getVersionCode(BasicApp.getContext()))
+                                    "您确定要取消订单吗？", "取消", "确定", () -> {
+                                mViewModel.orderCancel(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(mInfo.getOrder_no()), "" + AppUtils.getVersionCode(BasicApp.getContext()))
                                         .observe(this, mCancelObserver);
                             }))
                             .show();
@@ -326,7 +349,7 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
 
                                 mPayType = type;
                                 mViewModel.getOrderPay(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),
-                                        String.valueOf(mInfo.getOrder_no()), String.valueOf(type),""+ AppUtils.getVersionCode(BasicApp.getContext()))
+                                        String.valueOf(mInfo.getOrder_no()), String.valueOf(type), "" + AppUtils.getVersionCode(BasicApp.getContext()))
                                         .observe(this, mPayObserver);
 
                             }))
@@ -343,7 +366,7 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
                             .asCustom(new TipsPopup(OrderDetailsActivity.this,
                                     "亲，确定要确认收货吗？", "取消", "确定", () -> {
                                 mViewModel.orderConfirm(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),
-                                        String.valueOf(mInfo.getOrder_no()),""+ AppUtils.getVersionCode(BasicApp.getContext()))
+                                        String.valueOf(mInfo.getOrder_no()), "" + AppUtils.getVersionCode(BasicApp.getContext()))
                                         .observe(this, mConfirmObserver);
                             }))
                             .show();
@@ -375,7 +398,7 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
 
                             sendReq2ZFB(orderPay.getData());
 
-                        }else if(orderPay.getCode() == HttpUtils.CODE_INVALID){
+                        } else if (orderPay.getCode() == HttpUtils.CODE_INVALID) {
                             HttpUtils.Invalid(this);
                             finish();
                             FToast.error(orderPay.getInfo());
@@ -406,11 +429,11 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
                             wxPayBean.setPackageX(packageX);
                             sendReq2WX(wxPayBean);
 
-                        }else if(orderPay.getCode() == HttpUtils.CODE_INVALID){
+                        } else if (orderPay.getCode() == HttpUtils.CODE_INVALID) {
                             HttpUtils.Invalid(this);
                             finish();
                             FToast.error(orderPay.getInfo());
-                        }  else {
+                        } else {
                             FToast.error(orderPay.getInfo());
                         }
 
@@ -469,7 +492,7 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
 
                         finish();
 
-                    }else if(orderConfirm.getCode() == HttpUtils.CODE_INVALID){
+                    } else if (orderConfirm.getCode() == HttpUtils.CODE_INVALID) {
                         HttpUtils.Invalid(this);
                         finish();
                         FToast.error(orderConfirm.getInfo());
@@ -523,7 +546,7 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
 
 
                         finish();
-                    }else if(orderCancel.getCode() == HttpUtils.CODE_INVALID){
+                    } else if (orderCancel.getCode() == HttpUtils.CODE_INVALID) {
                         HttpUtils.Invalid(this);
                         finish();
                         FToast.error(orderCancel.getInfo());

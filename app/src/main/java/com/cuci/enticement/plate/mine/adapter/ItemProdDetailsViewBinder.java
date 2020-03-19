@@ -49,7 +49,7 @@ public class ItemProdDetailsViewBinder extends ItemViewBinder<OrderGoods, ItemPr
     @NonNull
     @Override
     protected ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        View root = inflater.inflate(R.layout.rec_myorder_proddetails, parent, false);
+        View root = inflater.inflate(R.layout.rec_myorder_prod_xq, parent, false);
         return new ViewHolder(root);
     }
 
@@ -60,7 +60,7 @@ public class ItemProdDetailsViewBinder extends ItemViewBinder<OrderGoods, ItemPr
         ImageLoader.loadPlaceholder(item.getGoods_logo(), holder.imgTupian);
         holder.textBiaoti.setText(item.getGoods_title());
         holder.textNeirong.setText(item.getGoods_spec());
-        holder.textQian.setText(String.format(Locale.CHINA, "%s", MathExtend.moveone(item.getPrice_sales()) ));
+        holder.textQian.setText(String.format(Locale.CHINA, "¥%s", MathExtend.moveone(item.getPrice_sales()) ));
         holder.textNum.setText(String.format(Locale.CHINA, "x%s", item.getNumber()));
         holder.itemView.setOnClickListener(position -> {
             if (mOnProdClickListener != null) {

@@ -59,7 +59,7 @@ public class ItemProdViewBinder extends ItemViewBinder<OrderGoods, ItemProdViewB
         ImageLoader.loadPlaceholder(item.getGoods_logo(),holder.imgTupian);
         holder.textBiaoti.setText(item.getGoods_title());
         holder.textNeirong.setText(item.getGoods_spec());
-        holder.textQian.setText(String.format(Locale.CHINA,"%s", MathExtend.moveone(item.getPrice_sales())));
+        holder.textQian.setText(String.format(Locale.CHINA,"¥%s", MathExtend.moveone(item.getPrice_sales())));
         holder.textNum.setText(String.format(Locale.CHINA,"x%s",item.getNumber()));
         holder.itemView.setOnClickListener(position -> {
             if (mOnProdClickListener != null) {

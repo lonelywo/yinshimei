@@ -77,6 +77,25 @@
            app:layout_constraintBottom_toBottomOf="@+id/text_neirong"
            app:layout_constraintEnd_toEndOf="parent"
            />
+
+       <TextView
+           android:id="@+id/tuikuan_tv"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="退款"
+           android:textSize="12sp"
+           android:textColor="#626262"
+           android:background="@drawable/shape_tuikuan_bg2"
+           app:layout_constraintTop_toBottomOf="@+id/img_tupian"
+           app:layout_constraintBottom_toBottomOf="@+id/tv_order_no"
+           app:layout_constraintEnd_toEndOf="parent"
+           android:paddingLeft="15dp"
+           android:paddingRight="15dp"
+           android:paddingTop="2dp"
+           android:paddingBottom="2dp"
+           android:layout_marginTop="5dp"
+           android:visibility="visible"
+           />
      </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View
