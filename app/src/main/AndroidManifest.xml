@@ -45,6 +45,11 @@
             >
         </activity>
         <activity
+            android:name=".plate.mine.activity.DaiFaHuoTuiKuanActivity"
+            android:screenOrientation="portrait"
+            >
+        </activity>
+        <activity
             android:name=".plate.common.AgreementActivity"
             android:screenOrientation="portrait"
             >

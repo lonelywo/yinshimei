@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    >
+
+
+    <com.cuci.enticement.widget.SmoothScrollview
+        android:id="@+id/scroll_details"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/con_toubu"
+        app:layout_constraintBottom_toTopOf="@id/tv_commit"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        >
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+
+            >
+       <androidx.constraintlayout.widget.ConstraintLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           app:layout_constraintTop_toTopOf="parent"
+
+           >
+           <TextView
+               android:id="@+id/tv_biaoqian"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:textSize="16sp"
+               android:textColor="@color/hei"
+               android:text="退款原因"
+               android:layout_marginLeft="10dp"
+               android:layout_marginTop="14dp"
+               app:layout_constraintTop_toTopOf="parent"
+               app:layout_constraintStart_toStartOf="parent"
+               />
+           <com.zhy.view.flowlayout.TagFlowLayout
+               android:id="@+id/id_flowlayout"
+               app:max_select="1"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:paddingLeft="5dp"
+               android:paddingRight="5dp"
+               android:paddingTop="10dp"
+               android:paddingBottom="10dp"
+               app:layout_constraintTop_toBottomOf="@+id/tv_biaoqian"
+               >
+           </com.zhy.view.flowlayout.TagFlowLayout>
+       <View
+           android:id="@+id/line"
+           android:layout_width="match_parent"
+           android:layout_height="10dp"
+           android:background="@drawable/shape_myorder_line"
+           app:layout_constraintTop_toBottomOf="@+id/id_flowlayout"
+           />
+           <androidx.constraintlayout.widget.ConstraintLayout
+               android:id="@+id/con_edt"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               app:layout_constraintTop_toBottomOf="@+id/line"
+               android:background="@drawable/shape_tuikuan_edt_bg"
+               android:layout_marginLeft="10dp"
+               android:layout_marginRight="10dp"
+               android:layout_marginTop="10dp"
+               >
+
+               <EditText
+                   android:id="@+id/id_editor_detail"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   app:layout_constraintTop_toTopOf="parent"
+                   app:layout_constraintStart_toStartOf="parent"
+                   android:background="@null"
+                   android:gravity="top"
+                   android:hint="详情描述你遇到的问题吧"
+                   android:maxLength="200"
+                   android:minLines="6"
+                   android:padding="@dimen/dp_10"
+                   android:textColor="@color/hei"
+                   android:textColorHint="#BFBFBF"
+                   android:textSize="@dimen/sp_14"/>
+
+               <TextView
+                   android:id="@+id/id_editor_detail_font_count"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                  app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintBottom_toBottomOf="@+id/id_editor_detail"
+                   android:paddingBottom="5dp"
+                   android:paddingRight="5dp"
+                   android:text="0/200"
+                   android:textColor="#BFBFBF"
+                   android:textSize="@dimen/sp_14"/>
+           </androidx.constraintlayout.widget.ConstraintLayout>
+           <TextView
+               android:layout_width="0dp"
+               android:layout_height="wrap_content"
+               android:text="申请换货/退款/退货退款服务需签署《退款协议》，点击提交则默认您已查阅并同意退款协议所有内容"
+               android:textColor="#ff707070"
+               android:textSize="12sp"
+               app:layout_constraintTop_toBottomOf="@+id/con_edt"
+               app:layout_constraintStart_toStartOf="parent"
+               app:layout_constraintEnd_toEndOf="parent"
+               android:padding="5dp"
+               android:lineSpacingExtra="4dp"
+               />
+
+
+
+
+       </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.cuci.enticement.widget.SmoothScrollview>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/con_toubu"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+        <ImageView
+            android:id="@+id/img_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/jiantou_hei"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginLeft="10dp"
+            android:padding="10dp"
+            />
+        <TextView
+            android:id="@+id/text_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="申请退款"
+            android:textColor="@color/hei"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@drawable/shape_myorder_line"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/tv_commit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:text="提交"
+        android:textColor="@color/white"
+        android:background="@color/home_huang"
+        android:padding="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:gravity="center"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>

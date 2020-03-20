@@ -31,6 +31,7 @@ import com.cuci.enticement.event.IsnewEvent;
 import com.cuci.enticement.plate.common.eventbus.OrderEvent;
 import com.cuci.enticement.plate.common.popup.PayBottom2TopProdPopup;
 import com.cuci.enticement.plate.common.popup.TipsPopup;
+import com.cuci.enticement.plate.mine.activity.DaiFaHuoTuiKuanActivity;
 import com.cuci.enticement.plate.mine.activity.TuiTypeActivity;
 import com.cuci.enticement.plate.mine.adapter.ItemProdDetailsViewBinder;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
@@ -110,8 +111,6 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
     ImageView imageBack;
     @BindView(R.id.line)
     View line;
-    @BindView(R.id.tuikuan_tv)
-    TextView tuikuanTv;
     @BindView(R.id.con_buju1)
     ConstraintLayout conBuju1;
     @BindView(R.id.con_buju3)
@@ -148,6 +147,7 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
     private MultiTypeAdapter mAdapter;
     private Items mItems;
     private int mStatus;
+
 
 
     @Override
@@ -214,14 +214,7 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
 
 
         mViewModel = ViewModelProviders.of(this).get(OrderViewModel.class);
-        tuikuanTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(OrderDetailsActivity.this, TuiTypeActivity.class);
-                intent.putExtra("intentInfo", mInfo);
-                startActivity(intent);
-            }
-        });
+
         tvFuzhi.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
@@ -251,7 +244,7 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
         tvExpress.setText(String.format(Locale.CHINA, "¥%s", MathExtend.moveone(mInfo.getPrice_express())));
         tvTotalMoney.setText(String.format(Locale.CHINA, "¥%s", MathExtend.moveone(mInfo.getPrice_total())));
         tvCreateTime.setText(mInfo.getCreate_at());
-        tvYhjMoney.setText("-¥" + mInfo.getDiscount_price());
+        tvYhjMoney.setText("-¥" +MathExtend.moveone(mInfo.getDiscount_price()));
 
     }
 
@@ -313,11 +306,18 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
                 finish();
                 break;
             case R.id.tv_zuileft:
+                if(mStatus == 3 ){
+                    startActivity(new Intent(this, DaiFaHuoTuiKuanActivity.class));
+                }else if(mStatus == 4){
+                    Intent intent_tui = new Intent(this, TuiTypeActivity.class);
+                    intent_tui.putExtra("intentInfo",mInfo);
+                    startActivity(intent_tui);
+                }
 
                 break;
             case R.id.tv_left:
                 if (mStatus == 2 ) {
-                    //待支付和收货  取消按钮
+                    //待支付  取消按钮
                     new XPopup.Builder(OrderDetailsActivity.this)
                             .dismissOnBackPressed(false)
                             .dismissOnTouchOutside(false)
@@ -542,10 +542,8 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
                         initViewStatus(CANCEL_STATUS);
 
                         //切换全部订单
-                        EventBus.getDefault().post(new OrderEvent(OrderEvent.INTENT_MY_ORDER));
-
-
-                        finish();
+                       /* EventBus.getDefault().post(new OrderEvent(OrderEvent.INTENT_MY_ORDER));
+                        finish();*/
                     } else if (orderCancel.getCode() == HttpUtils.CODE_INVALID) {
                         HttpUtils.Invalid(this);
                         finish();
@@ -686,8 +684,14 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
 
     @Override
     public void onProdClick(OrderGoods item) {
-       /* Intent intent = new Intent(this, TuiTypeActivity.class);
-        intent.putExtra("intentInfo",item);
-        startActivity(intent);*/
+        if(mStatus==3){
+            startActivity(new Intent(this, DaiFaHuoTuiKuanActivity.class));
+        }else if(mStatus==4){
+            Intent intent = new Intent(this, TuiTypeActivity.class);
+            intent.putExtra("intentItem",item);
+            startActivity(intent);
+        }
+
+
     }
 }

@@ -8,18 +8,17 @@
 
     <com.cuci.enticement.widget.SmoothScrollview
         android:id="@+id/scroll_details"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/con_toubu"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
 
         >
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             android:descendantFocusability="blocksDescendants"
             >
     <androidx.recyclerview.widget.RecyclerView
@@ -30,138 +29,98 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         />
+      <ImageView
+          android:id="@+id/img_zhankai"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          app:layout_constraintTop_toBottomOf="@+id/recycler_view"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          android:src="@drawable/zhankai"
+          android:padding="10dp"
+          android:background="@color/white"
+
+          />
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/con_tuikuan1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/recycler_view"
-        android:layout_marginTop="6dp"
+        android:layout_height="80dp"
+        app:layout_constraintTop_toBottomOf="@+id/img_zhankai"
+        android:layout_marginTop="10dp"
         android:background="@color/colorWhite"
         android:padding="10dp"
         >
-    <ImageView
-        android:id="@+id/img_tuxiang"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:src="@drawable/tui_money"
-
-        />
-   <LinearLayout
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:orientation="vertical"
-       app:layout_constraintLeft_toRightOf="@+id/img_tuxiang"
-       app:layout_constraintTop_toTopOf="parent"
-       app:layout_constraintBottom_toBottomOf="parent"
-       >
-    <TextView
-        android:id="@+id/text_wenzi1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="仅退款"
-        android:textSize="12sp"
-        android:textColor="@color/hei"
-        android:layout_marginLeft="10dp"
-        app:layout_constraintRight_toLeftOf="@+id/text_money"
-        />
-    <TextView
-        android:id="@+id/text_wenzi2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="未收到货（包含未签收），或已联系客服同意情况下"
-        android:layout_marginLeft="10dp"
-        android:textSize="10sp"/>
-   </LinearLayout>
-        <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@+id/img_tuxiang"
-        app:layout_constraintBottom_toBottomOf="@+id/img_tuxiang"
-        app:layout_constraintEnd_toEndOf="parent"
-
-        android:src="@drawable/youjiantou"
-        />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="退款"
+            android:textColor="@color/hei"
+            android:textSize="16sp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:drawableLeft="@drawable/tui_money"
+            android:drawablePadding="5dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="没收到货，或与卖家协商\n同意不用退货只退款"
+            android:textColor="#707070"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:drawableRight="@drawable/youjiantou_hei"
+            android:drawablePadding="5dp"
+            android:gravity="right"
+            />
 </androidx.constraintlayout.widget.ConstraintLayout>
     <View
         android:id="@+id/line"
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@drawable/shape_login_edit_bottom_line"
+        android:layout_height="1dp"
+        android:background="@drawable/shape_myorder_line"
         app:layout_constraintTop_toBottomOf="@+id/con_tuikuan1"
         />
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/con_tuikuan2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
         app:layout_constraintTop_toBottomOf="@+id/line"
         android:background="@color/colorWhite"
         android:padding="10dp"
         >
-        <ImageView
-            android:id="@+id/img_tuxiang1"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="退货退款"
+            android:textColor="@color/hei"
+            android:textSize="16sp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:src="@drawable/tui_goods"
-
+            app:layout_constraintStart_toStartOf="parent"
+            android:drawableLeft="@drawable/tui_goods"
+            android:drawablePadding="5dp"
             />
-        <LinearLayout
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintLeft_toRightOf="@+id/img_tuxiang1"
+            android:text="已收到货，需退还收到的货物"
+            android:textColor="#707070"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            >
-            <TextView
-                android:id="@+id/text_wenzi3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="退货退款"
-                android:textSize="12sp"
-                android:textColor="@color/hei"
-                android:layout_marginLeft="10dp"
-                app:layout_constraintRight_toLeftOf="@+id/text_money"
-                />
-            <TextView
-                android:id="@+id/text_wenzi4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="已收到货，需要退还已收到的货物"
-                android:layout_marginLeft="10dp"
-                android:textSize="10sp"/>
-        </LinearLayout>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@+id/img_tuxiang1"
-            app:layout_constraintBottom_toBottomOf="@+id/img_tuxiang1"
-            app:layout_constraintEnd_toEndOf="parent"
-
-            android:src="@drawable/youjiantou"
+            android:drawableRight="@drawable/youjiantou_hei"
+            android:drawablePadding="5dp"
+            android:gravity="right"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.cuci.enticement.widget.SmoothScrollview>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/scroll_details"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginTop="10dp"
-        android:background="@color/colorWhite"
-        />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/con_toubu"
@@ -174,11 +133,11 @@
             android:id="@+id/img_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/icon_back"
+            android:src="@drawable/jiantou_hei"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
             android:padding="10dp"
             />
         <TextView

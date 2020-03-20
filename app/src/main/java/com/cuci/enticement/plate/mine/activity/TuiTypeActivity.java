@@ -5,57 +5,63 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.AllOrderList;
 import com.cuci.enticement.bean.OrderGoods;
 import com.cuci.enticement.plate.mine.adapter.ItemProdDetailsViewBinder;
+import com.cuci.enticement.plate.mine.adapter.ItemTuiTypeViewBinder;
+import com.cuci.enticement.utils.UtilsForClick;
+import com.cuci.enticement.utils.ViewUtils;
 import com.cuci.enticement.widget.OrderItemDecoration;
+import com.cuci.enticement.widget.SmoothScrollview;
+
+import java.util.ArrayList;
 import java.util.List;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 
-public class TuiTypeActivity extends BaseActivity implements ItemProdDetailsViewBinder.OnProdClickListener {
+public class TuiTypeActivity extends BaseActivity implements ItemTuiTypeViewBinder.OnProdClickListener {
 
 
+    @BindView(R.id.recycler_view)
+    RecyclerView mRecyclerView;
+    @BindView(R.id.img_zhankai)
+    ImageView imgZhankai;
+    @BindView(R.id.con_tuikuan1)
+    ConstraintLayout conTuikuan1;
+    @BindView(R.id.line)
+    View line;
+    @BindView(R.id.con_tuikuan2)
+    ConstraintLayout conTuikuan2;
+    @BindView(R.id.scroll_details)
+    SmoothScrollview scrollDetails;
     @BindView(R.id.img_back)
     ImageView imgBack;
     @BindView(R.id.text_content)
     TextView textContent;
     @BindView(R.id.con_toubu)
     ConstraintLayout conToubu;
-    @BindView(R.id.recycler_view)
-    RecyclerView mRecyclerView;
-    @BindView(R.id.img_tuxiang)
-    ImageView imgTuxiang;
-    @BindView(R.id.text_wenzi1)
-    TextView textWenzi1;
-    @BindView(R.id.text_wenzi2)
-    TextView textWenzi2;
-    @BindView(R.id.con_tuikuan1)
-    ConstraintLayout conTuikuan1;
-    @BindView(R.id.line)
-    View line;
-    @BindView(R.id.img_tuxiang1)
-    ImageView imgTuxiang1;
-    @BindView(R.id.text_wenzi3)
-    TextView textWenzi3;
-    @BindView(R.id.text_wenzi4)
-    TextView textWenzi4;
-    @BindView(R.id.con_tuikuan2)
-    ConstraintLayout conTuikuan2;
-    private AllOrderList.DataBean.ListBeanX mInfo;
     private LinearLayoutManager mLayoutManager;
     private MultiTypeAdapter mAdapter;
     private Items mItems;
-    private int mStatus;
+    private OrderGoods mItem;
+    //商品总数
+    private List<OrderGoods> items;
+    //当前商品数量
+    private List<OrderGoods> mlist=new ArrayList<>();
+    private AllOrderList.DataBean.ListBeanX mInfo;
+
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_tui_type;
@@ -67,25 +73,57 @@ public class TuiTypeActivity extends BaseActivity implements ItemProdDetailsView
         if (intent == null) {
             return;
         }
+        mItem = ( OrderGoods) intent.getSerializableExtra("intentItem");
         mInfo = (AllOrderList.DataBean.ListBeanX) intent.getSerializableExtra("intentInfo");
-        List<OrderGoods> items = mInfo.getList();
-        mStatus = mInfo.getStatus();
+        if(mInfo!=null){
+            items=mInfo.getList();
+        }
         mAdapter = new MultiTypeAdapter();
         mItems = new Items();
-        mItems.addAll(items);
+        mItems.clear();
+        mlist.clear();
+        if(mInfo!=null){
+            int size = items.size();
+            if(size>2){
+                for (int i = 0; i <2 ; i++) {
+                    mlist.add(items.get(i));
+                }
+                mItems.addAll(mlist);
+                ViewUtils.showView(imgZhankai);
+            }else {
+                mItems.addAll(items);
+                ViewUtils.hideView(imgZhankai);
+            }
+        }else {
+            mItems.add(mItem) ;
+            ViewUtils.hideView(imgZhankai);
+        }
+
         mAdapter.setItems(mItems);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        mAdapter.register(OrderGoods.class, new ItemProdDetailsViewBinder(this, mStatus));
+        mAdapter.register(OrderGoods.class, new ItemTuiTypeViewBinder(this));
 
 
-        OrderItemDecoration mDecoration = new OrderItemDecoration(this, 4);
+        OrderItemDecoration mDecoration = new OrderItemDecoration(this, 1);
 
         mRecyclerView.addItemDecoration(mDecoration);
         mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         mRecyclerView.setAdapter(mAdapter);
+        imgZhankai.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(UtilsForClick.isFastClick()){
+                    mItems.clear();
+                    mItems.addAll(items);
+                    mAdapter.notifyDataSetChanged();
+                    ViewUtils.hideView(imgZhankai);
+                }
+
+            }
+        });
     }
 
     @Override
@@ -102,16 +140,16 @@ public class TuiTypeActivity extends BaseActivity implements ItemProdDetailsView
                 finish();
                 break;
             case R.id.con_tuikuan1:
-                Intent intent1 = new Intent(this, ApplyTuiActivity.class);
+              /*  Intent intent1 = new Intent(this, ApplyTuiActivity.class);
                 intent1.putExtra("intentInfo", mInfo);
                 intent1.putExtra("type", 1);
-                startActivity(intent1);
+                startActivity(intent1);*/
                 break;
             case R.id.con_tuikuan2:
-                Intent intent2 = new Intent(this, ApplyTuiActivity.class);
+               /* Intent intent2 = new Intent(this, ApplyTuiActivity.class);
                 intent2.putExtra("intentInfo", mInfo);
                 intent2.putExtra("type", 2);
-                startActivity(intent2);
+                startActivity(intent2);*/
                 break;
 
         }
