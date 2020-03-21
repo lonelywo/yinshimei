@@ -1,5 +1,6 @@
 package com.cuci.enticement.network;
 
+import android.graphics.Bitmap;
 import android.text.TextUtils;
 import com.cuci.enticement.BuildConfig;
 
@@ -22,6 +23,8 @@ public class ServiceCreator {
     public static  int Constant_IS_NEW = 0;
 //总金额
 public static  String Constant_ZONG_MONEY = "";
+//凭证bitmap
+public static Bitmap Constant_PZ_IMG ;
      private static final String BASE_URL = "https://test.enticementchina.com/";
     //  private static final String BASE_URL = "https://app.enticementchina.com/";
 

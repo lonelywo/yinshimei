@@ -106,4 +106,9 @@ public class TuiDetailsNOActivity extends BaseActivity implements ItemProdDetail
     public void onProdClick(OrderGoods item) {
 
     }
+
+    @Override
+    public void onProdItemClick(OrderGoods item) {
+
+    }
 }

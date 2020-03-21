@@ -4,16 +4,10 @@ package com.cuci.enticement.plate.mine.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cuci.enticement.R;
-import com.cuci.enticement.bean.OrderGoods;
 import com.cuci.enticement.bean.TuiImgKuangBean;
-import com.cuci.enticement.utils.ImageLoader;
-import com.google.gson.Gson;
-
-import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -52,7 +46,7 @@ public class ItemImgkuangViewBinder extends ItemViewBinder<TuiImgKuangBean, Item
 
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull TuiImgKuangBean item) {
-
+        holder.tvNum.setText(item.getNum()+"/5");
         holder.itemView.setOnClickListener(position -> {
             if (mOnProdClickListener != null) {
                 mOnProdClickListener.onProdClick1(item);
@@ -60,16 +54,14 @@ public class ItemImgkuangViewBinder extends ItemViewBinder<TuiImgKuangBean, Item
         });
 
 
-
-
-
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.img_tuxiang)
-        ImageView imgTuxiang;
-
+        @BindView(R.id.tv_num)
+        TextView tvNum;
+        @BindView(R.id.shangchuan)
+        TextView shangchuan;
         ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

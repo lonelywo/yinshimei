@@ -113,7 +113,7 @@ public class LogisticsActivity extends BaseActivity implements OnRefreshLoadMore
         mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(mAdapter);
-        refreshLayout.autoRefresh();
+        load();
     }
 
     private void load() {

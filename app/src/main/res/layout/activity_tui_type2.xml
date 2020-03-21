@@ -56,15 +56,27 @@
        <View
            android:id="@+id/line"
            android:layout_width="match_parent"
-           android:layout_height="10dp"
+           android:layout_height="1dp"
            android:background="@drawable/shape_myorder_line"
            app:layout_constraintTop_toBottomOf="@+id/id_flowlayout"
            />
+         <TextView
+             android:id="@+id/tv_1"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="退款说明"
+             android:textSize="16sp"
+             android:textColor="@color/hei"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintTop_toBottomOf="@+id/line"
+             android:layout_marginLeft="10dp"
+             android:layout_marginTop="20dp"
+             />
            <androidx.constraintlayout.widget.ConstraintLayout
                android:id="@+id/con_edt"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
-               app:layout_constraintTop_toBottomOf="@+id/line"
+               app:layout_constraintTop_toBottomOf="@+id/tv_1"
                android:background="@drawable/shape_tuikuan_edt_bg"
                android:layout_marginLeft="10dp"
                android:layout_marginRight="10dp"
@@ -99,6 +111,16 @@
                    android:textColor="#BFBFBF"
                    android:textSize="@dimen/sp_14"/>
            </androidx.constraintlayout.widget.ConstraintLayout>
+
+           <androidx.recyclerview.widget.RecyclerView
+               android:id="@+id/recycler_view"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:overScrollMode="never"
+               app:layout_constraintTop_toBottomOf="@+id/con_edt"
+               android:padding="10dp"
+               />
+
            <TextView
                android:id="@+id/tv_shuoming"
                android:layout_width="0dp"
@@ -106,7 +128,7 @@
                android:text="申请换货/退款/退货退款服务需签署《退款协议》，点击提交则默认您已查阅并同意退款协议所有内容"
                android:textColor="#ff707070"
                android:textSize="12sp"
-               app:layout_constraintTop_toBottomOf="@+id/con_edt"
+               app:layout_constraintTop_toBottomOf="@+id/recycler_view"
                app:layout_constraintStart_toStartOf="parent"
                app:layout_constraintEnd_toEndOf="parent"
                android:padding="5dp"
@@ -143,7 +165,7 @@
             android:id="@+id/text_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="申请退款"
+            android:text="选择服务类型"
             android:textColor="@color/hei"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"

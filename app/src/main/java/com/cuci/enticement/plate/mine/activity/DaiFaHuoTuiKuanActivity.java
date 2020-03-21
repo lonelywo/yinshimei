@@ -1,8 +1,10 @@
 package com.cuci.enticement.plate.mine.activity;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +15,10 @@ import android.widget.TextView;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.TagBean;
+import com.cuci.enticement.plate.common.AgreementActivity;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.MathExtend;
 import com.cuci.enticement.widget.SmoothScrollview;
-import com.google.zxing.common.StringUtils;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
@@ -51,8 +54,16 @@ public class DaiFaHuoTuiKuanActivity extends BaseActivity {
     ConstraintLayout conToubu;
     List<TagBean> list;
     TagAdapter mAdapter;
+    @BindView(R.id.line)
+    View line;
+    @BindView(R.id.con_edt)
+    ConstraintLayout conEdt;
+    @BindView(R.id.tv_shuoming)
+    TextView tvShuoming;
+    @BindView(R.id.tv_commit)
+    TextView tvCommit;
     private String tag;
-    private boolean islMaxCount=false;
+    private boolean islMaxCount = false;
 
     @Override
     public int getLayoutId() {
@@ -62,8 +73,18 @@ public class DaiFaHuoTuiKuanActivity extends BaseActivity {
     @Override
     public void initViews(Bundle savedInstanceState) {
         init();
-
+        String strMsg = "申请换货/退款/退货退款服务需签署"+"<font color=\"#e1ad73\">" +"《退款协议》"+ "</font>"+"，点击提交则默认您已查阅并同意退款协议所有内容";
+        tvShuoming.setText(Html.fromHtml(strMsg));
+        tvShuoming.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentProd = new Intent(DaiFaHuoTuiKuanActivity.this, TuiAgreementActivity.class);
+                intentProd.putExtra("bannerData", "");
+                startActivity(intentProd);
+            }
+        });
     }
+
     @OnTextChanged(value = R.id.id_editor_detail, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void editTextDetailChange(Editable editable) {
         int detailLength = editable.length();
@@ -73,13 +94,13 @@ public class DaiFaHuoTuiKuanActivity extends BaseActivity {
         }
         // 不知道为什么执行俩次，所以增加一个标识符去标识
         if (detailLength == 200 && islMaxCount) {
-          FToast.warning("您已达到输入字数上限");
+            FToast.warning("您已达到输入字数上限");
             islMaxCount = false;
         }
     }
 
     private void init() {
-        tag="商品选错了";
+        tag = "商品选错了";
         final LayoutInflater mInflater = LayoutInflater.from(this);
         list = new ArrayList<>();
         list.add(new TagBean("商品选错了"));
@@ -95,26 +116,25 @@ public class DaiFaHuoTuiKuanActivity extends BaseActivity {
 
             @Override
             public boolean onTagClick(View view, int position, FlowLayout parent) {
-               // tag = list.get(position).getName();
-               // FToast.success(tag);
+                // tag = list.get(position).getName();
+                // FToast.success(tag);
                 return true;
             }
         });
-        idFlowlayout.setOnSelectListener(new TagFlowLayout.OnSelectListener(){
+        idFlowlayout.setOnSelectListener(new TagFlowLayout.OnSelectListener() {
             @Override
-            public void onSelected(Set<Integer> selectPosSet)
-            {
+            public void onSelected(Set<Integer> selectPosSet) {
 
                 String s = selectPosSet.toString();
-                String quStr=s.substring(s.indexOf("[")+1,s.indexOf("]"));
-             if(TextUtils.equals(s,"[]")){
-                 tag="请选择退款原因";
-                 FToast.success(tag);
-             }else {
-                 Integer integer = Integer.valueOf(quStr);
-                 tag=list.get(integer).getName();
-                FToast.success(tag);
-             }
+                String quStr = s.substring(s.indexOf("[") + 1, s.indexOf("]"));
+                if (TextUtils.equals(s, "[]")) {
+                    tag = "请选择退款原因";
+                    FToast.success(tag);
+                } else {
+                    Integer integer = Integer.valueOf(quStr);
+                    tag = list.get(integer).getName();
+                    FToast.success(tag);
+                }
 
             }
         });
@@ -135,4 +155,10 @@ public class DaiFaHuoTuiKuanActivity extends BaseActivity {
 
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 }

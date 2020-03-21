@@ -315,4 +315,9 @@ public class ApplyTuiActivity extends BaseActivity implements ItemImgkuangViewBi
     public void onProdClick(OrderGoods item) {
 
     }
+
+    @Override
+    public void onProdItemClick(OrderGoods item) {
+
+    }
 }

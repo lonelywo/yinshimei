@@ -7,23 +7,23 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.cuci.enticement.R;
 import com.cuci.enticement.bean.OrderGoods;
 import com.cuci.enticement.utils.ImageLoader;
 import com.cuci.enticement.utils.MathExtend;
 import com.cuci.enticement.utils.ViewUtils;
-import com.google.gson.Gson;
 
 import java.util.Locale;
 
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.drakeet.multitype.ItemViewBinder;
 
 public class ItemProdDetailsViewBinder extends ItemViewBinder<OrderGoods, ItemProdDetailsViewBinder.ViewHolder> {
+
 
 
     private int mStatus;
@@ -32,7 +32,7 @@ public class ItemProdDetailsViewBinder extends ItemViewBinder<OrderGoods, ItemPr
 
         void onProdClick(OrderGoods item);
 
-
+        void onProdItemClick(OrderGoods item);
     }
 
     private OnProdClickListener mOnProdClickListener;
@@ -41,9 +41,9 @@ public class ItemProdDetailsViewBinder extends ItemViewBinder<OrderGoods, ItemPr
 
     }
 
-    public ItemProdDetailsViewBinder(OnProdClickListener onProdClickListener,int Status) {
+    public ItemProdDetailsViewBinder(OnProdClickListener onProdClickListener, int Status) {
         mOnProdClickListener = onProdClickListener;
-        mStatus=Status;
+        mStatus = Status;
     }
 
     @NonNull
@@ -56,15 +56,32 @@ public class ItemProdDetailsViewBinder extends ItemViewBinder<OrderGoods, ItemPr
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull OrderGoods item) {
 
-        String s = new Gson().toJson(item);
+        if (mStatus == 0 || mStatus == 2) {
+            ViewUtils.hideView(holder.tuikuanTv);
+        }else if(mStatus == 3 || mStatus == 4){
+            holder.tuikuanTv.setText("退款");
+            ViewUtils.showView(holder.tuikuanTv);
+        }else if(mStatus == 5 ){
+            holder.tuikuanTv.setText("售后");
+            ViewUtils.showView(holder.tuikuanTv);
+        } else if(mStatus == 6){
+            holder.tuikuanTv.setText("退款成功");
+            ViewUtils.showView(holder.tuikuanTv);
+        }
         ImageLoader.loadPlaceholder(item.getGoods_logo(), holder.imgTupian);
         holder.textBiaoti.setText(item.getGoods_title());
         holder.textNeirong.setText(item.getGoods_spec());
-        holder.textQian.setText(String.format(Locale.CHINA, "¥%s", MathExtend.moveone(item.getPrice_sales()) ));
+        holder.textQian.setText(String.format(Locale.CHINA, "¥%s", MathExtend.moveone(item.getPrice_sales())));
         holder.textNum.setText(String.format(Locale.CHINA, "x%s", item.getNumber()));
-        holder.itemView.setOnClickListener(position -> {
+
+        holder.tuikuanTv.setOnClickListener(position -> {
             if (mOnProdClickListener != null) {
                 mOnProdClickListener.onProdClick(item);
+            }
+        });
+        holder.itemView.setOnClickListener(position -> {
+            if (mOnProdClickListener != null) {
+                mOnProdClickListener.onProdItemClick(item);
             }
         });
 
@@ -82,6 +99,15 @@ public class ItemProdDetailsViewBinder extends ItemViewBinder<OrderGoods, ItemPr
         TextView textQian;
         @BindView(R.id.text_num)
         TextView textNum;
+        @BindView(R.id.tuikuan_tv)
+        TextView tuikuanTv;
+        @BindView(R.id.con_buju)
+        ConstraintLayout conBuju;
+        @BindView(R.id.line)
+        View line;
+        @BindView(R.id.container)
+        ConstraintLayout container;
+
         ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

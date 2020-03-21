@@ -140,16 +140,14 @@ public class TuiTypeActivity extends BaseActivity implements ItemTuiTypeViewBind
                 finish();
                 break;
             case R.id.con_tuikuan1:
-              /*  Intent intent1 = new Intent(this, ApplyTuiActivity.class);
+                Intent intent1 = new Intent(this, TuiKuanType1Activity.class);
                 intent1.putExtra("intentInfo", mInfo);
-                intent1.putExtra("type", 1);
-                startActivity(intent1);*/
+                startActivity(intent1);
                 break;
             case R.id.con_tuikuan2:
-               /* Intent intent2 = new Intent(this, ApplyTuiActivity.class);
+                Intent intent2 = new Intent(this, TuiKuanType2Activity.class);
                 intent2.putExtra("intentInfo", mInfo);
-                intent2.putExtra("type", 2);
-                startActivity(intent2);*/
+                startActivity(intent2);
                 break;
 
         }

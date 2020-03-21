@@ -44,6 +44,8 @@ import com.cuci.enticement.utils.PayResult;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.ViewUtils;
 import com.google.gson.Gson;
+import com.hyphenate.chat.ChatClient;
+import com.hyphenate.helpdesk.easeui.util.IntentBuilder;
 import com.lxj.xpopup.XPopup;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 
@@ -256,6 +258,7 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
             ViewUtils.hideView(tvZuileft);
             ViewUtils.hideView(tvLeft);
             ViewUtils.hideView(tvRight);
+            ViewUtils.hideView(bottom);
             textZhuangtai.setText("交易关闭");
             tvShifu.setText("待付款");
         } else if (status == 2) {
@@ -263,6 +266,7 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
             ViewUtils.hideView(tvZuileft);
             ViewUtils.showView(tvLeft);
             ViewUtils.showView(tvRight);
+            ViewUtils.showView(bottom);
             tvLeft.setText("取消订单");
             tvRight.setText("立即付款");
             textZhuangtai.setText("待付款");
@@ -272,6 +276,7 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
             ViewUtils.showView(tvZuileft);
             ViewUtils.hideView(tvLeft);
             ViewUtils.hideView(tvRight);
+            ViewUtils.showView(bottom);
             textZhuangtai.setText("待发货");
             tvShifu.setText("实付款");
         } else if (status == 4) {
@@ -279,22 +284,28 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
             ViewUtils.showView(tvZuileft);
             ViewUtils.showView(tvLeft);
             ViewUtils.showView(tvRight);
+            ViewUtils.showView(bottom);
             tvLeft.setText("查看物流");
             tvRight.setText("确认收货");
             textZhuangtai.setText("待收货");
             tvShifu.setText("实付款");
         } else if (status == 5) {
             //已完成  查看物流
+            ViewUtils.hideView(tvZuileft);
             ViewUtils.showView(tvLeft);
-            ViewUtils.hideView(tvRight);
-            tvLeft.setText("查看物流");
-            textZhuangtai.setText("已完成");
+            ViewUtils.showView(tvRight);
+            ViewUtils.showView(bottom);
+            tvLeft.setText("申请售后");
+            tvRight.setText("联系客服");
+            textZhuangtai.setText("交易成功");
             tvShifu.setText("实付款");
         } else if (status == 6) {
             //已退货  查看物流
+            ViewUtils.hideView(tvZuileft);
             ViewUtils.hideView(tvLeft);
             ViewUtils.hideView(tvRight);
-            textZhuangtai.setText("已退货");
+            ViewUtils.hideView(bottom);
+            textZhuangtai.setText("已退款");
             tvShifu.setText("实付款");
         }
     }
@@ -329,13 +340,16 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
                             .show();
 
 
-                } else if (mStatus == 4 || mStatus == 5) {
+                } else if (mStatus == 4 ) {
                     //查看物流  intent
                     Intent intent = new Intent(OrderDetailsActivity.this, LogisticsActivity.class);
                     intent.putExtra("express_no", String.valueOf(mInfo.getExpress_send_no()));
                     intent.putExtra("express_code", String.valueOf(mInfo.getExpress_company_code()));
                     intent.putExtra("express_company_title", String.valueOf(mInfo.getExpress_company_title()));
                     startActivity(intent);
+                }else if(mStatus == 5){
+                   //申请售后
+
                 }
                 break;
             case R.id.tv_right:
@@ -356,7 +370,7 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
                             .show();
 
 
-                } else if (mStatus == 5) {
+                } else if (mStatus == 4) {
                     //确认收货  弹框确认收货
 
 
@@ -364,7 +378,7 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
                             .dismissOnBackPressed(false)
                             .dismissOnTouchOutside(false)
                             .asCustom(new TipsPopup(OrderDetailsActivity.this,
-                                    "亲，确定要确认收货吗？", "取消", "确定", () -> {
+                                    "您确定要收货吗？", "取消", "确定", () -> {
                                 mViewModel.orderConfirm(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),
                                         String.valueOf(mInfo.getOrder_no()), "" + AppUtils.getVersionCode(BasicApp.getContext()))
                                         .observe(this, mConfirmObserver);
@@ -372,6 +386,19 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
                             .show();
 
 
+                }else if(mStatus == 5){
+                  //联系客服
+                    if (ChatClient.getInstance().isLoggedInBefore()) {
+                        //已经登录，可以直接进入会话界面
+                        Intent intent = new IntentBuilder(this)
+                                .setServiceIMNumber("kefuchannelimid_269943")
+                                .setTitleName("美美")
+                                .build();
+                        startActivity(intent);
+                    } else {
+                        //未登录，需要登录后，再进入会话界面
+                        FToast.error("联系客服失败，请退出重新登录");
+                    }
                 }
 
 
@@ -487,10 +514,8 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
 
 
                         //切换全部订单
-                        EventBus.getDefault().post(new OrderEvent(OrderEvent.INTENT_YIWANCHENG));
-
-
-                        finish();
+                        /*EventBus.getDefault().post(new OrderEvent(OrderEvent.INTENT_YIWANCHENG));
+                        finish();*/
 
                     } else if (orderConfirm.getCode() == HttpUtils.CODE_INVALID) {
                         HttpUtils.Invalid(this);
@@ -692,6 +717,11 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
             startActivity(intent);
         }
 
+
+    }
+
+    @Override
+    public void onProdItemClick(OrderGoods item) {
 
     }
 }

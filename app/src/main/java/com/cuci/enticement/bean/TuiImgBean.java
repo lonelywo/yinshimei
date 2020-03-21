@@ -1,8 +1,15 @@
 package com.cuci.enticement.bean;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class TuiImgBean {
+
+@SuppressLint("ParcelCreator")
+public class TuiImgBean  implements Parcelable {
+
+
     public Bitmap getImg() {
         return img;
     }
@@ -12,4 +19,14 @@ public class TuiImgBean {
     }
 
     private Bitmap img;
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeParcelable(img, i);
+    }
 }
