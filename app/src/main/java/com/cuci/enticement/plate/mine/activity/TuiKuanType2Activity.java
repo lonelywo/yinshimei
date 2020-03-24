@@ -1,16 +1,23 @@
 package com.cuci.enticement.plate.mine.activity;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.text.Editable;
 import android.text.Html;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -132,18 +139,7 @@ public class TuiKuanType2Activity extends BaseActivity implements ItemImgkuangVi
 
         recyclerView.setAdapter(mmAdapter);
 
-
-
-        String strMsg = "申请换货/退款/退货退款服务需签署" + "<font color=\"#e1ad73\">" + "《退款协议》" + "</font>" + "，点击提交则默认您已查阅并同意退款协议所有内容";
-        tvShuoming.setText(Html.fromHtml(strMsg));
-        tvShuoming.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intentProd = new Intent(TuiKuanType2Activity.this, TuiAgreementActivity.class);
-                intentProd.putExtra("bannerData", "");
-                startActivity(intentProd);
-            }
-        });
+        initContent();
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -165,6 +161,38 @@ public class TuiKuanType2Activity extends BaseActivity implements ItemImgkuangVi
             islMaxCount = false;
         }
     }
+
+    private void initContent() {
+        String content="申请换货/退款/退货退款服务需签署《退款协议》，点击提交则默认您已查阅并同意退款协议所有内容";
+        SpannableString spannableString = new SpannableString(content);
+        spannableString.setSpan(new MyClickText(this), 17, 24, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tvShuoming.setMovementMethod(LinkMovementMethod.getInstance());
+        tvShuoming.setHighlightColor(Color.argb(0x40,0x4F,0x41,0xFD)); //设置点击后的颜色为透明
+        tvShuoming.setText(spannableString);}
+
+    class MyClickText extends ClickableSpan {
+        private Context context;
+        public MyClickText(TuiKuanType2Activity mTuiKuanType2Activity) {
+            this.context = mTuiKuanType2Activity;
+        }
+
+        @Override
+        public void updateDrawState(TextPaint ds) {
+            super.updateDrawState(ds);
+            //设置文本的颜色
+            ds.setColor(context.getResources().getColor(R.color.home_huang));
+            //超链接形式的下划线，false 表示不显示下划线，true表示显示下划线
+            ds.setUnderlineText(false);
+        }
+
+        @Override
+        public void onClick(View widget) {
+            Intent intentProd = new Intent(TuiKuanType2Activity.this, TuiAgreementActivity.class);
+            intentProd.putExtra("bannerData", "");
+            startActivity(intentProd);
+        }
+    }
+
 
     private void init() {
 

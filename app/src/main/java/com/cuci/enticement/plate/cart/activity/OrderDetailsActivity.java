@@ -723,5 +723,6 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
     @Override
     public void onProdItemClick(OrderGoods item) {
 
+        startActivity(new Intent(this, TuiKuanDetailsActivity.class));
     }
 }

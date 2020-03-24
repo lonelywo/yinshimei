@@ -1,15 +1,22 @@
 package com.cuci.enticement.plate.mine.activity;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Html;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -24,6 +31,7 @@ import com.cuci.enticement.bean.AllOrderList;
 import com.cuci.enticement.bean.TuiImgBean;
 import com.cuci.enticement.bean.TuiImgKuangBean;
 import com.cuci.enticement.network.ServiceCreator;
+
 import com.cuci.enticement.plate.mine.adapter.ItemImgViewBinder;
 import com.cuci.enticement.plate.mine.adapter.ItemImgkuangViewBinder;
 import com.cuci.enticement.utils.FToast;
@@ -71,7 +79,7 @@ public class TuiKuanType1Activity extends BaseActivity implements ItemImgkuangVi
     @BindView(R.id.con_toubu)
     ConstraintLayout conToubu;
     //标签
-    List<String> list;
+    List<String> list  = new ArrayList<>();
     @BindView(R.id.tv_biaoqian1)
     TextView tvBiaoqian1;
     @BindView(R.id.id_flowlayout1)
@@ -103,6 +111,7 @@ public class TuiKuanType1Activity extends BaseActivity implements ItemImgkuangVi
 
     private List<String> list1;
     private String tag1;
+    private TagAdapter<String> mAdapter1;
 
     @Override
     public int getLayoutId() {
@@ -138,8 +147,8 @@ public class TuiKuanType1Activity extends BaseActivity implements ItemImgkuangVi
 
         recyclerView.setAdapter(mmAdapter);
 
-
-        String strMsg = "申请换货/退款/退货退款服务需签署" + "<font color=\"#e1ad73\">" + "《退款协议》" + "</font>" + "，点击提交则默认您已查阅并同意退款协议所有内容";
+        initContent();
+      /*  String strMsg = "申请换货/退款/退货退款服务需签署" + "<font color=\"#e1ad73\">" + "《退款协议》" + "</font>" + "，点击提交则默认您已查阅并同意退款协议所有内容";
         tvShuoming.setText(Html.fromHtml(strMsg));
         tvShuoming.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,7 +157,7 @@ public class TuiKuanType1Activity extends BaseActivity implements ItemImgkuangVi
                 intentProd.putExtra("bannerData", "");
                 startActivity(intentProd);
             }
-        });
+        });*/
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -156,9 +165,38 @@ public class TuiKuanType1Activity extends BaseActivity implements ItemImgkuangVi
             }
         });
     }
+    private void initContent() {
+        String content="申请换货/退款/退货退款服务需签署《退款协议》，点击提交则默认您已查阅并同意退款协议所有内容";
+        SpannableString spannableString = new SpannableString(content);
+        spannableString.setSpan(new MyClickText(this), 17, 24, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tvShuoming.setMovementMethod(LinkMovementMethod.getInstance());
+        tvShuoming.setHighlightColor(Color.argb(0x40,0x4F,0x41,0xFD)); //设置点击后的颜色为透明
+        tvShuoming.setText(spannableString);}
 
+    class MyClickText extends ClickableSpan {
+        private Context context;
+        public MyClickText(TuiKuanType1Activity mTuiKuanType1Activity) {
+            this.context = mTuiKuanType1Activity;
+        }
+
+        @Override
+        public void updateDrawState(TextPaint ds) {
+            super.updateDrawState(ds);
+            //设置文本的颜色
+            ds.setColor(context.getResources().getColor(R.color.home_huang));
+            //超链接形式的下划线，false 表示不显示下划线，true表示显示下划线
+            ds.setUnderlineText(false);
+        }
+
+        @Override
+        public void onClick(View widget) {
+            Intent intentProd = new Intent(TuiKuanType1Activity.this, TuiAgreementActivity.class);
+            intentProd.putExtra("bannerData", "");
+            startActivity(intentProd);
+        }
+    }
     private void init1() {
-        tag1 = "未收到货";
+        tag1="未收到货";
         final LayoutInflater mInflater = LayoutInflater.from(this);
         list1 = new ArrayList<>();
         list1.add("未收到货");
@@ -172,16 +210,20 @@ public class TuiKuanType1Activity extends BaseActivity implements ItemImgkuangVi
 
             @Override
             public boolean onTagClick(View view, int position, FlowLayout parent) {
-                // tag = list.get(position).getName();
-                // FToast.success(tag);
+                 tag1 = list1.get(position);
+                mAdapter1.setSelectedList(position);
+                mAdapter1.notifyDataChanged();
+                 FToast.success(tag1);
+                init();
                 return true;
+
             }
         });
         idFlowlayout1.setOnSelectListener(new TagFlowLayout.OnSelectListener() {
             @Override
             public void onSelected(Set<Integer> selectPosSet) {
 
-                String s = selectPosSet.toString();
+              /*  String s = selectPosSet.toString();
                 String quStr = s.substring(s.indexOf("[") + 1, s.indexOf("]"));
                 if (TextUtils.equals(s, "[]")) {
                     tag1 = "";
@@ -191,14 +233,14 @@ public class TuiKuanType1Activity extends BaseActivity implements ItemImgkuangVi
                     tag1 = list1.get(integer);
                     FToast.success(tag1);
                 }
-                init();
+                */
             }
         });
 
-        idFlowlayout1.setAdapter(mAdapter = new TagAdapter<String>(list1) {
+        idFlowlayout1.setAdapter(mAdapter1 = new TagAdapter<String>(list1) {
             @Override
             public View getView(FlowLayout parent, int position, String user) {
-                TextView tv = (TextView) mInflater.inflate(R.layout.tv,
+                TextView tv = (TextView) mInflater.inflate(R.layout.tv1,
                         idFlowlayout1, false);
                 tv.setText(user);
                 return tv;
@@ -207,7 +249,7 @@ public class TuiKuanType1Activity extends BaseActivity implements ItemImgkuangVi
 
         });
         //预先设置选中
-        mAdapter.setSelectedList(0);
+        mAdapter1.setSelectedList(0);
 
     }
 
@@ -226,10 +268,11 @@ public class TuiKuanType1Activity extends BaseActivity implements ItemImgkuangVi
     }
 
     private void init() {
-        tag = "未按约定时间发货";
+
         final LayoutInflater mInflater = LayoutInflater.from(this);
-        list = new ArrayList<>();
+
         if(TextUtils.equals(tag1,"已收到货")){
+            tag="不喜欢/不想要";
             list.clear();
             list.add("不喜欢/不想要");
             list.add("包装/商品破损");
@@ -237,6 +280,7 @@ public class TuiKuanType1Activity extends BaseActivity implements ItemImgkuangVi
             list.add("卖家发错货");
             list.add("其它原因");
         }else {
+            tag="未按约定时间发货";
             list.clear();
             list.add("未按约定时间发货");
             list.add("快递/物流一直未送到");
@@ -252,8 +296,10 @@ public class TuiKuanType1Activity extends BaseActivity implements ItemImgkuangVi
 
             @Override
             public boolean onTagClick(View view, int position, FlowLayout parent) {
-                // tag = list.get(position).getName();
-                // FToast.success(tag);
+                 tag = list.get(position);
+                 mAdapter.setSelectedList(position);
+                 mAdapter.notifyDataChanged();
+                 FToast.success(tag);
                 return true;
             }
         });
@@ -261,7 +307,7 @@ public class TuiKuanType1Activity extends BaseActivity implements ItemImgkuangVi
             @Override
             public void onSelected(Set<Integer> selectPosSet) {
 
-                String s = selectPosSet.toString();
+             /*   String s = selectPosSet.toString();
                 String quStr = s.substring(s.indexOf("[") + 1, s.indexOf("]"));
                 if (TextUtils.equals(s, "[]")) {
                     tag = "";
@@ -270,7 +316,7 @@ public class TuiKuanType1Activity extends BaseActivity implements ItemImgkuangVi
                     Integer integer = Integer.valueOf(quStr);
                     tag = list.get(integer);
                     FToast.success(tag);
-                }
+                }*/
 
             }
         });
