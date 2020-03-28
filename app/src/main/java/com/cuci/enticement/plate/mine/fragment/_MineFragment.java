@@ -33,6 +33,7 @@ import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.event.ClickMyEvent;
 import com.cuci.enticement.event.IsnewEvent;
 import com.cuci.enticement.event.ProgoodsEvent;
+import com.cuci.enticement.plate.cart.activity.ZhuanPanActivity;
 import com.cuci.enticement.plate.common.DailyActivity;
 import com.cuci.enticement.plate.common.LoginActivity;
 import com.cuci.enticement.plate.common.popup.ShareImgTipsPopup;
@@ -327,7 +328,8 @@ public class _MineFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 if (AppUtils.isAllowPermission(mActivity)) {
-                    startActivity(new Intent(mActivity, SettingsActivity.class));
+                   // startActivity(new Intent(mActivity, SettingsActivity.class));
+                    startActivity(new Intent(mActivity, ZhuanPanActivity.class));
                 }
             }
         });
