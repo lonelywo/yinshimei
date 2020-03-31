@@ -33,6 +33,7 @@ import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.event.ClickMyEvent;
 import com.cuci.enticement.event.IsnewEvent;
 import com.cuci.enticement.event.ProgoodsEvent;
+import com.cuci.enticement.plate.cart.activity.AftermarketActivity;
 import com.cuci.enticement.plate.cart.activity.ZhuanPanActivity;
 import com.cuci.enticement.plate.common.DailyActivity;
 import com.cuci.enticement.plate.common.LoginActivity;
@@ -85,7 +86,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.ResponseBody;
 
 import static androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance;
-import static com.superrtc.ContextUtils.getApplicationContext;
+//import static com.superrtc.ContextUtils.getApplicationContext;
 
 
 /**
@@ -328,8 +329,8 @@ public class _MineFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 if (AppUtils.isAllowPermission(mActivity)) {
-                   // startActivity(new Intent(mActivity, SettingsActivity.class));
-                    startActivity(new Intent(mActivity, ZhuanPanActivity.class));
+                    startActivity(new Intent(mActivity, SettingsActivity.class));
+
                 }
             }
         });
@@ -337,7 +338,8 @@ public class _MineFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 if (AppUtils.isAllowPermission(mActivity)) {
-                    startActivity(new Intent(mActivity, NoticeActivity.class));
+                   // startActivity(new Intent(mActivity, NoticeActivity.class));
+                    startActivity(new Intent(mActivity, ZhuanPanActivity.class));
                 }
 
             }
@@ -530,7 +532,7 @@ public class _MineFragment extends BaseFragment {
                 } else if (ACTION_REFRESH_HX.equals(intent.getAction())) {
                     int data = intent.getIntExtra("data", 0);
                     Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                    Ringtone rt = RingtoneManager.getRingtone(getApplicationContext(), uri);
+                    Ringtone rt = RingtoneManager.getRingtone(mActivity, uri);
                     rt.play();
 
                 }
@@ -717,22 +719,27 @@ public class _MineFragment extends BaseFragment {
         if (AppUtils.isAllowPermission(mActivity)) {
 
             Intent intent = new Intent(mActivity, MyOrderActivity.class);
+            Intent intent2 = new Intent(mActivity, AftermarketActivity.class);
             switch (view.getId()) {
                 case R.id.daifukuan_ll:
                     intent.putExtra("cur", 1);
+                    startActivity(intent);
                     break;
                 case R.id.daifahuo_ll:
                     intent.putExtra("cur", 2);
+                    startActivity(intent);
                     break;
                 case R.id.daishouhuo_ll:
                     intent.putExtra("cur", 3);
+                    startActivity(intent);
                     break;
                 case R.id.yiwancheng_ll:
-                    intent.putExtra("cur", 4);
+                 //   intent.putExtra("cur", 4);
+                    startActivity(intent2);
                     break;
             }
 
-            startActivity(intent);
+
         }
 
 

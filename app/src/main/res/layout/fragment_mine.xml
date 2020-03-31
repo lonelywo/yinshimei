@@ -350,7 +350,7 @@
                             android:drawableTop="@drawable/yiwancheng"
                             android:drawablePadding="6dp"
                             android:gravity="center"
-                            android:text="已完成"
+                            android:text="退款/售后"
                             android:textColor="#646262"
                             app:layout_constraintBottom_toBottomOf="parent"
 

@@ -159,8 +159,8 @@ dependencies {
     //支付宝
     implementation(name: 'alipaySdk-15.6.5-20190718211159-noUtdid', ext: 'aar')
     //环信客服SDK
-    // implementation 'com.hyphenate:kefu-easeui-android:latest.release'
-    api project(':kefu-easeui')
+     implementation 'com.hyphenate:kefu-easeui-android:latest.release'
+   // api project(':kefu-easeui')
     //个推
     implementation 'com.getui:sdk:2.13.3.0'
     implementation 'com.assist:oppo:1.0.3'
