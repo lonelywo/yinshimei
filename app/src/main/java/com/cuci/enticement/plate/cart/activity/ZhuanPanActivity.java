@@ -30,6 +30,7 @@ import com.cuci.enticement.widget.OrderItemDecoration;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.appcompat.view.menu.MenuView;
@@ -79,7 +80,7 @@ public class ZhuanPanActivity extends BaseActivity implements ItemZhuanPanViewBi
     private int mPosition;
     // 对应转盘id的数组
     private int[] array = { 0, 1, 2, 5, 8, 7, 6, 3 };
-
+    List<PayOfterBean.DataBean.LotteryBean.RulesBean> mrules =new ArrayList<>();
     @Override
     public int getLayoutId() {
         return R.layout.activity_zhuanpan;
@@ -135,28 +136,29 @@ public class ZhuanPanActivity extends BaseActivity implements ItemZhuanPanViewBi
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
         mAdapter = new MultiTypeAdapter();
         mItems = new Items();
-        mItems.addAll(lottery);
+      //  mItems.addAll(lottery);
         mAdapter.setItems(mItems);
 
         recZhuanpan.setItemAnimator(new DefaultItemAnimator());
         BrandItemDecoration mDecoration = new BrandItemDecoration(this, 1,1);
 
         recZhuanpan.addItemDecoration(mDecoration);
-        mAdapter.register(ZhuanPanBean.DataBean.LotteryBean.class, new ItemZhuanPanViewBinder(this));
+      //  mAdapter.register(ZhuanPanBean.DataBean.LotteryBean.class, new ItemZhuanPanViewBinder(this));
+        mAdapter.register(PayOfterBean.DataBean.LotteryBean.RulesBean.class, new ItemZhuanPanViewBinder(this));
 
         mLayoutManager = new GridLayoutManager(this, 3);
         recZhuanpan.setLayoutManager(mLayoutManager);
 
         recZhuanpan.setAdapter(mAdapter);
 
-
+        load();
     }
 
     private void load() {
         if (ServiceCreator.Constant_IS_NEW == 1) {
             mViewModel.payofter(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "1", ServiceCreator.Constant_GOODS_ID, "" + AppUtils.getVersionCode(this)).observe(this, mObserver);
         } else {
-            mViewModel.payofter(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "0", "684617728263", "" + AppUtils.getVersionCode(this)).observe(this, mObserver);
+            mViewModel.payofter(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "0", "685646175712", "" + AppUtils.getVersionCode(this)).observe(this, mObserver);
         }
     }
 
@@ -184,8 +186,13 @@ public class ZhuanPanActivity extends BaseActivity implements ItemZhuanPanViewBi
             String b = body.string();
             PayOfterBean mPayOfterBean = new Gson().fromJson(b, PayOfterBean.class);
             if (mPayOfterBean.getCode() == 1) {
+                List<PayOfterBean.DataBean.LotteryBean.RulesBean> rules = mPayOfterBean.getData().getLottery().getRules();
+                for (int i = 0; i <rules.size() ; i++) {
 
-
+                }
+                mItems.clear();
+                mItems.addAll(rules);
+                mAdapter.notifyDataSetChanged();
             } else if (mPayOfterBean.getCode() == HttpUtils.CODE_INVALID) {
                 HttpUtils.Invalid(this);
                 finish();
@@ -208,7 +215,7 @@ public class ZhuanPanActivity extends BaseActivity implements ItemZhuanPanViewBi
     }
 
     @Override
-    public void onProdClick(ZhuanPanBean.DataBean.LotteryBean item) {
+    public void onProdClick(PayOfterBean.DataBean.LotteryBean.RulesBean item) {
         startAnim();
     }
 

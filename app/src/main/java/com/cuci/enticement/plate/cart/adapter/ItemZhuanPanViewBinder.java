@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.bean.OrderGoods;
+import com.cuci.enticement.bean.PayOfterBean;
 import com.cuci.enticement.bean.ZhuanPanBean;
 import com.cuci.enticement.utils.ImageLoader;
 import com.cuci.enticement.utils.ViewUtils;
@@ -25,14 +26,14 @@ import me.drakeet.multitype.ItemViewBinder;
 /**
  * 转盘使用
  */
-public class ItemZhuanPanViewBinder extends ItemViewBinder<ZhuanPanBean.DataBean.LotteryBean, ItemZhuanPanViewBinder.ViewHolder> {
+public class ItemZhuanPanViewBinder extends ItemViewBinder<PayOfterBean.DataBean.LotteryBean.RulesBean, ItemZhuanPanViewBinder.ViewHolder> {
 
 
 
 
     public interface OnProdClickListener {
 
-        void onProdClick(ZhuanPanBean.DataBean.LotteryBean item);
+        void onProdClick(PayOfterBean.DataBean.LotteryBean.RulesBean item);
 
 
     }
@@ -57,7 +58,7 @@ public class ItemZhuanPanViewBinder extends ItemViewBinder<ZhuanPanBean.DataBean
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull ZhuanPanBean.DataBean.LotteryBean item) {
+    protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull PayOfterBean.DataBean.LotteryBean.RulesBean item) {
 
         int adapterPosition = holder.getAdapterPosition();
         ImageLoader.loadPlaceholder(item.getImg(), holder.imgToubu);
