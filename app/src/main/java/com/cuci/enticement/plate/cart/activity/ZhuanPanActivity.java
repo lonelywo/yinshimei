@@ -128,7 +128,7 @@ public class ZhuanPanActivity extends BaseActivity implements ItemZhuanPanViewBi
         if (ServiceCreator.Constant_IS_NEW == 1) {
             mViewModel.payofter(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "1", ServiceCreator.Constant_GOODS_ID, "" + AppUtils.getVersionCode(this)).observe(this, mObserver);
         } else {
-            mViewModel.payofter(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "0", "685735443713", "" + AppUtils.getVersionCode(this)).observe(this, mObserver);
+            mViewModel.payofter(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "0", "685737467529", "" + AppUtils.getVersionCode(this)).observe(this, mObserver);
         }
     }
 
@@ -249,7 +249,7 @@ public class ZhuanPanActivity extends BaseActivity implements ItemZhuanPanViewBi
      * 开始动画
      */
     public void startAnim(){
-        ValueAnimator valueAnimator = ValueAnimator.ofInt(0, 3 * 8 + winIndex+1).setDuration(5000);
+        ValueAnimator valueAnimator = ValueAnimator.ofInt(0, 3 * 8 + array[winIndex]).setDuration(5000);
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
