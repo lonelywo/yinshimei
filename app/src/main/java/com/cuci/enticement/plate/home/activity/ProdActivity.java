@@ -747,7 +747,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                             FToast.error(numResult.getInfo());
                         }
 
-                    } catch (IOException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
 

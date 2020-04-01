@@ -4,6 +4,9 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
+
+import android.text.Html;
+import android.text.TextUtils;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -11,35 +14,35 @@ import android.widget.TextView;
 
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
-import com.cuci.enticement.bean.OrderGoods;
+import com.cuci.enticement.bean.KaQuanListBean;
+import com.cuci.enticement.bean.LuckDrawBean;
 import com.cuci.enticement.bean.PayOfterBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
-import com.cuci.enticement.bean.ZhuanPanBean;
 import com.cuci.enticement.network.ServiceCreator;
 import com.cuci.enticement.plate.cart.adapter.ItemZhuanPanViewBinder;
 import com.cuci.enticement.plate.cart.vm.CartViewModel;
-import com.cuci.enticement.plate.mine.adapter.ItemYuProdViewBinder;
+import com.cuci.enticement.plate.common.popup.CheckKaQuanTipsPopup;
+import com.cuci.enticement.plate.common.popup.LuckDrawTipsPopup;
 import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.HttpUtils;
+import com.cuci.enticement.utils.MathExtend;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.widget.BrandItemDecoration;
-import com.cuci.enticement.widget.GridItemDecoration;
-import com.cuci.enticement.widget.OrderItemDecoration;
 import com.google.gson.Gson;
+import com.lxj.xpopup.XPopup;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
-import androidx.appcompat.view.menu.MenuView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -71,16 +74,23 @@ public class ZhuanPanActivity extends BaseActivity implements ItemZhuanPanViewBi
     private GridLayoutManager mLayoutManager;
     // 未开始抽奖时的图片
     private int[] imgs1 = { R.drawable.zhuanpan_nobg, R.drawable.zhuanpan_nobg, R.drawable.zhuanpan_nobg,
-            R.drawable.zhuanpan_nobg, R.drawable.zhuanpan_bg, R.drawable.zhuanpan_nobg,
+            R.drawable.zhuanpan_nobg, R.drawable.zhuanpan_center, R.drawable.zhuanpan_nobg,
             R.drawable.zhuanpan_nobg, R.drawable.zhuanpan_nobg,R.drawable.zhuanpan_nobg};
     // 开始抽奖时的图片
-    private int[] imgs2 = { R.drawable.checked_bg, R.drawable.checked_bg, R.drawable.checked_bg,
-            R.drawable.checked_bg, R.drawable.checked_bg, R.drawable.checked_bg,
-            R.drawable.checked_bg, R.drawable.checked_bg, R.drawable.checked_bg};
+    private int[] imgs2 = { R.drawable.zhuanpan_bg, R.drawable.zhuanpan_bg, R.drawable.zhuanpan_bg,
+            R.drawable.zhuanpan_bg, R.drawable.zhuanpan_center, R.drawable.zhuanpan_bg,
+            R.drawable.zhuanpan_bg, R.drawable.zhuanpan_bg, R.drawable.zhuanpan_bg};
     private int mPosition;
     // 对应转盘id的数组
     private int[] array = { 0, 1, 2, 5, 8, 7, 6, 3 };
+    //   private int[] array = { 0, 1, 2, 3, 5, 6, 7, 8 };
     List<PayOfterBean.DataBean.LotteryBean.RulesBean> mrules =new ArrayList<>();
+    private int nums;
+    private int m_lottery_id;
+    private LuckDrawBean.DataBean data;
+    private int winIndex;
+    private PayOfterBean.DataBean.LotteryBean.RulesBean rulesBean;
+    private boolean ischeck=true;
     @Override
     public int getLayoutId() {
         return R.layout.activity_zhuanpan;
@@ -89,46 +99,6 @@ public class ZhuanPanActivity extends BaseActivity implements ItemZhuanPanViewBi
     @Override
     public void initViews(Bundle savedInstanceState) {
 
-
-
-        String b = "{\"code\":1,\"info\":\"ok\",\"data\":{\"is_lottery\":0,\"lottery\":[{\n" +
-                "          \"title\": \"5元优惠劵1000\",\n" +
-                "          \"img\": \"https://qiniu.cdn.enticementchina.com/5yuanyouhuiquan%402x.png\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "          \"title\": \"化妆棉\",\n" +
-                "          \"img\": \"https://qiniu.cdn.enticementchina.com/huazhuangmian%402x.png\"\n" +
-                "        },\n" +
-                "{\n" +
-                "          \"title\": \"5元优惠劵1000\",\n" +
-                "          \"img\": \"https://qiniu.cdn.enticementchina.com/5yuanyouhuiquan%402x.png\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "          \"title\": \"化妆棉\",\n" +
-                "          \"img\": \"https://qiniu.cdn.enticementchina.com/huazhuangmian%402x.png\"\n" +
-                "        },{\n" +
-                "          \"title\": \"5元优惠劵1000\",\n" +
-                "          \"img\": \"https://qiniu.cdn.enticementchina.com/5yuanyouhuiquan%402x.png\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "          \"title\": \"化妆棉\",\n" +
-                "          \"img\": \"https://qiniu.cdn.enticementchina.com/huazhuangmian%402x.png\"\n" +
-                "        },\n" +
-                "{\n" +
-                "          \"title\": \"5元优惠劵1000\",\n" +
-                "          \"img\": \"https://qiniu.cdn.enticementchina.com/5yuanyouhuiquan%402x.png\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "          \"title\": \"化妆棉\",\n" +
-                "          \"img\": \"https://qiniu.cdn.enticementchina.com/huazhuangmian%402x.png\"\n" +
-                "        },\n" +
-                "{\n" +
-                "                \"title\":\"化妆棉\",\n" +
-                "                \"img\":\"https://qiniu.cdn.enticementchina.com/huazhuangmian%402x.png\"\n" +
-                "            }],\"is_coupon\":0,\"coupons\":[],\"img\":\"https:\\/\\/qiniu.cdn.enticementchina.com\\/baoguo@2x.png\",\"desc\":\"派送员将会以最快的速度将包裹送到您手中\\\\n请美粉耐心等候哟~\"}}";
-        ZhuanPanBean mPayOfterBean = new Gson().fromJson(b, ZhuanPanBean.class);
-        List<ZhuanPanBean.DataBean.LotteryBean> lottery = mPayOfterBean.getData().getLottery();
-
         //透明状态栏
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -136,14 +106,14 @@ public class ZhuanPanActivity extends BaseActivity implements ItemZhuanPanViewBi
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
         mAdapter = new MultiTypeAdapter();
         mItems = new Items();
-      //  mItems.addAll(lottery);
+
         mAdapter.setItems(mItems);
 
         recZhuanpan.setItemAnimator(new DefaultItemAnimator());
         BrandItemDecoration mDecoration = new BrandItemDecoration(this, 1,1);
 
         recZhuanpan.addItemDecoration(mDecoration);
-      //  mAdapter.register(ZhuanPanBean.DataBean.LotteryBean.class, new ItemZhuanPanViewBinder(this));
+
         mAdapter.register(PayOfterBean.DataBean.LotteryBean.RulesBean.class, new ItemZhuanPanViewBinder(this));
 
         mLayoutManager = new GridLayoutManager(this, 3);
@@ -158,7 +128,7 @@ public class ZhuanPanActivity extends BaseActivity implements ItemZhuanPanViewBi
         if (ServiceCreator.Constant_IS_NEW == 1) {
             mViewModel.payofter(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "1", ServiceCreator.Constant_GOODS_ID, "" + AppUtils.getVersionCode(this)).observe(this, mObserver);
         } else {
-            mViewModel.payofter(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "0", "685646175712", "" + AppUtils.getVersionCode(this)).observe(this, mObserver);
+            mViewModel.payofter(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "0", "685735443713", "" + AppUtils.getVersionCode(this)).observe(this, mObserver);
         }
     }
 
@@ -186,13 +156,18 @@ public class ZhuanPanActivity extends BaseActivity implements ItemZhuanPanViewBi
             String b = body.string();
             PayOfterBean mPayOfterBean = new Gson().fromJson(b, PayOfterBean.class);
             if (mPayOfterBean.getCode() == 1) {
-                List<PayOfterBean.DataBean.LotteryBean.RulesBean> rules = mPayOfterBean.getData().getLottery().getRules();
-                for (int i = 0; i <rules.size() ; i++) {
-
+                if(mPayOfterBean.getData().getIs_lottery()!=0){
+                    List<PayOfterBean.DataBean.LotteryBean.RulesBean> rules = mPayOfterBean.getData().getLottery().getRules();
+                    rulesBean = new PayOfterBean.DataBean.LotteryBean.RulesBean();
+                    nums = mPayOfterBean.getData().getLottery().getNums();
+                    m_lottery_id = mPayOfterBean.getData().getLottery().getM_lottery_id();
+                    rulesBean.setTitle(String.valueOf(nums));
+                    rules.add(4,rulesBean);
+                    mItems.clear();
+                    mItems.addAll(rules);
+                    mAdapter.notifyDataSetChanged();
                 }
-                mItems.clear();
-                mItems.addAll(rules);
-                mAdapter.notifyDataSetChanged();
+
             } else if (mPayOfterBean.getCode() == HttpUtils.CODE_INVALID) {
                 HttpUtils.Invalid(this);
                 finish();
@@ -200,9 +175,9 @@ public class ZhuanPanActivity extends BaseActivity implements ItemZhuanPanViewBi
             } else {
                 FToast.error(mPayOfterBean.getInfo());
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            FToast.error("数据错误");
+
         }
     }
 
@@ -216,14 +191,65 @@ public class ZhuanPanActivity extends BaseActivity implements ItemZhuanPanViewBi
 
     @Override
     public void onProdClick(PayOfterBean.DataBean.LotteryBean.RulesBean item) {
-        startAnim();
+        if(ischeck&&nums>=0){
+            ischeck=false;
+            mViewModel.luckDraw(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(m_lottery_id), String.valueOf(nums), "" + AppUtils.getVersionCode(this)).observe(this, mluckObserver);
+        }
+
+
+    }
+    private Observer<Status<ResponseBody>> mluckObserver = status -> {
+
+        switch (status.status) {
+            case Status.SUCCESS:
+
+                ResponseBody body = status.content;
+                operaluck(body);
+                break;
+            case Status.ERROR:
+
+                FToast.error("网络错误");
+                break;
+            case Status.LOADING:
+
+                break;
+        }
+
+    };
+    private void operaluck(ResponseBody body) {
+        try {
+            String b = body.string();
+            LuckDrawBean mLuckDrawBean = new Gson().fromJson(b, LuckDrawBean.class);
+            if (mLuckDrawBean.getCode() == 1) {
+                data = mLuckDrawBean.getData();
+                winIndex = mLuckDrawBean.getData().getWinIndex();
+                nums--;
+               if(nums<0){
+                 FToast.warning("次数已经用完");
+                 return;
+               }
+                rulesBean.setTitle(String.valueOf(nums));
+                mAdapter.notifyDataSetChanged();
+                startAnim();
+
+            } else if (mLuckDrawBean.getCode() == HttpUtils.CODE_INVALID) {
+                HttpUtils.Invalid(this);
+                finish();
+                FToast.error(mLuckDrawBean.getInfo());
+            } else {
+                FToast.error(mLuckDrawBean.getInfo());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
     }
 
     /**
      * 开始动画
      */
     public void startAnim(){
-        ValueAnimator valueAnimator = ValueAnimator.ofInt(0, 3 * 8 + 6-1).setDuration(5000);
+        ValueAnimator valueAnimator = ValueAnimator.ofInt(0, 3 * 8 + winIndex+1).setDuration(5000);
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -234,7 +260,20 @@ public class ZhuanPanActivity extends BaseActivity implements ItemZhuanPanViewBi
         valueAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
+                ischeck=true;
+                new XPopup.Builder(ZhuanPanActivity.this)
+                        .dismissOnBackPressed(false)
+                        .dismissOnTouchOutside(false)
+                        .asCustom(new LuckDrawTipsPopup(ZhuanPanActivity.this, data, new LuckDrawTipsPopup.OnExitListener() {
 
+                            @Override
+                            public void onCommit(LuckDrawBean.DataBean item) {
+                                mViewModel.luckDraw(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(m_lottery_id), String.valueOf(nums), "" + AppUtils.getVersionCode(ZhuanPanActivity.this)).observe(ZhuanPanActivity.this, mluckObserver);
+
+                            }
+
+                        }))
+                        .show();
             }
         });
         valueAnimator.start();

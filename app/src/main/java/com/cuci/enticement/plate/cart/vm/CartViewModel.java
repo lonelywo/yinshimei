@@ -32,6 +32,36 @@ public class CartViewModel extends ViewModel {
         mCreator = ServiceCreator.getInstance();
     }
 
+    public MutableLiveData<Status<ResponseBody>> luckDraw(String token,String mid,String m_lottery_id,String nums,String new_version) {
+
+        final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
+        data.setValue(Status.loading(null));
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("token",token);
+        params.put("mid",mid);
+        params.put("m_lottery_id",m_lottery_id);
+        params.put("nums",nums);
+        params.put("from_type","2");
+        params.put("new_version",new_version);
+        String signs = SignUtils.signParam(params);
+        mCreator.create(CartApi.class)
+                .luckDraw("2",token,mid,m_lottery_id,nums,new_version,signs)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(@NonNull Call<ResponseBody> call,
+                                           @NonNull Response<ResponseBody> response) {
+                        data.setValue(Status.success(response.body()));
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<ResponseBody> call,
+                                          @NonNull Throwable t) {
+                        data.setValue(Status.error(null, t.getMessage() == null ? "获取失败" : t.getMessage()));
+                    }
+                });
+        return data;
+    }
+
     public MutableLiveData<Status<ResponseBody>> payofter(String token,String mid,String is_first,String order_no,String new_version) {
 
         final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();

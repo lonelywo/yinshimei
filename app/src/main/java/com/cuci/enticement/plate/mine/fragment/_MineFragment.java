@@ -292,7 +292,7 @@ public class _MineFragment extends BaseFragment {
                                 public void onPositive2() {
                                     Bitmap bitmap = BitmapFactory.decodeResource(BasicApp.getContext().getResources(), R.drawable.tuxiang);
                                     WxShareUtils.shareToWX(WxShareUtils.WX_SCENE_TIME_LINE,
-                                            "http://web.enticementchina.com/present.html?mid=" + mUserInfo.getId() + "&phone=" + mUserInfo.getPhone(), "请您即刻体验原生水",
+                                            "http://web.enticementchina.com/present.html?mid=" + mUserInfo.getId() + "&phone=" + mUserInfo.getPhone(), "邀您即刻体验蕾丝面膜",
                                             "因诗美，我的质感美学", bitmap);
                                 }
 

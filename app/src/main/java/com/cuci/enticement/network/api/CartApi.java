@@ -10,6 +10,23 @@ import retrofit2.http.POST;
 
 public interface CartApi {
 
+
+
+    /**
+     * 抽奖
+     */
+    @FormUrlEncoded
+    @POST("store/api.member.lottery/getPrize")
+    Call<ResponseBody> luckDraw(@Field("from_type") String from_type,
+                                @Field("token") String token,
+                                @Field("mid") String mid,
+                                @Field("m_lottery_id") String m_lottery_id,
+                                @Field("nums") String nums,
+                                @Field("new_version") String new_version,
+                                @Field("sign") String sign
+
+    );
+
     /**
      * 支付订单后
      */
