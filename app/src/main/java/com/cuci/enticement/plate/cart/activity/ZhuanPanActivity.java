@@ -83,7 +83,7 @@ public class ZhuanPanActivity extends BaseActivity implements ItemZhuanPanViewBi
     private int mPosition;
     // 对应转盘id的数组
     private int[] array = { 0, 1, 2, 5, 8, 7, 6, 3 };
-    //   private int[] array = { 0, 1, 2, 3, 5, 6, 7, 8 };
+   // private int[] array1 = { 0, 1, 2, 3, 5, 6, 7, 8 };
     List<PayOfterBean.DataBean.LotteryBean.RulesBean> mrules =new ArrayList<>();
     private int nums;
     private int m_lottery_id;
@@ -128,7 +128,7 @@ public class ZhuanPanActivity extends BaseActivity implements ItemZhuanPanViewBi
         if (ServiceCreator.Constant_IS_NEW == 1) {
             mViewModel.payofter(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "1", ServiceCreator.Constant_GOODS_ID, "" + AppUtils.getVersionCode(this)).observe(this, mObserver);
         } else {
-            mViewModel.payofter(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "0", "685737467529", "" + AppUtils.getVersionCode(this)).observe(this, mObserver);
+            mViewModel.payofter(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "0", "685756171105", "" + AppUtils.getVersionCode(this)).observe(this, mObserver);
         }
     }
 
@@ -162,9 +162,17 @@ public class ZhuanPanActivity extends BaseActivity implements ItemZhuanPanViewBi
                     nums = mPayOfterBean.getData().getLottery().getNums();
                     m_lottery_id = mPayOfterBean.getData().getLottery().getM_lottery_id();
                     rulesBean.setTitle(String.valueOf(nums));
-                    rules.add(4,rulesBean);
+                    mrules.add(rules.get(0));
+                    mrules.add(rules.get(1));
+                    mrules.add(rules.get(2));
+                    mrules.add(rules.get(7));
+                    mrules.add(rulesBean);
+                    mrules.add(rules.get(3));
+                    mrules.add(rules.get(6));
+                    mrules.add(rules.get(5));
+                    mrules.add(rules.get(4));
                     mItems.clear();
-                    mItems.addAll(rules);
+                    mItems.addAll(mrules);
                     mAdapter.notifyDataSetChanged();
                 }
 
@@ -225,7 +233,6 @@ public class ZhuanPanActivity extends BaseActivity implements ItemZhuanPanViewBi
                 winIndex = mLuckDrawBean.getData().getWinIndex();
                 nums--;
                if(nums<0){
-                 FToast.warning("次数已经用完");
                  return;
                }
                 rulesBean.setTitle(String.valueOf(nums));
@@ -249,7 +256,7 @@ public class ZhuanPanActivity extends BaseActivity implements ItemZhuanPanViewBi
      * 开始动画
      */
     public void startAnim(){
-        ValueAnimator valueAnimator = ValueAnimator.ofInt(0, 3 * 8 + array[winIndex]).setDuration(5000);
+        ValueAnimator valueAnimator = ValueAnimator.ofInt(0, 3 * 8 + winIndex).setDuration(5000);
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
