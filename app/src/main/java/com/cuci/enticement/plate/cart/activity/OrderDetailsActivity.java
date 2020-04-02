@@ -318,7 +318,9 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
                 break;
             case R.id.tv_zuileft:
                 if(mStatus == 3 ){
-                    startActivity(new Intent(this, DaiFaHuoTuiKuanActivity.class));
+                    Intent intent = new Intent(this, DaiFaHuoTuiKuanActivity.class);
+                    intent.putExtra("intentInfo",mInfo);
+                    startActivity(intent);
                 }else if(mStatus == 4){
                     Intent intent_tui = new Intent(this, TuiTypeActivity.class);
                     intent_tui.putExtra("intentInfo",mInfo);
@@ -710,7 +712,9 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
     @Override
     public void onProdClick(OrderGoods item) {
         if(mStatus==3){
-            startActivity(new Intent(this, DaiFaHuoTuiKuanActivity.class));
+            Intent intent = new Intent(this, DaiFaHuoTuiKuanActivity.class);
+            intent.putExtra("intentItem",item);
+            startActivity(intent);
         }else if(mStatus==4){
             Intent intent = new Intent(this, TuiTypeActivity.class);
             intent.putExtra("intentItem",item);
@@ -723,6 +727,6 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
     @Override
     public void onProdItemClick(OrderGoods item) {
 
-        startActivity(new Intent(this, TuiKuanDetailsActivity.class));
+      //  startActivity(new Intent(this, TuiKuanDetailsActivity.class));
     }
 }

@@ -17,6 +17,7 @@ import com.cuci.enticement.utils.ViewUtils;
 import com.cuci.enticement.widget.OrderItemDecoration;
 import com.cuci.enticement.widget.SmoothScrollview;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,7 +62,8 @@ public class TuiTypeActivity extends BaseActivity implements ItemTuiTypeViewBind
     private List<OrderGoods> mlist=new ArrayList<>();
     private AllOrderList.DataBean.ListBeanX mInfo;
 
-
+    //跳转商品数量
+    private List<OrderGoods> mmlist=new ArrayList<>();
     @Override
     public int getLayoutId() {
         return R.layout.activity_tui_type;
@@ -80,6 +82,7 @@ public class TuiTypeActivity extends BaseActivity implements ItemTuiTypeViewBind
         }
         mAdapter = new MultiTypeAdapter();
         mItems = new Items();
+        mmlist.clear();
         mItems.clear();
         mlist.clear();
         if(mInfo!=null){
@@ -94,7 +97,9 @@ public class TuiTypeActivity extends BaseActivity implements ItemTuiTypeViewBind
                 mItems.addAll(items);
                 ViewUtils.hideView(imgZhankai);
             }
+            mmlist.addAll(items);
         }else {
+            mmlist.add(mItem);
             mItems.add(mItem) ;
             ViewUtils.hideView(imgZhankai);
         }
@@ -141,12 +146,14 @@ public class TuiTypeActivity extends BaseActivity implements ItemTuiTypeViewBind
                 break;
             case R.id.con_tuikuan1:
                 Intent intent1 = new Intent(this, TuiKuanType1Activity.class);
-                intent1.putExtra("intentInfo", mInfo);
+                intent1.putExtra("intentInfo", (Serializable)mmlist);
+                intent1.putExtra("type",1);
                 startActivity(intent1);
                 break;
             case R.id.con_tuikuan2:
                 Intent intent2 = new Intent(this, TuiKuanType2Activity.class);
-                intent2.putExtra("intentInfo", mInfo);
+                intent2.putExtra("intentInfo", (Serializable)mmlist);
+                intent2.putExtra("type",2);
                 startActivity(intent2);
                 break;
 

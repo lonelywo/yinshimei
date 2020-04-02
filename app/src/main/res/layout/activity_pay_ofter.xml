@@ -137,17 +137,6 @@
            android:layout_marginTop="35dp"
            android:gravity="center"
            />
-        <!--<TextView
-            android:id="@+id/tv2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="请移步到我的卡券中心查看"
-            app:layout_constraintTop_toBottomOf="@+id/tv1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="5dp"
-            />-->
-
     <TextView
         android:id="@+id/ok"
         android:layout_width="0dp"
@@ -167,6 +156,83 @@
         app:layout_constraintTop_toBottomOf="@+id/tv1"
         android:visibility="gone"
         />
+   <androidx.constraintlayout.widget.ConstraintLayout
+       android:id="@+id/con_choujiang"
+       android:layout_width="match_parent"
+       android:layout_height="0dp"
+       app:layout_constraintTop_toBottomOf="@+id/con_toubu"
+       android:background="#E1AD73"
+       app:layout_constraintBottom_toBottomOf="parent"
+       android:visibility="gone"
+       >
+   <androidx.constraintlayout.widget.ConstraintLayout
+       android:layout_width="350dp"
+       android:layout_height="400dp"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintBottom_toBottomOf="parent"
+       android:background="#EAC398"
+       >
+      <androidx.constraintlayout.widget.ConstraintLayout
+          android:id="@+id/con_toubu_choujiang"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="18dp"
+          app:layout_constraintTop_toTopOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+          >
+       <ImageView
+           android:id="@+id/img_liwu"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:src="@drawable/liwu"
+           app:layout_constraintTop_toTopOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
+           />
+       <TextView
+           android:id="@+id/tv_choujiang"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="恭喜你，获得3次抽奖机会"
+           android:textColor="#EA333F"
+           app:layout_constraintTop_toTopOf="@+id/img_liwu"
+           app:layout_constraintBottom_toBottomOf="@+id/img_liwu"
+           app:layout_constraintStart_toEndOf="@+id/img_liwu"
+           android:layout_marginLeft="5dp"
+           android:textSize="14sp"
+           android:paddingBottom="5dp"
+           />
+
+      </androidx.constraintlayout.widget.ConstraintLayout>
+       <androidx.recyclerview.widget.RecyclerView
+           android:id="@+id/rec_zhuanpan"
+           app:layout_constraintTop_toBottomOf="@+id/con_toubu_choujiang"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintBottom_toBottomOf="parent"
+           />
+        <TextView
+            android:id="@+id/tv_shuoming"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="活动规则"
+            android:textColor="#83481D"
+            android:background="@drawable/shape_choujiang__guize_bg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/con_toubu_choujiang"
+            android:paddingLeft="10dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:paddingRight="5dp"
+            android:textSize="12sp"
+            />
+   </androidx.constraintlayout.widget.ConstraintLayout>
+
+   </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

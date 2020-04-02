@@ -28,17 +28,28 @@ import com.caimuhao.rxpicker.bean.ImageItem;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.AllOrderList;
+import com.cuci.enticement.bean.OrderGoods;
+import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.TuiImgBean;
 import com.cuci.enticement.bean.TuiImgKuangBean;
+import com.cuci.enticement.bean.TuikuanSQBean;
+import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.network.ServiceCreator;
 
+import com.cuci.enticement.plate.cart.activity.TuiKuanDetails2Activity;
+import com.cuci.enticement.plate.cart.activity.TuiKuanDetailsActivity;
 import com.cuci.enticement.plate.mine.adapter.ItemImgViewBinder;
 import com.cuci.enticement.plate.mine.adapter.ItemImgkuangViewBinder;
+import com.cuci.enticement.plate.mine.vm.MineViewModel;
+import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.ImageUtils;
 import com.cuci.enticement.utils.RxImageLoader;
+import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.widget.OrderItemDecoration;
 import com.cuci.enticement.widget.SmoothScrollview;
+import com.google.gson.Gson;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
@@ -48,6 +59,8 @@ import java.util.List;
 import java.util.Set;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -57,6 +70,7 @@ import butterknife.OnTextChanged;
 import io.reactivex.disposables.Disposable;
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
+import okhttp3.ResponseBody;
 
 
 public class TuiKuanType1Activity extends BaseActivity implements ItemImgkuangViewBinder.OnProdClickListener1, ItemImgViewBinder.OnProdClickListener2 {
@@ -107,12 +121,16 @@ public class TuiKuanType1Activity extends BaseActivity implements ItemImgkuangVi
     private GridLayoutManager mLayoutManager;
     private TagAdapter<String> mAdapter;
     private String mImagePath;
-    private AllOrderList.DataBean.ListBeanX mInfo;
+    private List<OrderGoods> mInfo;
 
     private List<String> list1;
     private String tag1;
     private TagAdapter<String> mAdapter1;
+    private MineViewModel mViewModel;
+    private UserInfo mUserInfo;
 
+    //商品id
+    List<String> mlist = new ArrayList<>();
     @Override
     public int getLayoutId() {
         return R.layout.activity_tui_type1;
@@ -124,7 +142,12 @@ public class TuiKuanType1Activity extends BaseActivity implements ItemImgkuangVi
         if (intent == null) {
             return;
         }
-        mInfo = (AllOrderList.DataBean.ListBeanX) intent.getSerializableExtra("intentInfo");
+        mViewModel = ViewModelProviders.of(this).get(MineViewModel.class);
+        mUserInfo = SharedPrefUtils.get(UserInfo.class);
+        mInfo = (List<OrderGoods>) intent.getSerializableExtra("intentInfo");
+        for (int i = 0; i <mInfo.size() ; i++) {
+
+        }
         init1();
         init();
         RxPicker.init(new RxImageLoader());
@@ -164,7 +187,54 @@ public class TuiKuanType1Activity extends BaseActivity implements ItemImgkuangVi
                 finish();
             }
         });
+        tvCommit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String trim = idEditorDetail.getText().toString().trim();
+                if(mUserInfo!=null){
+                 /*   mViewModel.SQtuikuan(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2",""+order_no, join,"1","",tag,trim,"",""+ AppUtils.getVersionCode(TuiKuanType1Activity.this))
+                            .observe(TuiKuanType1Activity.this, mCommitObserver);*/
+                }
+
+            }
+        });
+
     }
+
+    private Observer<Status<ResponseBody>> mCommitObserver = status -> {
+        switch (status.status) {
+            case Status.SUCCESS:
+                ResponseBody body = status.content;
+                try {
+                    String result = body.string();
+                    TuikuanSQBean mbean = new Gson().fromJson(result, TuikuanSQBean.class);
+                    if (mbean.getCode() == 1) {
+                        String refund_id = mbean.getData().getRefund_id();
+                        Intent intent = new Intent(this, TuiKuanDetailsActivity.class);
+                        intent.putExtra("refund_id",refund_id);
+                        startActivity(intent);
+                        finish();
+                        FToast.success(mbean.getInfo());
+
+                    } else if (mbean.getCode() == HttpUtils.CODE_INVALID) {
+                        HttpUtils.Invalid(this);
+                        FToast.error(mbean.getInfo());
+                    } else {
+                        FToast.error(mbean.getInfo());
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            case Status.LOADING:
+                break;
+            case Status.ERROR:
+                FToast.error(status.message);
+                break;
+        }
+    };
+
     private void initContent() {
         String content="申请换货/退款/退货退款服务需签署《退款协议》，点击提交则默认您已查阅并同意退款协议所有内容";
         SpannableString spannableString = new SpannableString(content);

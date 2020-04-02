@@ -22,6 +22,48 @@ import retrofit2.Response;
 public class MineViewModel extends ViewModel {
 
     private ServiceCreator mCreator;
+    public MineViewModel() {
+        mCreator = ServiceCreator.getInstance();
+    }
+
+    /**
+     * 申请退款
+     */
+    public MutableLiveData<Status<ResponseBody>> SQtuikuan(String token,String mid,String from_type,String order_no,String item_id,String type,String goods_status,String reason,String desc,String image,String new_version) {
+
+        final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
+        liveData.setValue(Status.loading(null));
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("token",token);
+        params.put("mid",mid);
+        params.put("from_type",from_type);
+        params.put("order_no",order_no);
+        params.put("item_id",item_id);
+        params.put("type",type);
+        params.put("goods_status",goods_status);
+        params.put("reason",reason);
+        params.put("desc",desc);
+        params.put("image",image);
+        params.put("new_version",new_version);
+        String signs = SignUtils.signParamRemoveNull(params);
+        mCreator.create(MineApi.class)
+                .SQtuikuan(token,mid,from_type,order_no,item_id,type,goods_status,reason,desc,image,new_version,signs)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(@NonNull Call<ResponseBody> call,
+                                           @NonNull Response<ResponseBody> response) {
+                        liveData.setValue(Status.success(response.body()));
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<ResponseBody> call,
+                                          @NonNull Throwable t) {
+                        liveData.setValue(Status.error(null, t.getMessage() == null ? "网络错误" : t.getMessage()));
+                    }
+                });
+        return liveData;
+
+    }
 
     /**
      * 会员优惠券列表
@@ -70,12 +112,6 @@ public class MineViewModel extends ViewModel {
                 });
         return liveData;
 
-    }
-
-
-
-    public MineViewModel() {
-        mCreator = ServiceCreator.getInstance();
     }
     /**
      * 公告详情

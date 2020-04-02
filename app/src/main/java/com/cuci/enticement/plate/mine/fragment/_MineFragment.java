@@ -34,6 +34,7 @@ import com.cuci.enticement.event.ClickMyEvent;
 import com.cuci.enticement.event.IsnewEvent;
 import com.cuci.enticement.event.ProgoodsEvent;
 import com.cuci.enticement.plate.cart.activity.AftermarketActivity;
+import com.cuci.enticement.plate.cart.activity.PayOfterActivity;
 import com.cuci.enticement.plate.cart.activity.ZhuanPanActivity;
 import com.cuci.enticement.plate.common.DailyActivity;
 import com.cuci.enticement.plate.common.LoginActivity;
@@ -338,8 +339,8 @@ public class _MineFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 if (AppUtils.isAllowPermission(mActivity)) {
-                   // startActivity(new Intent(mActivity, NoticeActivity.class));
-                    startActivity(new Intent(mActivity, ZhuanPanActivity.class));
+                    startActivity(new Intent(mActivity, NoticeActivity.class));
+                    // startActivity(new Intent(mActivity, PayOfterActivity.class));
                 }
 
             }

@@ -9,6 +9,27 @@ import retrofit2.http.POST;
 
 public interface MineApi {
 
+
+    /**
+     * 申请退款
+     */
+    @FormUrlEncoded
+    @POST("store/api.member.refund/apply")
+    Call<ResponseBody> SQtuikuan(
+            @Field("token") String token,
+            @Field("mid") String mid,
+            @Field("from_type") String from_type,
+            @Field("order_no") String order_no,
+            @Field("item_id") String item_id,
+            @Field("type") String type,
+            @Field("goods_status") String goods_status,
+            @Field("reason") String reason,
+            @Field("desc") String desc,
+            @Field("image") String image,
+            @Field("new_version") String new_version,
+            @Field("sign") String sign
+    );
+
     /**
      * 会员优惠券列表
      */
