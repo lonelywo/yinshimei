@@ -37,7 +37,6 @@ public class TuPianModel extends ViewModel {
      */
     public MutableLiveData<Status<ResponseBody>> SCtupian(String image ) {
 
-
         // 创建 RequestBody，用于封装构建RequestBody
         File file = new File(image);
         RequestBody requestFile =
@@ -45,10 +44,10 @@ public class TuPianModel extends ViewModel {
 
         // MultipartBody.Part  和后端约定好Key，这里的partName是用image
         MultipartBody.Part body =
-                MultipartBody.Part.createFormData("fill","tupian", requestFile);
+                MultipartBody.Part.createFormData("file[]","tupian.png", requestFile);
 
 //funName
-        RequestBody funName = RequestBody.create(null, image);
+        RequestBody funName = RequestBody.create(MediaType.parse("multipart/form-data"), image);
 
         final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
         data.setValue(Status.loading(null));

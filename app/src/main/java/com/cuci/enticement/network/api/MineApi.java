@@ -25,7 +25,7 @@ public interface MineApi {
     );
     @Multipart
     @POST("store/api.page/upload")
-    Call<ResponseBody> upload(@Part("fill[]") RequestBody img,
+    Call<ResponseBody> upload(@Part("file[]") RequestBody img,
                               @Part MultipartBody.Part file
            );
     /**

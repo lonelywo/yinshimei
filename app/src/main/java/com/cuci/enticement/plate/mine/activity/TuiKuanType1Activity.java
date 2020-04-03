@@ -503,8 +503,8 @@ public class TuiKuanType1Activity extends BaseActivity implements ItemImgkuangVi
                                 Bitmap mBitmap = null;
                                 try {
                                     mBitmap = analyzeBitmap(mImagePath);
-                                    byte[] bytes = GetByteByNetUrl.readStream(mImagePath);
-                                    sb.append(bytes);
+                                    byte[] bitmapByte = GetByteByNetUrl.BufferStreamForByte(mImagePath);
+
 
                                 } catch (Exception e) {
                                     e.printStackTrace();

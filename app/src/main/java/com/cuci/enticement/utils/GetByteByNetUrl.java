@@ -1,7 +1,11 @@
 package com.cuci.enticement.utils;
 
+import android.graphics.Bitmap;
+
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -67,6 +71,49 @@ public class GetByteByNetUrl {
         return outStream.toByteArray();
     }
 
+    public static byte[] getBitmapByte(Bitmap bitmap) {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+        try {
+            out.flush();
+            out.close();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        return out.toByteArray();
+    }
+    /***
 
-
+     * @param spec 图片路径
+     * @return url请求结果
+     */
+    public static byte[] BufferStreamForByte(String spec) {
+        byte[] content = null;
+        try {
+            BufferedInputStream bis = null;
+            ByteArrayOutputStream out = null;
+            try {
+                FileInputStream input=new FileInputStream(spec);
+                bis = new BufferedInputStream(input, 1024);
+                byte[] bytes = new byte[1024];
+                int len;
+                out = new ByteArrayOutputStream();
+                while ((len = bis.read(bytes)) > 0) {
+                    out.write(bytes, 0, len);
+                }
+                bis.close();
+                content = out.toByteArray();
+            } finally {
+                if (bis != null)
+                    bis.close();
+                if (out != null)
+                    out.close();
+            }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return content;
+    }
 }
