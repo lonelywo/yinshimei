@@ -33,6 +33,7 @@ import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.TuiImgBean;
 import com.cuci.enticement.bean.TuiImgKuangBean;
 import com.cuci.enticement.bean.TuikuanSQBean;
+import com.cuci.enticement.bean.UploadTuBean;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.network.ServiceCreator;
 
@@ -40,13 +41,18 @@ import com.cuci.enticement.plate.cart.activity.TuiKuanDetails2Activity;
 import com.cuci.enticement.plate.cart.activity.TuiKuanDetailsActivity;
 import com.cuci.enticement.plate.mine.adapter.ItemImgViewBinder;
 import com.cuci.enticement.plate.mine.adapter.ItemImgkuangViewBinder;
+import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
+import com.cuci.enticement.plate.mine.vm.TuPianModel;
 import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.GetByteByNetUrl;
 import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.ImageUtils;
 import com.cuci.enticement.utils.RxImageLoader;
 import com.cuci.enticement.utils.SharedPrefUtils;
+import com.cuci.enticement.utils.StringUtils;
+import com.cuci.enticement.utils.UtilsForClick;
 import com.cuci.enticement.widget.OrderItemDecoration;
 import com.cuci.enticement.widget.SmoothScrollview;
 import com.google.gson.Gson;
@@ -61,6 +67,7 @@ import java.util.Set;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -131,6 +138,16 @@ public class TuiKuanType1Activity extends BaseActivity implements ItemImgkuangVi
 
     //商品id
     List<String> mlist = new ArrayList<>();
+    //退款类型
+    private String type;
+    //商品id拼接
+    private String join;
+    private long order_no;
+    //图片
+    List<String> mlistimg = new ArrayList<>();
+    private String join_img;
+    private TuPianModel tuPianModel;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_tui_type1;
@@ -143,11 +160,15 @@ public class TuiKuanType1Activity extends BaseActivity implements ItemImgkuangVi
             return;
         }
         mViewModel = ViewModelProviders.of(this).get(MineViewModel.class);
+        tuPianModel = ViewModelProviders.of(this).get(TuPianModel.class);
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
         mInfo = (List<OrderGoods>) intent.getSerializableExtra("intentInfo");
+        type = intent.getStringExtra("type");
         for (int i = 0; i <mInfo.size() ; i++) {
-
+            mlist.add(String.valueOf(mInfo.get(i).getId())) ;
         }
+        join = StringUtils.join(mlist);
+        order_no = mInfo.get(0).getOrder_no();
         init1();
         init();
         RxPicker.init(new RxImageLoader());
@@ -169,7 +190,7 @@ public class TuiKuanType1Activity extends BaseActivity implements ItemImgkuangVi
         recyclerView.setLayoutManager(mLayoutManager);
 
         recyclerView.setAdapter(mmAdapter);
-
+        mlistimg.clear();
         initContent();
       /*  String strMsg = "申请换货/退款/退货退款服务需签署" + "<font color=\"#e1ad73\">" + "《退款协议》" + "</font>" + "，点击提交则默认您已查阅并同意退款协议所有内容";
         tvShuoming.setText(Html.fromHtml(strMsg));
@@ -190,10 +211,17 @@ public class TuiKuanType1Activity extends BaseActivity implements ItemImgkuangVi
         tvCommit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String trim = idEditorDetail.getText().toString().trim();
-                if(mUserInfo!=null){
-                 /*   mViewModel.SQtuikuan(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2",""+order_no, join,"1","",tag,trim,"",""+ AppUtils.getVersionCode(TuiKuanType1Activity.this))
-                            .observe(TuiKuanType1Activity.this, mCommitObserver);*/
+                if(UtilsForClick.isFastClick()){
+                    String trim = idEditorDetail.getText().toString().trim();
+                    if(mlistimg.size()!=0){
+                        join_img = StringUtils.join(mlistimg);
+                    }else {
+                        join_img="";
+                    }
+                    if(mUserInfo!=null){
+                        mViewModel.SQtuikuan(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2",""+order_no, TuiKuanType1Activity.this.join,type,tag1,tag,trim,join_img,""+ AppUtils.getVersionCode(TuiKuanType1Activity.this))
+                                .observe(TuiKuanType1Activity.this, mCommitObserver);
+                    }
                 }
 
             }
@@ -209,8 +237,11 @@ public class TuiKuanType1Activity extends BaseActivity implements ItemImgkuangVi
                     String result = body.string();
                     TuikuanSQBean mbean = new Gson().fromJson(result, TuikuanSQBean.class);
                     if (mbean.getCode() == 1) {
+                        //退款申请成功后，刷新个人中心状态
+                        Intent intent2 = new Intent(_MineFragment.ACTION_REFRESH_STATUS);
+                        LocalBroadcastManager.getInstance(this).sendBroadcast(intent2);
                         String refund_id = mbean.getData().getRefund_id();
-                        Intent intent = new Intent(this, TuiKuanDetailsActivity.class);
+                        Intent intent = new Intent(this, TuiKuanDetails2Activity.class);
                         intent.putExtra("refund_id",refund_id);
                         startActivity(intent);
                         finish();
@@ -425,6 +456,10 @@ public class TuiKuanType1Activity extends BaseActivity implements ItemImgkuangVi
     public void onProdClick3(int position) {
         TuiImgKuangBean tuiImgKuangBean = new TuiImgKuangBean();
         imglist.remove(position);
+        if(mlistimg.size()!=0){
+            mlistimg.remove(position);
+        }
+
         int size = imglist.size();
         if (imglist.size() < 5) {
             mItems.clear();
@@ -453,13 +488,14 @@ public class TuiKuanType1Activity extends BaseActivity implements ItemImgkuangVi
                 .subscribe(imageItems -> {
                     //得到结果
                     TuiImgKuangBean tuiImgKuangBean = new TuiImgKuangBean();
-
+                    StringBuilder sb = new StringBuilder();
                     if (imageItems.size() == 0) {
                         return;
                     }
                     for (int i = 0; i < imageItems.size(); i++) {
                         ImageItem imageItem = imageItems.get(i);
                         mImagePath = imageItem.getPath();
+                        String name = imageItem.getName();
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -467,7 +503,9 @@ public class TuiKuanType1Activity extends BaseActivity implements ItemImgkuangVi
                                 Bitmap mBitmap = null;
                                 try {
                                     mBitmap = analyzeBitmap(mImagePath);
-                                    //    mBitmap = BitmapUitls.getSDCardImg(mImagePath);
+                                    byte[] bytes = GetByteByNetUrl.readStream(mImagePath);
+                                    sb.append(bytes);
+
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
@@ -481,6 +519,8 @@ public class TuiKuanType1Activity extends BaseActivity implements ItemImgkuangVi
                         });
 
                     }
+                    tuPianModel.SCtupian(mImagePath).observe(TuiKuanType1Activity.this, mCommitTPObserver);
+                    showLoading();
                     int size = imglist.size();
                     if (imglist.size() < 5) {
                         mItems.clear();
@@ -494,6 +534,39 @@ public class TuiKuanType1Activity extends BaseActivity implements ItemImgkuangVi
                     mmAdapter.notifyDataSetChanged();
                 });
     }
+
+    private Observer<Status<ResponseBody>> mCommitTPObserver = status -> {
+        switch (status.status) {
+            case Status.SUCCESS:
+                dismissLoading();
+                ResponseBody body = status.content;
+                try {
+                    String result = body.string();
+                    UploadTuBean mbean = new Gson().fromJson(result, UploadTuBean.class);
+                    if (mbean.getCode() == 1) {
+                        List<String> url = mbean.getData().getUrl();
+                        mlistimg.addAll(url);
+                        FToast.success(mbean.getInfo());
+                    } else if (mbean.getCode() == HttpUtils.CODE_INVALID) {
+                        HttpUtils.Invalid(this);
+                        FToast.error(mbean.getInfo());
+                    } else {
+                        FToast.error(mbean.getInfo());
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            case Status.LOADING:
+                break;
+            case Status.ERROR:
+                dismissLoading();
+                FToast.error(status.message);
+                break;
+        }
+    };
+
 
     /**
      * yasuo

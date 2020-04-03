@@ -50,6 +50,11 @@
             >
         </activity>
         <activity
+            android:name=".plate.cart.activity.TuiKuanDetails2Activity"
+            android:screenOrientation="portrait"
+            >
+        </activity>
+        <activity
             android:name=".plate.cart.activity.AftermarketActivity"
             android:screenOrientation="portrait"
             >
@@ -190,6 +195,7 @@
         </activity>
         <activity android:name=".plate.cart.activity.OrderDetailsActivity"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             >
 
         </activity>

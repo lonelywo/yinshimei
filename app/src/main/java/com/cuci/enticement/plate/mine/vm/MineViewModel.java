@@ -26,6 +26,8 @@ public class MineViewModel extends ViewModel {
         mCreator = ServiceCreator.getInstance();
     }
 
+
+
     /**
      * 申请退款
      */

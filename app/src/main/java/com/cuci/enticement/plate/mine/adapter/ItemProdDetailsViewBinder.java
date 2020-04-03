@@ -56,9 +56,9 @@ public class ItemProdDetailsViewBinder extends ItemViewBinder<OrderGoods, ItemPr
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull OrderGoods item) {
 
-        if (mStatus == 0 || mStatus == 2) {
+        if (mStatus == 0 || mStatus == 2||mStatus == 3) {
             ViewUtils.hideView(holder.tuikuanTv);
-        }else if(mStatus == 3 || mStatus == 4){
+        }else if( mStatus == 4){
             holder.tuikuanTv.setText("退款");
             ViewUtils.showView(holder.tuikuanTv);
         }else if(mStatus == 5 ){
