@@ -10,6 +10,7 @@ import com.cuci.enticement.network.api.MineApi;
 import com.cuci.enticement.utils.SignUtils;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,24 +36,30 @@ public class TuPianModel extends ViewModel {
      * 提交
      * @return
      */
-    public MutableLiveData<Status<ResponseBody>> SCtupian(String image ) {
+    public MutableLiveData<Status<ResponseBody>> SCtupian(List<String> image ) {
 
-        // 创建 RequestBody，用于封装构建RequestBody
+        List<MultipartBody.Part> list =new ArrayList<MultipartBody.Part>();
+        for (int i = 0; i <image.size() ; i++) {
+            File file =new File(image.get(i));
+            RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+            MultipartBody.Part body = MultipartBody.Part.createFormData("file[]", System.currentTimeMillis()+".jpg", requestFile);
+            list.add(body);
+
+        }
+
+       /* // 创建 RequestBody，用于封装构建RequestBody
         File file = new File(image);
         RequestBody requestFile =
                 RequestBody.create(MediaType.parse("multipart/form-data"),file);
 
         // MultipartBody.Part  和后端约定好Key，这里的partName是用image
         MultipartBody.Part body =
-                MultipartBody.Part.createFormData("file[]","tupian.png", requestFile);
-
-//funName
-        RequestBody funName = RequestBody.create(MediaType.parse("multipart/form-data"), image);
+                MultipartBody.Part.createFormData("file[]","tupian.png", requestFile);*/
 
         final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
         data.setValue(Status.loading(null));
         mCreator.create(MineApi.class)
-                .upload(funName,body)
+                .upload(list)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call,

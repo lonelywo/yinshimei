@@ -17,14 +17,17 @@ import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
 import com.caimuhao.rxpicker.RxPicker;
 import com.caimuhao.rxpicker.bean.ImageItem;
+import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.AllOrderList;
@@ -56,6 +59,7 @@ import com.cuci.enticement.utils.UtilsForClick;
 import com.cuci.enticement.widget.OrderItemDecoration;
 import com.cuci.enticement.widget.SmoothScrollview;
 import com.google.gson.Gson;
+import com.hp.hpl.sparta.xpath.ThisNodeTest;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
@@ -65,6 +69,7 @@ import java.util.List;
 import java.util.Set;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.util.Consumer;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -147,7 +152,11 @@ public class TuiKuanType1Activity extends BaseActivity implements ItemImgkuangVi
     List<String> mlistimg = new ArrayList<>();
     private String join_img;
     private TuPianModel tuPianModel;
+    //图片地址
+    List<String> mImagePaths = new ArrayList<>();
 
+    //全局时间
+    private long time=0;
     @Override
     public int getLayoutId() {
         return R.layout.activity_tui_type1;
@@ -191,6 +200,7 @@ public class TuiKuanType1Activity extends BaseActivity implements ItemImgkuangVi
 
         recyclerView.setAdapter(mmAdapter);
         mlistimg.clear();
+
         initContent();
       /*  String strMsg = "申请换货/退款/退货退款服务需签署" + "<font color=\"#e1ad73\">" + "《退款协议》" + "</font>" + "，点击提交则默认您已查阅并同意退款协议所有内容";
         tvShuoming.setText(Html.fromHtml(strMsg));
@@ -486,16 +496,23 @@ public class TuiKuanType1Activity extends BaseActivity implements ItemImgkuangVi
                 .limit(1, 5 - imglist.size())
                 .start(this)
                 .subscribe(imageItems -> {
+
+                    long currentTime = System.currentTimeMillis();
+                    if (currentTime - time < 800) {
+                        time = currentTime;
+                        return;
+                    }
+                    time = currentTime;
                     //得到结果
                     TuiImgKuangBean tuiImgKuangBean = new TuiImgKuangBean();
-                    StringBuilder sb = new StringBuilder();
+                    mImagePaths.clear();
                     if (imageItems.size() == 0) {
                         return;
                     }
                     for (int i = 0; i < imageItems.size(); i++) {
                         ImageItem imageItem = imageItems.get(i);
                         mImagePath = imageItem.getPath();
-                        String name = imageItem.getName();
+                        mImagePaths.add(mImagePath);
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -503,8 +520,6 @@ public class TuiKuanType1Activity extends BaseActivity implements ItemImgkuangVi
                                 Bitmap mBitmap = null;
                                 try {
                                     mBitmap = analyzeBitmap(mImagePath);
-                                    byte[] bitmapByte = GetByteByNetUrl.BufferStreamForByte(mImagePath);
-
 
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -519,8 +534,8 @@ public class TuiKuanType1Activity extends BaseActivity implements ItemImgkuangVi
                         });
 
                     }
-                    tuPianModel.SCtupian(mImagePath).observe(TuiKuanType1Activity.this, mCommitTPObserver);
-                    showLoading();
+                  /*  tuPianModel.SCtupian(mImagePaths).observe(TuiKuanType1Activity.this, mCommitTPObserver);
+                    showLoading();*/
                     int size = imglist.size();
                     if (imglist.size() < 5) {
                         mItems.clear();
@@ -544,6 +559,7 @@ public class TuiKuanType1Activity extends BaseActivity implements ItemImgkuangVi
                     String result = body.string();
                     UploadTuBean mbean = new Gson().fromJson(result, UploadTuBean.class);
                     if (mbean.getCode() == 1) {
+
                         List<String> url = mbean.getData().getUrl();
                         mlistimg.addAll(url);
                         FToast.success(mbean.getInfo());

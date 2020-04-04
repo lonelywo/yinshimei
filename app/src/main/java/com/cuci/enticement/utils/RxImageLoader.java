@@ -18,7 +18,7 @@ public class RxImageLoader implements RxPickerImageLoader {
     public void display(ImageView imageView, String path, int width, int height) {
 
         RequestOptions options = new RequestOptions()
-                .centerCrop()
+                .fitCenter()
                 .placeholder(R.drawable.hd_default_image)
                 .override(width, height);
 

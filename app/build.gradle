@@ -130,6 +130,7 @@ dependencies {
     implementation 'com.sprylab.android.texturevideoview:texturevideoview:1.2.1'
     //图片选择
     implementation 'com.caimuhao:rxpicker:1.1.5'
+
     //扫描二维码
     implementation 'cn.yipianfengye.android:zxing-library:2.2'
     //Bugly
