@@ -248,7 +248,16 @@ public interface UserApi {
                                      @Field("new_version") String new_version,
                                      @Field("sign") String sign);
 
-
+    /**
+     * 退货快递
+     */
+    @FormUrlEncoded
+    @POST("store/api.member.refund/express")
+    Call<ResponseBody> refundExpress(@Field("from_type") String fromType,
+                                     @Field("mid") String mid,
+                                     @Field("token") String token,
+                                     @Field("new_version") String new_version,
+                                     @Field("sign") String sign);
 
 
 

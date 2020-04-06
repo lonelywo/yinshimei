@@ -29,19 +29,34 @@ import com.caimuhao.rxpicker.bean.ImageItem;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.AllOrderList;
+import com.cuci.enticement.bean.OrderGoods;
+import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.TagBean;
 import com.cuci.enticement.bean.TuiImgBean;
 import com.cuci.enticement.bean.TuiImgKuangBean;
+import com.cuci.enticement.bean.TuikuanSQBean;
+import com.cuci.enticement.bean.UploadTuBean;
+import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.network.ServiceCreator;
+import com.cuci.enticement.plate.cart.activity.TuiKuanDetails2Activity;
 import com.cuci.enticement.plate.mine.adapter.ItemImgViewBinder;
 import com.cuci.enticement.plate.mine.adapter.ItemImgkuangViewBinder;
+import com.cuci.enticement.plate.mine.fragment._MineFragment;
+import com.cuci.enticement.plate.mine.vm.MineViewModel;
+import com.cuci.enticement.plate.mine.vm.TuPianModel;
+import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.BitmapUitls;
 import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.ImageUtils;
 import com.cuci.enticement.utils.RxImageLoader;
+import com.cuci.enticement.utils.SharedPrefUtils;
+import com.cuci.enticement.utils.StringUtils;
+import com.cuci.enticement.utils.UtilsForClick;
 import com.cuci.enticement.widget.BrandItemDecoration;
 import com.cuci.enticement.widget.OrderItemDecoration;
 import com.cuci.enticement.widget.SmoothScrollview;
+import com.google.gson.Gson;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
@@ -51,6 +66,9 @@ import java.util.List;
 import java.util.Set;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -61,6 +79,7 @@ import butterknife.OnTextChanged;
 import io.reactivex.disposables.Disposable;
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
+import okhttp3.ResponseBody;
 
 
 public class TuiKuanType2Activity extends BaseActivity implements ItemImgkuangViewBinder.OnProdClickListener1,ItemImgViewBinder.OnProdClickListener2 {
@@ -105,7 +124,22 @@ public class TuiKuanType2Activity extends BaseActivity implements ItemImgkuangVi
     private GridLayoutManager mLayoutManager;
     private TagAdapter<String> mAdapter;
     private String mImagePath;
-    private AllOrderList.DataBean.ListBeanX mInfo;
+    private List<OrderGoods> mInfo;
+    private MineViewModel mViewModel;
+    private UserInfo mUserInfo;
+    private TuPianModel tuPianModel;
+    //商品id
+    List<String> mlist = new ArrayList<>();
+    //退款类型
+    private String type;
+    //商品id拼接
+    private String join;
+    private long order_no;
+    //图片
+    List<String> mlistimg = new ArrayList<>();
+    private String join_img;
+    //图片地址
+    List<String> mImagePaths = new ArrayList<>();
     @Override
     public int getLayoutId() {
         return R.layout.activity_tui_type2;
@@ -117,7 +151,17 @@ public class TuiKuanType2Activity extends BaseActivity implements ItemImgkuangVi
         if (intent == null) {
             return;
         }
-        mInfo = (AllOrderList.DataBean.ListBeanX) intent.getSerializableExtra("intentInfo");
+        mViewModel = ViewModelProviders.of(this).get(MineViewModel.class);
+        tuPianModel = ViewModelProviders.of(this).get(TuPianModel.class);
+        mUserInfo = SharedPrefUtils.get(UserInfo.class);
+        mInfo = (List<OrderGoods>) intent.getSerializableExtra("intentInfo");
+        type = intent.getStringExtra("type");
+        for (int i = 0; i <mInfo.size() ; i++) {
+            mlist.add(String.valueOf(mInfo.get(i).getId())) ;
+        }
+        join = StringUtils.join(mlist);
+        order_no = mInfo.get(0).getOrder_no();
+
         init();
         RxPicker.init(new RxImageLoader());
         mmAdapter = new MultiTypeAdapter();
@@ -146,7 +190,62 @@ public class TuiKuanType2Activity extends BaseActivity implements ItemImgkuangVi
                 finish();
             }
         });
+        tvCommit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(UtilsForClick.isFastClick()){
+                    String trim = idEditorDetail.getText().toString().trim();
+                    if(mlistimg.size()!=0){
+                        join_img = StringUtils.join(mlistimg);
+                    }else {
+                        join_img="";
+                    }
+                    if(mUserInfo!=null){
+                        mViewModel.SQtuikuan(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2",""+order_no, TuiKuanType2Activity.this.join,type,"",tag,trim,join_img,""+ AppUtils.getVersionCode(TuiKuanType2Activity.this))
+                                .observe(TuiKuanType2Activity.this, mCommitObserver);
+                    }
+                }
+
+            }
+        });
     }
+
+    private Observer<Status<ResponseBody>> mCommitObserver = status -> {
+        switch (status.status) {
+            case Status.SUCCESS:
+                ResponseBody body = status.content;
+                try {
+                    String result = body.string();
+                    TuikuanSQBean mbean = new Gson().fromJson(result, TuikuanSQBean.class);
+                    if (mbean.getCode() == 1) {
+                        //退款申请成功后，刷新个人中心状态
+                        Intent intent2 = new Intent(_MineFragment.ACTION_REFRESH_STATUS);
+                        LocalBroadcastManager.getInstance(this).sendBroadcast(intent2);
+                        String refund_id = mbean.getData().getRefund_id();
+                        Intent intent = new Intent(this, TuiKuanDetails2Activity.class);
+                        intent.putExtra("refund_id",refund_id);
+                        startActivity(intent);
+                        finish();
+                        FToast.success(mbean.getInfo());
+
+                    } else if (mbean.getCode() == HttpUtils.CODE_INVALID) {
+                        HttpUtils.Invalid(this);
+                        FToast.error(mbean.getInfo());
+                    } else {
+                        FToast.error(mbean.getInfo());
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            case Status.LOADING:
+                break;
+            case Status.ERROR:
+                FToast.error(status.message);
+                break;
+        }
+    };
 
     @OnTextChanged(value = R.id.id_editor_detail, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void editTextDetailChange(Editable editable) {
@@ -188,7 +287,7 @@ public class TuiKuanType2Activity extends BaseActivity implements ItemImgkuangVi
         @Override
         public void onClick(View widget) {
             Intent intentProd = new Intent(TuiKuanType2Activity.this, TuiAgreementActivity.class);
-            intentProd.putExtra("bannerData", "");
+            intentProd.putExtra("bannerData", "http://web.enticementchina.com/appweb/refundAgreement.html");
             startActivity(intentProd);
         }
     }
@@ -271,6 +370,9 @@ public class TuiKuanType2Activity extends BaseActivity implements ItemImgkuangVi
     public void onProdClick3(int position) {
         TuiImgKuangBean tuiImgKuangBean = new TuiImgKuangBean();
         imglist.remove(position);
+        if(mlistimg.size()!=0){
+            mlistimg.remove(position);
+        }
         int size = imglist.size();
         if (imglist.size() < 5) {
             mItems.clear();
@@ -298,7 +400,7 @@ public class TuiKuanType2Activity extends BaseActivity implements ItemImgkuangVi
                 .start(this)
                 .subscribe(imageItems -> {
                     //得到结果
-                    TuiImgKuangBean tuiImgKuangBean = new TuiImgKuangBean();
+                    mImagePaths.clear();
 
                     if (imageItems.size() == 0) {
                         return;
@@ -306,6 +408,7 @@ public class TuiKuanType2Activity extends BaseActivity implements ItemImgkuangVi
                     for (int i = 0; i < imageItems.size(); i++) {
                         ImageItem imageItem = imageItems.get(i);
                         mImagePath = imageItem.getPath();
+                        mImagePaths.add(mImagePath);
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -313,7 +416,6 @@ public class TuiKuanType2Activity extends BaseActivity implements ItemImgkuangVi
                                 Bitmap mBitmap = null;
                                 try {
                                     mBitmap = analyzeBitmap(mImagePath);
-                                    //    mBitmap = BitmapUitls.getSDCardImg(mImagePath);
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
@@ -327,19 +429,57 @@ public class TuiKuanType2Activity extends BaseActivity implements ItemImgkuangVi
                         });
 
                     }
-                    int size = imglist.size();
-                    if (imglist.size() < 5) {
-                        mItems.clear();
-                        mItems.addAll(imglist);
-                        tuiImgKuangBean.setNum(size);
-                        mItems.add(tuiImgKuangBean);
-                    } else if (imglist.size() == 5) {
-                        mItems.clear();
-                        mItems.addAll(imglist);
-                    }
-                    mmAdapter.notifyDataSetChanged();
+                    tuPianModel.SCtupian(mImagePaths).observe(TuiKuanType2Activity.this, mCommitTPObserver);
+                    showLoading();
+
                 });
     }
+
+    private Observer<Status<ResponseBody>> mCommitTPObserver = status -> {
+        switch (status.status) {
+            case Status.SUCCESS:
+                dismissLoading();
+                ResponseBody body = status.content;
+                try {
+                    String result = body.string();
+                    UploadTuBean mbean = new Gson().fromJson(result, UploadTuBean.class);
+                    if (mbean.getCode() == 1) {
+                        List<String> url = mbean.getData().getUrl();
+                        TuiImgKuangBean tuiImgKuangBean = new TuiImgKuangBean();
+                        int size = imglist.size();
+                        if (imglist.size() < 5) {
+                            mItems.clear();
+                            mItems.addAll(imglist);
+                            tuiImgKuangBean.setNum(size);
+                            mItems.add(tuiImgKuangBean);
+                        } else if (imglist.size() == 5) {
+                            mItems.clear();
+                            mItems.addAll(imglist);
+                        }
+                        mmAdapter.notifyDataSetChanged();
+
+                        mlistimg.addAll(url);
+                        FToast.success(mbean.getInfo());
+                    } else if (mbean.getCode() == HttpUtils.CODE_INVALID) {
+                        HttpUtils.Invalid(this);
+                        FToast.error(mbean.getInfo());
+                    } else {
+                        FToast.error(mbean.getInfo());
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            case Status.LOADING:
+                break;
+            case Status.ERROR:
+                dismissLoading();
+                FToast.error(status.message);
+                break;
+        }
+    };
+
 
     /**
      * yasuo

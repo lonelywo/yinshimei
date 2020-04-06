@@ -3,6 +3,7 @@ package com.cuci.enticement.plate.mine.adapter;
 
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import android.widget.TextView;
 import com.cuci.enticement.R;
 import com.cuci.enticement.bean.ItemOrderTitle;
 import com.cuci.enticement.bean.OrderGoods;
+import com.cuci.enticement.plate.cart.activity.TuiKuanDetails2Activity;
+import com.cuci.enticement.plate.cart.activity.TuiKuanDetails3Activity;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.UtilsForClick;
 
@@ -58,11 +61,9 @@ public class ItemTitleViewBinder extends ItemViewBinder<ItemOrderTitle, ItemTitl
         status 5 已确认收货，订单完成*/
         switch (itemOrderTitle.status) {
             case 0:
-                holder.textZhuangtai.setText("已取消");
-
+                holder.textZhuangtai.setText("交易关闭");
                 break;
             case 1:
-                holder.textZhuangtai.setText("待付款");
                 break;
             case 2:
                 holder.textZhuangtai.setText("待付款");
@@ -74,10 +75,15 @@ public class ItemTitleViewBinder extends ItemViewBinder<ItemOrderTitle, ItemTitl
                 holder.textZhuangtai.setText("待收货");
                 break;
             case 5:
-                holder.textZhuangtai.setText("已完成");
+                holder.textZhuangtai.setText("交易成功");
                 break;
             case 6:
-                holder.textZhuangtai.setText("已退款");
+                if(itemOrderTitle.getRefund_state()==0||itemOrderTitle.getRefund_state()==1){
+                    holder.textZhuangtai.setText("退款中");
+                }else {
+                    holder.textZhuangtai.setText("退款成功");
+                }
+
                 break;
 
         }

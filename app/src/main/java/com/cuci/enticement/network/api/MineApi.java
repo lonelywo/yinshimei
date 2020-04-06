@@ -18,11 +18,6 @@ public interface MineApi {
     /**
      * 图片上传
      */
-    @FormUrlEncoded
-    @POST("store/api.page/upload")
-    Call<ResponseBody> SCtupian(
-
-    );
     @Multipart
     @POST("store/api.page/upload")
     Call<ResponseBody> upload(

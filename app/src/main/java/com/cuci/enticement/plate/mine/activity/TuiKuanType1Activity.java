@@ -302,7 +302,7 @@ public class TuiKuanType1Activity extends BaseActivity implements ItemImgkuangVi
         @Override
         public void onClick(View widget) {
             Intent intentProd = new Intent(TuiKuanType1Activity.this, TuiAgreementActivity.class);
-            intentProd.putExtra("bannerData", "");
+            intentProd.putExtra("bannerData", "http://web.enticementchina.com/appweb/refundAgreement.html");
             startActivity(intentProd);
         }
     }
@@ -469,7 +469,6 @@ public class TuiKuanType1Activity extends BaseActivity implements ItemImgkuangVi
         if(mlistimg.size()!=0){
             mlistimg.remove(position);
         }
-
         int size = imglist.size();
         if (imglist.size() < 5) {
             mItems.clear();
@@ -504,7 +503,7 @@ public class TuiKuanType1Activity extends BaseActivity implements ItemImgkuangVi
                     }
                     time = currentTime;
                     //得到结果
-                    TuiImgKuangBean tuiImgKuangBean = new TuiImgKuangBean();
+
                     mImagePaths.clear();
                     if (imageItems.size() == 0) {
                         return;
@@ -534,19 +533,9 @@ public class TuiKuanType1Activity extends BaseActivity implements ItemImgkuangVi
                         });
 
                     }
-                  /*  tuPianModel.SCtupian(mImagePaths).observe(TuiKuanType1Activity.this, mCommitTPObserver);
-                    showLoading();*/
-                    int size = imglist.size();
-                    if (imglist.size() < 5) {
-                        mItems.clear();
-                        mItems.addAll(imglist);
-                        tuiImgKuangBean.setNum(size);
-                        mItems.add(tuiImgKuangBean);
-                    } else if (imglist.size() == 5) {
-                        mItems.clear();
-                        mItems.addAll(imglist);
-                    }
-                    mmAdapter.notifyDataSetChanged();
+                    tuPianModel.SCtupian(mImagePaths).observe(TuiKuanType1Activity.this, mCommitTPObserver);
+                    showLoading();
+
                 });
     }
 
@@ -559,8 +548,20 @@ public class TuiKuanType1Activity extends BaseActivity implements ItemImgkuangVi
                     String result = body.string();
                     UploadTuBean mbean = new Gson().fromJson(result, UploadTuBean.class);
                     if (mbean.getCode() == 1) {
-
                         List<String> url = mbean.getData().getUrl();
+                        TuiImgKuangBean tuiImgKuangBean = new TuiImgKuangBean();
+                        int size = imglist.size();
+                        if (imglist.size() < 5) {
+                            mItems.clear();
+                            mItems.addAll(imglist);
+                            tuiImgKuangBean.setNum(size);
+                            mItems.add(tuiImgKuangBean);
+                        } else if (imglist.size() == 5) {
+                            mItems.clear();
+                            mItems.addAll(imglist);
+                        }
+                        mmAdapter.notifyDataSetChanged();
+
                         mlistimg.addAll(url);
                         FToast.success(mbean.getInfo());
                     } else if (mbean.getCode() == HttpUtils.CODE_INVALID) {

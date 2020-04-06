@@ -27,6 +27,7 @@ public class ItemProdDetailsViewBinder extends ItemViewBinder<OrderGoods, ItemPr
 
 
     private int mStatus;
+    private int mrefund_state;
 
     public interface OnProdClickListener {
 
@@ -41,9 +42,10 @@ public class ItemProdDetailsViewBinder extends ItemViewBinder<OrderGoods, ItemPr
 
     }
 
-    public ItemProdDetailsViewBinder(OnProdClickListener onProdClickListener, int Status) {
+    public ItemProdDetailsViewBinder(OnProdClickListener onProdClickListener, int Status,int refund_state) {
         mOnProdClickListener = onProdClickListener;
         mStatus = Status;
+        mrefund_state = refund_state;
     }
 
     @NonNull
@@ -62,10 +64,14 @@ public class ItemProdDetailsViewBinder extends ItemViewBinder<OrderGoods, ItemPr
             holder.tuikuanTv.setText("退款");
             ViewUtils.showView(holder.tuikuanTv);
         }else if(mStatus == 5 ){
-            holder.tuikuanTv.setText("售后");
+            holder.tuikuanTv.setText("退款");
             ViewUtils.showView(holder.tuikuanTv);
         } else if(mStatus == 6){
-            holder.tuikuanTv.setText("退款成功");
+            if(mrefund_state==0||mrefund_state==1){
+                holder.tuikuanTv.setText("退款中");
+            }else {
+                holder.tuikuanTv.setText("退款成功");
+            }
             ViewUtils.showView(holder.tuikuanTv);
         }
         ImageLoader.loadPlaceholder(item.getGoods_logo(), holder.imgTupian);

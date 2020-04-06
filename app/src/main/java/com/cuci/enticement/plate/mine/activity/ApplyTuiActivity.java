@@ -92,6 +92,8 @@ public class ApplyTuiActivity extends BaseActivity implements ItemImgkuangViewBi
     private int type;
     private AllOrderList.DataBean.ListBeanX mInfo;
     private int mStatus;
+    private int refund_state;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_tui_apply;
@@ -109,6 +111,7 @@ public class ApplyTuiActivity extends BaseActivity implements ItemImgkuangViewBi
         mInfo = (AllOrderList.DataBean.ListBeanX) intent.getSerializableExtra("intentInfo");
         List<OrderGoods> items = mInfo.getList();
         mStatus = mInfo.getStatus();
+        refund_state = mInfo.getRefund_state();
         MultiTypeAdapter  mAdapter0 = new MultiTypeAdapter();
         Items mItems0 = new Items();
         mItems0.addAll(items);
@@ -116,7 +119,7 @@ public class ApplyTuiActivity extends BaseActivity implements ItemImgkuangViewBi
 
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        mAdapter0.register(OrderGoods.class, new ItemProdDetailsViewBinder(this, mStatus));
+        mAdapter0.register(OrderGoods.class, new ItemProdDetailsViewBinder(this, mStatus,refund_state));
 
 
         OrderItemDecoration mDecoration0 = new OrderItemDecoration(this, 4);
@@ -289,14 +292,7 @@ public class ApplyTuiActivity extends BaseActivity implements ItemImgkuangViewBi
                 if(v!=null){
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);//从控件所在的窗口中隐藏
                 }
-                new XPopup.Builder(this)
-                        .dismissOnTouchOutside(true)
-                        .dismissOnBackPressed(true)
-                        .asCustom(new TuiReasonBottom2TopProdPopup(this, sex -> {
-                            textYuanyin.setText(sex);
-                        }))
-                        .show();
-                break;
+
             case R.id.ok:
                 if (type == 1) {
                     Intent intent2 = new Intent(this, TuiDetailsNOActivity.class);

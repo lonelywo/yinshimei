@@ -9,26 +9,30 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
-import android.text.style.ForegroundColorSpan;
 import android.text.style.URLSpan;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.AllOrderList;
-import com.cuci.enticement.plate.common.MainActivity;
-import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.bean.TuiKuanWuLiuBean;
+import com.cuci.enticement.bean.UserInfo;
+import com.cuci.enticement.plate.common.popup.TuiReasonBottom2TopProdPopup;
+import com.cuci.enticement.utils.SharedPrefUtils;
+import com.lxj.xpopup.XPopup;
 
-import org.greenrobot.eventbus.EventBus;
+import java.util.List;
 
-import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 /**
@@ -80,7 +84,12 @@ public class TuiKuanDetailsActivity extends BaseActivity {
     ConstraintLayout conPhone;
     @BindView(R.id.bottom)
     TextView bottom;
+    @BindView(R.id.tv_wuliu)
+    TextView tvWuliu;
     private AllOrderList.DataBean.ListBeanX mInfo;
+    private UserInfo mUserInfo;
+    private TuiKuanWuLiuBean mTuiKuanWuLiuBean;
+    private List<TuiKuanWuLiuBean.DataBean.ExpressBean> express;
 
 
     @Override
@@ -95,7 +104,13 @@ public class TuiKuanDetailsActivity extends BaseActivity {
         if (intent == null) {
             return;
         }
-        initContent();
+        mUserInfo = SharedPrefUtils.get(UserInfo.class);
+        mTuiKuanWuLiuBean = SharedPrefUtils.get(TuiKuanWuLiuBean.class);
+        if (mTuiKuanWuLiuBean != null) {
+            initContent();
+            express = mTuiKuanWuLiuBean.getData().getExpress();
+        }
+
         imageBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,12 +120,12 @@ public class TuiKuanDetailsActivity extends BaseActivity {
     }
 
     private void initContent() {
-        String content="请您勿使用到付或平邮，且保证商品完好，以免产生拒签哦。为保障退款进度，退货时请您务必填写真实物流单号，并选择以下任意快递寄回：申通快递、中通快递、圆通快递、韵达快递、联邦快递 、百世快递、邮政、德邦快递、EMS、宅急送、优速快递。...展开全部";
-        String url="http://www.baidu.com";
+        String content = mTuiKuanWuLiuBean.getData().getReason() + "展开全部";
+        String url = mTuiKuanWuLiuBean.getData().getReason_url();
         SpannableString spannableString = new SpannableString(content);
-        spannableString.setSpan(new MyURLSpan(url), spannableString.length()-4, spannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new MyURLSpan(url), spannableString.length() - 4, spannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         tvContentDesc.setMovementMethod(LinkMovementMethod.getInstance());
-        tvContentDesc.setHighlightColor(Color.argb(0x40,0x4F,0x41,0xFD)); //设置点击后的颜色为透明
+        tvContentDesc.setHighlightColor(Color.argb(0x40, 0x4F, 0x41, 0xFD)); //设置点击后的颜色为透明
         tvContentDesc.setText(spannableString);
 
 
@@ -124,37 +139,58 @@ public class TuiKuanDetailsActivity extends BaseActivity {
 
 
     }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
+
+    @OnClick(R.id.tv_wuliu)
+    public void onViewClicked() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        View v = getCurrentFocus();
+        if(v!=null){
+            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);//从控件所在的窗口中隐藏
+        }
+        new XPopup.Builder(this)
+                .dismissOnTouchOutside(true)
+                .dismissOnBackPressed(true)
+                .asCustom(new TuiReasonBottom2TopProdPopup(this,express, sex -> {
+                    tvWuliu.setText(sex.getTitle());
+                }))
+                .show();
+    }
 }
- /*class MyClickText extends ClickableSpan {
-    private Context context;
-    public MyClickText(TuiKuanDetailsActivity mTuiKuanDetailsActivity) {
-        this.context = mTuiKuanDetailsActivity;
-    }
 
-    @Override
-    public void updateDrawState(TextPaint ds) {
-        super.updateDrawState(ds);
-        //设置文本的颜色
-        ds.setColor(context.getResources().getColor(R.color.red));
-        //超链接形式的下划线，false 表示不显示下划线，true表示显示下划线
-        ds.setUnderlineText(false);
-    }
+/*class MyClickText extends ClickableSpan {
+   private Context context;
+   public MyClickText(TuiKuanDetailsActivity mTuiKuanDetailsActivity) {
+       this.context = mTuiKuanDetailsActivity;
+   }
 
-    @Override
-    public void onClick(View widget) {
-        FToast.success("被点击了");
-    }
+   @Override
+   public void updateDrawState(TextPaint ds) {
+       super.updateDrawState(ds);
+       //设置文本的颜色
+       ds.setColor(context.getResources().getColor(R.color.red));
+       //超链接形式的下划线，false 表示不显示下划线，true表示显示下划线
+       ds.setUnderlineText(false);
+   }
+
+   @Override
+   public void onClick(View widget) {
+       FToast.success("被点击了");
+   }
 }*/
-class MyURLSpan extends URLSpan
-{
-    public MyURLSpan(String url)
-    {
+class MyURLSpan extends URLSpan {
+    public MyURLSpan(String url) {
         super(url);
     }
 
     @Override
-    public void updateDrawState(TextPaint ds)
-    {
+    public void updateDrawState(TextPaint ds) {
         super.updateDrawState(ds);
         // 设置链接文字颜色
         ds.setColor(BasicApp.getContext().getResources().getColor(R.color.red));

@@ -29,6 +29,7 @@ import com.cuci.enticement.bean.KaQuanListBean;
 import com.cuci.enticement.bean.OrderStatistics;
 import com.cuci.enticement.bean.ReceiveCodeBean;
 import com.cuci.enticement.bean.Status;
+import com.cuci.enticement.bean.TuiKuanWuLiuBean;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.event.ClickMyEvent;
 import com.cuci.enticement.event.IsnewEvent;
@@ -40,6 +41,7 @@ import com.cuci.enticement.plate.common.DailyActivity;
 import com.cuci.enticement.plate.common.LoginActivity;
 import com.cuci.enticement.plate.common.popup.ShareImgTipsPopup;
 import com.cuci.enticement.plate.common.popup.TipsPopup;
+import com.cuci.enticement.plate.common.vm.MainViewModel;
 import com.cuci.enticement.plate.mine.activity.AchievementActivity;
 import com.cuci.enticement.plate.mine.activity.CommissionActivity;
 import com.cuci.enticement.plate.mine.activity.KaQuanActivity;
@@ -486,12 +488,12 @@ public class _MineFragment extends BaseFragment {
                         ViewUtils.showView(dot3Tv);
                         dot3Tv.setText(String.valueOf(ordertotal.get_$4()));
                     }
-                    if (ordertotal.get_$5() == 0) {
+                   /* if (ordertotal.get_$5() == 0) {
                         ViewUtils.hideView(dot4Tv);
                     } else {
                         ViewUtils.showView(dot4Tv);
                         dot4Tv.setText(String.valueOf(ordertotal.get_$5()));
-                    }
+                    }*/
             } else if (mDataUserInfo.getCode() == HttpUtils.CODE_INVALID) {
                 HttpUtils.Invalid(mActivity);
                 FToast.error(mDataUserInfo.getInfo());
@@ -555,6 +557,11 @@ public class _MineFragment extends BaseFragment {
             imgHeadwear.setVisibility(View.GONE);
             return;
         }
+        //退货快递
+        MainViewModel mmViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        mmViewModel.refundExpress("2",String.valueOf(mUserInfo.getId()),mUserInfo.getToken(),""+ AppUtils.getVersionCode(BasicApp.getContext())).observe(this, refundExpressObserver);
+
+
         FLog.e("user", "" + mUserInfo.getId());
         //个推绑定用户id
         PushManager.getInstance().bindAlias(mActivity, String.valueOf(mUserInfo.getId()));
@@ -607,6 +614,39 @@ public class _MineFragment extends BaseFragment {
         orderViewModel.getStatisticsOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),""+ AppUtils.getVersionCode(BasicApp.getContext()))
                 .observe(mActivity, mTotalOrderObserver);
 
+    }
+    private Observer<Status<ResponseBody>> refundExpressObserver = status -> {
+
+        switch (status.status) {
+            case Status.SUCCESS:
+                ResponseBody body = status.content;
+                opera3(body);
+                break;
+            case Status.ERROR:
+
+                FToast.error("网络错误");
+                break;
+            case Status.LOADING:
+
+                break;
+        }
+
+
+    };
+
+    private void opera3(ResponseBody body) {
+        try {
+            String b = body.string();
+            TuiKuanWuLiuBean mTuiKuanWuLiuBean = new Gson().fromJson(b, TuiKuanWuLiuBean.class);
+            if (mTuiKuanWuLiuBean.getCode() == 1) {
+                SharedPrefUtils.save(mTuiKuanWuLiuBean, TuiKuanWuLiuBean.class);
+            } else {
+                FToast.error(mTuiKuanWuLiuBean.getInfo());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            FToast.error("数据错误");
+        }
     }
 
     @OnClick({R.id.text_quanbudingdan, R.id.text_tuiguangyongjing, R.id.text_wodetuandui, R.id.text_shouhuodizi, R.id.text_yejiyuefan, R.id.text_wodekefu})
@@ -812,12 +852,12 @@ public class _MineFragment extends BaseFragment {
 
                                     break;
                                 case 5:
-                                    if (count == 0) {
+                                  /*  if (count == 0) {
                                         ViewUtils.hideView(dot4Tv);
                                     } else {
                                         ViewUtils.showView(dot4Tv);
                                         dot4Tv.setText(String.valueOf(count));
-                                    }
+                                    }*/
 
                                     break;
 

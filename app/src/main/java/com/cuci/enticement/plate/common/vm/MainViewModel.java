@@ -32,9 +32,42 @@ public class MainViewModel extends ViewModel {
     public MainViewModel() {
         mCreator = ServiceCreator.getInstance();
     }
+    /**
+     * 退货快递
+     * @return
+     */
+    public MutableLiveData<Status<ResponseBody>> refundExpress(String from_type,String mid,String token,String new_version) {
 
+        final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("from_type",from_type);
+        params.put("mid",mid);
+        params.put("token",token);
+        params.put("new_version",new_version);
+        String signs = SignUtils.signParam(params);
 
+        mCreator.create(UserApi.class)
+                .refundExpress(from_type,mid,token,new_version, signs)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(@NonNull Call<ResponseBody> call,
+                                           @NonNull Response<ResponseBody> response) {
+                        liveData.setValue(Status.success(response.body()));
+                    }
 
+                    @Override
+                    public void onFailure(@NonNull Call<ResponseBody> call,
+                                          @NonNull Throwable t) {
+                        liveData.setValue(Status.error(null, t.getMessage() == null ? "网络错误" : t.getMessage()));
+                    }
+                });
+        return liveData;
+    }
+    /**
+     * 版本信息
+     * @param from_type
+     * @return
+     */
     public MutableLiveData<Status<ResponseBody>> getVersion(String from_type ,String new_version) {
 
         final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
@@ -60,7 +93,11 @@ public class MainViewModel extends ViewModel {
                 });
         return data;
     }
-
+    /**
+     * 国家区号
+     * @param from_type
+     * @return
+     */
     public MutableLiveData<Status<ResponseBody>> getGuoJiaCode(String from_type,String new_version) {
 
         final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();

@@ -1,7 +1,7 @@
 package com.cuci.enticement.bean;
 
 
-public class ItemOrderTitle {
+public class ItemTuikuaiOrderTitle {
     public String orderNum;//订单编号
 
 
@@ -16,20 +16,11 @@ public class ItemOrderTitle {
     public int status;//订单状态
     public int cur;
 
-    public int getRefund_state() {
-        return refund_state;
-    }
-
-    public void setRefund_state(int refund_state) {
-        this.refund_state = refund_state;
-    }
-
-    private int refund_state;
-    public ItemOrderTitle(String orderNum, int status,int cur,int refund_state) {
+    public ItemTuikuaiOrderTitle(String orderNum, int status, int cur) {
         this.orderNum = orderNum;
         this.status = status;
         this.cur=cur;
-        this.refund_state=refund_state;
+
     }
 
     public String getOrderNum() {

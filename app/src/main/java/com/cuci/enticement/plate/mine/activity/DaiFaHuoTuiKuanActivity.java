@@ -5,31 +5,31 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Html;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.AllOrderList;
 import com.cuci.enticement.bean.OrderGoods;
-import com.cuci.enticement.bean.ReceiveCodeBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.TagBean;
 import com.cuci.enticement.bean.TuikuanSQBean;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.plate.cart.activity.TuiKuanDetails2Activity;
-import com.cuci.enticement.plate.common.AgreementActivity;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.AppUtils;
-import com.cuci.enticement.utils.FLog;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.HttpUtils;
-import com.cuci.enticement.utils.MathExtend;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.StringUtils;
 import com.cuci.enticement.widget.SmoothScrollview;
@@ -42,13 +42,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import okhttp3.ResponseBody;
 
@@ -94,6 +90,7 @@ public class DaiFaHuoTuiKuanActivity extends BaseActivity {
     List<String> mlist = new ArrayList<>();
     private String join;
     private String refund_id;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_tui_daifahuo;
@@ -107,28 +104,28 @@ public class DaiFaHuoTuiKuanActivity extends BaseActivity {
         }
         mItem = (OrderGoods) intent.getSerializableExtra("intentItem");
         mInfo = (AllOrderList.DataBean.ListBeanX) intent.getSerializableExtra("intentInfo");
-        if(mInfo!=null){
-            items=mInfo.getList();
+        if (mInfo != null) {
+            items = mInfo.getList();
             mlist.clear();
             order_no = mInfo.getOrder_no();
-            for (int i = 0; i <items.size() ; i++) {
-                mlist.add(String.valueOf(items.get(i).getId())) ;
+            for (int i = 0; i < items.size(); i++) {
+                mlist.add(String.valueOf(items.get(i).getId()));
             }
             join = StringUtils.join(mlist);
-        }else {
-            order_no=mItem.getOrder_no();
+        } else {
+            order_no = mItem.getOrder_no();
             join = String.valueOf(mItem.getId());
         }
         mViewModel = ViewModelProviders.of(this).get(MineViewModel.class);
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
         init();
-        String strMsg = "申请换货/退款/退货退款服务需签署"+"<font color=\"#e1ad73\">" +"《退款协议》"+ "</font>"+"，点击提交则默认您已查阅并同意退款协议所有内容";
+        String strMsg = "申请换货/退款/退货退款服务需签署" + "<font color=\"#e1ad73\">" + "《退款协议》" + "</font>" + "，点击提交则默认您已查阅并同意退款协议所有内容";
         tvShuoming.setText(Html.fromHtml(strMsg));
         tvShuoming.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intentProd = new Intent(DaiFaHuoTuiKuanActivity.this, TuiAgreementActivity.class);
-                intentProd.putExtra("bannerData", "");
+                intentProd.putExtra("bannerData", "http://web.enticementchina.com/appweb/refundAgreement.html");
                 startActivity(intentProd);
             }
         });
@@ -137,10 +134,10 @@ public class DaiFaHuoTuiKuanActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 String trim = idEditorDetail.getText().toString().trim();
-              if(mUserInfo!=null){
-                  mViewModel.SQtuikuan(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2",""+order_no, join,"1","",tag,trim,"",""+ AppUtils.getVersionCode(DaiFaHuoTuiKuanActivity.this))
-                          .observe(DaiFaHuoTuiKuanActivity.this, mCommitObserver);
-              }
+                if (mUserInfo != null) {
+                    mViewModel.SQtuikuan(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", "" + order_no, join, "1", "", tag, trim, "", "" + AppUtils.getVersionCode(DaiFaHuoTuiKuanActivity.this))
+                            .observe(DaiFaHuoTuiKuanActivity.this, mCommitObserver);
+                }
 
             }
         });
@@ -160,7 +157,7 @@ public class DaiFaHuoTuiKuanActivity extends BaseActivity {
                         LocalBroadcastManager.getInstance(this).sendBroadcast(intent2);
                         refund_id = mbean.getData().getRefund_id();
                         Intent intent = new Intent(this, TuiKuanDetails2Activity.class);
-                        intent.putExtra("refund_id",refund_id);
+                        intent.putExtra("refund_id", refund_id);
                         startActivity(intent);
                         finish();
                         FToast.success(mbean.getInfo());
@@ -183,6 +180,7 @@ public class DaiFaHuoTuiKuanActivity extends BaseActivity {
                 break;
         }
     };
+
     @OnTextChanged(value = R.id.id_editor_detail, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void editTextDetailChange(Editable editable) {
         int detailLength = editable.length();
@@ -214,10 +212,10 @@ public class DaiFaHuoTuiKuanActivity extends BaseActivity {
 
             @Override
             public boolean onTagClick(View view, int position, FlowLayout parent) {
-                 tag = list.get(position).getName();
-                 mAdapter.setSelectedList(position);
-                 mAdapter.notifyDataChanged();
-                 FToast.success(tag);
+                tag = list.get(position).getName();
+                mAdapter.setSelectedList(position);
+                mAdapter.notifyDataChanged();
+                FToast.success(tag);
                 return true;
             }
         });
@@ -260,5 +258,10 @@ public class DaiFaHuoTuiKuanActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
+    }
+
+    @OnClick(R.id.img_back)
+    public void onViewClicked() {
+        finish();
     }
 }

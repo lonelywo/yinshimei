@@ -21,6 +21,7 @@ import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.bean.ClauseBean;
 import com.cuci.enticement.bean.GuoJiaBean;
 import com.cuci.enticement.bean.Status;
+import com.cuci.enticement.bean.TuiKuanWuLiuBean;
 import com.cuci.enticement.bean.Version;
 import com.cuci.enticement.event.CheckHomeEvent;
 import com.cuci.enticement.event.ClickMyEvent;
@@ -202,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
         //打印设备信息
         FLog.e("设备信息",GetDeviceID());
 
-
+        //国家编号
         mViewModel.getGuoJiaCode("2",""+ AppUtils.getVersionCode(BasicApp.getContext())).observe(this, guojiamObserver);
 
        
@@ -374,6 +375,9 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
     }
 
 
+
+
+
     private Observer<Status<ResponseBody>> mUpdateObserver = status -> {
 
         switch (status.status) {
@@ -402,7 +406,7 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
             } else {
                 FToast.error(mVersion.getInfo());
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             FToast.error("数据错误");
         }
@@ -570,7 +574,7 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
             } else {
                 FToast.error(mClauseBean.getInfo());
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             FToast.error("数据错误");
         }

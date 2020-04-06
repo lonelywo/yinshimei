@@ -149,7 +149,7 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
     private MultiTypeAdapter mAdapter;
     private Items mItems;
     private int mStatus;
-
+    private int refund_state;
 
 
     @Override
@@ -194,6 +194,7 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
             return;
         }
         mStatus = mInfo.getStatus();
+        refund_state = mInfo.getRefund_state();
         initViewStatus(mStatus);
         initContent();
         mAdapter = new MultiTypeAdapter();
@@ -203,7 +204,7 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        mAdapter.register(OrderGoods.class, new ItemProdDetailsViewBinder(this, mStatus));
+        mAdapter.register(OrderGoods.class, new ItemProdDetailsViewBinder(this, mStatus,refund_state));
 
 
        /* OrderItemDecoration mDecoration = new OrderItemDecoration(this, 4);
@@ -295,17 +296,22 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
             ViewUtils.showView(tvLeft);
             ViewUtils.showView(tvRight);
             ViewUtils.showView(bottom);
-            tvLeft.setText("申请售后");
+            tvLeft.setText("全部退款");
             tvRight.setText("联系客服");
             textZhuangtai.setText("交易成功");
             tvShifu.setText("实付款");
         } else if (status == 6) {
+            if(refund_state==0||refund_state==1){
+                textZhuangtai.setText("退款中");
+            }else {
+                textZhuangtai.setText("退款成功");
+            }
             //已退货  查看物流
             ViewUtils.hideView(tvZuileft);
             ViewUtils.hideView(tvLeft);
             ViewUtils.hideView(tvRight);
             ViewUtils.hideView(bottom);
-            textZhuangtai.setText("已退款");
+
             tvShifu.setText("实付款");
         }
     }
@@ -321,7 +327,7 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
                     Intent intent = new Intent(this, DaiFaHuoTuiKuanActivity.class);
                     intent.putExtra("intentInfo",mInfo);
                     startActivity(intent);
-                }else if(mStatus == 4){
+                }else if(mStatus == 4||mStatus == 5){
                     Intent intent_tui = new Intent(this, TuiTypeActivity.class);
                     intent_tui.putExtra("intentInfo",mInfo);
                     startActivity(intent_tui);
@@ -351,7 +357,9 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
                     startActivity(intent);
                 }else if(mStatus == 5){
                    //申请售后
-
+                    Intent intent_tui = new Intent(this, TuiTypeActivity.class);
+                    intent_tui.putExtra("intentInfo",mInfo);
+                    startActivity(intent_tui);
                 }
                 break;
             case R.id.tv_right:
@@ -715,10 +723,20 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
             Intent intent = new Intent(this, DaiFaHuoTuiKuanActivity.class);
             intent.putExtra("intentItem",item);
             startActivity(intent);
-        }else if(mStatus==4){
+        }else if(mStatus==4||mStatus==5){
             Intent intent = new Intent(this, TuiTypeActivity.class);
             intent.putExtra("intentItem",item);
             startActivity(intent);
+        }else if(mStatus==6){
+            if(refund_state==0||refund_state==1){
+                Intent intent = new Intent(this, TuiKuanDetails2Activity.class);
+                intent.putExtra("refund_id", item.getIs_refund());
+                startActivity(intent);
+            }else {
+                Intent intent = new Intent(this, TuiKuanDetails3Activity.class);
+                intent.putExtra("refund_id", item.getIs_refund());
+                startActivity(intent);
+            }
         }
 
 

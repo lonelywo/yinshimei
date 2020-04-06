@@ -55,6 +55,7 @@ public class TuiDetailsNOActivity extends BaseActivity implements ItemProdDetail
     private int type;
     private AllOrderList.DataBean.ListBeanX mInfo;
     private int mStatus;
+    private int refund_state;
 
     @Override
     public int getLayoutId() {
@@ -71,6 +72,7 @@ public class TuiDetailsNOActivity extends BaseActivity implements ItemProdDetail
         mInfo = (AllOrderList.DataBean.ListBeanX) intent.getSerializableExtra("intentInfo");
         List<OrderGoods> items = mInfo.getList();
         mStatus = mInfo.getStatus();
+        refund_state = mInfo.getRefund_state();
         MultiTypeAdapter mAdapter0 = new MultiTypeAdapter();
         Items mItems0 = new Items();
         mItems0.addAll(items);
@@ -78,7 +80,7 @@ public class TuiDetailsNOActivity extends BaseActivity implements ItemProdDetail
 
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        mAdapter0.register(OrderGoods.class, new ItemProdDetailsViewBinder(this, mStatus));
+        mAdapter0.register(OrderGoods.class, new ItemProdDetailsViewBinder(this, mStatus,refund_state));
 
 
         OrderItemDecoration mDecoration0 = new OrderItemDecoration(this, 4);

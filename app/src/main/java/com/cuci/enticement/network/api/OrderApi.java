@@ -9,7 +9,29 @@ import retrofit2.http.POST;
 
 public interface OrderApi {
 
+    /**
+     * 撤销退款
+     */
+    @FormUrlEncoded
+    @POST("store/api.member.refund/cancel")
+    Call<ResponseBody> getTuiKuanCancel(@Field("from_type") String fromType,@Field("token") String token,
+                                      @Field("mid") String mid,
+                                      @Field("refund_id") String refund_id,
+                                      @Field("new_version") String new_version,
+                                      @Field("sign") String signs);
 
+
+    /**
+     * 退款订单列表
+     */
+    @FormUrlEncoded
+    @POST("store/api.member.refund/index")
+    Call<ResponseBody> getTuiKuanList(@Field("from_type") String fromType,@Field("token") String token,
+                                    @Field("mid") String mid,
+                                    @Field("page") String page,
+                                    @Field("page_size") String page_size,
+                                    @Field("new_version") String new_version,
+                                    @Field("sign") String signs);
 
     /**
      * 获取订单列表

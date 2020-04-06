@@ -355,7 +355,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
         for (int i = 0; i <item.size() ; i++) {
             AllOrderList.DataBean.ListBeanX orderBean = item.get(i);
             int cur=mItems.size();
-            ItemOrderTitle itemOrderTitle = new ItemOrderTitle(String.valueOf(orderBean.getOrder_no()), orderBean.getStatus(),cur);
+            ItemOrderTitle itemOrderTitle = new ItemOrderTitle(String.valueOf(orderBean.getOrder_no()), orderBean.getStatus(),cur,orderBean.getRefund_state());
             mItems.add(itemOrderTitle);
             List<OrderGoods> goodsBeanList = orderBean.getList();
             mItems.addAll(goodsBeanList);

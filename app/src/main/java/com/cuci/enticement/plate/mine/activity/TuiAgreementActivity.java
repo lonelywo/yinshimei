@@ -40,8 +40,10 @@ public class TuiAgreementActivity extends BaseActivity {
             return;
         }
         url = intent.getStringExtra("bannerData");
-        webContext.loadDataWithBaseURL(null,
-                getHtmlData(url), "text/html", "utf-8", null);
+        webContext.loadUrl(url
+        );
+      /*  webContext.loadDataWithBaseURL(null,
+                getHtmlData(url), "text/html", "utf-8", null);*/
     }
 
     private String getHtmlData(String bodyHTML) {

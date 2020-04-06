@@ -37,6 +37,96 @@ public class OrderViewModel extends ViewModel {
 
 
 
+    /**
+     * 撤销退款
+     * @param token
+     * @param mid
+     * @return
+     */
+    public MutableLiveData<Status<ResponseBody>> getTuiKuanCancel(String token,String mid,String refund_id,String new_version) {
+
+        final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
+        data.setValue(Status.loading(null));
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("token",token);
+        params.put("mid",mid);
+        params.put("from_type","2");
+        params.put("refund_id",refund_id);
+        params.put("new_version",new_version);
+        String sign = SignUtils.signParam(params);
+        mCreator.create(OrderApi.class)
+                .getTuiKuanCancel("2",token,mid,refund_id,new_version,sign)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(@NonNull Call<ResponseBody> call,
+                                           @NonNull Response<ResponseBody> response) {
+                        data.setValue(Status.success(response.body()));
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<ResponseBody> call,
+                                          @NonNull Throwable t) {
+                        data.setValue(Status.error(null, t.getMessage() == null ? "获取失败" : t.getMessage()));
+                    }
+                });
+        return data;
+    }
+
+    /**
+     * 退款订单
+     * @param token
+     * @param mid
+     * @return
+     */
+    public MutableLiveData<Status<ResponseBody>> getTuiKuanList(String token, String mid, String from_type,String page,String page_size,String new_version, int loadType) {
+
+        final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
+        data.setValue(Status.loading(null));
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("token",token);
+        params.put("mid",mid);
+        params.put("page",page);
+        params.put("page_size",page_size);
+        params.put("from_type",from_type);
+        params.put("new_version",new_version);
+        String sign = SignUtils.signParam(params);
+        mCreator.create(OrderApi.class)
+                .getTuiKuanList("2",token,mid,page,page_size,new_version,sign)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(@NonNull Call<ResponseBody> call,
+                                           @NonNull Response<ResponseBody> response) {
+                        if (loadType == Status.LOAD_REFRESH) {
+                            data.setValue(Status.refreshSuccess(response.body()));
+                        } else {
+                            data.setValue(Status.moreSuccess(response.body()));
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<ResponseBody> call,
+                                          @NonNull Throwable t) {
+                        if (loadType == Status.LOAD_REFRESH) {
+                            data.setValue(Status.refreshError(null, t.getMessage() ==
+                                    null ? "加载失败" : t.getMessage()));
+                        } else {
+                            data.setValue(Status.moreError(null, t.getMessage() ==
+                                    null ? "加载失败" : t.getMessage()));
+                        }
+                    }
+                });
+        return data;
+    }
+    /**
+     * 全部订单
+     * @param token
+     * @param mid
+     * @return
+     */
     public MutableLiveData<Status<ResponseBody>> getOrderList(String token, String mid, String page,String status,String orderNum,String new_version, int loadType) {
 
         final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();

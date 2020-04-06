@@ -111,7 +111,7 @@ public class PayOfterActivity extends BaseActivity implements ItemZhuanPanViewBi
     private int winIndex;
     private PayOfterBean.DataBean.LotteryBean.RulesBean rulesBean;
     private boolean ischeck = true;
-    private String ruleDescription;
+    private String ruleDescription="http://web.enticementchina.com/appweb/lotteryAgreement.html ";
 
     @Override
     public int getLayoutId() {
@@ -196,10 +196,10 @@ public class PayOfterActivity extends BaseActivity implements ItemZhuanPanViewBi
     }
 
     private void load() {
-        if (ServiceCreator.Constant_IS_NEW == 1) {
+        if (ServiceCreator.Constant_IS_NEW == 0) {
             mViewModel.payofter(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "1", ServiceCreator.Constant_GOODS_ID, "" + AppUtils.getVersionCode(this)).observe(this, mObserver);
         } else {
-            mViewModel.payofter(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "0", "685810355757", "" + AppUtils.getVersionCode(this)).observe(this, mObserver);
+            mViewModel.payofter(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "0", ServiceCreator.Constant_GOODS_ID, "" + AppUtils.getVersionCode(this)).observe(this, mObserver);
         }
     }
 

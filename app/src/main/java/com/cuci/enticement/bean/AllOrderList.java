@@ -277,6 +277,7 @@ public class AllOrderList implements Serializable {
             private int is_deleted;
             private String create_at;
             private int goods_count;
+
             private List<OrderGoods> list;
 
             public ListBeanX(){

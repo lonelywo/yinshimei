@@ -60,6 +60,18 @@ public class OrderGoods implements Serializable {
     }
 
     private int is_join;
+
+    public String getIs_refund() {
+        return is_refund;
+    }
+
+    public void setIs_refund(String is_refund) {
+        this.is_refund = is_refund;
+    }
+
+    private String is_refund;
+
+
     private int vip_month;
     private String vip_discount;
     private int number;

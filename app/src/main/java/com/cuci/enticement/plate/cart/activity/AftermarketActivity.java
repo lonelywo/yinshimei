@@ -1,5 +1,8 @@
 package com.cuci.enticement.plate.cart.activity;
 
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -18,8 +21,10 @@ import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.AllOrderList;
+import com.cuci.enticement.bean.AllTuiKuanOrderBean;
 import com.cuci.enticement.bean.ItemOrderBottom;
 import com.cuci.enticement.bean.ItemOrderTitle;
+import com.cuci.enticement.bean.ItemTuikuaiOrderTitle;
 import com.cuci.enticement.bean.OrderGoods;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
@@ -28,6 +33,8 @@ import com.cuci.enticement.plate.mall.fragment._MallFragment;
 import com.cuci.enticement.plate.mine.adapter.ItemBottomViewBinder;
 import com.cuci.enticement.plate.mine.adapter.ItemProdViewBinder;
 import com.cuci.enticement.plate.mine.adapter.ItemTitleViewBinder;
+import com.cuci.enticement.plate.mine.adapter.ItemTuiKuanBottomViewBinder;
+import com.cuci.enticement.plate.mine.adapter.ItemTuiKuanTitleViewBinder;
 import com.cuci.enticement.plate.mine.vm.OrderViewModel;
 import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
@@ -44,6 +51,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ForkJoinPool;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,7 +60,7 @@ import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 import okhttp3.ResponseBody;
 
-public class AftermarketActivity extends BaseActivity implements OnRefreshLoadMoreListener,ItemTitleViewBinder.OnProdTitleClickListener,ItemProdAfterViewBinder.OnProdClickListener {
+public class AftermarketActivity extends BaseActivity implements OnRefreshLoadMoreListener, ItemTuiKuanTitleViewBinder.OnProdTitleClickListener,ItemProdAfterViewBinder.OnProdClickListener {
     private static final String TAG = _MallFragment.class.getSimpleName();
     @BindView(R.id.title_tv)
     TextView titleTv;
@@ -74,9 +82,8 @@ public class AftermarketActivity extends BaseActivity implements OnRefreshLoadMo
     private LinearLayoutManager mLayoutManager;
     private UserInfo mUserInfo;
     private boolean mCanLoadMore = true;
-    private String mtype="6";
-    private int page=1;
-    private  List<AllOrderList.DataBean.ListBeanX> mDatas=new ArrayList<>();
+    private int page;
+    private  List<AllTuiKuanOrderBean.DataBean.ListBean> mDatas=new ArrayList<>();
     @Override
     public int getLayoutId() {
         return R.layout.activity_aftermarket;
@@ -96,8 +103,9 @@ public class AftermarketActivity extends BaseActivity implements OnRefreshLoadMo
         mAdapter.setItems(mItems);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         //注册布局
-        mAdapter.register(ItemOrderTitle.class, new ItemTitleViewBinder(this));
-        mAdapter.register(OrderGoods.class, new ItemProdAfterViewBinder(this));
+        mAdapter.register(ItemTuikuaiOrderTitle.class, new ItemTuiKuanTitleViewBinder(this));
+        mAdapter.register(AllTuiKuanOrderBean.DataBean.ListBean.OrderRefundListBean.class, new ItemProdAfterViewBinder(this));
+        mAdapter.register(ItemOrderBottom.class, new ItemTuiKuanBottomViewBinder());
 
         mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -108,8 +116,8 @@ public class AftermarketActivity extends BaseActivity implements OnRefreshLoadMo
     }
 
     private void load() {
-
-        mViewModel.getOrderList(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"1",mtype,"",""+ AppUtils.getVersionCode(BasicApp.getContext()), Status.LOAD_REFRESH)
+        page=1;
+        mViewModel.getTuiKuanList(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"2",""+page,"20",""+ AppUtils.getVersionCode(BasicApp.getContext()), Status.LOAD_REFRESH)
                 .observe(this, mObserver);
     }
 
@@ -121,14 +129,11 @@ public class AftermarketActivity extends BaseActivity implements OnRefreshLoadMo
                 ResponseBody content = status.content;
                 try {
                     String result = content.string();
-                    if(mtype.equals("6")){
-                        Log.d("east", ": "+result);
-                    }
-                    AllOrderList allOrderList = new Gson().fromJson(result, AllOrderList.class);
+                    AllTuiKuanOrderBean allOrderList = new Gson().fromJson(result, AllTuiKuanOrderBean.class);
 
                     if (allOrderList.getCode() == 1) {
-                        AllOrderList.DataBean data = allOrderList.getData();
-                        List<AllOrderList.DataBean.ListBeanX> item = data.getList();
+                        AllTuiKuanOrderBean.DataBean data = allOrderList.getData();
+                        List<AllTuiKuanOrderBean.DataBean.ListBean> item = data.getList();
 
                         if (item == null ) {
                             if (status.loadType == Status.LOAD_REFRESH) {
@@ -217,16 +222,20 @@ public class AftermarketActivity extends BaseActivity implements OnRefreshLoadMo
      * 添加订单item
      * @param item
      */
-    private void addOrderItem(List<AllOrderList.DataBean.ListBeanX> item) {
+    private void addOrderItem(List<AllTuiKuanOrderBean.DataBean.ListBean> item) {
 
         for (int i = 0; i <item.size() ; i++) {
-            AllOrderList.DataBean.ListBeanX orderBean = item.get(i);
+            AllTuiKuanOrderBean.DataBean.ListBean orderBean = item.get(i);
             int cur=mItems.size();
-            ItemOrderTitle itemOrderTitle = new ItemOrderTitle(String.valueOf(orderBean.getOrder_no()), orderBean.getStatus(),cur);
+            ItemTuikuaiOrderTitle itemOrderTitle = new ItemTuikuaiOrderTitle(String.valueOf(orderBean.getOrder_no()), orderBean.getStatus(),cur);
             mItems.add(itemOrderTitle);
-            List<OrderGoods> goodsBeanList = orderBean.getList();
+            List<AllTuiKuanOrderBean.DataBean.ListBean.OrderRefundListBean> goodsBeanList = orderBean.getOrder_refund_list();
+            for (int j = 0; j <goodsBeanList.size() ; j++) {
+                goodsBeanList.get(j).setmStatus(orderBean.getStatus());
+            }
             mItems.addAll(goodsBeanList);
-
+            ItemOrderBottom itemOrderBottom = new ItemOrderBottom();
+            mItems.add(itemOrderBottom);
         }
 
     }
@@ -247,7 +256,8 @@ public class AftermarketActivity extends BaseActivity implements OnRefreshLoadMo
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
         if(mCanLoadMore=true){
             mCanLoadMore = false;
-            mViewModel.getOrderList(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),String.valueOf(page),mtype,"",""+ AppUtils.getVersionCode(BasicApp.getContext()),Status.LOAD_MORE).observe(this, mObserver);
+            mViewModel.getTuiKuanList(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"2",""+page,"20",""+ AppUtils.getVersionCode(BasicApp.getContext()), Status.LOAD_MORE)
+                    .observe(this, mObserver);
 
         }else {
             mRefreshLayout.finishLoadMore();
@@ -260,12 +270,19 @@ public class AftermarketActivity extends BaseActivity implements OnRefreshLoadMo
     }
 
     @Override
-    public void onProdClick(OrderGoods item) {
-
+    public void onProdClick(AllTuiKuanOrderBean.DataBean.ListBean.OrderRefundListBean item) {
+        startActivity(new Intent(this, TuiKuanDetailsActivity.class));
     }
 
     @Override
-    public void onProdTitleClick(ItemOrderTitle item) {
+    public void onProdTitleClick(ItemTuikuaiOrderTitle item) {
+        // 从API11开始android推荐使用android.content.ClipboardManager
+// 为了兼容低版本我们这里使用旧版的android.text.ClipboardManager，虽然提示deprecated，但不影响使用。
+        ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+// 将文本内容放到系统剪贴板里。
+        long order_no = mDatas.get(0).getOrder_no();
+        cm.setText("" + order_no);
+        FToast.success("订单编号复制成功");
 
     }
 }
