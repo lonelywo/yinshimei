@@ -271,7 +271,10 @@ public class AftermarketActivity extends BaseActivity implements OnRefreshLoadMo
 
     @Override
     public void onProdClick(AllTuiKuanOrderBean.DataBean.ListBean.OrderRefundListBean item) {
-        startActivity(new Intent(this, TuiKuanDetailsActivity.class));
+        int refund_id = item.getRefund_id();
+        Intent intent = new Intent(this, TuiKuanDetailsActivity.class);
+        intent.putExtra("refund_id",""+refund_id);
+        startActivity(intent);
     }
 
     @Override

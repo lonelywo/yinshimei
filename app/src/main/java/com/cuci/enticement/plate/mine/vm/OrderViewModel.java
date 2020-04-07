@@ -35,7 +35,42 @@ public class OrderViewModel extends ViewModel {
         mCreator = ServiceCreator.getInstance();
     }
 
+    /**
+     * 退款详情
+     * @param token
+     * @param mid
+     * @return
+     */
+    public MutableLiveData<Status<ResponseBody>> getTuiKuanXiangQing(String token,String mid,String refund_id,String item_id,String new_version) {
 
+        final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
+        data.setValue(Status.loading(null));
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("token",token);
+        params.put("mid",mid);
+        params.put("from_type","2");
+        params.put("refund_id",refund_id);
+        params.put("item_id",item_id);
+        params.put("new_version",new_version);
+        String sign = SignUtils.signParamRemoveNull(params);
+        mCreator.create(OrderApi.class)
+                .getTuiKuanXiangQing("2",token,mid,refund_id,item_id,new_version,sign)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(@NonNull Call<ResponseBody> call,
+                                           @NonNull Response<ResponseBody> response) {
+                        data.setValue(Status.success(response.body()));
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<ResponseBody> call,
+                                          @NonNull Throwable t) {
+                        data.setValue(Status.error(null, t.getMessage() == null ? "获取失败" : t.getMessage()));
+                    }
+                });
+        return data;
+    }
 
     /**
      * 撤销退款
@@ -54,7 +89,7 @@ public class OrderViewModel extends ViewModel {
         params.put("from_type","2");
         params.put("refund_id",refund_id);
         params.put("new_version",new_version);
-        String sign = SignUtils.signParam(params);
+        String sign = SignUtils.signParamRemoveNull(params);
         mCreator.create(OrderApi.class)
                 .getTuiKuanCancel("2",token,mid,refund_id,new_version,sign)
                 .enqueue(new Callback<ResponseBody>() {

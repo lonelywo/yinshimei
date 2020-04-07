@@ -3,6 +3,7 @@ package com.cuci.enticement.plate.cart.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,10 +19,13 @@ import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.AllOrderList;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.TuiKuanCancelBean;
+import com.cuci.enticement.bean.TuiKuanXiangQingBean;
 import com.cuci.enticement.bean.TuikuanSQBean;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.plate.common.MainActivity;
+import com.cuci.enticement.plate.common.popup.TipsPopup;
 import com.cuci.enticement.plate.mine.activity.DaiFaHuoTuiKuanActivity;
+import com.cuci.enticement.plate.mine.activity.RecAddressActivity;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.plate.mine.vm.OrderViewModel;
@@ -32,6 +36,7 @@ import com.cuci.enticement.utils.SharedPrefUtils;
 import com.google.gson.Gson;
 import com.hyphenate.chat.ChatClient;
 import com.hyphenate.helpdesk.easeui.util.IntentBuilder;
+import com.lxj.xpopup.XPopup;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -65,9 +70,10 @@ public class TuiKuanDetails2Activity extends BaseActivity {
     @BindView(R.id.ll_bottom)
     LinearLayout llBottom;
     private AllOrderList.DataBean.ListBeanX mInfo;
-    private String refund_id;
+    private String item_id;
     private UserInfo mUserInfo;
     private OrderViewModel mViewModel;
+    private String refund_id;
 
 
     @Override
@@ -84,18 +90,16 @@ public class TuiKuanDetails2Activity extends BaseActivity {
         }
         mViewModel = ViewModelProviders.of(this).get(OrderViewModel.class);
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
+        item_id = intent.getStringExtra("id");
         refund_id = intent.getStringExtra("refund_id");
-
+        if(!TextUtils.isEmpty(item_id)){
+            initContent();
+        }
     }
 
     private void initContent() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(mInfo.getExpress_name()).append(" ")
-                .append(mInfo.getExpress_phone()).append(" ").append("\n")
-                .append(mInfo.getExpress_province()).append(" ")
-                .append(mInfo.getExpress_city()).append(" ")
-                .append(mInfo.getExpress_area()).append(" ")
-                .append(mInfo.getExpress_address());
+        mViewModel.getTuiKuanXiangQing(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), refund_id , item_id ,""+ AppUtils.getVersionCode(this))
+                .observe(this, mTuiKuanXiangQingObserver);
 
     }
 
@@ -127,10 +131,17 @@ public class TuiKuanDetails2Activity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_cexiao:
-                if (mUserInfo != null) {
-                    mViewModel.getTuiKuanCancel(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), refund_id , "" + AppUtils.getVersionCode(this))
-                            .observe(this, mCommitObserver);
-                }
+                    new XPopup.Builder(this)
+                            .dismissOnBackPressed(false)
+                            .dismissOnTouchOutside(false)
+                            .asCustom(new TipsPopup(this,
+                                    "您将撤销本次申请，如果问题未解决,您还可以再次发起，确定继续吗？", "关闭", "确定", () -> {
+                                if (mUserInfo != null) {
+                                mViewModel.getTuiKuanCancel(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), refund_id , "" + AppUtils.getVersionCode(this))
+                                        .observe(this, mCommitObserver);
+                                }
+                            }))
+                            .show();
                 break;
             case R.id.tv_kefu:
                 if (ChatClient.getInstance().isLoggedInBefore()) {
@@ -178,7 +189,33 @@ public class TuiKuanDetails2Activity extends BaseActivity {
                 break;
         }
     };
-    
+    private Observer<Status<ResponseBody>> mTuiKuanXiangQingObserver = status -> {
+        switch (status.status) {
+            case Status.SUCCESS:
+                ResponseBody body = status.content;
+                try {
+                    String result = body.string();
+                    TuiKuanXiangQingBean mbean = new Gson().fromJson(result, TuiKuanXiangQingBean.class);
+                    if (mbean.getCode() == 1) {
+                         refund_id = String.valueOf(mbean.getData().getRefund().getId());
+                    } else if (mbean.getCode() == HttpUtils.CODE_INVALID) {
+                        HttpUtils.Invalid(this);
+                        FToast.error(mbean.getInfo());
+                    } else {
+                        FToast.error(mbean.getInfo());
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            case Status.LOADING:
+                break;
+            case Status.ERROR:
+                FToast.error(status.message);
+                break;
+        }
+    };
     
     
     

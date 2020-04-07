@@ -730,11 +730,11 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
         }else if(mStatus==6){
             if(refund_state==0||refund_state==1){
                 Intent intent = new Intent(this, TuiKuanDetails2Activity.class);
-                intent.putExtra("refund_id", item.getIs_refund());
+                intent.putExtra("id", ""+item.getId());
                 startActivity(intent);
             }else {
                 Intent intent = new Intent(this, TuiKuanDetails3Activity.class);
-                intent.putExtra("refund_id", item.getIs_refund());
+                intent.putExtra("id", ""+item.getId());
                 startActivity(intent);
             }
         }

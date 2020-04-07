@@ -32,6 +32,39 @@ public class CartViewModel extends ViewModel {
         mCreator = ServiceCreator.getInstance();
     }
 
+    public MutableLiveData<Status<ResponseBody>> TuiKuanWuLiuCommit(String from_type,String token,String mid,String refund_id,String company,String send_no,String phone,String new_version) {
+
+        final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
+        data.setValue(Status.loading(null));
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("from_type",from_type);
+        params.put("token",token);
+        params.put("mid",mid);
+        params.put("refund_id",refund_id);
+        params.put("company",company);
+        params.put("send_no",send_no);
+        params.put("phone",phone);
+        params.put("new_version",new_version);
+        String signs = SignUtils.signParam(params);
+        mCreator.create(CartApi.class)
+                .TuiKuanWuLiuCommit(from_type,token,mid,refund_id,company,send_no,phone,new_version,signs)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(@NonNull Call<ResponseBody> call,
+                                           @NonNull Response<ResponseBody> response) {
+                        data.setValue(Status.success(response.body()));
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<ResponseBody> call,
+                                          @NonNull Throwable t) {
+                        data.setValue(Status.error(null, t.getMessage() == null ? "获取失败" : t.getMessage()));
+                    }
+                });
+        return data;
+    }
+
+
     public MutableLiveData<Status<ResponseBody>> luckDraw(String token,String mid,String m_lottery_id,String nums,String new_version) {
 
         final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();

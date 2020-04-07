@@ -39,7 +39,7 @@ public class TuiKuanWuLiuBean implements Serializable {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable{
         /**
          * express : [{"title":"顺丰快递","code":"SF"},{"title":"圆通快递","code":"YT"},{"title":"申通快递","code":"ST"},{"title":"邮政快递","code":"EMS"}]
          * reason : 请您勿使用到付或平邮，且保证商品完好，以免产生拒签哦。为保障退款进度，退货时请您务必填写真实物流单号，并选择以下任意快递寄回：申通快递、中通快递、圆通快递、韵达快递、联邦快递 、百世快递、邮政、德邦快递、EMS、宅急送、优速快递。...
@@ -74,7 +74,7 @@ public class TuiKuanWuLiuBean implements Serializable {
             this.express = express;
         }
 
-        public static class ExpressBean {
+        public static class ExpressBean implements Serializable{
             /**
              * title : 顺丰快递
              * code : SF

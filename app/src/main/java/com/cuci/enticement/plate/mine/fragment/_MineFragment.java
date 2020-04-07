@@ -557,9 +557,7 @@ public class _MineFragment extends BaseFragment {
             imgHeadwear.setVisibility(View.GONE);
             return;
         }
-        //退货快递
-        MainViewModel mmViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-        mmViewModel.refundExpress("2",String.valueOf(mUserInfo.getId()),mUserInfo.getToken(),""+ AppUtils.getVersionCode(BasicApp.getContext())).observe(this, refundExpressObserver);
+
 
 
         FLog.e("user", "" + mUserInfo.getId());
@@ -958,6 +956,10 @@ public class _MineFragment extends BaseFragment {
                 //可使用优惠卷
                 mViewModel.kaquanlist(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", "1", "", "0",""+ AppUtils.getVersionCode(mActivity), Status.LOAD_REFRESH)
                         .observe(this, mkaquanObserver);
+
+                //退货快递
+                MainViewModel mmViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+                mmViewModel.refundExpress("2",String.valueOf(mUserInfo.getId()),mUserInfo.getToken(),""+ AppUtils.getVersionCode(BasicApp.getContext())).observe(this, refundExpressObserver);
             }
         }
 

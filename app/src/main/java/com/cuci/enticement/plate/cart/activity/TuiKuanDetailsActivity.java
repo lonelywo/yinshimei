@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.URLSpan;
 import android.view.View;
@@ -17,15 +18,28 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.AllOrderList;
+import com.cuci.enticement.bean.CommitTuiKuanWuLiuBean;
+import com.cuci.enticement.bean.LuckDrawBean;
+import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.TuiKuanWuLiuBean;
 import com.cuci.enticement.bean.UserInfo;
+import com.cuci.enticement.plate.cart.vm.CartViewModel;
 import com.cuci.enticement.plate.common.popup.TuiReasonBottom2TopProdPopup;
+import com.cuci.enticement.plate.mine.fragment._MineFragment;
+import com.cuci.enticement.plate.mine.vm.OrderViewModel;
+import com.cuci.enticement.utils.AppUtils;
+import com.cuci.enticement.utils.FToast;
+import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.SharedPrefUtils;
+import com.google.gson.Gson;
 import com.lxj.xpopup.XPopup;
 
 import java.util.List;
@@ -33,6 +47,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.ResponseBody;
 
 
 /**
@@ -90,6 +105,9 @@ public class TuiKuanDetailsActivity extends BaseActivity {
     private UserInfo mUserInfo;
     private TuiKuanWuLiuBean mTuiKuanWuLiuBean;
     private List<TuiKuanWuLiuBean.DataBean.ExpressBean> express;
+    private CartViewModel mViewModel;
+    private String refund_id;
+    private String company;
 
 
     @Override
@@ -104,6 +122,8 @@ public class TuiKuanDetailsActivity extends BaseActivity {
         if (intent == null) {
             return;
         }
+        refund_id = intent.getStringExtra("refund_id");
+        mViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
         mTuiKuanWuLiuBean = SharedPrefUtils.get(TuiKuanWuLiuBean.class);
         if (mTuiKuanWuLiuBean != null) {
@@ -139,6 +159,58 @@ public class TuiKuanDetailsActivity extends BaseActivity {
 
 
     }
+   public void load(){
+       String send_no = edtWuliudanhao.getText().toString().trim();
+       String phone = edtPhone.getText().toString().trim();
+
+       if (TextUtils.isEmpty(phone)
+               || TextUtils.isEmpty(send_no)||TextUtils.isEmpty(company)) {
+           FToast.warning("物流公司、物流单号、手机号不能为空");
+           return;
+       }
+
+       mViewModel.TuiKuanWuLiuCommit("2",mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),refund_id,company,send_no,phone,""+AppUtils.getVersionCode(BasicApp.getContext())).observe(this, mObserver);
+    }
+    private Observer<Status<ResponseBody>> mObserver = status -> {
+
+        switch (status.status) {
+            case Status.SUCCESS:
+
+                ResponseBody body = status.content;
+                opera(body);
+                break;
+            case Status.ERROR:
+
+                FToast.error("网络错误");
+                break;
+            case Status.LOADING:
+
+                break;
+        }
+
+    };
+
+    private void opera(ResponseBody body) {
+        try {
+            String b = body.string();
+            CommitTuiKuanWuLiuBean mCommitTuiKuanWuLiuBean = new Gson().fromJson(b, CommitTuiKuanWuLiuBean.class);
+            if (mCommitTuiKuanWuLiuBean.getCode() == 1) {
+                //退款申请成功后，刷新个人中心状态
+                Intent intent2 = new Intent(_MineFragment.ACTION_REFRESH_STATUS);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(intent2);
+               FToast.success(mCommitTuiKuanWuLiuBean.getInfo());
+            } else if (mCommitTuiKuanWuLiuBean.getCode() == HttpUtils.CODE_INVALID) {
+                HttpUtils.Invalid(this);
+                finish();
+                FToast.error(mCommitTuiKuanWuLiuBean.getInfo());
+            } else {
+                FToast.error(mCommitTuiKuanWuLiuBean.getInfo());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,21 +219,33 @@ public class TuiKuanDetailsActivity extends BaseActivity {
         ButterKnife.bind(this);
     }
 
-    @OnClick(R.id.tv_wuliu)
-    public void onViewClicked() {
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        View v = getCurrentFocus();
-        if(v!=null){
-            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);//从控件所在的窗口中隐藏
+    @OnClick({R.id.tv_wuliu,R.id.bottom})
+    public void onViewClicked(View view) {
+        switch (view.getId()){
+            case R.id.tv_wuliu:
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                View v = getCurrentFocus();
+                if (v != null) {
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);//从控件所在的窗口中隐藏
+                }
+                new XPopup.Builder(this)
+                        .dismissOnTouchOutside(true)
+                        .dismissOnBackPressed(true)
+                        .asCustom(new TuiReasonBottom2TopProdPopup(this, express, sex -> {
+                            tvWuliu.setText(sex.getTitle());
+                            company = sex.getCode();
+                        }))
+                        .show();
+                break;
+            case R.id.bottom:
+                load();
+                break;
+
         }
-        new XPopup.Builder(this)
-                .dismissOnTouchOutside(true)
-                .dismissOnBackPressed(true)
-                .asCustom(new TuiReasonBottom2TopProdPopup(this,express, sex -> {
-                    tvWuliu.setText(sex.getTitle());
-                }))
-                .show();
+
     }
+
+
 }
 
 /*class MyClickText extends ClickableSpan {
@@ -195,5 +279,6 @@ class MyURLSpan extends URLSpan {
         // 设置链接文字颜色
         ds.setColor(BasicApp.getContext().getResources().getColor(R.color.red));
     }
+
 }
 

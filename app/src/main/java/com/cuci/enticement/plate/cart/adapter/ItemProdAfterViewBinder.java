@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.bean.AllTuiKuanOrderBean;
 import com.cuci.enticement.utils.ImageLoader;
@@ -74,31 +75,44 @@ public class ItemProdAfterViewBinder extends ItemViewBinder<AllTuiKuanOrderBean.
         status 5 已确认收货，订单完成*/
         switch (item.getmStatus()) {
             case 0:
-                holder.tvStatus.setText("申请中");
+                holder.tvStatus.setText("待平台处理");
+                holder.tvStatus.setBackgroundColor(BasicApp.getContext().getResources().getColor(R.color.red));
+                holder.tvStatus1.setText("平台将尽快处理");
                 break;
             case 1:
-                holder.tvStatus.setText("平台同意");
+                holder.tvStatus.setText("请您退货");
+                holder.tvStatus1.setText("请您尽快退还商品");
                 break;
             case 2:
                 holder.tvStatus.setText("平台拒绝");
+                holder.tvStatus1.setText("改申请已被拒绝");
                 break;
             case 3:
-                holder.tvStatus.setText("待录入快递单号");
+                holder.tvStatus.setText("请您退货");
+                holder.tvStatus.setBackgroundColor(BasicApp.getContext().getResources().getColor(R.color.red));
+                holder.tvStatus1.setText("请退货并填写物流信息");
                 break;
             case 4:
-                holder.tvStatus.setText("等待收货");
+                holder.tvStatus.setText("等待平台收货");
+                holder.tvStatus.setBackgroundColor(BasicApp.getContext().getResources().getColor(R.color.red));
+                holder.tvStatus1.setText("平台收到货后将会尽快处理");
                 break;
             case 5:
-                holder.tvStatus.setText("退款中");
+                holder.tvStatus.setText("平台退款中");
+                holder.tvStatus.setBackgroundColor(BasicApp.getContext().getResources().getColor(R.color.red));
+                holder.tvStatus1.setText("请耐心等候");
                 break;
             case 6:
                 holder.tvStatus.setText("退款成功");
+                holder.tvStatus1.setText("退款成功");
                 break;
             case 7:
                 holder.tvStatus.setText("退款失败");
+                holder.tvStatus1.setText("退款失败");
                 break;
             case 8:
-                holder.tvStatus.setText("撤销申请");
+                holder.tvStatus.setText("交易关闭");
+                holder.tvStatus1.setText("该退款已关闭");
                 break;
 
         }
@@ -119,6 +133,8 @@ public class ItemProdAfterViewBinder extends ItemViewBinder<AllTuiKuanOrderBean.
         TextView textNum;
         @BindView(R.id.tv_status)
         TextView tvStatus;
+        @BindView(R.id.tv_status1)
+        TextView tvStatus1;
         @BindView(R.id.con_buju)
         ConstraintLayout conBuju;
         @BindView(R.id.line)

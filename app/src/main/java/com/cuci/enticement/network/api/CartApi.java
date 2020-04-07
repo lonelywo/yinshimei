@@ -10,7 +10,22 @@ import retrofit2.http.POST;
 
 public interface CartApi {
 
+    /**
+     * 退款物流提交
+     */
+    @FormUrlEncoded
+    @POST("store/api.member.refund/setExpress")
+    Call<ResponseBody> TuiKuanWuLiuCommit(@Field("from_type") String from_type,
+                                @Field("token") String token,
+                                @Field("mid") String mid,
+                                @Field("refund_id") String refund_id,
+                                @Field("company") String company,
+                                @Field("send_no") String send_no,
+                                @Field("phone") String phone,
+                                @Field("new_version") String new_version,
+                                @Field("sign") String sign
 
+    );
 
     /**
      * 抽奖
