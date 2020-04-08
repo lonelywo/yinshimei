@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.AllOrderList;
@@ -33,7 +34,7 @@ public class ImgActivity extends BaseActivity {
     @Override
     public void initViews(Bundle savedInstanceState) {
 
-        imgTupian.setImageBitmap(ServiceCreator.Constant_PZ_IMG );
+        imgTupian.setImageBitmap(BasicApp.Constant_PZ_IMG );
 
         llBuju.setOnClickListener(new View.OnClickListener() {
             @Override

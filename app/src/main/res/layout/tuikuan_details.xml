@@ -85,6 +85,7 @@
               app:layout_constraintLeft_toLeftOf="parent"
               app:layout_constraintTop_toBottomOf="@+id/text_zhuangtai"
               android:layout_marginLeft="42dp"
+              android:visibility="gone"
               />
 
       </androidx.constraintlayout.widget.ConstraintLayout>
@@ -102,7 +103,7 @@
            android:id="@+id/tv_biaoti"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:text="商家已同意退货申请，请尽早发货"
+           android:text="平台已同意退货申请，请尽早发货"
            android:textColor="@color/hei"
            android:textSize="14sp"
            app:layout_constraintTop_toTopOf="parent"

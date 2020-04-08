@@ -2,6 +2,7 @@ package com.cuci.enticement;
 
 import android.app.Application;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.StrictMode;
 import android.text.TextUtils;
@@ -33,7 +34,14 @@ public class BasicApp extends Application {
 
     private static IWXAPI mIWXAPI;
 
-
+    //商品id
+    public static  String Constant_GOODS_ID = "";
+    //is_new支付前
+    public static  int Constant_IS_NEW = 0;
+    //总金额
+    public static  String Constant_ZONG_MONEY = "";
+    //凭证bitmap
+    public static Bitmap Constant_PZ_IMG;
     /**
      * kefuChat.MessageListener
      */

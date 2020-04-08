@@ -208,6 +208,7 @@ public class AllOrderList implements Serializable {
              * is_deleted : 0
              * create_at : 2019-09-21 23:17:36
              * goods_count : 1
+             * first_buy 首单不给退
              * list : [{"id":41186,"mid":18281,"type":1,"order_no":669079056302,
              * "goods_id":6672579002,"goods_title":"新零售礼包A方案",
              * "goods_logo":"http://qiniu.cdn.enticementchina.com/4229e1b0bf62661c/913270e1206f32e0.jpg",
@@ -277,6 +278,16 @@ public class AllOrderList implements Serializable {
             private int is_deleted;
             private String create_at;
             private int goods_count;
+
+            public int getFirst_buy() {
+                return first_buy;
+            }
+
+            public void setFirst_buy(int first_buy) {
+                this.first_buy = first_buy;
+            }
+
+            private int first_buy;
 
             private List<OrderGoods> list;
 

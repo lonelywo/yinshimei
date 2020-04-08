@@ -28,6 +28,8 @@ public class ItemProdDetailsViewBinder extends ItemViewBinder<OrderGoods, ItemPr
 
     private int mStatus;
     private int mrefund_state;
+    private int mfirst_buy;
+    private int mtype;
 
     public interface OnProdClickListener {
 
@@ -42,10 +44,12 @@ public class ItemProdDetailsViewBinder extends ItemViewBinder<OrderGoods, ItemPr
 
     }
 
-    public ItemProdDetailsViewBinder(OnProdClickListener onProdClickListener, int Status,int refund_state) {
+    public ItemProdDetailsViewBinder(OnProdClickListener onProdClickListener, int Status,int refund_state,int first_buy,int type) {
         mOnProdClickListener = onProdClickListener;
         mStatus = Status;
         mrefund_state = refund_state;
+        mfirst_buy=first_buy;
+        mtype=type;
     }
 
     @NonNull
@@ -57,23 +61,36 @@ public class ItemProdDetailsViewBinder extends ItemViewBinder<OrderGoods, ItemPr
 
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull OrderGoods item) {
+       if(mfirst_buy==1||mtype==2){
+           ViewUtils.hideView(holder.tuikuanTv);
+       }else {
+           if (mStatus == 0 || mStatus == 2||mStatus == 3) {
+               ViewUtils.hideView(holder.tuikuanTv);
+           }else if( mStatus == 4){
+               if(item.getIs_refund()=="0"){
+                   holder.tuikuanTv.setText("退款");
+                   ViewUtils.showView(holder.tuikuanTv);
+               }else if(item.getIs_refund()=="1"){
+                   holder.tuikuanTv.setText("退款中");
+                   ViewUtils.showView(holder.tuikuanTv);
+               }else if(item.getIs_refund()=="2"){
+                   holder.tuikuanTv.setText("退款成功");
+                   ViewUtils.showView(holder.tuikuanTv);
+               }
 
-        if (mStatus == 0 || mStatus == 2||mStatus == 3) {
-            ViewUtils.hideView(holder.tuikuanTv);
-        }else if( mStatus == 4){
-            holder.tuikuanTv.setText("退款");
-            ViewUtils.showView(holder.tuikuanTv);
-        }else if(mStatus == 5 ){
-            holder.tuikuanTv.setText("退款");
-            ViewUtils.showView(holder.tuikuanTv);
-        } else if(mStatus == 6){
-            if(mrefund_state==0||mrefund_state==1){
-                holder.tuikuanTv.setText("退款中");
-            }else {
-                holder.tuikuanTv.setText("退款成功");
-            }
-            ViewUtils.showView(holder.tuikuanTv);
-        }
+           }else if(mStatus == 5 ){
+               holder.tuikuanTv.setText("退款");
+               ViewUtils.hideView(holder.tuikuanTv);
+           } else if(mStatus == 6){
+               if(mrefund_state==0||mrefund_state==1){
+                   holder.tuikuanTv.setText("退款中");
+               }else {
+                   holder.tuikuanTv.setText("退款成功");
+               }
+               ViewUtils.showView(holder.tuikuanTv);
+           }
+       }
+
         ImageLoader.loadPlaceholder(item.getGoods_logo(), holder.imgTupian);
         holder.textBiaoti.setText(item.getGoods_title());
         holder.textNeirong.setText(item.getGoods_spec());

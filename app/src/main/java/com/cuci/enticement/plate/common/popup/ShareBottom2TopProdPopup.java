@@ -197,26 +197,26 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
                     price_sell = mItem.getList().get(i).getPrice_selling();
                     text_money.setText(Html.fromHtml(strMsg));
                     selectedTv.setText(mItem.getList().get(i).getGoods_spec());
-                }else {
+                }/*else {
                     price_market = mItem.getList().get(i).getPrice_market();
                     price_sell = mItem.getList().get(i).getPrice_selling();
                     String strMsg = "<font color=\"#BF9964\">"+"¥" +MathExtend.moveone(price_sell) +"</font>";
                     text_money.setText(Html.fromHtml(strMsg));
                     selectedTv.setText(mItem.getList().get(i).getGoods_spec());
-                }
-                /*else if(SharedPrefUtils.getisnew()==0){
+                }*/
+                else if(SharedPrefUtils.getisnew()==0){
                     price_market = mItem.getList().get(i).getPrice_market();
                     price_sell = mItem.getList().get(i).getPrice_selling();
-                    String strMsg = "<font color=\"#000000\">"+"¥" + price_market+"</font>";
+                    String strMsg = "<font color=\"#000000\">"+"¥" + MathExtend.moveone(price_market)+"</font>";
                     text_money.setText(Html.fromHtml(strMsg));
                     selectedTv.setText(mItem.getList().get(i).getGoods_spec());
                 }else if(SharedPrefUtils.getisnew()==1){
                     price_market = mItem.getList().get(i).getPrice_market();
                     price_sell = mItem.getList().get(i).getPrice_selling();
-                    String strMsg = "<font color=\"#BF9964\">"+"¥" + price_sell+"</font>";
+                    String strMsg = "<font color=\"#BF9964\">"+"¥" + MathExtend.moveone(price_sell)+"</font>";
                     text_money.setText(Html.fromHtml(strMsg));
                     selectedTv.setText(mItem.getList().get(i).getGoods_spec());
-                }*/
+                }
               break;
             }
         }

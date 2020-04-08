@@ -494,6 +494,11 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
         startActivity(intent);
     }
 
+    @Override
+    public void onViewtips(ItemOrderBottom itemOrderBottom) {
+        FToast.success("提醒发送成功");
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onOrderEventMessage(OrderEvent event) {
         if(event.getCode()==OrderEvent.CANCEL_ORDER){

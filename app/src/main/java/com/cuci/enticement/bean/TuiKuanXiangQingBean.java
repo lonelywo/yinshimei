@@ -107,6 +107,8 @@ public class TuiKuanXiangQingBean implements Serializable {
              * audit_at : 2020-04-02 14:50:29
              * audit_desc :
              * create_at : 2020-04-02 14:49:00
+             * address : 2020-04-02 14:49:00
+             * contocts : 2020-04-02 14:49:00
              * order_refund_list : [{"id":19,"refund_id":18,"order_no":685809469754,"order_list_id":526,"goods_id":6713068016,"goods_title":"黑金魅惑蕾丝面膜","goods_logo":"https://qiniu.cdn.enticementchina.com/88254adbc4a82ee7/8dc20f1ec63564ba.jpg","goods_spec":"规格:5片/盒","price_refund":"70.00","price_sales":"70.00","number":1,"is_refund":1,"create_at":"2020-04-02 14:49:00"},{"id":20,"refund_id":18,"order_no":685809469754,"order_list_id":527,"goods_id":6713072951,"goods_title":"白金礼盒","goods_logo":"https://qiniu.cdn.enticementchina.com/2c71dbc434b82b28/f26f730268a6e9ca.jpg","goods_spec":"规格:28片/盒","price_refund":"400.00","price_sales":"400.00","number":1,"is_refund":1,"create_at":"2020-04-02 14:49:00"},{"id":21,"refund_id":18,"order_no":685809469754,"order_list_id":528,"goods_id":6713118081,"goods_title":"因诗美黑金T恤","goods_logo":"https://qiniu.cdn.enticementchina.com/24f5b1737587d122/9be1eacced4d557e.png","goods_spec":"码数:XL","price_refund":"99.00","price_sales":"99.00","number":1,"is_refund":1,"create_at":"2020-04-02 14:49:00"}]
              */
 
@@ -125,6 +127,27 @@ public class TuiKuanXiangQingBean implements Serializable {
             private String audit_at;
             private String audit_desc;
             private String create_at;
+
+            public String getAddress() {
+                return address;
+            }
+
+            public void setAddress(String address) {
+                this.address = address;
+            }
+
+            private String address;
+
+
+            public String getContacts() {
+                return contacts;
+            }
+
+            public void setContacts(String contacts) {
+                this.contacts = contacts;
+            }
+
+            private String contacts;
             private List<OrderRefundListBean> order_refund_list;
 
             public int getId() {

@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import com.caimuhao.rxpicker.RxPicker;
 import com.caimuhao.rxpicker.bean.ImageItem;
+import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.AllOrderList;
@@ -224,6 +225,7 @@ public class TuiKuanType2Activity extends BaseActivity implements ItemImgkuangVi
                         String refund_id = mbean.getData().getRefund_id();
                         Intent intent = new Intent(this, TuiKuanDetails2Activity.class);
                         intent.putExtra("refund_id",refund_id);
+                        intent.putExtra("back","1");
                         startActivity(intent);
                         finish();
                         FToast.success(mbean.getInfo());
@@ -314,7 +316,7 @@ public class TuiKuanType2Activity extends BaseActivity implements ItemImgkuangVi
                 tag = list.get(position);
                 mAdapter.setSelectedList(position);
                 mAdapter.notifyDataChanged();
-                FToast.success(tag);
+             //   FToast.success(tag);
                 return true;
             }
         });
@@ -361,7 +363,7 @@ public class TuiKuanType2Activity extends BaseActivity implements ItemImgkuangVi
 
     @Override
     public void onProdClick2(TuiImgBean item) {
-        ServiceCreator.Constant_PZ_IMG =item.getImg();
+        BasicApp.Constant_PZ_IMG =item.getImg();
         startActivity(new Intent(this,ImgActivity.class));
 
     }

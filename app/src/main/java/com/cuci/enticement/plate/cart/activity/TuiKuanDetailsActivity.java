@@ -30,6 +30,7 @@ import com.cuci.enticement.bean.CommitTuiKuanWuLiuBean;
 import com.cuci.enticement.bean.LuckDrawBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.TuiKuanWuLiuBean;
+import com.cuci.enticement.bean.TuiKuanXiangQingBean;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.plate.cart.vm.CartViewModel;
 import com.cuci.enticement.plate.common.popup.TuiReasonBottom2TopProdPopup;
@@ -110,6 +111,7 @@ public class TuiKuanDetailsActivity extends BaseActivity {
     private String company;
 
 
+
     @Override
     public int getLayoutId() {
         return R.layout.tuikuan_details;
@@ -147,8 +149,9 @@ public class TuiKuanDetailsActivity extends BaseActivity {
         tvContentDesc.setMovementMethod(LinkMovementMethod.getInstance());
         tvContentDesc.setHighlightColor(Color.argb(0x40, 0x4F, 0x41, 0xFD)); //设置点击后的颜色为透明
         tvContentDesc.setText(spannableString);
-
-
+        OrderViewModel  mViewModel = ViewModelProviders.of(this).get(OrderViewModel.class);
+        mViewModel.getTuiKuanXiangQing(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), refund_id , "" ,""+ AppUtils.getVersionCode(this))
+                .observe(this, mTuiKuanXiangQingObserver);
        /* StringBuilder sb = new StringBuilder();
         sb.append(mInfo.getExpress_name()).append(" ")
                 .append(mInfo.getExpress_phone()).append(" ").append("\n")
@@ -159,6 +162,38 @@ public class TuiKuanDetailsActivity extends BaseActivity {
 
 
     }
+
+    private Observer<Status<ResponseBody>> mTuiKuanXiangQingObserver = status -> {
+        switch (status.status) {
+            case Status.SUCCESS:
+                ResponseBody body = status.content;
+                try {
+                    String result = body.string();
+                    TuiKuanXiangQingBean mbean = new Gson().fromJson(result, TuiKuanXiangQingBean.class);
+                    if (mbean.getCode() == 1) {
+                        refund_id = String.valueOf(mbean.getData().getRefund().getId());
+                        String address = mbean.getData().getRefund().getAddress();
+                        String contocts = mbean.getData().getRefund().getContacts();
+                        textDizi.setText("收货地址："+contocts+"\n"+address);
+                    } else if (mbean.getCode() == HttpUtils.CODE_INVALID) {
+                        HttpUtils.Invalid(this);
+                        FToast.error(mbean.getInfo());
+                    } else {
+                        FToast.error(mbean.getInfo());
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            case Status.LOADING:
+                break;
+            case Status.ERROR:
+                FToast.error(status.message);
+                break;
+        }
+    };
+
    public void load(){
        String send_no = edtWuliudanhao.getText().toString().trim();
        String phone = edtPhone.getText().toString().trim();
@@ -198,7 +233,13 @@ public class TuiKuanDetailsActivity extends BaseActivity {
                 //退款申请成功后，刷新个人中心状态
                 Intent intent2 = new Intent(_MineFragment.ACTION_REFRESH_STATUS);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(intent2);
-               FToast.success(mCommitTuiKuanWuLiuBean.getInfo());
+
+                Intent intent = new Intent(this, TuiKuanDetails4Activity.class);
+                intent.putExtra("refund_id",refund_id);
+                startActivity(intent);
+                finish();
+                FToast.success(mCommitTuiKuanWuLiuBean.getInfo());
+
             } else if (mCommitTuiKuanWuLiuBean.getCode() == HttpUtils.CODE_INVALID) {
                 HttpUtils.Invalid(this);
                 finish();
@@ -233,7 +274,7 @@ public class TuiKuanDetailsActivity extends BaseActivity {
                         .dismissOnBackPressed(true)
                         .asCustom(new TuiReasonBottom2TopProdPopup(this, express, sex -> {
                             tvWuliu.setText(sex.getTitle());
-                            company = sex.getCode();
+                            company = sex.getTitle();
                         }))
                         .show();
                 break;

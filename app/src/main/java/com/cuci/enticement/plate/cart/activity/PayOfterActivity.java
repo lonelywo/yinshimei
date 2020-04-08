@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.LuckDrawBean;
@@ -121,11 +122,11 @@ public class PayOfterActivity extends BaseActivity implements ItemZhuanPanViewBi
     @Override
     public void initViews(Bundle savedInstanceState) {
         //透明状态栏
-        Window window = getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+      /*  Window window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);*/
         mViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
-        tvMoney.setText("实付" + ServiceCreator.Constant_ZONG_MONEY);
+        tvMoney.setText("实付" + BasicApp.Constant_ZONG_MONEY);
 
         mAdapter = new MultiTypeAdapter();
         mItems = new Items();
@@ -196,10 +197,10 @@ public class PayOfterActivity extends BaseActivity implements ItemZhuanPanViewBi
     }
 
     private void load() {
-        if (ServiceCreator.Constant_IS_NEW == 0) {
-            mViewModel.payofter(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "1", ServiceCreator.Constant_GOODS_ID, "" + AppUtils.getVersionCode(this)).observe(this, mObserver);
+        if (BasicApp.Constant_IS_NEW == 0) {
+            mViewModel.payofter(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "1", BasicApp.Constant_GOODS_ID, "" + AppUtils.getVersionCode(this)).observe(this, mObserver);
         } else {
-            mViewModel.payofter(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "0", ServiceCreator.Constant_GOODS_ID, "" + AppUtils.getVersionCode(this)).observe(this, mObserver);
+            mViewModel.payofter(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "0", BasicApp.Constant_GOODS_ID, "" + AppUtils.getVersionCode(this)).observe(this, mObserver);
         }
     }
 

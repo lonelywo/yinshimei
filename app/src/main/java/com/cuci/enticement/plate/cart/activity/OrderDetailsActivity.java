@@ -150,6 +150,7 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
     private Items mItems;
     private int mStatus;
     private int refund_state;
+    private int first_buy;
 
 
     @Override
@@ -195,6 +196,7 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
         }
         mStatus = mInfo.getStatus();
         refund_state = mInfo.getRefund_state();
+        first_buy = mInfo.getFirst_buy();
         initViewStatus(mStatus);
         initContent();
         mAdapter = new MultiTypeAdapter();
@@ -204,7 +206,7 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        mAdapter.register(OrderGoods.class, new ItemProdDetailsViewBinder(this, mStatus,refund_state));
+        mAdapter.register(OrderGoods.class, new ItemProdDetailsViewBinder(this, mStatus,refund_state,first_buy,mInfo.getType()));
 
 
        /* OrderItemDecoration mDecoration = new OrderItemDecoration(this, 4);
@@ -254,66 +256,80 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
     private void initViewStatus(int status) {
 
 
-        if (status == 0) {
-            //已取消          重新购买
-            ViewUtils.hideView(tvZuileft);
-            ViewUtils.hideView(tvLeft);
-            ViewUtils.hideView(tvRight);
-            ViewUtils.hideView(bottom);
-            textZhuangtai.setText("交易关闭");
-            tvShifu.setText("待付款");
-        } else if (status == 2) {
-            //待付款  取消订单  立即支付
-            ViewUtils.hideView(tvZuileft);
-            ViewUtils.showView(tvLeft);
-            ViewUtils.showView(tvRight);
-            ViewUtils.showView(bottom);
-            tvLeft.setText("取消订单");
-            tvRight.setText("立即付款");
-            textZhuangtai.setText("待付款");
-            tvShifu.setText("待付款");
-        } else if (status == 3) {
-            //待发货
-            ViewUtils.showView(tvZuileft);
-            ViewUtils.hideView(tvLeft);
-            ViewUtils.hideView(tvRight);
-            ViewUtils.showView(bottom);
-            textZhuangtai.setText("待发货");
-            tvShifu.setText("实付款");
-        } else if (status == 4) {
-            //待收货  查看物流  确认收货
-            ViewUtils.showView(tvZuileft);
-            ViewUtils.showView(tvLeft);
-            ViewUtils.showView(tvRight);
-            ViewUtils.showView(bottom);
-            tvLeft.setText("查看物流");
-            tvRight.setText("确认收货");
-            textZhuangtai.setText("待收货");
-            tvShifu.setText("实付款");
-        } else if (status == 5) {
-            //已完成  查看物流
-            ViewUtils.hideView(tvZuileft);
-            ViewUtils.showView(tvLeft);
-            ViewUtils.showView(tvRight);
-            ViewUtils.showView(bottom);
-            tvLeft.setText("全部退款");
-            tvRight.setText("联系客服");
-            textZhuangtai.setText("交易成功");
-            tvShifu.setText("实付款");
-        } else if (status == 6) {
-            if(refund_state==0||refund_state==1){
-                textZhuangtai.setText("退款中");
-            }else {
-                textZhuangtai.setText("退款成功");
-            }
-            //已退货  查看物流
-            ViewUtils.hideView(tvZuileft);
-            ViewUtils.hideView(tvLeft);
-            ViewUtils.hideView(tvRight);
-            ViewUtils.hideView(bottom);
+         if (status == 0) {
+             //已取消          重新购买
+             ViewUtils.hideView(tvZuileft);
+             ViewUtils.hideView(tvLeft);
+             ViewUtils.hideView(tvRight);
+             ViewUtils.hideView(bottom);
+             textZhuangtai.setText("交易关闭");
+             tvShifu.setText("待付款");
+         } else if (status == 2) {
+             //待付款  取消订单  立即支付
+             ViewUtils.hideView(tvZuileft);
+             if(first_buy==1){
+                 ViewUtils.hideView(tvLeft);
+             }else {
+                 ViewUtils.showView(tvLeft);
+             }
+             ViewUtils.showView(tvRight);
+             ViewUtils.showView(bottom);
+             tvLeft.setText("取消订单");
+             tvRight.setText("立即付款");
+             textZhuangtai.setText("待付款");
+             tvShifu.setText("待付款");
+         } else if (status == 3) {
+             //待发货
+             if(first_buy==1){
+                 ViewUtils.hideView(tvZuileft);
+             }else {
+                 ViewUtils.showView(tvZuileft);
+             }
+             ViewUtils.hideView(tvLeft);
+             ViewUtils.hideView(tvRight);
+             ViewUtils.showView(bottom);
+             textZhuangtai.setText("待发货");
+             tvShifu.setText("实付款");
+         } else if (status == 4) {
+             //待收货  查看物流  确认收货
+             if(first_buy==1){
+                 ViewUtils.hideView(tvZuileft);
+             }else {
+                 ViewUtils.showView(tvZuileft);
+             }
+             ViewUtils.showView(tvLeft);
+             ViewUtils.showView(tvRight);
+             ViewUtils.showView(bottom);
+             tvLeft.setText("查看物流");
+             tvRight.setText("确认收货");
+             textZhuangtai.setText("待收货");
+             tvShifu.setText("实付款");
+         } else if (status == 5) {
+             //已完成  查看物流
+             ViewUtils.hideView(tvZuileft);
+             ViewUtils.hideView(tvLeft);
+             ViewUtils.showView(tvRight);
+             ViewUtils.showView(bottom);
+             tvLeft.setText("全部退款");
+             tvRight.setText("联系客服");
+             textZhuangtai.setText("交易成功");
+             tvShifu.setText("实付款");
+         } else if (status == 6) {
+             if(refund_state==0||refund_state==1){
+                 textZhuangtai.setText("退款中");
+             }else {
+                 textZhuangtai.setText("退款成功");
+             }
+             //已退货  查看物流
+             ViewUtils.hideView(tvZuileft);
+             ViewUtils.hideView(tvLeft);
+             ViewUtils.hideView(tvRight);
+             ViewUtils.hideView(bottom);
 
-            tvShifu.setText("实付款");
-        }
+             tvShifu.setText("实付款");
+         }
+
+
     }
 
     @OnClick({R.id.image_back,R.id.tv_zuileft, R.id.tv_left, R.id.tv_right})
@@ -327,7 +343,7 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
                     Intent intent = new Intent(this, DaiFaHuoTuiKuanActivity.class);
                     intent.putExtra("intentInfo",mInfo);
                     startActivity(intent);
-                }else if(mStatus == 4||mStatus == 5){
+                }else if(mStatus == 4){
                     Intent intent_tui = new Intent(this, TuiTypeActivity.class);
                     intent_tui.putExtra("intentInfo",mInfo);
                     startActivity(intent_tui);
@@ -357,9 +373,9 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
                     startActivity(intent);
                 }else if(mStatus == 5){
                    //申请售后
-                    Intent intent_tui = new Intent(this, TuiTypeActivity.class);
+                   /* Intent intent_tui = new Intent(this, TuiTypeActivity.class);
                     intent_tui.putExtra("intentInfo",mInfo);
-                    startActivity(intent_tui);
+                    startActivity(intent_tui);*/
                 }
                 break;
             case R.id.tv_right:
@@ -524,8 +540,8 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
 
 
                         //切换全部订单
-                        /*EventBus.getDefault().post(new OrderEvent(OrderEvent.INTENT_YIWANCHENG));
-                        finish();*/
+                        EventBus.getDefault().post(new OrderEvent(OrderEvent.INTENT_YIWANCHENG));
+                        finish();
 
                     } else if (orderConfirm.getCode() == HttpUtils.CODE_INVALID) {
                         HttpUtils.Invalid(this);
@@ -577,8 +593,8 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
                         initViewStatus(CANCEL_STATUS);
 
                         //切换全部订单
-                       /* EventBus.getDefault().post(new OrderEvent(OrderEvent.INTENT_MY_ORDER));
-                        finish();*/
+                        EventBus.getDefault().post(new OrderEvent(OrderEvent.INTENT_MY_ORDER));
+                        finish();
                     } else if (orderCancel.getCode() == HttpUtils.CODE_INVALID) {
                         HttpUtils.Invalid(this);
                         finish();
@@ -723,18 +739,34 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
             Intent intent = new Intent(this, DaiFaHuoTuiKuanActivity.class);
             intent.putExtra("intentItem",item);
             startActivity(intent);
-        }else if(mStatus==4||mStatus==5){
-            Intent intent = new Intent(this, TuiTypeActivity.class);
-            intent.putExtra("intentItem",item);
-            startActivity(intent);
-        }else if(mStatus==6){
+        }else if(mStatus==4){
+            if(TextUtils.equals(item.getIs_refund(),"0")){
+                Intent intent = new Intent(this, TuiTypeActivity.class);
+                intent.putExtra("intentItem",item);
+                startActivity(intent);
+            }else if(TextUtils.equals(item.getIs_refund(),"1")){
+                Intent intent = new Intent(this, TuiKuanDetails2Activity.class);
+                intent.putExtra("intentItem",item);
+                intent.putExtra("text","平台退款中");
+                startActivity(intent);
+            }else if(TextUtils.equals(item.getIs_refund(),"2")){
+                Intent intent = new Intent(this, TuiKuanDetails3Activity.class);
+                intent.putExtra("intentItem",item);
+                intent.putExtra("text","退款成功");
+                startActivity(intent);
+            }
+
+        }else if(mStatus==5) {
+
+        }
+        else if(mStatus==6){
             if(refund_state==0||refund_state==1){
                 Intent intent = new Intent(this, TuiKuanDetails2Activity.class);
-                intent.putExtra("id", ""+item.getId());
+                intent.putExtra("item_id", ""+item.getId());
                 startActivity(intent);
             }else {
                 Intent intent = new Intent(this, TuiKuanDetails3Activity.class);
-                intent.putExtra("id", ""+item.getId());
+                intent.putExtra("item_id", ""+item.getId());
                 startActivity(intent);
             }
         }

@@ -80,12 +80,12 @@ public class ItemCartViewBinder extends ItemViewBinder<OrderGoods, ItemCartViewB
 
         holder.textBiaoti.setText(item.getGoods_title());
         holder.textNeirong.setText(item.getGoods_spec());
-       /* if(SharedPrefUtils.getisnew()==0&&item.getVip_mod()==0||SharedPrefUtils.getisnew()==1&&item.getVip_mod()==1){
-            holder.textJiage.setText(String.format(Locale.CHINA,"%s",item.getGoods_price_market()));
+        if(SharedPrefUtils.getisnew()==0&&item.getVip_mod()==0||SharedPrefUtils.getisnew()==1&&item.getVip_mod()==1){
+            holder.textJiage.setText(String.format(Locale.CHINA,"%s",MathExtend.moveone(item.getGoods_price_market())));
         }else {
-            holder.textJiage.setText(String.format(Locale.CHINA,"%s",item.getGoods_price_selling()));
-        }*/
-        holder.textJiage.setText(String.format(Locale.CHINA,"%s", MathExtend.moveone(item.getGoods_price_selling())));
+            holder.textJiage.setText(String.format(Locale.CHINA,"%s",MathExtend.moveone(item.getGoods_price_selling())));
+        }
+      //  holder.textJiage.setText(String.format(Locale.CHINA,"%s", MathExtend.moveone(item.getGoods_price_selling())));
         holder.tvNum.setText(String.valueOf(item.getGoods_num()));
         ImageLoader.loadPlaceholder(item.getGoods_logo(),holder.imgTuxiang);
 

@@ -158,6 +158,7 @@ public class DaiFaHuoTuiKuanActivity extends BaseActivity {
                         refund_id = mbean.getData().getRefund_id();
                         Intent intent = new Intent(this, TuiKuanDetails2Activity.class);
                         intent.putExtra("refund_id", refund_id);
+                        intent.putExtra("back","1");
                         startActivity(intent);
                         finish();
                         FToast.success(mbean.getInfo());
@@ -215,7 +216,7 @@ public class DaiFaHuoTuiKuanActivity extends BaseActivity {
                 tag = list.get(position).getName();
                 mAdapter.setSelectedList(position);
                 mAdapter.notifyDataChanged();
-                FToast.success(tag);
+              //  FToast.success(tag);
                 return true;
             }
         });

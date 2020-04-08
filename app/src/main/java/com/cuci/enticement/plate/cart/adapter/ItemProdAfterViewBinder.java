@@ -76,42 +76,47 @@ public class ItemProdAfterViewBinder extends ItemViewBinder<AllTuiKuanOrderBean.
         switch (item.getmStatus()) {
             case 0:
                 holder.tvStatus.setText("待平台处理");
-                holder.tvStatus.setBackgroundColor(BasicApp.getContext().getResources().getColor(R.color.red));
+                holder.tvStatus.setTextColor(BasicApp.getContext().getResources().getColor(R.color.red));
                 holder.tvStatus1.setText("平台将尽快处理");
                 break;
             case 1:
-                holder.tvStatus.setText("请您退货");
+                holder.tvStatus.setText("平台已同意");
+                holder.tvStatus.setTextColor(BasicApp.getContext().getResources().getColor(R.color.hei));
                 holder.tvStatus1.setText("请您尽快退还商品");
                 break;
             case 2:
                 holder.tvStatus.setText("平台拒绝");
-                holder.tvStatus1.setText("改申请已被拒绝");
+                holder.tvStatus.setTextColor(BasicApp.getContext().getResources().getColor(R.color.hei));
+                holder.tvStatus1.setText("该申请已被拒绝");
                 break;
             case 3:
                 holder.tvStatus.setText("请您退货");
-                holder.tvStatus.setBackgroundColor(BasicApp.getContext().getResources().getColor(R.color.red));
+                holder.tvStatus.setTextColor(BasicApp.getContext().getResources().getColor(R.color.red));
                 holder.tvStatus1.setText("请退货并填写物流信息");
                 break;
             case 4:
                 holder.tvStatus.setText("等待平台收货");
-                holder.tvStatus.setBackgroundColor(BasicApp.getContext().getResources().getColor(R.color.red));
+                holder.tvStatus.setTextColor(BasicApp.getContext().getResources().getColor(R.color.red));
                 holder.tvStatus1.setText("平台收到货后将会尽快处理");
                 break;
             case 5:
                 holder.tvStatus.setText("平台退款中");
-                holder.tvStatus.setBackgroundColor(BasicApp.getContext().getResources().getColor(R.color.red));
+                holder.tvStatus.setTextColor(BasicApp.getContext().getResources().getColor(R.color.red));
                 holder.tvStatus1.setText("请耐心等候");
                 break;
             case 6:
                 holder.tvStatus.setText("退款成功");
-                holder.tvStatus1.setText("退款成功");
+                holder.tvStatus.setTextColor(BasicApp.getContext().getResources().getColor(R.color.hei));
+                holder.tvStatus1.setText("该退款已完成");
                 break;
             case 7:
                 holder.tvStatus.setText("退款失败");
+                holder.tvStatus.setTextColor(BasicApp.getContext().getResources().getColor(R.color.hei));
                 holder.tvStatus1.setText("退款失败");
                 break;
             case 8:
                 holder.tvStatus.setText("交易关闭");
+                holder.tvStatus.setTextColor(BasicApp.getContext().getResources().getColor(R.color.hei));
                 holder.tvStatus1.setText("该退款已关闭");
                 break;
 

@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.KaQuanListBean;
@@ -125,8 +126,8 @@ public class ZhuanPanActivity extends BaseActivity implements ItemZhuanPanViewBi
     }
 
     private void load() {
-        if (ServiceCreator.Constant_IS_NEW == 1) {
-            mViewModel.payofter(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "1", ServiceCreator.Constant_GOODS_ID, "" + AppUtils.getVersionCode(this)).observe(this, mObserver);
+        if (BasicApp.Constant_IS_NEW == 1) {
+            mViewModel.payofter(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "1", BasicApp.Constant_GOODS_ID, "" + AppUtils.getVersionCode(this)).observe(this, mObserver);
         } else {
             mViewModel.payofter(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "0", "685756171105", "" + AppUtils.getVersionCode(this)).observe(this, mObserver);
         }

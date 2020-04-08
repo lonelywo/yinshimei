@@ -272,9 +272,61 @@ public class AftermarketActivity extends BaseActivity implements OnRefreshLoadMo
     @Override
     public void onProdClick(AllTuiKuanOrderBean.DataBean.ListBean.OrderRefundListBean item) {
         int refund_id = item.getRefund_id();
-        Intent intent = new Intent(this, TuiKuanDetailsActivity.class);
-        intent.putExtra("refund_id",""+refund_id);
-        startActivity(intent);
+        switch (item.getmStatus()){
+            case 0:
+                Intent intent = new Intent(this, TuiKuanDetails2Activity.class);
+                intent.putExtra("refund_id",""+refund_id);
+
+                startActivity(intent);
+                break;
+            case 1:
+                Intent intent1 = new Intent(this, TuiKuanDetails3Activity.class);
+                intent1.putExtra("refund_id",""+refund_id);
+                intent1.putExtra("text","平台已同意");
+                startActivity(intent1);
+                break;
+            case 2:
+                Intent intent2 = new Intent(this, TuiKuanDetails4Activity.class);
+                intent2.putExtra("refund_id",""+refund_id);
+                intent2.putExtra("text","平台拒绝");
+                startActivity(intent2);
+                break;
+            case 3:
+                Intent intent3 = new Intent(this, TuiKuanDetailsActivity.class);
+                intent3.putExtra("refund_id",""+refund_id);
+                startActivity(intent3);
+                break;
+            case 4:
+                Intent intent4 = new Intent(this, TuiKuanDetails4Activity.class);
+                intent4.putExtra("refund_id",""+refund_id);
+                startActivity(intent4);
+                break;
+            case 5:
+                Intent intent5 = new Intent(this, TuiKuanDetails2Activity.class);
+                intent5.putExtra("refund_id",""+refund_id);
+                intent5.putExtra("text","平台退款中");
+                startActivity(intent5);
+                break;
+            case 6:
+                Intent intent6 = new Intent(this, TuiKuanDetails3Activity.class);
+                intent6.putExtra("refund_id",""+refund_id);
+                intent6.putExtra("text","退款成功");
+                startActivity(intent6);
+                break;
+            case 7:
+                Intent intent7 = new Intent(this, TuiKuanDetails3Activity.class);
+                intent7.putExtra("refund_id",""+refund_id);
+                intent7.putExtra("text","退款失败");
+                startActivity(intent7);
+                break;
+            case 8:
+                Intent intent8 = new Intent(this, TuiKuanDetails3Activity.class);
+                intent8.putExtra("refund_id",""+refund_id);
+                intent8.putExtra("text","退款申请已撤销");
+                startActivity(intent8);
+                break;
+        }
+
     }
 
     @Override

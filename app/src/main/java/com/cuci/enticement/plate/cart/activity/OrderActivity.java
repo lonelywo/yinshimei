@@ -702,9 +702,9 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                         LocalBroadcastManager.getInstance(this).sendBroadcast(intent2);
 
                         //赋值常量
-                        ServiceCreator.Constant_GOODS_ID=commitOrder.getData().getOrder().getOrder_no() ;
-                        ServiceCreator.Constant_IS_NEW=SharedPrefUtils.getisnew();
-                        ServiceCreator.Constant_ZONG_MONEY=totalMoney;
+                        BasicApp.Constant_GOODS_ID=commitOrder.getData().getOrder().getOrder_no() ;
+                        BasicApp.Constant_IS_NEW=SharedPrefUtils.getisnew();
+                        BasicApp.Constant_ZONG_MONEY=totalMoney;
                         mViewModel.getOrderPay(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),
                                 commitOrder.getData().getOrder().getOrder_no(), String.valueOf(mPayType),""+ AppUtils.getVersionCode(BasicApp.getContext()))
                                 .observe(this, mPayObserver);

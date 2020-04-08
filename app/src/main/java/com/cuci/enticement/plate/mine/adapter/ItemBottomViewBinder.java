@@ -34,6 +34,7 @@ public class ItemBottomViewBinder extends ItemViewBinder<ItemOrderBottom, ItemBo
 
         void onViewLogistics(ItemOrderBottom itemOrderBottom);
 
+        void onViewtips(ItemOrderBottom itemOrderBottom);
     }
 
     private OnItemClickListener mOnItemClickListener;
@@ -122,7 +123,10 @@ public class ItemBottomViewBinder extends ItemViewBinder<ItemOrderBottom, ItemBo
                     //立即支付
                     mOnItemClickListener.onPay(itemOrderBottom);
                 }
-
+                if(status==3){
+                    //提醒发货
+                    mOnItemClickListener.onViewtips(itemOrderBottom);
+                }
 
                 if(status==4){
                     //确认收货

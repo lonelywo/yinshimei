@@ -6,8 +6,8 @@ android {
         applicationId "com.cuci.enticement"
         minSdkVersion 22
         targetSdkVersion 29
-        versionCode 208
-        versionName "2.0.8"
+        versionCode 209
+        versionName "2.0.9"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [
                 GETUI_APP_ID    : "Cn2PZHiD5N6MpOYVrd9N95",
@@ -99,9 +99,9 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'com.google.android.material:material:1.1.0-alpha09'
+    implementation 'com.google.android.material:material:1.2.0-alpha05'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
@@ -114,8 +114,8 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
     implementation 'com.github.hotchemi:permissionsdispatcher:3.2.0'
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:3.2.0'
-    implementation 'com.github.bumptech.glide:glide:4.9.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
     implementation 'org.litepal.android:java:3.0.0'
     //https://github.com/youth5201314/banner
@@ -160,9 +160,8 @@ dependencies {
     //支付宝
     implementation(name: 'alipaySdk-15.6.5-20190718211159-noUtdid', ext: 'aar')
     //环信客服SDK
-     implementation 'com.hyphenate:kefu-easeui-android:latest.release'
-
-   // api project(':kefu-easeui')
+   //  implementation 'com.hyphenate:kefu-easeui-android:latest.release'
+    api project(':kefu-easeui')
     //个推
     implementation 'com.getui:sdk:2.13.3.0'
     implementation 'com.assist:oppo:1.0.3'

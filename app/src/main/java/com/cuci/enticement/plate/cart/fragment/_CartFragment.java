@@ -359,17 +359,17 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
         for (int i = 0; i < mItems.size(); i++) {
             OrderGoods item = (OrderGoods) mItems.get(i);
             if (item.isCheck()) {
-               /* if(SharedPrefUtils.getisnew()==0&&item.getVip_mod()==0||SharedPrefUtils.getisnew()==1&&item.getVip_mod()==1){
+                if(SharedPrefUtils.getisnew()==0&&item.getVip_mod()==0||SharedPrefUtils.getisnew()==1&&item.getVip_mod()==1){
                     double itemMoeny = Double.parseDouble(item.getGoods_price_market());
-                    totalF = MathExtend.addnum(totalF,MathExtend.multiply1(String.valueOf(item.getGoods_num()),item.getGoods_price_market()));
-                    //totalF = totalF + item.getGoods_num() * itemMoeny;
+                    totalF = MathExtend.addnum(totalF,MathExtend.multiply(String.valueOf(item.getGoods_num()),item.getGoods_price_market()));
+                  //  totalF = totalF + item.getGoods_num() * itemMoeny;
                 }else {
                     double itemMoeny = Double.parseDouble(item.getGoods_price_selling());
-                    totalF = MathExtend.addnum(totalF,MathExtend.multiply1(String.valueOf(item.getGoods_num()),item.getGoods_price_selling()));
-                   // totalF = totalF + item.getGoods_num() * itemMoeny;
-                }*/
+                    totalF = MathExtend.addnum(totalF,MathExtend.multiply(String.valueOf(item.getGoods_num()),item.getGoods_price_selling()));
+                //    totalF = totalF + item.getGoods_num() * itemMoeny;
+                }
                 double itemMoeny = Double.parseDouble(item.getGoods_price_selling());
-                totalF = MathExtend.addnum(totalF,MathExtend.multiply(String.valueOf(item.getGoods_num()),item.getGoods_price_selling()));
+             //   totalF = MathExtend.addnum(totalF,MathExtend.multiply(String.valueOf(item.getGoods_num()),item.getGoods_price_selling()));
             }
         }
         return totalF;

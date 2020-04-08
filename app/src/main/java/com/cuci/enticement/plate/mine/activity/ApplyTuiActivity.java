@@ -119,7 +119,7 @@ public class ApplyTuiActivity extends BaseActivity implements ItemImgkuangViewBi
 
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        mAdapter0.register(OrderGoods.class, new ItemProdDetailsViewBinder(this, mStatus,refund_state));
+        mAdapter0.register(OrderGoods.class, new ItemProdDetailsViewBinder(this, mStatus,refund_state,mInfo.getFirst_buy(),mInfo.getType()));
 
 
         OrderItemDecoration mDecoration0 = new OrderItemDecoration(this, 4);

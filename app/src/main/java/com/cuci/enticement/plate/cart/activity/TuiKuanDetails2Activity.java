@@ -20,14 +20,10 @@ import com.cuci.enticement.bean.AllOrderList;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.TuiKuanCancelBean;
 import com.cuci.enticement.bean.TuiKuanXiangQingBean;
-import com.cuci.enticement.bean.TuikuanSQBean;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.plate.common.MainActivity;
 import com.cuci.enticement.plate.common.popup.TipsPopup;
-import com.cuci.enticement.plate.mine.activity.DaiFaHuoTuiKuanActivity;
-import com.cuci.enticement.plate.mine.activity.RecAddressActivity;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
-import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.plate.mine.vm.OrderViewModel;
 import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
@@ -69,11 +65,15 @@ public class TuiKuanDetails2Activity extends BaseActivity {
     TextView tvKefu;
     @BindView(R.id.ll_bottom)
     LinearLayout llBottom;
+    @BindView(R.id.tv_zhuyi)
+    TextView tvZhuyi;
     private AllOrderList.DataBean.ListBeanX mInfo;
     private String item_id;
     private UserInfo mUserInfo;
     private OrderViewModel mViewModel;
     private String refund_id;
+    private String text;
+    private String back;
 
 
     @Override
@@ -90,26 +90,37 @@ public class TuiKuanDetails2Activity extends BaseActivity {
         }
         mViewModel = ViewModelProviders.of(this).get(OrderViewModel.class);
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
-        item_id = intent.getStringExtra("id");
+        item_id = intent.getStringExtra("item_id");
         refund_id = intent.getStringExtra("refund_id");
-        if(!TextUtils.isEmpty(item_id)){
-            initContent();
+        text = intent.getStringExtra("text");
+        back = intent.getStringExtra("back");
+        if (TextUtils.equals(text, "平台退款中")) {
+            textZhuangtai.setText("平台退款中");
+            textTime.setText("请耐心等候");
+        } else {
+            textZhuangtai.setText("待平台处理");
+            textTime.setText("平台将尽快处理");
         }
+        initContent();
+
     }
 
     private void initContent() {
-        mViewModel.getTuiKuanXiangQing(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), refund_id , item_id ,""+ AppUtils.getVersionCode(this))
+        mViewModel.getTuiKuanXiangQing(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), refund_id, item_id, "" + AppUtils.getVersionCode(this))
                 .observe(this, mTuiKuanXiangQingObserver);
 
     }
 
     @Override
     public void onBackPressed() {
-        Intent intentRank = new Intent(MainActivity.ACTION_GO_TO_MINE);
-        LocalBroadcastManager.getInstance(this)
-                .sendBroadcast(intentRank);
-        startActivity(new Intent(this, MainActivity.class));
-        // super.onBackPressed();
+        if(TextUtils.equals("back","1")){
+            Intent intentRank = new Intent(MainActivity.ACTION_GO_TO_MINE);
+            LocalBroadcastManager.getInstance(this)
+                    .sendBroadcast(intentRank);
+            startActivity(new Intent(this, MainActivity.class));
+            return;
+        }
+         super.onBackPressed();
     }
 
     @Override
@@ -121,27 +132,31 @@ public class TuiKuanDetails2Activity extends BaseActivity {
 
     @OnClick({R.id.image_back})
     public void onViewClicked() {
-        Intent intentRank = new Intent(MainActivity.ACTION_GO_TO_MINE);
-        LocalBroadcastManager.getInstance(this)
-                .sendBroadcast(intentRank);
-        startActivity(new Intent(this, MainActivity.class));
+        if(TextUtils.equals("back","1")){
+            Intent intentRank = new Intent(MainActivity.ACTION_GO_TO_MINE);
+            LocalBroadcastManager.getInstance(this)
+                    .sendBroadcast(intentRank);
+            startActivity(new Intent(this, MainActivity.class));
+            return;
+        }
+        finish();
     }
 
     @OnClick({R.id.tv_cexiao, R.id.tv_kefu})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_cexiao:
-                    new XPopup.Builder(this)
-                            .dismissOnBackPressed(false)
-                            .dismissOnTouchOutside(false)
-                            .asCustom(new TipsPopup(this,
-                                    "您将撤销本次申请，如果问题未解决,您还可以再次发起，确定继续吗？", "关闭", "确定", () -> {
-                                if (mUserInfo != null) {
-                                mViewModel.getTuiKuanCancel(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), refund_id , "" + AppUtils.getVersionCode(this))
+                new XPopup.Builder(this)
+                        .dismissOnBackPressed(false)
+                        .dismissOnTouchOutside(false)
+                        .asCustom(new TipsPopup(this,
+                                "您将撤销本次申请，如果问题未解决,您还可以再次发起，确定继续吗？", "关闭", "确定", () -> {
+                            if (mUserInfo != null) {
+                                mViewModel.getTuiKuanCancel(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), refund_id, "" + AppUtils.getVersionCode(this))
                                         .observe(this, mCommitObserver);
-                                }
-                            }))
-                            .show();
+                            }
+                        }))
+                        .show();
                 break;
             case R.id.tv_kefu:
                 if (ChatClient.getInstance().isLoggedInBefore()) {
@@ -158,6 +173,7 @@ public class TuiKuanDetails2Activity extends BaseActivity {
                 break;
         }
     }
+
     private Observer<Status<ResponseBody>> mCommitObserver = status -> {
         switch (status.status) {
             case Status.SUCCESS:
@@ -169,6 +185,12 @@ public class TuiKuanDetails2Activity extends BaseActivity {
                         //退款申请成功后，刷新个人中心状态
                         Intent intent2 = new Intent(_MineFragment.ACTION_REFRESH_STATUS);
                         LocalBroadcastManager.getInstance(this).sendBroadcast(intent2);
+
+                        Intent intent = new Intent(this, TuiKuanDetails3Activity.class);
+                        intent.putExtra("refund_id", refund_id);
+                        intent.putExtra("text", "该退款已关闭");
+                        startActivity(intent);
+                        finish();
                         FToast.success(mbean.getInfo());
 
                     } else if (mbean.getCode() == HttpUtils.CODE_INVALID) {
@@ -197,7 +219,8 @@ public class TuiKuanDetails2Activity extends BaseActivity {
                     String result = body.string();
                     TuiKuanXiangQingBean mbean = new Gson().fromJson(result, TuiKuanXiangQingBean.class);
                     if (mbean.getCode() == 1) {
-                         refund_id = String.valueOf(mbean.getData().getRefund().getId());
+                        refund_id = String.valueOf(mbean.getData().getRefund().getId());
+                        tvZhuyi.setText(mbean.getData().getRefund().getAudit_desc());
                     } else if (mbean.getCode() == HttpUtils.CODE_INVALID) {
                         HttpUtils.Invalid(this);
                         FToast.error(mbean.getInfo());
@@ -216,7 +239,6 @@ public class TuiKuanDetails2Activity extends BaseActivity {
                 break;
         }
     };
-    
-    
-    
+
+
 }
