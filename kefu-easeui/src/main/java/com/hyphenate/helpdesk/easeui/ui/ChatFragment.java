@@ -38,6 +38,7 @@ import com.hyphenate.chat.ChatClient;
 import com.hyphenate.chat.ChatManager;
 import com.hyphenate.chat.Conversation;
 import com.hyphenate.chat.EMTextMessageBody;
+import com.hyphenate.chat.EMVoiceMessageBody;
 import com.hyphenate.chat.KefuConversationManager;
 import com.hyphenate.chat.Message;
 import com.hyphenate.helpdesk.R;
@@ -71,7 +72,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.charset.Charset;
 import java.util.List;
-
+import java.util.UUID;
 
 /**
  * 可以直接new出来使用的聊天对话页面fragment，
@@ -127,7 +128,7 @@ public class ChatFragment extends BaseFragment implements ChatManager.MessageLis
     private QueueIdentityInfo queueIdentityInfo;
     private String titleName;
     protected TextView tvTipWaitCount;
-
+    public static final int REQUEST_CODE_CONTEXT_MENU = 13;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -451,6 +452,9 @@ public class ChatFragment extends BaseFragment implements ChatManager.MessageLis
             @Override
             public void onBubbleLongClick(Message message) {
                 contextMenuMessage = message;
+                //消息框长按
+                startActivityForResult(new Intent(getActivity(), ContextMenuActivity.class).putExtra("message", message), REQUEST_CODE_CONTEXT_MENU);
+
                 if (chatFragmentListener != null) {
                     chatFragmentListener.onMessageBubbleLongClick(message);
                 }
@@ -520,6 +524,30 @@ public class ChatFragment extends BaseFragment implements ChatManager.MessageLis
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_CONTEXT_MENU) {
+            switch (resultCode) {
+                case ContextMenuActivity.RESULT_CODE_COPY: // 复制消息
+                    String string = ((EMTextMessageBody) contextMenuMessage.body()).getMessage();
+                    clipboard.setText(string);
+                    break;
+                case ContextMenuActivity.RESULT_CODE_DELETE: // 删除消息
+                    if (contextMenuMessage.getType() == Message.Type.VOICE){
+                        EMVoiceMessageBody voiceBody = (EMVoiceMessageBody) contextMenuMessage.body();
+                        String voicePath = voiceBody.getLocalUrl();
+                        MediaManager.release(voicePath);
+                    }
+                    conversation.removeMessage(contextMenuMessage.messageId());
+                    messageList.refresh();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+
+
+
+
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == REQUEST_CODE_CAMERA) { // 发送照片
                 sendImageMessage(cameraFilePath);
