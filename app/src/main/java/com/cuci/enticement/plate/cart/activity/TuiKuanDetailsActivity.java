@@ -212,6 +212,7 @@ public class TuiKuanDetailsActivity extends BaseActivity {
                         String create_at = mbean.getData().getRefund().getCreate_at();
                         String company1 = mbean.getData().getExpress().getCompany();
                         String send_no = mbean.getData().getExpress().getSend_no();
+                        String amount = mbean.getData().getRefund().getAmount();
                         switch (status1) {
                             case 0:
                                 textZhuangtai.setText("请等待客服处理");
@@ -327,6 +328,7 @@ public class TuiKuanDetailsActivity extends BaseActivity {
                         textDizi.setText("收货地址：" + contocts + "\n" + address);
                         tvGongsi.setText(company1);
                         tvBianhao.setText(send_no);
+                        tvMoney.setText(amount);
                     } else if (mbean.getCode() == HttpUtils.CODE_INVALID) {
                         HttpUtils.Invalid(this);
                         FToast.error(mbean.getInfo());
