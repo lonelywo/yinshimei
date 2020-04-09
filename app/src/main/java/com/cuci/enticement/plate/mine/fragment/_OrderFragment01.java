@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -197,7 +198,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
             return;
         }
 
-        mViewModel = ViewModelProviders.of(this).get(OrderViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(OrderViewModel.class);
 
         CustomRefreshHeader header = new CustomRefreshHeader(mActivity);
         header.setBackground(0xFFF3F4F6);

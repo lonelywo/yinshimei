@@ -33,6 +33,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -89,7 +90,7 @@ public class _KaQuanFragment01 extends BaseFragment implements OnRefreshLoadMore
 
     @Override
     protected void initViews(LayoutInflater inflater, View view, ViewGroup container, Bundle savedInstanceState) {
-        mViewModel = ViewModelProviders.of(this).get(MineViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(MineViewModel.class);
         Bundle bundle = getArguments();
         mtype = bundle.getString("type");
         mUserInfo = SharedPrefUtils.get(UserInfo.class);

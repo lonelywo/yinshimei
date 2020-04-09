@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -125,7 +126,7 @@ public class TuiKuanDetailsActivity extends BaseActivity {
             return;
         }
         refund_id = intent.getStringExtra("refund_id");
-        mViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(CartViewModel.class);
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
         mTuiKuanWuLiuBean = SharedPrefUtils.get(TuiKuanWuLiuBean.class);
         if (mTuiKuanWuLiuBean != null) {
@@ -149,7 +150,7 @@ public class TuiKuanDetailsActivity extends BaseActivity {
         tvContentDesc.setMovementMethod(LinkMovementMethod.getInstance());
         tvContentDesc.setHighlightColor(Color.argb(0x40, 0x4F, 0x41, 0xFD)); //设置点击后的颜色为透明
         tvContentDesc.setText(spannableString);
-        OrderViewModel  mViewModel = ViewModelProviders.of(this).get(OrderViewModel.class);
+        OrderViewModel  mViewModel = new ViewModelProvider(this).get(OrderViewModel.class);
         mViewModel.getTuiKuanXiangQing(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), refund_id , "" ,""+ AppUtils.getVersionCode(this))
                 .observe(this, mTuiKuanXiangQingObserver);
        /* StringBuilder sb = new StringBuilder();

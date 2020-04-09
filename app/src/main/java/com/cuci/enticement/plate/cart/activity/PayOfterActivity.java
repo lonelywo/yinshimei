@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -124,7 +125,7 @@ public class PayOfterActivity extends BaseActivity implements ItemZhuanPanViewBi
         //透明状态栏
       /*  Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);*/
-        mViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(CartViewModel.class);
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
         tvMoney.setText("实付" + BasicApp.Constant_ZONG_MONEY);
 

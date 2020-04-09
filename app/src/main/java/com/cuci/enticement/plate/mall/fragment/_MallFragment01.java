@@ -30,6 +30,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -84,7 +85,7 @@ public class _MallFragment01 extends BaseFragment implements OnRefreshLoadMoreLi
 
     @Override
     protected void initViews(LayoutInflater inflater, View view, ViewGroup container, Bundle savedInstanceState) {
-        mViewModel = ViewModelProviders.of(this).get(MallViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(MallViewModel.class);
         Bundle bundle = getArguments();
         mtype = bundle.getString("type");
         EventBus.getDefault().register(this);

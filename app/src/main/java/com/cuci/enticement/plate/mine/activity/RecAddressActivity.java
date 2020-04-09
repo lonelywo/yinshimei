@@ -6,6 +6,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -111,7 +112,7 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
             return;
 
         }
-        mViewModel= ViewModelProviders.of(this).get(CommonViewModel.class);
+        mViewModel= new ViewModelProvider(this).get(CommonViewModel.class);
 
 
 

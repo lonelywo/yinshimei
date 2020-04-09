@@ -67,6 +67,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -126,7 +127,7 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
     @Override
     protected void initViews(LayoutInflater inflater, View view, ViewGroup container, Bundle savedInstanceState) {
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
-        mViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         mRecyclerView = view.findViewById(R.id.rec_goods);
         mRefreshLayout = view.findViewById(R.id.refresh_home);
         mAdapter = new MultiTypeAdapter();
@@ -254,7 +255,7 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
 
     }
     private void loadyhq() {
-        MineViewModel  mViewModel = ViewModelProviders.of(this).get(MineViewModel.class);
+        MineViewModel  mViewModel = new ViewModelProvider(this).get(MineViewModel.class);
         if (mUserInfo != null) {
             mViewModel.isyhjdailing("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(),""+ AppUtils.getVersionCode(BasicApp.getContext())).observe(this, misyhjObserver);
         } else {
@@ -461,7 +462,7 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onClickMyEvent(ClickMyEvent event) {
         if(event.getCode()== ClickMyEvent.CHECK_ITEM0){
-            MineViewModel  mViewModel = ViewModelProviders.of(this).get(MineViewModel.class);
+            MineViewModel  mViewModel = new ViewModelProvider(this).get(MineViewModel.class);
             if (mUserInfo != null) {
                 mViewModel.isyhjdailing("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(),""+ AppUtils.getVersionCode(BasicApp.getContext())
                 ).observe(this, misyhjObserver);

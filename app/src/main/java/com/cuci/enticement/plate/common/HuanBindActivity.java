@@ -34,6 +34,7 @@ import java.util.List;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -96,7 +97,7 @@ public class HuanBindActivity extends BaseActivity {
 
     @Override
     public void initViews(Bundle savedInstanceState) {
-        mViewModel = ViewModelProviders.of(this).get(RegActivityViewModel.class);
+        mViewModel =new ViewModelProvider(this).get(RegActivityViewModel.class);
         mUserInfo= SharedPrefUtils.get(UserInfo.class);
         mGuoJiaBean = SharedPrefUtils.get(GuoJiaBean.class);
         if(mGuoJiaBean!=null){

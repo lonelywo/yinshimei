@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -116,7 +117,7 @@ public class _PKFragment02 extends BaseFragment implements OnRefreshLoadMoreList
 
     @Override
     protected void initViews(LayoutInflater inflater, View view, ViewGroup container, Bundle savedInstanceState) {
-        mViewModel = ViewModelProviders.of(this).get(MineViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(MineViewModel.class);
         Bundle bundle = getArguments();
         mtype = bundle.getString("type");
         mUserInfo = SharedPrefUtils.get(UserInfo.class);

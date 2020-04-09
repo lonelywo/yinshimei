@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -79,7 +80,7 @@ public class YuLanActivity extends BaseActivity implements OnRefreshLoadMoreList
     public void initViews(Bundle savedInstanceState) {
         //注册事件
         EventBus.getDefault().register(this);
-        mViewModel = ViewModelProviders.of(this).get(MallViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(MallViewModel.class);
         Intent intent = getIntent();
         if (intent == null) {
             FToast.error("数据错误");
@@ -105,7 +106,7 @@ public class YuLanActivity extends BaseActivity implements OnRefreshLoadMoreList
         mDecoration = new GridItemDecoration(this, 3, 12, true);
         mRecyclerView.addItemDecoration(mDecoration);
         mRecyclerView.setAdapter(mAdapter);
-        mRefreshLayout.autoRefresh();
+        load();
         mIvTop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

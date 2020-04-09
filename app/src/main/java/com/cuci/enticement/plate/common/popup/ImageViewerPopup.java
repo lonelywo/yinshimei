@@ -8,7 +8,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.viewpager.widget.ViewPager;
 
 
@@ -86,7 +88,7 @@ public class ImageViewerPopup extends FullScreenPopupView {
                 if(position==mList.size()-3&&move){
                     move=false;
                    // EventBus.getDefault().post(new ClickMallpopEvent());
-                    MallViewModel  mViewModel = ViewModelProviders.of((FragmentActivity) mContext).get(MallViewModel.class);
+                    MallViewModel  mViewModel = new ViewModelProvider((ViewModelStoreOwner) mContext).get(MallViewModel.class);
                     mViewModel.getSource01(mtype, ""+mpage,mPAGE_SIZE,
                             ""+ AppUtils.getVersionCode(mContext),  Status.LOAD_MORE).observe((LifecycleOwner) mContext, mObserver);
                 }

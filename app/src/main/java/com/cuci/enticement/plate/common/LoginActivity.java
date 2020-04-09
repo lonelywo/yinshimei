@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -139,7 +140,7 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void initViews(Bundle savedInstanceState) {
-        mViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         mGuoJiaBean = SharedPrefUtils.get(GuoJiaBean.class);
         if (mGuoJiaBean != null) {
             for (int i = 0; i < mGuoJiaBean.getData().size(); i++) {

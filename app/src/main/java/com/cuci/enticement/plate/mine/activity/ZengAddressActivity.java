@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.List;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -152,7 +153,7 @@ public class ZengAddressActivity extends BaseActivity {
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
 
 
-        mViewModel = ViewModelProviders.of(this).get(CommonViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(CommonViewModel.class);
 
 
         //initJsonData();

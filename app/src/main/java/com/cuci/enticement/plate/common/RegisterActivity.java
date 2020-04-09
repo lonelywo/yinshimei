@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.cuci.enticement.BasicApp;
@@ -89,7 +90,7 @@ public class RegisterActivity extends BaseActivity {
 
     @Override
     public void initViews(Bundle savedInstanceState) {
-        mViewModel = ViewModelProviders.of(this).get(RegActivityViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(RegActivityViewModel.class);
         mGuoJiaBean = SharedPrefUtils.get(GuoJiaBean.class);
         if(mGuoJiaBean!=null){
             for (int i = 0; i < mGuoJiaBean.getData().size() ; i++) {

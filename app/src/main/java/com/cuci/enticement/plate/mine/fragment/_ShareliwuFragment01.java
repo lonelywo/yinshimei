@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -133,7 +134,7 @@ public class _ShareliwuFragment01 extends BaseFragment implements OnRefreshLoadM
         if (mUserInfo == null) {
             return;
         }
-        mViewModel = ViewModelProviders.of(this).get(LiwuViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(LiwuViewModel.class);
 
         CustomRefreshHeader header = new CustomRefreshHeader(mActivity);
         header.setBackground(0xFFF3F4F6);

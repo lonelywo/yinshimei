@@ -31,6 +31,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -67,7 +68,7 @@ public class CenterLingQuanActivity extends BaseActivity implements OnRefreshLoa
 
     @Override
     public void initViews(Bundle savedInstanceState) {
-        mViewModel = ViewModelProviders.of(this).get(MineViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(MineViewModel.class);
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
         CustomRefreshHeader header = new CustomRefreshHeader(this);
         header.setBackground(0xFFF3F4F6);

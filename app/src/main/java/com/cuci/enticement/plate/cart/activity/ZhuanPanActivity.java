@@ -41,6 +41,7 @@ import java.util.Locale;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -103,7 +104,7 @@ public class ZhuanPanActivity extends BaseActivity implements ItemZhuanPanViewBi
         //透明状态栏
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        mViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
+        mViewModel =new ViewModelProvider(this).get(CartViewModel.class);
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
         mAdapter = new MultiTypeAdapter();
         mItems = new Items();

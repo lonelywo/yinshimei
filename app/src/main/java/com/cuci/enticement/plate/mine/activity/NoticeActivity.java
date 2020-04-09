@@ -7,6 +7,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -64,7 +65,7 @@ public class NoticeActivity extends BaseActivity implements OnRefreshLoadMoreLis
 
     @Override
     public void initViews(Bundle savedInstanceState) {
-        mViewModel = ViewModelProviders.of(this).get(MineViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(MineViewModel.class);
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
         CustomRefreshHeader header = new CustomRefreshHeader(this);
         header.setBackground(0xFFF3F4F6);

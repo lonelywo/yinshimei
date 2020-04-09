@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -114,7 +115,7 @@ public class _CartFragment extends BaseFragment implements ItemCartViewBinder.On
     protected void initViews(LayoutInflater inflater, View view, ViewGroup container, Bundle savedInstanceState) {
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
 
-        mViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(CartViewModel.class);
 
         mLocalBroadcastManager = LocalBroadcastManager.getInstance(mActivity);
         IntentFilter intentFilter = new IntentFilter();

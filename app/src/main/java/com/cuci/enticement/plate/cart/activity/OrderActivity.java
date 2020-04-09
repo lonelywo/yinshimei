@@ -73,6 +73,7 @@ import java.util.Map;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -297,17 +298,17 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
             return;
         }
 
-        mViewModel = ViewModelProviders.of(this).get(OrderViewModel.class);
+        mViewModel =new ViewModelProvider(this).get(OrderViewModel.class);
         //请求当前用户信息
-       /* MineViewModel mViewModel1 = ViewModelProviders.of(this).get(MineViewModel.class);
+       /* MineViewModel mViewModel1 = new ViewModelProvider(this).get(MineViewModel.class);
         mViewModel1.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken()).observe(this, mdataObserver);*/
 
         //检测APP更新
-        MainViewModel mMainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        MainViewModel mMainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
         mMainViewModel.getVersion("2",""+ AppUtils.getVersionCode(this)).observe(this, mUpdateObserver);
 
        //可使用优惠卷
-        MineViewModel mMineViewModel = ViewModelProviders.of(OrderActivity.this).get(MineViewModel.class);
+        MineViewModel mMineViewModel = new ViewModelProvider(this).get(MineViewModel.class);
         mMineViewModel.kaquanlist(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", "1", "", "0",""+ AppUtils.getVersionCode(this), Status.LOAD_REFRESH)
                 .observe(OrderActivity.this, mkaquanObserver);
 
@@ -379,7 +380,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
         } else {
 
 
-            CommonViewModel commonViewModel = ViewModelProviders.of(this).get(CommonViewModel.class);
+            CommonViewModel commonViewModel = new ViewModelProvider(this).get(CommonViewModel.class);
             commonViewModel.getAdressList(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),""+ AppUtils.getVersionCode(BasicApp.getContext()), Status.LOAD_REFRESH)
                     .observe(this, mObserver);
 

@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.cuci.enticement.BasicApp;
@@ -63,7 +64,7 @@ public class BindTuiJinActivity extends BaseActivity {
     @Override
     public void initViews(Bundle savedInstanceState) {
         edtPhone.setClearIconVisible(false);
-        mViewModel = ViewModelProviders.of(this).get(MineViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(MineViewModel.class);
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
 
         ok.setOnClickListener(new View.OnClickListener() {

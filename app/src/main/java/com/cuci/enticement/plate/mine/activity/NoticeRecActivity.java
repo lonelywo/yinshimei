@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
@@ -50,7 +51,7 @@ public class NoticeRecActivity extends BaseActivity {
         }
        int id = intent.getIntExtra("id", 0);
        int localVersion = AppUtils.getVersionCode(this);
-        mViewModel = ViewModelProviders.of(this).get(MineViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(MineViewModel.class);
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
         mViewModel.Noticecontent("2",String.valueOf(localVersion) , String.valueOf(id))
                 .observe(this, mObserver);

@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -83,7 +84,7 @@ public class TuiKuanDetails3Activity extends BaseActivity {
         if (intent == null) {
             return;
         }
-        mViewModel = ViewModelProviders.of(this).get(OrderViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(OrderViewModel.class);
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
         refund_id = intent.getStringExtra("refund_id");
         item_id = intent.getStringExtra("item_id");

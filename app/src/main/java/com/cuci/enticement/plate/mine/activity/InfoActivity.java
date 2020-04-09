@@ -21,6 +21,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
@@ -154,7 +155,7 @@ public class InfoActivity extends BaseActivity {
         }
 
 
-        mViewModel = ViewModelProviders.of(this).get(CommonViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(CommonViewModel.class);
         RxPicker.init(new RxImageLoader());
 
         InfoActivityPermissionsDispatcher.needsPermissionWithPermissionCheck(this);

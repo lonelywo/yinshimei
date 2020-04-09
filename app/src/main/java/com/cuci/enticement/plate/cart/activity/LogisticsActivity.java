@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -82,7 +83,7 @@ public class LogisticsActivity extends BaseActivity implements OnRefreshLoadMore
 
     @Override
     public void initViews(Bundle savedInstanceState) {
-        mViewModel = ViewModelProviders.of(this).get(OrderViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(OrderViewModel.class);
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
         Intent intent = getIntent();
         if (intent == null) {

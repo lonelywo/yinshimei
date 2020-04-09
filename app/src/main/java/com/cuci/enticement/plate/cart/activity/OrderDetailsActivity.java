@@ -62,6 +62,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -218,7 +219,7 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
         mRecyclerView.setAdapter(mAdapter);
 
 
-        mViewModel = ViewModelProviders.of(this).get(OrderViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(OrderViewModel.class);
 
         tvFuzhi.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)

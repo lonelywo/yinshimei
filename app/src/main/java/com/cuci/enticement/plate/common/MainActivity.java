@@ -53,6 +53,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
@@ -146,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
         EventBus.getDefault().register(this);
 
 
-        mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(MainViewModel.class);
         mClipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
 
         mFragments = new ArrayList<>();

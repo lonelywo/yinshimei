@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
@@ -69,7 +70,7 @@ public class _MallFragment extends BaseFragment {
 
     @Override
     protected void initViews(LayoutInflater inflater, View view, ViewGroup container, Bundle savedInstanceState) {
-        mViewModel = ViewModelProviders.of(this).get(MallViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(MallViewModel.class);
         mStatusView.setOnRetryClickListener(v -> {
             load();
         });

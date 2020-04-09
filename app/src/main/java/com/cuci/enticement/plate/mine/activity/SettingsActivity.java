@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.Constant;
@@ -66,7 +67,7 @@ public class SettingsActivity extends BaseActivity {
 
     @Override
     public void initViews(Bundle savedInstanceState) {
-        mViewModel = ViewModelProviders.of(this).get(MineViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(MineViewModel.class);
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
         phoneTv.setText(mUserInfo.getPhone());
         int  wxBind = SharedPrefUtils.getWXBind();

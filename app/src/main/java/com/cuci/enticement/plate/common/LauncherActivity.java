@@ -17,6 +17,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import okhttp3.ResponseBody;
 
@@ -76,7 +77,7 @@ public class LauncherActivity extends AppCompatActivity {
             }
         }
         setContentView(R.layout.popup_splash_view);
-        MainViewModel   mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        MainViewModel   mViewModel = new ViewModelProvider(this).get(MainViewModel.class);
         mViewModel.openScreen("2",""+ AppUtils.getVersionCode(BasicApp.getContext())).observe(this, clauseObserver);
 
         mImageView = findViewById(R.id.image_view);

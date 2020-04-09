@@ -41,6 +41,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -109,7 +110,7 @@ public class MyTeamActivity extends BaseActivity implements OnRefreshLoadMoreLis
     @Override
     public void initViews(Bundle savedInstanceState) {
         edtShousuo.setClearIconVisible(false);
-        mViewModel = ViewModelProviders.of(this).get(MineViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(MineViewModel.class);
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
         ImageLoader.loadPlaceholder1(mUserInfo.getHeadimg(), civTuxiang);
         textName.setText(mUserInfo.getNickname());

@@ -86,6 +86,7 @@ import java.util.Locale;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import butterknife.BindView;
@@ -209,7 +210,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
         banner.setIndicatorGravity(BannerConfig.CENTER);
         banner.setImageLoader(new GlideImageLoader());
 
-        mHomeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
+        mHomeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         if (mUserInfo != null) {
 
             mHomeViewModel.getHomeDetails("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), url,""+AppUtils.getVersionCode(this)).observe(this, mObserver);
@@ -257,7 +258,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
 
 
         //进入页面先请求小脚本数字
-        CartViewModel viewModel = ViewModelProviders.of(ProdActivity.this).get(CartViewModel.class);
+        CartViewModel viewModel = new ViewModelProvider(this).get(CartViewModel.class);
         if (mUserInfo != null) {
             viewModel.cartNum(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),""+AppUtils.getVersionCode(this)).observe(ProdActivity.this, mNumObserver);
         }
@@ -580,7 +581,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
     public void onCommitClick(String spec, int num, int code, String price_sell, String price_market) {
         mCode = code;
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
-        CartViewModel mViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
+        CartViewModel mViewModel = new ViewModelProvider(this).get(CartViewModel.class);
         mprice_sell = price_sell;
         mprice_market = price_market;
         if (code == PUT_IN_CART) {
@@ -686,7 +687,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                         if (bean.getCode() == 1) {
                             FToast.success(bean.getInfo());
                             //调用接口改变小车上的数量
-                            CartViewModel viewModel = ViewModelProviders.of(ProdActivity.this).get(CartViewModel.class);
+                            CartViewModel viewModel = new ViewModelProvider(ProdActivity.this).get(CartViewModel.class);
                             viewModel.cartNum(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),""+AppUtils.getVersionCode(ProdActivity.this)).observe(ProdActivity.this, mNumObserver);
                             //刷新购物车列表
                             EventBus.getDefault().post(new CartEvent(CartEvent.REFRESH_CART_LIST));

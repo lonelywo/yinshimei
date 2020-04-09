@@ -71,6 +71,7 @@ import java.util.Set;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.util.Consumer;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -168,8 +169,8 @@ public class TuiKuanType1Activity extends BaseActivity implements ItemImgkuangVi
         if (intent == null) {
             return;
         }
-        mViewModel = ViewModelProviders.of(this).get(MineViewModel.class);
-        tuPianModel = ViewModelProviders.of(this).get(TuPianModel.class);
+        mViewModel = new ViewModelProvider(this).get(MineViewModel.class);
+        tuPianModel = new ViewModelProvider(this).get(TuPianModel.class);
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
         mInfo = (List<OrderGoods>) intent.getSerializableExtra("intentInfo");
         type = intent.getStringExtra("type");

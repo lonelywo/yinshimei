@@ -81,6 +81,7 @@ import java.util.List;
 import androidx.constraintlayout.widget.Barrier;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import butterknife.BindView;
@@ -262,7 +263,7 @@ public class _MineFragment extends BaseFragment {
 
     @Override
     protected void initViews(LayoutInflater inflater, View view, ViewGroup container, Bundle savedInstanceState) {
-        mViewModel = ViewModelProviders.of(this).get(MineViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(MineViewModel.class);
         mBroadcastManager = getInstance(mActivity);
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(LoginActivity.ACTION_WX_LOGIN_SUCCEED);
@@ -529,7 +530,7 @@ public class _MineFragment extends BaseFragment {
 
                     }
                 } else if (ACTION_REFRESH_STATUS.equals(intent.getAction())) {
-                    OrderViewModel orderViewModel = ViewModelProviders.of(_MineFragment.this).get(OrderViewModel.class);
+                    OrderViewModel orderViewModel = new ViewModelProvider(mActivity).get(OrderViewModel.class);
                     orderViewModel.getStatisticsOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),""+ AppUtils.getVersionCode(BasicApp.getContext()))
                             .observe(mActivity, mTotalOrderObserver);
                 } else if (ACTION_REFRESH_HX.equals(intent.getAction())) {
@@ -608,7 +609,7 @@ public class _MineFragment extends BaseFragment {
             }
         }
 
-        OrderViewModel orderViewModel = ViewModelProviders.of(this).get(OrderViewModel.class);
+        OrderViewModel orderViewModel = new ViewModelProvider(this).get(OrderViewModel.class);
         orderViewModel.getStatisticsOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),""+ AppUtils.getVersionCode(BasicApp.getContext()))
                 .observe(mActivity, mTotalOrderObserver);
 
@@ -958,7 +959,7 @@ public class _MineFragment extends BaseFragment {
                         .observe(this, mkaquanObserver);
 
                 //退货快递
-                MainViewModel mmViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+                MainViewModel mmViewModel = new ViewModelProvider(this).get(MainViewModel.class);
                 mmViewModel.refundExpress("2",String.valueOf(mUserInfo.getId()),mUserInfo.getToken(),""+ AppUtils.getVersionCode(BasicApp.getContext())).observe(this, refundExpressObserver);
             }
         }

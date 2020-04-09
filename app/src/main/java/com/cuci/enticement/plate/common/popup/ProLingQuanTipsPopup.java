@@ -30,7 +30,9 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -128,7 +130,7 @@ public class ProLingQuanTipsPopup extends BottomPopupView implements ProYhqViewB
     }
 
     public void load(ProYhqBean.DataBean item) {
-        HomeViewModel mHomeViewModel = ViewModelProviders.of((FragmentActivity) mContext).get(HomeViewModel.class);
+        HomeViewModel mHomeViewModel = new ViewModelProvider((ViewModelStoreOwner) mContext).get(HomeViewModel.class);
         mHomeViewModel.getprolingyhq("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), ""+item.getId(),""+ AppUtils.getVersionCode(mContext)).observe((LifecycleOwner) mContext, myhqLObserver);
 
     }
