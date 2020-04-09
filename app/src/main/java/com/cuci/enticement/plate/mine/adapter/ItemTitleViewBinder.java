@@ -1,9 +1,6 @@
 package com.cuci.enticement.plate.mine.adapter;
 
 
-import android.content.ClipboardManager;
-import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +8,6 @@ import android.widget.TextView;
 
 import com.cuci.enticement.R;
 import com.cuci.enticement.bean.ItemOrderTitle;
-import com.cuci.enticement.bean.OrderGoods;
-import com.cuci.enticement.plate.cart.activity.TuiKuanDetails2Activity;
-import com.cuci.enticement.plate.cart.activity.TuiKuanDetails3Activity;
-import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.UtilsForClick;
 
 import java.util.Locale;

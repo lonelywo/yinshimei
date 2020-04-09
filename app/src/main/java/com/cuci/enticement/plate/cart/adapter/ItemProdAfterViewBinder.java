@@ -115,7 +115,7 @@ public class ItemProdAfterViewBinder extends ItemViewBinder<AllTuiKuanOrderBean.
                 holder.tvStatus1.setText("退款失败");
                 break;
             case 8:
-                holder.tvStatus.setText("交易关闭");
+                holder.tvStatus.setText("退款关闭");
                 holder.tvStatus.setTextColor(BasicApp.getContext().getResources().getColor(R.color.hei));
                 holder.tvStatus1.setText("该退款已关闭");
                 break;

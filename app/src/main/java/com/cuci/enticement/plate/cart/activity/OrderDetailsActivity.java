@@ -745,15 +745,9 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
                 Intent intent = new Intent(this, TuiTypeActivity.class);
                 intent.putExtra("intentItem",item);
                 startActivity(intent);
-            }else if(TextUtils.equals(item.getIs_refund(),"1")){
-                Intent intent = new Intent(this, TuiKuanDetails2Activity.class);
-                intent.putExtra("intentItem",item);
-                intent.putExtra("text","平台退款中");
-                startActivity(intent);
-            }else if(TextUtils.equals(item.getIs_refund(),"2")){
-                Intent intent = new Intent(this, TuiKuanDetails3Activity.class);
-                intent.putExtra("intentItem",item);
-                intent.putExtra("text","退款成功");
+            }else if(TextUtils.equals(item.getIs_refund(),"1")||TextUtils.equals(item.getIs_refund(),"2")){
+                Intent intent = new Intent(this, TuiKuanDetailsActivity.class);
+                intent.putExtra("item_id",""+item.getId());
                 startActivity(intent);
             }
 
@@ -761,15 +755,10 @@ public class OrderDetailsActivity extends BaseActivity implements ItemProdDetail
 
         }
         else if(mStatus==6){
-            if(refund_state==0||refund_state==1){
-                Intent intent = new Intent(this, TuiKuanDetails2Activity.class);
+                Intent intent = new Intent(this, TuiKuanDetailsActivity.class);
                 intent.putExtra("item_id", ""+item.getId());
                 startActivity(intent);
-            }else {
-                Intent intent = new Intent(this, TuiKuanDetails3Activity.class);
-                intent.putExtra("item_id", ""+item.getId());
-                startActivity(intent);
-            }
+
         }
 
 

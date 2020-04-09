@@ -49,11 +49,7 @@
             android:screenOrientation="portrait"
             >
         </activity>
-        <activity
-            android:name=".plate.cart.activity.TuiKuanDetails2Activity"
-            android:screenOrientation="portrait"
-            >
-        </activity>
+
         <activity
             android:name=".plate.cart.activity.AftermarketActivity"
             android:screenOrientation="portrait"
@@ -81,16 +77,8 @@
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
             >
         </activity>
-        <activity
-            android:name=".plate.cart.activity.TuiKuanDetails3Activity"
-            android:screenOrientation="portrait"
-            >
-        </activity>
-        <activity
-            android:name=".plate.cart.activity.TuiKuanDetails4Activity"
-            android:screenOrientation="portrait"
-            >
-        </activity>
+
+
         <activity
             android:name=".plate.mine.activity.TuiKuanType2Activity"
             android:screenOrientation="portrait"

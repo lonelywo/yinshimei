@@ -14,7 +14,6 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.cuci.enticement.R;
@@ -25,7 +24,7 @@ import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.TagBean;
 import com.cuci.enticement.bean.TuikuanSQBean;
 import com.cuci.enticement.bean.UserInfo;
-import com.cuci.enticement.plate.cart.activity.TuiKuanDetails2Activity;
+import com.cuci.enticement.plate.cart.activity.TuiKuanDetailsActivity;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.AppUtils;
@@ -157,7 +156,7 @@ public class DaiFaHuoTuiKuanActivity extends BaseActivity {
                         Intent intent2 = new Intent(_MineFragment.ACTION_REFRESH_STATUS);
                         LocalBroadcastManager.getInstance(this).sendBroadcast(intent2);
                         refund_id = mbean.getData().getRefund_id();
-                        Intent intent = new Intent(this, TuiKuanDetails2Activity.class);
+                        Intent intent = new Intent(this, TuiKuanDetailsActivity.class);
                         intent.putExtra("refund_id", refund_id);
                         intent.putExtra("back","1");
                         startActivity(intent);

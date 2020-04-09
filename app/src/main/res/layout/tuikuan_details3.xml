@@ -50,7 +50,7 @@
             android:id="@+id/text_zhuangtai"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="退款成功"
+            tools:text="退款成功"
             android:textColor="@color/colorWhite"
             android:textSize="18sp"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -84,7 +84,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/line"
-        android:visibility="gone"
+        android:visibility="visible"
         >
       <TextView
           android:layout_width="wrap_content"
@@ -126,7 +126,7 @@
         app:layout_constraintTop_toBottomOf="@+id/line"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="您已撤销本次申请，如问题未解决，您还可以再次发起。"
+        tools:text="您已撤销本次申请，如问题未解决，您还可以再次发起。"
         android:textColor="@color/hei"
         android:drawablePadding="2dp"
         android:layout_marginLeft="42dp"
@@ -134,6 +134,7 @@
         android:layout_marginTop="15dp"
         android:textSize="13sp"
         android:gravity="center_vertical"
+        android:visibility="gone"
         />
 
 

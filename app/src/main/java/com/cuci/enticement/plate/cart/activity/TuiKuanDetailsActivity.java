@@ -15,12 +15,12 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.cuci.enticement.BasicApp;
@@ -28,12 +28,15 @@ import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.AllOrderList;
 import com.cuci.enticement.bean.CommitTuiKuanWuLiuBean;
-import com.cuci.enticement.bean.LuckDrawBean;
 import com.cuci.enticement.bean.Status;
+import com.cuci.enticement.bean.TuiKuanCancelBean;
 import com.cuci.enticement.bean.TuiKuanWuLiuBean;
 import com.cuci.enticement.bean.TuiKuanXiangQingBean;
 import com.cuci.enticement.bean.UserInfo;
+import com.cuci.enticement.event.RefreshShouHouEvent;
 import com.cuci.enticement.plate.cart.vm.CartViewModel;
+import com.cuci.enticement.plate.common.MainActivity;
+import com.cuci.enticement.plate.common.popup.TipsPopup;
 import com.cuci.enticement.plate.common.popup.TuiReasonBottom2TopProdPopup;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.cuci.enticement.plate.mine.vm.OrderViewModel;
@@ -41,8 +44,13 @@ import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.SharedPrefUtils;
+import com.cuci.enticement.utils.ViewUtils;
 import com.google.gson.Gson;
+import com.hyphenate.chat.ChatClient;
+import com.hyphenate.helpdesk.easeui.util.IntentBuilder;
 import com.lxj.xpopup.XPopup;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -57,6 +65,7 @@ import okhttp3.ResponseBody;
  */
 public class TuiKuanDetailsActivity extends BaseActivity {
 
+
     @BindView(R.id.image_top)
     TextView imageTop;
     @BindView(R.id.image_back)
@@ -69,6 +78,30 @@ public class TuiKuanDetailsActivity extends BaseActivity {
     TextView textTime;
     @BindView(R.id.con_zhuangtai)
     ConstraintLayout conZhuangtai;
+    @BindView(R.id.tv_money)
+    TextView tvMoney;
+    @BindView(R.id.line_money)
+    View lineMoney;
+    @BindView(R.id.con_money)
+    ConstraintLayout conMoney;
+    @BindView(R.id.tv_zhuyi)
+    TextView tvZhuyi;
+    @BindView(R.id.con_zhuyi)
+    ConstraintLayout conZhuyi;
+    @BindView(R.id.tv_wuliu)
+    TextView tvWuliu;
+    @BindView(R.id.tv_gongsi)
+    TextView tvGongsi;
+    @BindView(R.id.line1)
+    View line1;
+    @BindView(R.id.tv_yundan)
+    TextView tvYundan;
+    @BindView(R.id.tv_bianhao)
+    TextView tvBianhao;
+    @BindView(R.id.line2)
+    View line2;
+    @BindView(R.id.con_wuliuxianshi)
+    ConstraintLayout conWuliuxianshi;
     @BindView(R.id.tv_biaoti)
     TextView tvBiaoti;
     @BindView(R.id.text_dizi)
@@ -91,6 +124,8 @@ public class TuiKuanDetailsActivity extends BaseActivity {
     ImageView tvCode;
     @BindView(R.id.con_dibu1)
     ConstraintLayout conDibu1;
+    @BindView(R.id.tv_wuliucheck)
+    TextView tvWuliucheck;
     @BindView(R.id.con_wuliugongsi)
     ConstraintLayout conWuliugongsi;
     @BindView(R.id.text_phone)
@@ -99,18 +134,28 @@ public class TuiKuanDetailsActivity extends BaseActivity {
     EditText edtPhone;
     @BindView(R.id.con_phone)
     ConstraintLayout conPhone;
+    @BindView(R.id.con_wuliutianxiebuju)
+    ConstraintLayout conWuliutianxiebuju;
+    @BindView(R.id.tv_cexiao)
+    TextView tvCexiao;
+    @BindView(R.id.tv_kefu)
+    TextView tvKefu;
+    @BindView(R.id.ll_bottom)
+    LinearLayout llBottom;
     @BindView(R.id.bottom)
     TextView bottom;
-    @BindView(R.id.tv_wuliu)
-    TextView tvWuliu;
+    @BindView(R.id.tv_kefu1)
+    TextView tvKefu1;
     private AllOrderList.DataBean.ListBeanX mInfo;
     private UserInfo mUserInfo;
     private TuiKuanWuLiuBean mTuiKuanWuLiuBean;
     private List<TuiKuanWuLiuBean.DataBean.ExpressBean> express;
-    private CartViewModel mViewModel;
+
     private String refund_id;
     private String company;
-
+    private String back;
+    private String item_id;
+    private OrderViewModel mViewModel;
 
 
     @Override
@@ -125,21 +170,19 @@ public class TuiKuanDetailsActivity extends BaseActivity {
         if (intent == null) {
             return;
         }
+        mViewModel = new ViewModelProvider(this).get(OrderViewModel.class);
+        item_id = intent.getStringExtra("item_id");
         refund_id = intent.getStringExtra("refund_id");
-        mViewModel = new ViewModelProvider(this).get(CartViewModel.class);
+        back = intent.getStringExtra("back");
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
         mTuiKuanWuLiuBean = SharedPrefUtils.get(TuiKuanWuLiuBean.class);
+
         if (mTuiKuanWuLiuBean != null) {
             initContent();
             express = mTuiKuanWuLiuBean.getData().getExpress();
         }
 
-        imageBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+
     }
 
     private void initContent() {
@@ -150,17 +193,9 @@ public class TuiKuanDetailsActivity extends BaseActivity {
         tvContentDesc.setMovementMethod(LinkMovementMethod.getInstance());
         tvContentDesc.setHighlightColor(Color.argb(0x40, 0x4F, 0x41, 0xFD)); //设置点击后的颜色为透明
         tvContentDesc.setText(spannableString);
-        OrderViewModel  mViewModel = new ViewModelProvider(this).get(OrderViewModel.class);
-        mViewModel.getTuiKuanXiangQing(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), refund_id , "" ,""+ AppUtils.getVersionCode(this))
-                .observe(this, mTuiKuanXiangQingObserver);
-       /* StringBuilder sb = new StringBuilder();
-        sb.append(mInfo.getExpress_name()).append(" ")
-                .append(mInfo.getExpress_phone()).append(" ").append("\n")
-                .append(mInfo.getExpress_province()).append(" ")
-                .append(mInfo.getExpress_city()).append(" ")
-                .append(mInfo.getExpress_area()).append(" ")
-                .append(mInfo.getExpress_address());*/
 
+        mViewModel.getTuiKuanXiangQing(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), refund_id, item_id, "" + AppUtils.getVersionCode(this))
+                .observe(this, mTuiKuanXiangQingObserver);
 
     }
 
@@ -172,10 +207,126 @@ public class TuiKuanDetailsActivity extends BaseActivity {
                     String result = body.string();
                     TuiKuanXiangQingBean mbean = new Gson().fromJson(result, TuiKuanXiangQingBean.class);
                     if (mbean.getCode() == 1) {
+                        int status1 = mbean.getData().getRefund().getStatus();
+                        String audit_desc = mbean.getData().getRefund().getAudit_desc();
+                        String create_at = mbean.getData().getRefund().getCreate_at();
+                        String company1 = mbean.getData().getExpress().getCompany();
+                        String send_no = mbean.getData().getExpress().getSend_no();
+                        switch (status1) {
+                            case 0:
+                                textZhuangtai.setText("请等待客服处理");
+                                textTime.setText("客服将加急处理，请耐心等待");
+                                ViewUtils.hideView(conMoney);
+                                ViewUtils.showView(conZhuyi);
+                                tvZhuyi.setText("您已成功发起退款申请，请耐心等待商家处理。");
+                                ViewUtils.hideView(conWuliuxianshi);
+                                ViewUtils.hideView(conWuliutianxiebuju);
+                                ViewUtils.hideView(tvKefu1);
+                                ViewUtils.hideView(bottom);
+                                ViewUtils.showView(llBottom);
+                                break;
+                            case 1:
+                                textZhuangtai.setText("平台已同意");
+                                textTime.setText("请您尽快退还商品");
+                                ViewUtils.hideView(conMoney);
+                                ViewUtils.showView(conZhuyi);
+                                tvZhuyi.setText(audit_desc);
+                                ViewUtils.hideView(conWuliuxianshi);
+                                ViewUtils.hideView(conWuliutianxiebuju);
+                                ViewUtils.showView(tvKefu1);
+                                ViewUtils.hideView(bottom);
+                                ViewUtils.hideView(llBottom);
+                                break;
+                            case 2:
+                                textZhuangtai.setText("平台拒绝");
+                                textTime.setText("该申请已被拒绝");
+                                ViewUtils.hideView(conMoney);
+                                ViewUtils.showView(conZhuyi);
+                                tvZhuyi.setText(audit_desc);
+                                ViewUtils.hideView(conWuliuxianshi);
+                                ViewUtils.hideView(conWuliutianxiebuju);
+                                ViewUtils.showView(tvKefu1);
+                                ViewUtils.hideView(bottom);
+                                ViewUtils.hideView(llBottom);
+                                break;
+                            case 3:
+                                textZhuangtai.setText("请您退货");
+                                textTime.setText("请退货并填写物流信息");
+                                ViewUtils.hideView(conMoney);
+                                ViewUtils.hideView(conZhuyi);
+                                ViewUtils.hideView(conWuliuxianshi);
+                                ViewUtils.showView(conWuliutianxiebuju);
+                                ViewUtils.hideView(tvKefu1);
+                                ViewUtils.showView(bottom);
+                                ViewUtils.hideView(llBottom);
+                                break;
+                            case 4:
+                                textZhuangtai.setText("等待平台收货");
+                                textTime.setText("平台在收到包裹后7个工作日内处理退款");
+                                ViewUtils.hideView(conMoney);
+                                ViewUtils.hideView(conZhuyi);
+                                ViewUtils.showView(conWuliuxianshi);
+                                ViewUtils.hideView(conWuliutianxiebuju);
+                                ViewUtils.showView(tvKefu1);
+                                ViewUtils.hideView(bottom);
+                                ViewUtils.hideView(llBottom);
+                                break;
+                            case 5:
+                                textZhuangtai.setText("平台退款中");
+                                textTime.setText("请耐心等候");
+                                ViewUtils.hideView(conMoney);
+                                ViewUtils.showView(conZhuyi);
+                                tvZhuyi.setText(audit_desc);
+                                ViewUtils.hideView(conWuliuxianshi);
+                                ViewUtils.hideView(conWuliutianxiebuju);
+                                ViewUtils.showView(tvKefu1);
+                                ViewUtils.hideView(bottom);
+                                ViewUtils.hideView(llBottom);
+                                break;
+                            case 6:
+                                textZhuangtai.setText("退款成功");
+                                textTime.setText(create_at);
+                                ViewUtils.showView(conMoney);
+                                ViewUtils.hideView(conZhuyi);
+                                ViewUtils.hideView(conWuliuxianshi);
+                                ViewUtils.hideView(conWuliutianxiebuju);
+                                ViewUtils.hideView(tvKefu1);
+                                ViewUtils.hideView(bottom);
+                                ViewUtils.hideView(llBottom);
+                                break;
+                            case 7:
+                                textZhuangtai.setText("退款失败");
+                                textTime.setText("退款失败");
+                                ViewUtils.hideView(conMoney);
+                                ViewUtils.showView(conZhuyi);
+                                tvZhuyi.setText(audit_desc);
+                                ViewUtils.hideView(conWuliuxianshi);
+                                ViewUtils.hideView(conWuliutianxiebuju);
+                                ViewUtils.showView(tvKefu1);
+                                ViewUtils.hideView(bottom);
+                                ViewUtils.hideView(llBottom);
+                                break;
+                            case 8:
+                                textZhuangtai.setText("退款申请已撤销");
+                                textTime.setText("该退款已关闭");
+                                ViewUtils.hideView(conMoney);
+                                ViewUtils.showView(conZhuyi);
+                                tvZhuyi.setText("您已撤销本次申请，如问题未解决，您还可以再次发起。");
+                                ViewUtils.hideView(conWuliuxianshi);
+                                ViewUtils.hideView(conWuliutianxiebuju);
+                                ViewUtils.hideView(tvKefu1);
+                                ViewUtils.hideView(bottom);
+                                ViewUtils.hideView(llBottom);
+                                break;
+
+                        }
+
                         refund_id = String.valueOf(mbean.getData().getRefund().getId());
                         String address = mbean.getData().getRefund().getAddress();
                         String contocts = mbean.getData().getRefund().getContacts();
-                        textDizi.setText("收货地址："+contocts+"\n"+address);
+                        textDizi.setText("收货地址：" + contocts + "\n" + address);
+                        tvGongsi.setText(company1);
+                        tvBianhao.setText(send_no);
                     } else if (mbean.getCode() == HttpUtils.CODE_INVALID) {
                         HttpUtils.Invalid(this);
                         FToast.error(mbean.getInfo());
@@ -195,18 +346,19 @@ public class TuiKuanDetailsActivity extends BaseActivity {
         }
     };
 
-   public void load(){
-       String send_no = edtWuliudanhao.getText().toString().trim();
-       String phone = edtPhone.getText().toString().trim();
+    public void load() {
+        String send_no = edtWuliudanhao.getText().toString().trim();
+        String phone = edtPhone.getText().toString().trim();
 
-       if (TextUtils.isEmpty(phone)
-               || TextUtils.isEmpty(send_no)||TextUtils.isEmpty(company)) {
-           FToast.warning("物流公司、物流单号、手机号不能为空");
-           return;
-       }
-
-       mViewModel.TuiKuanWuLiuCommit("2",mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),refund_id,company,send_no,phone,""+AppUtils.getVersionCode(BasicApp.getContext())).observe(this, mObserver);
+        if (TextUtils.isEmpty(phone)
+                || TextUtils.isEmpty(send_no) || TextUtils.isEmpty(company)) {
+            FToast.warning("物流公司、物流单号、手机号不能为空");
+            return;
+        }
+        CartViewModel mCartViewModel=new ViewModelProvider(this).get(CartViewModel.class);
+        mCartViewModel.TuiKuanWuLiuCommit("2", mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), refund_id, company, send_no, phone, "" + AppUtils.getVersionCode(BasicApp.getContext())).observe(this, mObserver);
     }
+
     private Observer<Status<ResponseBody>> mObserver = status -> {
 
         switch (status.status) {
@@ -234,11 +386,12 @@ public class TuiKuanDetailsActivity extends BaseActivity {
                 //退款申请成功后，刷新个人中心状态
                 Intent intent2 = new Intent(_MineFragment.ACTION_REFRESH_STATUS);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(intent2);
+                //退货填写成功后刷新
+                EventBus.getDefault().post(new RefreshShouHouEvent());
 
-                Intent intent = new Intent(this, TuiKuanDetails4Activity.class);
-                intent.putExtra("refund_id",refund_id);
-                startActivity(intent);
-                finish();
+                mViewModel.getTuiKuanXiangQing(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), refund_id, item_id, "" + AppUtils.getVersionCode(this))
+                        .observe(this, mTuiKuanXiangQingObserver);
+
                 FToast.success(mCommitTuiKuanWuLiuBean.getInfo());
 
             } else if (mCommitTuiKuanWuLiuBean.getCode() == HttpUtils.CODE_INVALID) {
@@ -255,16 +408,34 @@ public class TuiKuanDetailsActivity extends BaseActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
+    public void onBackPressed() {
+        if (TextUtils.equals(back, "1")) {
+            Intent intentRank = new Intent(MainActivity.ACTION_GO_TO_MINE);
+            LocalBroadcastManager.getInstance(this)
+                    .sendBroadcast(intentRank);
+            startActivity(new Intent(this, MainActivity.class));
+            return;
+        }
+        super.onBackPressed();
     }
 
-    @OnClick({R.id.tv_wuliu,R.id.bottom})
+
+    @OnClick({R.id.image_back})
+    public void onViewClicked() {
+        if (TextUtils.equals(back, "1")) {
+            Intent intentRank = new Intent(MainActivity.ACTION_GO_TO_MINE);
+            LocalBroadcastManager.getInstance(this)
+                    .sendBroadcast(intentRank);
+            startActivity(new Intent(this, MainActivity.class));
+            return;
+        }
+        finish();
+    }
+
+    @OnClick({R.id.tv_wuliucheck, R.id.bottom,R.id.tv_kefu1,R.id.tv_kefu,R.id.tv_cexiao})
     public void onViewClicked(View view) {
-        switch (view.getId()){
-            case R.id.tv_wuliu:
+        switch (view.getId()) {
+            case R.id.tv_wuliucheck:
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 View v = getCurrentFocus();
                 if (v != null) {
@@ -274,7 +445,7 @@ public class TuiKuanDetailsActivity extends BaseActivity {
                         .dismissOnTouchOutside(true)
                         .dismissOnBackPressed(true)
                         .asCustom(new TuiReasonBottom2TopProdPopup(this, express, sex -> {
-                            tvWuliu.setText(sex.getTitle());
+                            tvWuliucheck.setText(sex.getTitle());
                             company = sex.getTitle();
                         }))
                         .show();
@@ -282,10 +453,76 @@ public class TuiKuanDetailsActivity extends BaseActivity {
             case R.id.bottom:
                 load();
                 break;
-
+            case R.id.tv_kefu1:
+            case R.id.tv_kefu:
+                if (ChatClient.getInstance().isLoggedInBefore()) {
+                    //已经登录，可以直接进入会话界面
+                    Intent intent = new IntentBuilder(this)
+                            .setServiceIMNumber("kefuchannelimid_269943")
+                            .setTitleName("美美")
+                            .build();
+                    startActivity(intent);
+                } else {
+                    //未登录，需要登录后，再进入会话界面
+                    FToast.error("联系客服失败，请退出重新登录");
+                }
+                break;
+            case R.id.tv_cexiao:
+                new XPopup.Builder(this)
+                        .dismissOnBackPressed(false)
+                        .dismissOnTouchOutside(false)
+                        .asCustom(new TipsPopup(this,
+                                "您将撤销本次申请，如果问题未解决,您还可以再次发起，确定继续吗？", "关闭", "确定", () -> {
+                            if (mUserInfo != null) {
+                                OrderViewModel   mViewModel = new ViewModelProvider(this).get(OrderViewModel.class);
+                                mViewModel.getTuiKuanCancel(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), refund_id, "" + AppUtils.getVersionCode(this))
+                                        .observe(this, mCommitObserver);
+                            }
+                        }))
+                        .show();
+                break;
         }
 
     }
+
+
+    private Observer<Status<ResponseBody>> mCommitObserver = status -> {
+        switch (status.status) {
+            case Status.SUCCESS:
+                ResponseBody body = status.content;
+                try {
+                    String result = body.string();
+                    TuiKuanCancelBean mbean = new Gson().fromJson(result, TuiKuanCancelBean.class);
+                    if (mbean.getCode() == 1) {
+                        //退款申请成功后，刷新个人中心状态
+                        Intent intent2 = new Intent(_MineFragment.ACTION_REFRESH_STATUS);
+                        LocalBroadcastManager.getInstance(this).sendBroadcast(intent2);
+                        //撤销成功刷新
+                        EventBus.getDefault().post(new RefreshShouHouEvent());
+
+                        mViewModel.getTuiKuanXiangQing(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), refund_id, item_id, "" + AppUtils.getVersionCode(this))
+                                .observe(this, mTuiKuanXiangQingObserver);
+
+                        FToast.success(mbean.getInfo());
+                    } else if (mbean.getCode() == HttpUtils.CODE_INVALID) {
+                        HttpUtils.Invalid(this);
+                        FToast.error(mbean.getInfo());
+                    } else {
+                        FToast.error(mbean.getInfo());
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            case Status.LOADING:
+                break;
+            case Status.ERROR:
+                FToast.error(status.message);
+                break;
+        }
+    };
+
 
 
 }
