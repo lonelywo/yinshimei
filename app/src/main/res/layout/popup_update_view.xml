@@ -3,78 +3,62 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-
+    android:layout_width="230dp"
+    android:layout_height="250dp"
+    android:background="@drawable/shape_check_title_popup_bottom_bg"
     >
 
     <ImageView
         android:id="@+id/top"
-        android:layout_width="200dp"
-        android:layout_height="0dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:src="@drawable/logo"
-        app:layout_constraintDimensionRatio="600:300"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/colorWhite"
+        android:layout_marginTop="30dp"
         />
-
+    <ImageView
+        android:id="@+id/close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/guanbi"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="@dimen/dp_10"
+        android:padding="5dp"
+       />
     <LinearLayout
         android:id="@+id/ll"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/shape_check_title_popup_bottom_bg"
-        android:gravity="center_horizontal"
+        android:layout_height="0dp"
+        android:gravity="center"
         android:orientation="vertical"
-        android:paddingBottom="16dp"
-        app:layout_constraintEnd_toEndOf="@+id/top"
-        app:layout_constraintStart_toStartOf="@+id/top"
-        app:layout_constraintTop_toBottomOf="@+id/top">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top"
+        app:layout_constraintBottom_toTopOf="@+id/update"
+        >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="发现新版本"
+            android:text="版本更新"
             android:textColor="@color/hei"
-            android:textSize="18sp"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
-            android:text="更新内容："
-            android:textColor="#333333"
-            android:textSize="14sp"/>
+            android:textSize="16sp"/>
 
         <TextView
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="30dp"
             android:lineSpacingExtra="6dp"
-            android:textColor="#666666"
-            android:textSize="14sp"
+            android:textColor="@color/hei"
+            android:textSize="12sp"
             android:text="1.优化了xxxx\n2.优化了xxxx\n3.优化了xxxx"/>
-
-        <TextView
-            android:id="@+id/update"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="32dp"
-            android:background="@drawable/shape_check_title_popup_button_bg"
-            android:gravity="center"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:text="马上更新"
-            android:textColor="#FFF"
-            android:textSize="16sp"/>
 
         <TextView
             android:id="@+id/ignore"
@@ -88,15 +72,25 @@
             />
 
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/close"
-        android:layout_width="wrap_content"
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/line_gray"
+        app:layout_constraintTop_toBottomOf="@+id/ll"
+        />
+    <TextView
+        android:id="@+id/update"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/icon_close_transparent"
-        app:layout_constraintEnd_toEndOf="@+id/top"
-        app:layout_constraintStart_toStartOf="@+id/top"
-        app:layout_constraintTop_toBottomOf="@+id/ll"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:gravity="center"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:text="立即更新"
+        android:textColor="@color/home_huang"
+        android:textSize="18sp"
+        />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
