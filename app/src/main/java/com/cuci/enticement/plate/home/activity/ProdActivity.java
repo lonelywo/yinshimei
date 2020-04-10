@@ -179,6 +179,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
     private String coupon_desc;
     private List<ProYhqBean.DataBean> data;
     private String total;
+    private String goodsPrice;
 
     @Override
     public int getLayoutId() {
@@ -391,8 +392,12 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
 
                 cartIntentInfo.setList(items);
                 cartIntentInfo.setGoods_count(items.size());
-
-                String goodsPrice = MathExtend.multiply(mprice_sell, String.valueOf(mNum));
+                if(SharedPrefUtils.getisnew()==0&&mProData.getVip_mod()==0||SharedPrefUtils.getisnew()==1&&mProData.getVip_mod()==1){
+                     goodsPrice = MathExtend.multiply(mprice_market, String.valueOf(mNum));
+                }else {
+                     goodsPrice = MathExtend.multiply(mprice_sell, String.valueOf(mNum));
+                }
+              //  String goodsPrice = MathExtend.multiply(mprice_sell, String.valueOf(mNum));
                 cartIntentInfo.setPrice_goods(goodsPrice);
                 Intent intent = new Intent(ProdActivity.this, OrderActivity.class);
                 intent.putExtra("intentInfo", cartIntentInfo);

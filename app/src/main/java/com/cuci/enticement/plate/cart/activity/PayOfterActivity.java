@@ -234,11 +234,11 @@ public class PayOfterActivity extends BaseActivity implements ItemZhuanPanViewBi
                 String replace = desc.replace("\\n", "\n");
 
                 if (mPayOfterBean.getData().getIs_coupon() == 1) {
-                    ImageLoader.loadPlaceholder1(img, imgLogo);
+                    ImageLoader.loadPlaceholder(img, imgLogo);
                     tv1.setText(replace);
                     ViewUtils.showView(ok);
                 } else {
-                    ImageLoader.loadPlaceholder1(img, imgLogo);
+                    ImageLoader.loadPlaceholder(img, imgLogo);
                     tv1.setText(replace);
                     ViewUtils.hideView(ok);
                 }

@@ -1,6 +1,7 @@
 package com.cuci.enticement.plate.mine.adapter;
 
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,13 +68,13 @@ public class ItemProdDetailsViewBinder extends ItemViewBinder<OrderGoods, ItemPr
            if (mStatus == 0 || mStatus == 2||mStatus == 3) {
                ViewUtils.hideView(holder.tuikuanTv);
            }else if( mStatus == 4){
-               if(item.getIs_refund()=="0"){
+               if(TextUtils.equals(item.getIs_refund(),"0")){
                    holder.tuikuanTv.setText("退款");
                    ViewUtils.showView(holder.tuikuanTv);
-               }else if(item.getIs_refund()=="1"){
+               }else if(TextUtils.equals(item.getIs_refund(),"1")){
                    holder.tuikuanTv.setText("退款中");
                    ViewUtils.showView(holder.tuikuanTv);
-               }else if(item.getIs_refund()=="2"){
+               }else if(TextUtils.equals(item.getIs_refund(),"2")){
                    holder.tuikuanTv.setText("退款成功");
                    ViewUtils.showView(holder.tuikuanTv);
                }
