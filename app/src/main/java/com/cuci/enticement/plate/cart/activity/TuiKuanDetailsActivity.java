@@ -22,6 +22,9 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
@@ -34,6 +37,7 @@ import com.cuci.enticement.bean.TuiKuanWuLiuBean;
 import com.cuci.enticement.bean.TuiKuanXiangQingBean;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.event.RefreshShouHouEvent;
+import com.cuci.enticement.plate.cart.adapter.ItemTuikuanProdViewBinder;
 import com.cuci.enticement.plate.cart.vm.CartViewModel;
 import com.cuci.enticement.plate.common.MainActivity;
 import com.cuci.enticement.plate.common.popup.TipsPopup;
@@ -43,8 +47,11 @@ import com.cuci.enticement.plate.mine.vm.OrderViewModel;
 import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.HttpUtils;
+import com.cuci.enticement.utils.MathExtend;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.ViewUtils;
+import com.cuci.enticement.widget.OrderItemDecoration;
+import com.cuci.enticement.widget.SmoothScrollview;
 import com.google.gson.Gson;
 import com.hyphenate.chat.ChatClient;
 import com.hyphenate.helpdesk.easeui.util.IntentBuilder;
@@ -57,13 +64,15 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import me.drakeet.multitype.Items;
+import me.drakeet.multitype.MultiTypeAdapter;
 import okhttp3.ResponseBody;
 
 
 /**
  * 退款详情页
  */
-public class TuiKuanDetailsActivity extends BaseActivity {
+public class TuiKuanDetailsActivity extends BaseActivity implements ItemTuikuanProdViewBinder.OnProdClickListener {
 
 
     @BindView(R.id.image_top)
@@ -84,10 +93,10 @@ public class TuiKuanDetailsActivity extends BaseActivity {
     View lineMoney;
     @BindView(R.id.con_money)
     ConstraintLayout conMoney;
-    @BindView(R.id.tv_zhuyi)
-    TextView tvZhuyi;
-    @BindView(R.id.con_zhuyi)
-    ConstraintLayout conZhuyi;
+    /* @BindView(R.id.tv_zhuyi)
+     TextView tvZhuyi;
+     @BindView(R.id.con_zhuyi)
+     ConstraintLayout conZhuyi;*/
     @BindView(R.id.tv_wuliu)
     TextView tvWuliu;
     @BindView(R.id.tv_gongsi)
@@ -146,6 +155,24 @@ public class TuiKuanDetailsActivity extends BaseActivity {
     TextView bottom;
     @BindView(R.id.tv_kefu1)
     TextView tvKefu1;
+    @BindView(R.id.rec_goods)
+    RecyclerView mRecyclerView;
+    @BindView(R.id.tv_tuikuanreason)
+    TextView tvTuikuanreason;
+    @BindView(R.id.tv_tuikuantime)
+    TextView tvTuikuantime;
+    @BindView(R.id.tv_tuikuannum)
+    TextView tvTuikuannum;
+    @BindView(R.id.container)
+    ConstraintLayout container;
+    @BindView(R.id.scroll_details)
+    SmoothScrollview scrollDetails;
+    @BindView(R.id.con_prod)
+    ConstraintLayout conProd;
+    @BindView(R.id.tv_tuikuanwuliunicheng)
+    TextView tvTuikuanwuliunicheng;
+    @BindView(R.id.tv_tuikuanwuliudanhao)
+    TextView tvTuikuanwuliudanhao;
     private AllOrderList.DataBean.ListBeanX mInfo;
     private UserInfo mUserInfo;
     private TuiKuanWuLiuBean mTuiKuanWuLiuBean;
@@ -156,6 +183,9 @@ public class TuiKuanDetailsActivity extends BaseActivity {
     private String back;
     private String item_id;
     private OrderViewModel mViewModel;
+    private MultiTypeAdapter mAdapter;
+    private Items mItems;
+    private LinearLayoutManager mLayoutManager;
 
 
     @Override
@@ -181,7 +211,22 @@ public class TuiKuanDetailsActivity extends BaseActivity {
             initContent();
             express = mTuiKuanWuLiuBean.getData().getExpress();
         }
+        mAdapter = new MultiTypeAdapter();
+        mItems = new Items();
+        mAdapter.setItems(mItems);
 
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        mAdapter.register(TuiKuanXiangQingBean.DataBean.RefundBean.OrderRefundListBean.class, new ItemTuikuanProdViewBinder(this));
+
+
+        OrderItemDecoration mDecoration = new OrderItemDecoration(this, 6);
+
+        mRecyclerView.addItemDecoration(mDecoration);
+        mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mRecyclerView.setAdapter(mAdapter);
 
     }
 
@@ -213,111 +258,117 @@ public class TuiKuanDetailsActivity extends BaseActivity {
                         String company1 = mbean.getData().getExpress().getCompany();
                         String send_no = mbean.getData().getExpress().getSend_no();
                         String amount = mbean.getData().getRefund().getAmount();
+                        String reason = mbean.getData().getRefund().getReason();
+                        int id = mbean.getData().getRefund().getId();
+                        List<TuiKuanXiangQingBean.DataBean.RefundBean.OrderRefundListBean> order_refund_list = mbean.getData().getRefund().getOrder_refund_list();
                         switch (status1) {
                             case 0:
                                 textZhuangtai.setText("请等待客服处理");
-                                textTime.setText("客服将加急处理，请耐心等待");
-                                ViewUtils.hideView(conMoney);
-                                ViewUtils.showView(conZhuyi);
-                                tvZhuyi.setText("您已成功发起退款申请，请耐心等待商家处理。");
+                                //  textTime.setText("客服将加急处理，请耐心等待");
+                                ViewUtils.showView(conMoney);
+                                textTime.setText("您已成功发起退款申请，请耐心等待商家处理。");
                                 ViewUtils.hideView(conWuliuxianshi);
                                 ViewUtils.hideView(conWuliutianxiebuju);
                                 ViewUtils.hideView(tvKefu1);
                                 ViewUtils.hideView(bottom);
                                 ViewUtils.showView(llBottom);
+                                ViewUtils.showView(conProd);
                                 break;
                             case 1:
                                 textZhuangtai.setText("平台已同意");
-                                textTime.setText("请您尽快退还商品");
-                                ViewUtils.hideView(conMoney);
-                                ViewUtils.showView(conZhuyi);
-                                tvZhuyi.setText(audit_desc);
+                                //   textTime.setText("请您尽快退还商品");
+                                ViewUtils.showView(conMoney);
+                                textTime.setText(audit_desc);
                                 ViewUtils.hideView(conWuliuxianshi);
                                 ViewUtils.hideView(conWuliutianxiebuju);
                                 ViewUtils.showView(tvKefu1);
                                 ViewUtils.hideView(bottom);
                                 ViewUtils.hideView(llBottom);
+                                ViewUtils.showView(conProd);
                                 break;
                             case 2:
                                 textZhuangtai.setText("平台拒绝");
-                                textTime.setText("该申请已被拒绝");
-                                ViewUtils.hideView(conMoney);
-                                ViewUtils.showView(conZhuyi);
-                                tvZhuyi.setText(audit_desc);
+                                //  textTime.setText("该申请已被拒绝");
+                                ViewUtils.showView(conMoney);
+                                textTime.setText(audit_desc);
                                 ViewUtils.hideView(conWuliuxianshi);
                                 ViewUtils.hideView(conWuliutianxiebuju);
                                 ViewUtils.showView(tvKefu1);
                                 ViewUtils.hideView(bottom);
                                 ViewUtils.hideView(llBottom);
+                                ViewUtils.showView(conProd);
                                 break;
                             case 3:
                                 textZhuangtai.setText("请您退货");
-                                textTime.setText("请退货并填写物流信息");
+                                //   textTime.setText("请退货并填写物流信息");
                                 ViewUtils.hideView(conMoney);
-                                ViewUtils.hideView(conZhuyi);
+                                textTime.setText(audit_desc);
                                 ViewUtils.hideView(conWuliuxianshi);
                                 ViewUtils.showView(conWuliutianxiebuju);
                                 ViewUtils.hideView(tvKefu1);
                                 ViewUtils.showView(bottom);
                                 ViewUtils.hideView(llBottom);
+                                ViewUtils.hideView(conProd);
                                 break;
                             case 4:
                                 textZhuangtai.setText("等待平台收货");
-                                textTime.setText("平台在收到包裹后7个工作日内处理退款");
-                                ViewUtils.hideView(conMoney);
-                                ViewUtils.hideView(conZhuyi);
+                                //   textTime.setText("平台在收到包裹后7个工作日内处理退款");
+                                ViewUtils.showView(conMoney);
+                                textTime.setText(audit_desc);
                                 ViewUtils.showView(conWuliuxianshi);
                                 ViewUtils.hideView(conWuliutianxiebuju);
                                 ViewUtils.showView(tvKefu1);
                                 ViewUtils.hideView(bottom);
                                 ViewUtils.hideView(llBottom);
+                                ViewUtils.showView(conProd);
                                 break;
                             case 5:
                                 textZhuangtai.setText("平台退款中");
-                                textTime.setText("请耐心等候");
-                                ViewUtils.hideView(conMoney);
-                                ViewUtils.showView(conZhuyi);
-                                tvZhuyi.setText(audit_desc);
+                                //   textTime.setText("请耐心等候");
+                                ViewUtils.showView(conMoney);
+                                textTime.setText(audit_desc);
                                 ViewUtils.hideView(conWuliuxianshi);
                                 ViewUtils.hideView(conWuliutianxiebuju);
                                 ViewUtils.showView(tvKefu1);
                                 ViewUtils.hideView(bottom);
                                 ViewUtils.hideView(llBottom);
+                                ViewUtils.showView(conProd);
                                 break;
                             case 6:
                                 textZhuangtai.setText("退款成功");
-                                textTime.setText(create_at);
+                                //    textTime.setText(create_at);
                                 ViewUtils.showView(conMoney);
-                                ViewUtils.hideView(conZhuyi);
+                                textTime.setText(audit_desc);
                                 ViewUtils.hideView(conWuliuxianshi);
                                 ViewUtils.hideView(conWuliutianxiebuju);
                                 ViewUtils.hideView(tvKefu1);
                                 ViewUtils.hideView(bottom);
                                 ViewUtils.hideView(llBottom);
+                                ViewUtils.showView(conProd);
                                 break;
                             case 7:
                                 textZhuangtai.setText("退款失败");
-                                textTime.setText("退款失败");
-                                ViewUtils.hideView(conMoney);
-                                ViewUtils.showView(conZhuyi);
-                                tvZhuyi.setText(audit_desc);
+                                //    textTime.setText("退款失败");
+                                ViewUtils.showView(conMoney);
+                                textTime.setText(audit_desc);
                                 ViewUtils.hideView(conWuliuxianshi);
                                 ViewUtils.hideView(conWuliutianxiebuju);
                                 ViewUtils.showView(tvKefu1);
                                 ViewUtils.hideView(bottom);
                                 ViewUtils.hideView(llBottom);
+                                ViewUtils.showView(conProd);
                                 break;
                             case 8:
                                 textZhuangtai.setText("退款申请已撤销");
-                                textTime.setText("该退款已关闭");
-                                ViewUtils.hideView(conMoney);
-                                ViewUtils.showView(conZhuyi);
-                                tvZhuyi.setText("您已撤销本次申请，如问题未解决，您还可以再次发起。");
+                                //   textTime.setText("该退款已关闭");
+                                ViewUtils.showView(conMoney);
+                                textTime.setText(audit_desc);
                                 ViewUtils.hideView(conWuliuxianshi);
                                 ViewUtils.hideView(conWuliutianxiebuju);
                                 ViewUtils.hideView(tvKefu1);
                                 ViewUtils.hideView(bottom);
                                 ViewUtils.hideView(llBottom);
+                                ViewUtils.showView(conProd);
                                 break;
 
                         }
@@ -328,7 +379,17 @@ public class TuiKuanDetailsActivity extends BaseActivity {
                         textDizi.setText("收货地址：" + contocts + "\n" + address);
                         tvGongsi.setText(company1);
                         tvBianhao.setText(send_no);
-                        tvMoney.setText(amount);
+
+                            tvTuikuanwuliunicheng.setText("物流公司："+company1);
+                            tvTuikuanwuliudanhao.setText("物流单号："+send_no);
+
+                        tvMoney.setText("¥" + MathExtend.moveone(amount));
+                        tvTuikuanreason.setText("退款原因：" + reason);
+                        tvTuikuantime.setText("申请时间：" + create_at);
+                        tvTuikuannum.setText("退款编号：" + id);
+                        mItems.clear();
+                        mItems.addAll(order_refund_list);
+                        mAdapter.notifyDataSetChanged();
                     } else if (mbean.getCode() == HttpUtils.CODE_INVALID) {
                         HttpUtils.Invalid(this);
                         FToast.error(mbean.getInfo());
@@ -357,7 +418,7 @@ public class TuiKuanDetailsActivity extends BaseActivity {
             FToast.warning("物流公司、物流单号、手机号不能为空");
             return;
         }
-        CartViewModel mCartViewModel=new ViewModelProvider(this).get(CartViewModel.class);
+        CartViewModel mCartViewModel = new ViewModelProvider(this).get(CartViewModel.class);
         mCartViewModel.TuiKuanWuLiuCommit("2", mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), refund_id, company, send_no, phone, "" + AppUtils.getVersionCode(BasicApp.getContext())).observe(this, mObserver);
     }
 
@@ -434,7 +495,7 @@ public class TuiKuanDetailsActivity extends BaseActivity {
         finish();
     }
 
-    @OnClick({R.id.tv_wuliucheck, R.id.bottom,R.id.tv_kefu1,R.id.tv_kefu,R.id.tv_cexiao})
+    @OnClick({R.id.tv_wuliucheck, R.id.bottom, R.id.tv_kefu1, R.id.tv_kefu, R.id.tv_cexiao})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_wuliucheck:
@@ -476,7 +537,7 @@ public class TuiKuanDetailsActivity extends BaseActivity {
                         .asCustom(new TipsPopup(this,
                                 "您将撤销本次申请，如果问题未解决,您还可以再次发起，确定继续吗？", "关闭", "确定", () -> {
                             if (mUserInfo != null) {
-                                OrderViewModel   mViewModel = new ViewModelProvider(this).get(OrderViewModel.class);
+                                OrderViewModel mViewModel = new ViewModelProvider(this).get(OrderViewModel.class);
                                 mViewModel.getTuiKuanCancel(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), refund_id, "" + AppUtils.getVersionCode(this))
                                         .observe(this, mCommitObserver);
                             }
@@ -526,7 +587,17 @@ public class TuiKuanDetailsActivity extends BaseActivity {
     };
 
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 
+    @Override
+    public void onProdClick(TuiKuanXiangQingBean.DataBean.RefundBean.OrderRefundListBean item) {
+
+    }
 }
 
 /*class MyClickText extends ClickableSpan {

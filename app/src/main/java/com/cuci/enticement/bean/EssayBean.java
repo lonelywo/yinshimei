@@ -80,6 +80,17 @@ public class EssayBean implements Parcelable {
 
         private String content;
 
+
+        public String getBrief() {
+            return brief;
+        }
+
+        public void setBrief(String brief) {
+            this.brief = brief;
+        }
+
+        private String brief;
+
         public String getContent() {
             return content;
         }

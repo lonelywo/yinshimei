@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="#EFEFEF"
+    android:background="@color/white"
     >
   <androidx.constraintlayout.widget.ConstraintLayout
       android:id="@+id/con_toubu"
@@ -39,13 +39,30 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
   </androidx.constraintlayout.widget.ConstraintLayout>
+    <com.cuci.enticement.widget.SmoothScrollview
+        android:id="@+id/scroll_details"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/con_toubu"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="60dp"
+        android:overScrollMode="never"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
 
       <androidx.constraintlayout.widget.ConstraintLayout
           android:id="@+id/con_zhuangtai"
           android:layout_width="match_parent"
           android:layout_height="120dp"
           android:background="@color/home_huang"
-          app:layout_constraintTop_toBottomOf="@+id/con_toubu"
+          app:layout_constraintTop_toTopOf="parent"
           >
 
           <TextView
@@ -74,22 +91,23 @@
 
       </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/con_money"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/con_zhuangtai"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:background="@color/white"
-        android:layout_marginTop="10dp"
-        android:visibility="gone"
+        android:visibility="visible"
         >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="退款总金额"
             android:textColor="@color/hei"
-            android:textSize="12sp"
+            android:textSize="13sp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginLeft="42dp"
@@ -101,7 +119,7 @@
             android:layout_height="wrap_content"
             android:text="58.00"
             android:textColor="@color/red"
-            android:textSize="12sp"
+            android:textSize="13sp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginRight="@dimen/dp_10"
@@ -115,18 +133,17 @@
             android:background="@color/line_gray"
             android:layout_marginTop="15dp"
             />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+       <!-- <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/con_zhuyi"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@id/con_zhuangtai"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="10dp"
             android:background="@color/white"
-            android:visibility="gone"
+            android:visibility="visible"
             >
             <TextView
                 android:id="@+id/tv_zhuyi"
@@ -143,14 +160,13 @@
                 android:drawablePadding="5dp"
                 android:gravity="center_vertical"
                 />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>-->
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/con_wuliuxianshi"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@id/con_zhuangtai"
+            app:layout_constraintTop_toBottomOf="@+id/con_zhuangtai"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginTop="10dp"
             android:background="@color/white"
@@ -229,7 +245,7 @@
        android:id="@+id/con_wuliutianxiebuju"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
-       app:layout_constraintTop_toBottomOf="@id/con_zhuangtai"
+       app:layout_constraintTop_toBottomOf="@+id/con_zhuangtai"
        android:layout_marginTop="10dp"
        android:visibility="gone"
        >
@@ -358,7 +374,6 @@
              app:layout_constraintTop_toTopOf="parent"
              app:layout_constraintTop_toBottomOf="parent"
              />
-
          <ImageView
              android:id="@+id/tv_code"
              android:layout_width="wrap_content"
@@ -370,8 +385,6 @@
              android:visibility="gone"
              />
      </androidx.constraintlayout.widget.ConstraintLayout>
-
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/con_wuliugongsi"
             android:layout_width="match_parent"
@@ -382,7 +395,6 @@
             android:padding="@dimen/dp_10"
             >
             <TextView
-
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="物流公司"
@@ -405,7 +417,6 @@
                 android:drawableRight="@drawable/youjiantou_hei"
                 android:drawablePadding="6dp"
                 />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/con_phone"
@@ -451,38 +462,118 @@
 
    </androidx.constraintlayout.widget.ConstraintLayout>
 
+     <androidx.constraintlayout.widget.ConstraintLayout
+         android:id="@+id/con_prod"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         app:layout_constraintTop_toBottomOf="@+id/con_money"
+        >
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rec_goods"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+    <TextView
+        android:id="@+id/tv_tuikuanreason"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="退款原因：不喜欢/不想要"
+        app:layout_constraintTop_toBottomOf="@+id/rec_goods"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="15dp"
+        android:textSize="13sp"
+        android:textColor="#707070"
+        />
+
+    <TextView
+        android:id="@+id/tv_tuikuantime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="申请时间：2020-4-10 14:20"
+        app:layout_constraintTop_toBottomOf="@+id/tv_tuikuanreason"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="15dp"
+        android:textSize="13sp"
+        android:textColor="#707070"
+        />
+    <TextView
+        android:id="@+id/tv_tuikuannum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="退款编号：594888154577090"
+        app:layout_constraintTop_toBottomOf="@+id/tv_tuikuantime"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="15dp"
+        android:textSize="13sp"
+        android:textColor="#707070"
+        />
+         <TextView
+             android:id="@+id/tv_tuikuanwuliunicheng"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             tools:text="退款物流：顺丰"
+             app:layout_constraintTop_toBottomOf="@+id/tv_tuikuannum"
+             app:layout_constraintStart_toStartOf="parent"
+             android:layout_marginTop="5dp"
+             android:layout_marginLeft="15dp"
+             android:textSize="13sp"
+             android:textColor="#707070"
+             />
+         <TextView
+             android:id="@+id/tv_tuikuanwuliudanhao"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             tools:text="物流单号：594888154577090"
+             app:layout_constraintTop_toBottomOf="@+id/tv_tuikuanwuliunicheng"
+             app:layout_constraintStart_toStartOf="parent"
+             android:layout_marginTop="5dp"
+             android:layout_marginLeft="15dp"
+             android:textSize="13sp"
+             android:textColor="#707070"
+             android:paddingBottom="20dp"
+             />
+     </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.cuci.enticement.widget.SmoothScrollview>
+
 
     <LinearLayout
         android:id="@+id/ll_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:visibility="gone"
+        android:visibility="visible"
         >
         <TextView
             android:id="@+id/tv_cexiao"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:textColor="#ffffff"
             android:text="撤销申请"
             android:background="@color/hei"
             android:textSize="14sp"
             android:gravity="center"
-            android:padding="20dp"
+
             />
         <TextView
             android:id="@+id/tv_kefu"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             app:layout_constraintBottom_toBottomOf="parent"
             android:textColor="#ffffff"
             android:text="联系客服"
             android:background="@color/home_huang"
             android:textSize="14sp"
             android:gravity="center"
-            android:padding="20dp"
+
             />
     </LinearLayout>
 
@@ -490,27 +581,25 @@
         <TextView
             android:id="@+id/bottom"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             app:layout_constraintBottom_toBottomOf="parent"
             android:textColor="#ffffff"
             android:text="提交"
             android:background="@color/home_huang"
             android:textSize="14sp"
             android:gravity="center"
-            android:padding="20dp"
             android:visibility="gone"
             />
        <TextView
         android:id="@+id/tv_kefu1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         app:layout_constraintBottom_toBottomOf="parent"
         android:textColor="#ffffff"
         android:text="联系客服"
         android:background="@color/home_huang"
         android:textSize="14sp"
         android:gravity="center"
-        android:padding="20dp"
         android:visibility="gone"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>
