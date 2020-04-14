@@ -19,11 +19,15 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseFragment;
 import com.cuci.enticement.bean.DataUserInfo;
-import com.cuci.enticement.bean.GeTuibean;
 import com.cuci.enticement.bean.HxBean;
 import com.cuci.enticement.bean.KaQuanListBean;
 import com.cuci.enticement.bean.OrderStatistics;
@@ -35,8 +39,6 @@ import com.cuci.enticement.event.ClickMyEvent;
 import com.cuci.enticement.event.IsnewEvent;
 import com.cuci.enticement.event.ProgoodsEvent;
 import com.cuci.enticement.plate.cart.activity.AftermarketActivity;
-import com.cuci.enticement.plate.cart.activity.PayOfterActivity;
-import com.cuci.enticement.plate.cart.activity.ZhuanPanActivity;
 import com.cuci.enticement.plate.common.DailyActivity;
 import com.cuci.enticement.plate.common.LoginActivity;
 import com.cuci.enticement.plate.common.popup.ShareImgTipsPopup;
@@ -63,7 +65,6 @@ import com.cuci.enticement.utils.UnicodeUitls;
 import com.cuci.enticement.utils.ViewUtils;
 import com.cuci.enticement.utils.WxShareUtils;
 import com.google.gson.Gson;
-import com.google.gson.annotations.SerializedName;
 import com.hyphenate.chat.ChatClient;
 import com.hyphenate.chat.Conversation;
 import com.hyphenate.helpdesk.callback.Callback;
@@ -78,12 +79,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.IOException;
 import java.util.List;
 
-import androidx.constraintlayout.widget.Barrier;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import butterknife.BindView;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -102,14 +97,10 @@ public class _MineFragment extends BaseFragment {
     private static final String TAG = _MineFragment.class.getSimpleName();
     @BindView(R.id.con_toubu)
     ConstraintLayout conToubu;
-    @BindView(R.id.img_shape_bai)
-    ImageView imgShapeBai;
     @BindView(R.id.img_tuxiang)
     CircleImageView imgTuxiang;
     @BindView(R.id.img_jingxiao)
     ImageView imgJingxiao;
-    @BindView(R.id.img_shape_bai2)
-    ImageView imgShapeBai2;
     @BindView(R.id.text_dingdan)
     TextView textDingdan;
     @BindView(R.id.text_quanbudingdan)
@@ -124,22 +115,10 @@ public class _MineFragment extends BaseFragment {
     TextView textDaishouhuo;
     @BindView(R.id.text_yiwancheng)
     TextView textYiwancheng;
-    @BindView(R.id.img_shape_bai3)
-    ImageView imgShapeBai3;
     @BindView(R.id.text_fuwu)
     TextView textFuwu;
     @BindView(R.id.view1)
     View view1;
-    @BindView(R.id.text_tuiguangyongjing)
-    TextView textTuiguangyongjing;
-    @BindView(R.id.text_wodetuandui)
-    TextView textWodetuandui;
-    @BindView(R.id.text_shouhuodizi)
-    TextView textShouhuodizi;
-    @BindView(R.id.text_yejiyuefan)
-    TextView textYejiyuefan;
-    @BindView(R.id.ll_fuwu)
-    LinearLayout llFuwu;
     @BindView(R.id.text_wodekefu)
     TextView textWodekefu;
     @BindView(R.id.ll_fuwu2)
@@ -170,76 +149,61 @@ public class _MineFragment extends BaseFragment {
     ConstraintLayout daishouhuoLl;
     @BindView(R.id.yiwancheng_ll)
     ConstraintLayout yiwanchengLl;
-    @BindView(R.id.con_yingchang)
-    ConstraintLayout conYingchang;
+
     @BindView(R.id.text_huiyuan)
     TextView textHuiyuan;
     @BindView(R.id.dot1_hx)
     TextView dot1Hx;
     @BindView(R.id.wodekefu_ll)
     ConstraintLayout wodekefuLl;
-    @BindView(R.id.text_pk)
-    TextView textPk;
     @BindView(R.id.text_wodeshezhi)
-    TextView textWodeshezhi;
+    ImageView textWodeshezhi;
     @BindView(R.id.img_headwear)
     ImageView imgHeadwear;
-    @BindView(R.id.text_wodegonggao)
-    TextView textWodegonggao;
-    @BindView(R.id.img_shape_bai4)
-    ImageView imgShapeBai4;
-    @BindView(R.id.text_gongju)
-    TextView textGongju;
     @BindView(R.id.view2)
     View view2;
-    @BindView(R.id.con_gongju)
-    ConstraintLayout conGongju;
-    @BindView(R.id.text_shareliwu)
-    TextView textShareliwu;
     @BindView(R.id.con_dingdan)
     ConstraintLayout conDingdan;
-    @BindView(R.id.dot1_goods)
-    TextView dot1Goods;
-    @BindView(R.id.goods_ll)
-    ConstraintLayout goodsLl;
-    @BindView(R.id.v6)
-    View v6;
     @BindView(R.id.text_wodekajuan)
     TextView textWodekajuan;
-    @BindView(R.id.text_wodetuandui1)
-    TextView textWodetuandui1;
-    @BindView(R.id.text_pk1)
-    TextView textPk1;
-    @BindView(R.id.ll_fuwu1)
-    LinearLayout llFuwu1;
-    @BindView(R.id.text_wodekajuan1)
-    TextView textWodekajuan1;
-    @BindView(R.id.shouhuodizi_ll)
-    ConstraintLayout shouhuodiziLl;
     @BindView(R.id.dot1_kajuan)
     TextView dot1Kajuan;
     @BindView(R.id.wodekajuan_ll)
     ConstraintLayout wodekajuanLl;
-    @BindView(R.id.wodeshezhi_ll)
-    ConstraintLayout wodeshezhiLl;
-    @BindView(R.id.wodegonggao_ll)
-    ConstraintLayout wodegonggaoLl;
-    @BindView(R.id.text_shouhuodizi0)
-    TextView textShouhuodizi0;
-    @BindView(R.id.shouhuodizi_ll0)
-    ConstraintLayout shouhuodiziLl0;
-    @BindView(R.id.text_wodekajuan0)
-    TextView textWodekajuan0;
-    @BindView(R.id.wodekajuan_ll0)
-    ConstraintLayout wodekajuanLl0;
-    @BindView(R.id.text_wodeshezhi0)
-    TextView textWodeshezhi0;
-    @BindView(R.id.wodeshezhi_ll0)
-    ConstraintLayout wodeshezhiLl0;
-    @BindView(R.id.ll_fuwu20)
-    LinearLayout llFuwu20;
-    @BindView(R.id.barrier)
-    Barrier barrier;
+    @BindView(R.id.text_jifen)
+    TextView textJifen;
+    @BindView(R.id.jifen_ll)
+    ConstraintLayout jifenLl;
+    @BindView(R.id.yphy_ll)
+    ConstraintLayout yphyLl;
+    @BindView(R.id.con_wodemeifen)
+    ConstraintLayout conWodemeifen;
+    @BindView(R.id.text_shouyi)
+    TextView textShouyi;
+    @BindView(R.id.con_wodeshouyi)
+    ConstraintLayout conWodeshouyi;
+    @BindView(R.id.text_fuli)
+    TextView textFuli;
+    @BindView(R.id.view3)
+    View view3;
+    @BindView(R.id.con_wodefuli)
+    ConstraintLayout conWodefuli;
+    @BindView(R.id.text_paihangbang)
+    TextView textPaihangbang;
+    @BindView(R.id.view4)
+    View view4;
+    @BindView(R.id.con_wodepaihangbang)
+    ConstraintLayout conWodepaihangbang;
+    @BindView(R.id.text_dizi)
+    TextView textDizi;
+    @BindView(R.id.view5)
+    View view5;
+    @BindView(R.id.con_dizi)
+    ConstraintLayout conDizi;
+    @BindView(R.id.text_gonggao)
+    TextView textGonggao;
+    @BindView(R.id.con_gonggao)
+    ConstraintLayout conGonggao;
     private boolean mCouldChange = true;
     private LocalBroadcastManager mBroadcastManager;
     private UserInfo mUserInfo;
@@ -248,6 +212,7 @@ public class _MineFragment extends BaseFragment {
     private static final int THUMB_SIZE1 = 400;
     private boolean bag = false;
     private int is_month;
+    private String daily_activity_url;
 
 
     @Override
@@ -319,7 +284,7 @@ public class _MineFragment extends BaseFragment {
                 }
             }
         });
-        textPk.setOnClickListener(new View.OnClickListener() {
+        conWodepaihangbang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (AppUtils.isAllowPermission(mActivity)) {
@@ -338,7 +303,7 @@ public class _MineFragment extends BaseFragment {
                 }
             }
         });
-        textWodegonggao.setOnClickListener(new View.OnClickListener() {
+        conGonggao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (AppUtils.isAllowPermission(mActivity)) {
@@ -364,7 +329,25 @@ public class _MineFragment extends BaseFragment {
                 }
             }
         });
-
+        textJifen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (AppUtils.isAllowPermission(mActivity)) {
+                    FToast.warning("敬请期待~");
+                }
+            }
+        });
+        conWodefuli.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (AppUtils.isAllowPermission(mActivity)) {
+                    Intent intentProd = new Intent(mActivity, DailyActivity.class);
+                    intentProd.putExtra("url", daily_activity_url);
+                    intentProd.putExtra("token", mUserInfo.getToken());
+                    mActivity.startActivity(intentProd);
+                }
+            }
+        });
     }
 
     private Observer<Status<ResponseBody>> mdataObserver = status -> {
@@ -401,18 +384,22 @@ public class _MineFragment extends BaseFragment {
                 //保存is_new
                 int is_new = mDataUserInfo.getData().getIs_new();
                 if (is_new == 1) {
-                    ViewUtils.showView(conYingchang);
+                    //  ViewUtils.showView(conYingchang);
                     if (SharedPrefUtils.getisnew() != is_new) {
                         SharedPrefUtils.saveisnew(is_new);
                         EventBus.getDefault().post(new ProgoodsEvent());
                     }
                 } else {
-                    ViewUtils.hideView(conYingchang);
+                    //   ViewUtils.hideView(conYingchang);
                 }
                 //礼品中心
                 int daily_activity = mDataUserInfo.getData().getDaily_activity();
                 int gift = mDataUserInfo.getData().getMenu().getGift();
-                if (daily_activity == 1) {
+
+                daily_activity_url = mDataUserInfo.getData().getDaily_activity_url();
+
+
+               /* if (daily_activity == 1) {
                     ViewUtils.showView(goodsLl);
                     if (gift == 1) {
                         ViewUtils.showView(dot1Goods);
@@ -431,7 +418,7 @@ public class _MineFragment extends BaseFragment {
                     });
                 } else {
                     ViewUtils.hideView(goodsLl);
-                }
+                }*/
                 if (mDataUserInfo.getData().getVip_level() == 0) {
                     textHuiyuan.setText("用户");
                 } else if (mDataUserInfo.getData().getVip_level() == 1) {
@@ -469,26 +456,26 @@ public class _MineFragment extends BaseFragment {
 
                 DataUserInfo.DataBean.OrdertotalBean ordertotal = mDataUserInfo.getData().getOrdertotal();
                 // 对订单状态设置数量
-                    if (ordertotal.get_$2() == 0) {
-                        ViewUtils.hideView(dot1Tv);
-                    } else {
-                        ViewUtils.showView(dot1Tv);
-                        dot1Tv.setText(String.valueOf(ordertotal.get_$2()));
-                    }
+                if (ordertotal.get_$2() == 0) {
+                    ViewUtils.hideView(dot1Tv);
+                } else {
+                    ViewUtils.showView(dot1Tv);
+                    dot1Tv.setText(String.valueOf(ordertotal.get_$2()));
+                }
 
-                    if (ordertotal.get_$3() == 0) {
-                        ViewUtils.hideView(dot2Tv);
-                    } else {
-                        ViewUtils.showView(dot2Tv);
-                        dot2Tv.setText(String.valueOf(ordertotal.get_$3()));
-                    }
+                if (ordertotal.get_$3() == 0) {
+                    ViewUtils.hideView(dot2Tv);
+                } else {
+                    ViewUtils.showView(dot2Tv);
+                    dot2Tv.setText(String.valueOf(ordertotal.get_$3()));
+                }
 
-                    if (ordertotal.get_$4() == 0) {
-                        ViewUtils.hideView(dot3Tv);
-                    } else {
-                        ViewUtils.showView(dot3Tv);
-                        dot3Tv.setText(String.valueOf(ordertotal.get_$4()));
-                    }
+                if (ordertotal.get_$4() == 0) {
+                    ViewUtils.hideView(dot3Tv);
+                } else {
+                    ViewUtils.showView(dot3Tv);
+                    dot3Tv.setText(String.valueOf(ordertotal.get_$4()));
+                }
                    /* if (ordertotal.get_$5() == 0) {
                         ViewUtils.hideView(dot4Tv);
                     } else {
@@ -531,7 +518,7 @@ public class _MineFragment extends BaseFragment {
                     }
                 } else if (ACTION_REFRESH_STATUS.equals(intent.getAction())) {
                     OrderViewModel orderViewModel = new ViewModelProvider(mActivity).get(OrderViewModel.class);
-                    orderViewModel.getStatisticsOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),""+ AppUtils.getVersionCode(BasicApp.getContext()))
+                    orderViewModel.getStatisticsOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "" + AppUtils.getVersionCode(BasicApp.getContext()))
                             .observe(mActivity, mTotalOrderObserver);
                 } else if (ACTION_REFRESH_HX.equals(intent.getAction())) {
                     int data = intent.getIntExtra("data", 0);
@@ -547,18 +534,17 @@ public class _MineFragment extends BaseFragment {
 
     private void refreshLayout() {
         if (mUserInfo == null) {
-            ImageLoader.loadPlaceholder(R.drawable.tuxiang, imgTuxiang);
+            ImageLoader.loadPlaceholder(R.drawable.logo, imgTuxiang);
             textName.setText("请登录");
             ViewUtils.hideView(dot1Tv);
             ViewUtils.hideView(dot2Tv);
             ViewUtils.hideView(dot3Tv);
             ViewUtils.hideView(dot4Tv);
-            ViewUtils.hideView(conYingchang);
-            //ViewUtils.hideView(imgYqhy);
+            //  ViewUtils.hideView(conYingchang);
+
             imgHeadwear.setVisibility(View.GONE);
             return;
         }
-
 
 
         FLog.e("user", "" + mUserInfo.getId());
@@ -574,7 +560,7 @@ public class _MineFragment extends BaseFragment {
 
         //注册环信
         if (SharedPrefUtils.getShowhxCode() == 0) {
-            mViewModel.hxreg(mUserInfo.getPhone(), "2", mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),""+ AppUtils.getVersionCode(BasicApp.getContext())).observe(this, mhxregObserver);
+            mViewModel.hxreg(mUserInfo.getPhone(), "2", mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "" + AppUtils.getVersionCode(BasicApp.getContext())).observe(this, mhxregObserver);
         } else {
             ChatClient.getInstance().login(mUserInfo.getPhone(), "ysm6j351r6", new Callback() {
                 @Override
@@ -610,10 +596,11 @@ public class _MineFragment extends BaseFragment {
         }
 
         OrderViewModel orderViewModel = new ViewModelProvider(this).get(OrderViewModel.class);
-        orderViewModel.getStatisticsOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),""+ AppUtils.getVersionCode(BasicApp.getContext()))
+        orderViewModel.getStatisticsOrder(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "" + AppUtils.getVersionCode(BasicApp.getContext()))
                 .observe(mActivity, mTotalOrderObserver);
 
     }
+
     private Observer<Status<ResponseBody>> refundExpressObserver = status -> {
 
         switch (status.status) {
@@ -648,7 +635,7 @@ public class _MineFragment extends BaseFragment {
         }
     }
 
-    @OnClick({R.id.text_quanbudingdan, R.id.text_tuiguangyongjing, R.id.text_wodetuandui, R.id.text_shouhuodizi, R.id.text_yejiyuefan, R.id.text_wodekefu})
+    @OnClick({R.id.text_quanbudingdan, R.id.con_wodeshouyi, R.id.con_wodemeifen, R.id.con_dizi, R.id.text_wodekefu})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.text_quanbudingdan:
@@ -658,34 +645,34 @@ public class _MineFragment extends BaseFragment {
                     mActivity.startActivity(intentProd);
                 }
                 break;
-            case R.id.text_tuiguangyongjing:
+            case R.id.con_wodeshouyi:
                 if (AppUtils.isAllowPermission(mActivity)) {
                     Intent intentProd = new Intent(mActivity, CommissionActivity.class);
                     intentProd.putExtra("Data", "");
                     mActivity.startActivity(intentProd);
                 }
                 break;
-            case R.id.text_wodetuandui:
+            case R.id.con_wodemeifen:
                 if (AppUtils.isAllowPermission(mActivity)) {
                     Intent intentProd = new Intent(mActivity, MyTeamActivity.class);
                     intentProd.putExtra("Data", "");
                     mActivity.startActivity(intentProd);
                 }
                 break;
-            case R.id.text_shouhuodizi:
+            case R.id.con_dizi:
                 if (AppUtils.isAllowPermission(mActivity)) {
                     Intent intentProd = new Intent(mActivity, RecAddressActivity.class);
                     intentProd.putExtra("Data", "");
                     mActivity.startActivity(intentProd);
                 }
                 break;
-            case R.id.text_yejiyuefan:
+           /* case R.id.text_yejiyuefan:
                 if (AppUtils.isAllowPermission(mActivity)) {
                     Intent intentProd = new Intent(mActivity, AchievementActivity.class);
                     intentProd.putExtra("Data", is_month);
                     mActivity.startActivity(intentProd);
                 }
-                break;
+                break;*/
             case R.id.text_wodekefu:
                 if (AppUtils.isAllowPermission(mActivity)) {
                     if (ChatClient.getInstance().isLoggedInBefore()) {
@@ -774,7 +761,7 @@ public class _MineFragment extends BaseFragment {
                     startActivity(intent);
                     break;
                 case R.id.yiwancheng_ll:
-                 //   intent.putExtra("cur", 4);
+                    //   intent.putExtra("cur", 4);
                     startActivity(intent2);
                     break;
             }
@@ -878,7 +865,7 @@ public class _MineFragment extends BaseFragment {
         String cid = PushManager.getInstance().getClientid(mActivity);
         Log.d(TAG, "当前应用的cid=" + cid);
         //提交个推cid
-        mViewModel.getui("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), cid,""+AppUtils.getVersionCode(mActivity))
+        mViewModel.getui("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), cid, "" + AppUtils.getVersionCode(mActivity))
                 .observe(this, mCommitObserver);
     }
 
@@ -892,7 +879,7 @@ public class _MineFragment extends BaseFragment {
                 try {
                     String result = body.string();
                     ReceiveCodeBean mbean = new Gson().fromJson(result, ReceiveCodeBean.class);
-               //     GeTuibean mbean = new Gson().fromJson(result, GeTuibean.class);
+                    //     GeTuibean mbean = new Gson().fromJson(result, GeTuibean.class);
                     if (mbean.getCode() == 1) {
                         FLog.e(TAG, mbean.getInfo());
                     } else {
@@ -936,7 +923,7 @@ public class _MineFragment extends BaseFragment {
                 List<KaQuanListBean.DataBean.ListBean> checkitems = mKaQuanListBean.getData().getList();
                 if (checkitems == null || checkitems.size() == 0) {
                     ViewUtils.hideView(dot1Kajuan);
-                }else {
+                } else {
                     ViewUtils.showView(dot1Kajuan);
                 }
             } else {
@@ -953,14 +940,14 @@ public class _MineFragment extends BaseFragment {
     public void onClickMyEvent(ClickMyEvent event) {
         if (event.getCode() == ClickMyEvent.CHECK_ITEM3) {
             if (mUserInfo != null) {
-                mViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(),""+ AppUtils.getVersionCode(BasicApp.getContext())).observe(this, mdataObserver);
+                mViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), "" + AppUtils.getVersionCode(BasicApp.getContext())).observe(this, mdataObserver);
                 //可使用优惠卷
-                mViewModel.kaquanlist(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", "1", "", "0",""+ AppUtils.getVersionCode(mActivity), Status.LOAD_REFRESH)
+                mViewModel.kaquanlist(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", "1", "", "0", "" + AppUtils.getVersionCode(mActivity), Status.LOAD_REFRESH)
                         .observe(this, mkaquanObserver);
 
                 //退货快递
                 MainViewModel mmViewModel = new ViewModelProvider(this).get(MainViewModel.class);
-                mmViewModel.refundExpress("2",String.valueOf(mUserInfo.getId()),mUserInfo.getToken(),""+ AppUtils.getVersionCode(BasicApp.getContext())).observe(this, refundExpressObserver);
+                mmViewModel.refundExpress("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), "" + AppUtils.getVersionCode(BasicApp.getContext())).observe(this, refundExpressObserver);
             }
         }
 
@@ -972,7 +959,7 @@ public class _MineFragment extends BaseFragment {
     public void onClickIsnewEvent(IsnewEvent event) {
         //进入页面先请求是否会员
         if (mUserInfo != null) {
-            mViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(),""+ AppUtils.getVersionCode(BasicApp.getContext())).observe(this, mdataObserver);
+            mViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), "" + AppUtils.getVersionCode(BasicApp.getContext())).observe(this, mdataObserver);
         }
 
     }

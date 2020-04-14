@@ -47,7 +47,7 @@ public class AgreementActivity extends BaseActivity {
     @BindView(R.id.con_title)
     ConstraintLayout conTitle;
     @BindView(R.id.tv_share)
-    TextView tvShare;
+    ImageView tvShare;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
     private String url;

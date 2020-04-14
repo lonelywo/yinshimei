@@ -39,7 +39,7 @@ public class ImageLoader {
     public static void loadPlaceholder(int resId, ImageView imageView) {
 
         RequestOptions options = new RequestOptions()
-                .placeholder(R.drawable.tuxiang);
+                .placeholder(R.drawable.logo);
 
         Glide.with(BasicApp.getContext())
                 .load(resId)

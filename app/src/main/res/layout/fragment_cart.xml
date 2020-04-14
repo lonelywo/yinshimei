@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#ffffff">
 
-    <ImageView
+    <View
         android:layout_width="0dp"
         android:layout_height="65dp"
         app:layout_constraintTop_toTopOf="parent"

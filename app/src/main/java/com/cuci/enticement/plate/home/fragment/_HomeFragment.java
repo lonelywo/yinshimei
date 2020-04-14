@@ -50,6 +50,7 @@ import com.cuci.enticement.utils.MathExtend;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.widget.CustomRefreshHeader;
 import com.cuci.enticement.widget.HomeGridItemDecoration;
+import com.cuci.enticement.widget.HomeGridItemDecoration2;
 import com.cuci.enticement.widget.HomeListSpanSizeLookup;
 import com.google.gson.Gson;
 import com.lxj.xpopup.XPopup;
@@ -139,6 +140,7 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
         mRefreshLayout.setOnRefreshLoadMoreListener(this);
         mAdapter.register(ItemBanner.class, new ItemBannerViewBinder(this));
         mAdapter.register(QyandYHJBean.DataBean.CouponBean.class, new ItemLingQuanViewBinder(this));
+      //  mAdapter.register(QyandYHJBean.DataBean.CouponBean.class, new ItemLingQuanViewBinder(this));
         mAdapter.register(GoodsItem.class, new ItemGoodsLongViewBinder(mActivity));
         mAdapter.register(QyandYHJBean.DataBean.GroupbuyBean.class, new ItemQiYeViewBinder(this));
         mDecoration = new HomeGridItemDecoration(mActivity, 2, 6, true);
@@ -161,6 +163,7 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
                         return 1;
                     case 3:
                         return 2;
+
                 }
                 return 0;
             }

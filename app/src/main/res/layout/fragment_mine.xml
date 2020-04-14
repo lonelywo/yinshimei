@@ -6,16 +6,14 @@
     android:layout_height="match_parent"
     android:background="#F1F1F1"
     >
-    <ImageView
+    <View
         android:layout_width="0dp"
         android:layout_height="65dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="#313131"
+        android:background="#E1AD73"
         />
-
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
@@ -37,89 +35,48 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:descendantFocusability="blocksDescendants"
-
             >
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:src="@drawable/shape_mine_bg1"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/con_toubu"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="250dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <TextView
+                app:layout_constraintTop_toTopOf="parent"
+                android:background="#E1AD73"
+                >
+                <ImageView
+                    android:id="@+id/text_wodeshezhi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="我的"
-                    android:textColor="#ffffff"
-                    android:textSize="20sp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp"
+                    android:src="@drawable/setup"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <ImageView
-                android:id="@+id/img_shape_bai"
-                android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="16dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/shape_mine_lv_bg"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/con_toubu" />
-
-            <ImageView
+                <ImageView
                 android:id="@+id/img_headwear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="50dp"
                 android:src="@drawable/headwear"
                 android:visibility="gone"
                 app:layout_constraintStart_toStartOf="@+id/img_tuxiang"
-                app:layout_constraintTop_toTopOf="@+id/img_shape_bai" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/img_tuxiang"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:layout_marginLeft="20dp"
-                android:src="@drawable/tuxiang"
-                app:civ_border_color="@color/home_huang"
-                app:civ_border_width="2dp"
-                app:layout_constraintBottom_toBottomOf="@+id/img_shape_bai"
-                app:layout_constraintLeft_toLeftOf="@+id/img_shape_bai"
-                app:layout_constraintTop_toTopOf="@+id/img_shape_bai"
+                android:layout_marginLeft="24dp"
+                android:src="@drawable/logo"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="65dp"
                 />
-
-            <TextView
-                android:id="@+id/img_yqhy"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="20dp"
-                android:drawableLeft="@drawable/yqhy"
-                android:drawablePadding="6dp"
-                android:paddingLeft="3dp"
-                android:text="邀请好友"
-                android:visibility="visible"
-                app:layout_constraintRight_toRightOf="@+id/img_shape_bai"
-                app:layout_constraintTop_toBottomOf="@+id/text_name" />
 
             <TextView
                 android:id="@+id/text_name"
@@ -130,10 +87,10 @@
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:text="请登录"
-                android:textColor="#000000"
+                android:textColor="@color/white"
                 android:textSize="16sp"
                 app:layout_constraintLeft_toRightOf="@+id/img_tuxiang"
-                app:layout_constraintRight_toLeftOf=" @+id/img_yqhy"
+                app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/img_tuxiang" />
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -162,40 +119,160 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="3dp"
                     android:text="用户"
-                    android:textColor="#E1AD73"
+                    android:textColor="#83481D"
                     android:textSize="12sp" />
             </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/ll_fuwu2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/dp_10"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/img_tuxiang"
+                    app:layout_constraintBottom_toBottomOf="parent">
 
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/jifen_ll"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/text_jifen"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:drawableTop="@drawable/jifen"
+                            android:drawablePadding="6dp"
+                            android:text="积分"
+                            android:textColor="@color/white"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/wodekajuan_ll"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/text_wodekajuan"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:drawableTop="@drawable/kaquan"
+                            android:drawablePadding="6dp"
+                            android:text="卡券"
+                            android:textColor="@color/white"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                        <TextView
+                            android:id="@+id/dot1_kajuan"
+                            android:layout_width="6dp"
+                            android:layout_height="6dp"
+                            android:background="@drawable/shape_mine_hx_status_num"
+                            android:gravity="center"
+                            android:text=""
+                            android:textSize="12sp"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toEndOf="@+id/text_wodekajuan"
+                            app:layout_constraintTop_toTopOf="@+id/text_wodekajuan" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/wodekefu_ll"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/text_wodekefu"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:drawableTop="@drawable/wodekefu"
+                            android:drawablePadding="6dp"
+                            android:text="客服"
+                            android:textColor="@color/white"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/dot1_hx"
+                            android:layout_width="6dp"
+                            android:layout_height="6dp"
+                            android:background="@drawable/shape_mine_hx_status_num"
+                            android:gravity="center"
+                            android:text=""
+                            android:textSize="12sp"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toEndOf="@+id/text_wodekefu"
+                            app:layout_constraintTop_toTopOf="@+id/text_wodekefu" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/yphy_ll"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/img_yqhy"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:drawableTop="@drawable/yqhy"
+                            android:drawablePadding="6dp"
+                            android:text="邀请"
+                            android:textColor="@color/white"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </LinearLayout>
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/con_dingdan"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:layout_marginTop="10dp"
-                app:layout_constraintTop_toBottomOf="@+id/img_shape_bai">
-
-                <ImageView
-                    android:id="@+id/img_shape_bai2"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:src="@drawable/shape_mine_bg3"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/con_toubu"
+                android:background="@color/white"
+                >
 
                 <TextView
                     android:id="@+id/text_dingdan"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
                     android:padding="10dp"
                     android:text="我的订单"
                     android:textColor="#000000"
                     android:textSize="15sp"
-                    app:layout_constraintLeft_toLeftOf="@+id/img_shape_bai2"
-                    app:layout_constraintTop_toTopOf="@+id/img_shape_bai2" />
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/text_quanbudingdan"
@@ -208,7 +285,7 @@
                     android:textColor="#7D7D7D"
                     android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="@+id/text_dingdan"
-                    app:layout_constraintRight_toRightOf="@+id/img_shape_bai2"
+                    app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/text_dingdan"
 
                     />
@@ -219,8 +296,8 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="5dp"
                     android:background="#f8f8f8"
-                    app:layout_constraintLeft_toLeftOf="@+id/img_shape_bai2"
-                    app:layout_constraintRight_toRightOf="@+id/img_shape_bai2"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_dingdan" />
 
                 <LinearLayout
@@ -228,9 +305,9 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="10dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/img_shape_bai2"
-                    app:layout_constraintEnd_toEndOf="@+id/img_shape_bai2"
-                    app:layout_constraintStart_toStartOf="@+id/img_shape_bai2"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/view">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -250,7 +327,7 @@
                             android:drawablePadding="6dp"
                             android:gravity="center"
                             android:text="待付款"
-                            android:textColor="#646262"
+                            android:textColor="@color/hei"
                             app:layout_constraintBottom_toBottomOf="parent"
 
 
@@ -287,10 +364,8 @@
                             android:drawablePadding="6dp"
                             android:gravity="center"
                             android:text="待发货"
-                            android:textColor="#646262"
+                            android:textColor="@color/hei"
                             app:layout_constraintBottom_toBottomOf="parent"
-
-
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -325,10 +400,8 @@
                             android:drawablePadding="6dp"
                             android:gravity="center"
                             android:text="待收货"
-                            android:textColor="#646262"
+                            android:textColor="@color/hei"
                             app:layout_constraintBottom_toBottomOf="parent"
-
-
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -359,11 +432,11 @@
                             android:id="@+id/text_yiwancheng"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:drawableTop="@drawable/yiwancheng"
+                            android:drawableTop="@drawable/shouhou"
                             android:drawablePadding="6dp"
                             android:gravity="center"
                             android:text="退款/售后"
-                            android:textColor="#646262"
+                            android:textColor="@color/hei"
                             app:layout_constraintBottom_toBottomOf="parent"
 
 
@@ -391,478 +464,249 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/con_yingchang"
+                android:id="@+id/con_wodemeifen"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_marginTop="10dp"
-                android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@+id/con_dingdan">
-
-                <ImageView
-                    android:id="@+id/img_shape_bai3"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:src="@drawable/shape_mine_bg3"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
+                android:visibility="visible"
+                app:layout_constraintTop_toBottomOf="@+id/con_dingdan"
+                android:background="@color/white"
+                >
                 <TextView
                     android:id="@+id/text_fuwu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:padding="10dp"
-                    android:text="我的服务"
-                    android:textColor="#000000"
-                    android:textSize="15sp"
-                    app:layout_constraintLeft_toLeftOf="@+id/img_shape_bai3"
-                    app:layout_constraintTop_toTopOf="@+id/img_shape_bai3" />
-
+                    android:layout_marginLeft="10dp"
+                    android:text="我的美粉"
+                    android:drawableLeft="@drawable/wdtuandui"
+                    android:textColor="@color/hei"
+                    android:textSize="16sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:gravity="center"
+                    android:drawablePadding="5dp"
+                    />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:src="@drawable/youjiantou"
+                    android:layout_marginRight="10dp"
+                    />
                 <View
                     android:id="@+id/view1"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
-                    android:layout_marginTop="5dp"
                     android:background="#f8f8f8"
-                    app:layout_constraintLeft_toLeftOf="@+id/img_shape_bai3"
-                    app:layout_constraintRight_toRightOf="@+id/img_shape_bai3"
-                    app:layout_constraintTop_toBottomOf="@+id/text_fuwu" />
-
-                <LinearLayout
-                    android:id="@+id/ll_fuwu"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:padding="10dp"
-                    app:layout_constraintEnd_toEndOf="@+id/img_shape_bai3"
-                    app:layout_constraintStart_toStartOf="@+id/img_shape_bai3"
-                    app:layout_constraintTop_toTopOf="@+id/view1">
-
-                    <TextView
-                        android:id="@+id/text_tuiguangyongjing"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_weight="1"
-                        android:drawableTop="@drawable/tgyongjing"
-                        android:drawablePadding="6dp"
-                        android:gravity="center_horizontal"
-                        android:text="我的收益"
-                        android:textColor="#646262"
-
-                        />
-
-                    <TextView
-                        android:id="@+id/text_wodetuandui"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_weight="1"
-                        android:drawableTop="@drawable/wdtuandui"
-                        android:drawablePadding="6dp"
-                        android:gravity="center_horizontal"
-                        android:text="我的美粉"
-                        android:textColor="#646262" />
-
-                    <TextView
-                        android:id="@+id/text_yejiyuefan"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_weight="1"
-                        android:drawableTop="@drawable/yejiyuefan"
-                        android:drawablePadding="6dp"
-                        android:gravity="center_horizontal"
-                        android:text="我的福利"
-                        android:textColor="#646262" />
-
-                    <TextView
-                        android:id="@+id/text_pk"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_weight="1"
-                        android:drawableTop="@drawable/pk"
-                        android:drawablePadding="6dp"
-                        android:gravity="center_horizontal"
-                        android:text="我的排行"
-                        android:textColor="#646262" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/ll_fuwu1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:padding="10dp"
-                    app:layout_constraintEnd_toEndOf="@+id/img_shape_bai3"
-                    app:layout_constraintStart_toStartOf="@+id/img_shape_bai3"
-                    app:layout_constraintTop_toBottomOf="@+id/ll_fuwu">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/goods_ll"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_weight="1"
-                        android:visibility="gone">
-
-                        <TextView
-                            android:id="@+id/text_shareliwu"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:drawableTop="@drawable/receivegoods"
-                            android:drawablePadding="6dp"
-                            android:text="礼品中心"
-                            android:textColor="#646262"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/dot1_goods"
-                            android:layout_width="6dp"
-                            android:layout_height="6dp"
-                            android:background="@drawable/shape_mine_hx_status_num"
-                            android:gravity="center"
-                            android:text=""
-                            android:textColor="@color/colorWhite"
-                            android:textSize="12sp"
-                            android:visibility="gone"
-                            app:layout_constraintEnd_toEndOf="@+id/text_shareliwu"
-                            app:layout_constraintTop_toTopOf="@+id/text_shareliwu" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <TextView
-                        android:id="@+id/text_wodekajuan1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_weight="1"
-                        android:drawablePadding="6dp"
-                        android:gravity="center_horizontal"
-                        android:text=""
-                        android:textColor="#646262" />
-
-                    <TextView
-                        android:id="@+id/text_wodetuandui1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_weight="1"
-                        android:drawablePadding="6dp"
-                        android:gravity="center_horizontal"
-                        android:text=""
-                        android:textColor="#646262" />
-
-                    <TextView
-                        android:id="@+id/text_pk1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_weight="1"
-                        android:drawablePadding="6dp"
-                        android:gravity="center_horizontal"
-                        android:text=""
-                        android:textColor="#646262" />
-                </LinearLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/con_gongju"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                app:layout_constraintTop_toBottomOf="@+id/con_yingchang">
-
-                <ImageView
-                    android:id="@+id/img_shape_bai4"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:src="@drawable/shape_mine_bg3"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
+                    app:layout_constraintBottom_toBottomOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/con_wodeshouyi"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:visibility="visible"
+                app:layout_constraintTop_toBottomOf="@+id/con_wodemeifen"
+                android:background="@color/white"
+                >
                 <TextView
-                    android:id="@+id/text_gongju"
+                    android:id="@+id/text_shouyi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:padding="10dp"
-                    android:text="我的工具"
-                    android:textColor="#000000"
-                    android:textSize="15sp"
-                    app:layout_constraintLeft_toLeftOf="@+id/img_shape_bai4"
-                    app:layout_constraintTop_toTopOf="@+id/img_shape_bai4" />
-
+                    android:layout_marginLeft="10dp"
+                    android:text="我的收益"
+                    android:drawableLeft="@drawable/tgyongjing"
+                    android:textColor="@color/hei"
+                    android:textSize="16sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:gravity="center"
+                    android:drawablePadding="5dp"
+                    />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:src="@drawable/youjiantou"
+                    android:layout_marginRight="10dp"
+                    />
                 <View
                     android:id="@+id/view2"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
-                    android:layout_marginTop="5dp"
                     android:background="#f8f8f8"
-                    app:layout_constraintLeft_toLeftOf="@+id/img_shape_bai4"
-                    app:layout_constraintRight_toRightOf="@+id/img_shape_bai4"
-                    app:layout_constraintTop_toBottomOf="@+id/text_gongju" />
-
-                <LinearLayout
-                    android:id="@+id/ll_fuwu2"
-                    android:layout_width="0dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                   app:layout_constraintBottom_toBottomOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/con_wodefuli"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:visibility="visible"
+                app:layout_constraintTop_toBottomOf="@+id/con_wodeshouyi"
+                android:background="@color/white"
+                >
+                <TextView
+                    android:id="@+id/text_fuli"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/dp_10"
-                    app:layout_constraintEnd_toEndOf="@+id/img_shape_bai4"
-                    app:layout_constraintStart_toStartOf="@+id/img_shape_bai4"
-                    app:layout_constraintTop_toBottomOf="@+id/view2">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/wodekefu_ll"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/text_wodekefu"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:drawableTop="@drawable/wodekefu"
-                            android:drawablePadding="6dp"
-                            android:text="我的客服"
-                            android:textColor="#646262"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/dot1_hx"
-                            android:layout_width="6dp"
-                            android:layout_height="6dp"
-                            android:background="@drawable/shape_mine_hx_status_num"
-                            android:gravity="center"
-                            android:text=""
-                            android:textSize="12sp"
-                            android:visibility="gone"
-                            app:layout_constraintEnd_toEndOf="@+id/text_wodekefu"
-                            app:layout_constraintTop_toTopOf="@+id/text_wodekefu" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/shouhuodizi_ll"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/text_shouhuodizi"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:drawableTop="@drawable/dizi"
-                            android:drawablePadding="6dp"
-                            android:text="收货地址"
-                            android:textColor="#646262"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/wodekajuan_ll"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/text_wodekajuan"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:drawableTop="@drawable/kaquan"
-                            android:drawablePadding="6dp"
-                            android:text="我的卡券"
-                            android:textColor="#646262"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-                        <TextView
-                            android:id="@+id/dot1_kajuan"
-                            android:layout_width="6dp"
-                            android:layout_height="6dp"
-                            android:background="@drawable/shape_mine_hx_status_num"
-                            android:gravity="center"
-                            android:text=""
-                            android:textSize="12sp"
-                            android:visibility="gone"
-                            app:layout_constraintEnd_toEndOf="@+id/text_wodekajuan"
-                            app:layout_constraintTop_toTopOf="@+id/text_wodekajuan" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/wodeshezhi_ll"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/text_wodeshezhi"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:drawableTop="@drawable/setup"
-                            android:drawablePadding="6dp"
-                            android:text="我的设置"
-                            android:textColor="#646262"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/ll_fuwu20"
-                    android:layout_width="0dp"
+                    android:layout_marginLeft="10dp"
+                    android:text="我的福利"
+                    android:drawableLeft="@drawable/receivegoods"
+                    android:textColor="@color/hei"
+                    android:textSize="16sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:gravity="center"
+                    android:drawablePadding="5dp"
+                    />
+                <ImageView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/dp_10"
-                    app:layout_constraintBottom_toBottomOf="@+id/img_shape_bai4"
-                    app:layout_constraintEnd_toEndOf="@+id/img_shape_bai4"
-                    app:layout_constraintStart_toStartOf="@+id/img_shape_bai4"
-                    app:layout_constraintTop_toBottomOf="@+id/ll_fuwu2">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/wodegonggao_ll"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/text_wodegonggao"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:drawableTop="@drawable/notice"
-                            android:drawablePadding="6dp"
-                            android:gravity="center"
-                            android:text="公告"
-                            android:textColor="#646262"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/shouhuodizi_ll0"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/text_shouhuodizi0"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:drawablePadding="6dp"
-                            android:text=""
-                            android:textColor="#646262"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/wodekajuan_ll0"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/text_wodekajuan0"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:drawablePadding="6dp"
-                            android:text=""
-                            android:textColor="#646262"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/wodeshezhi_ll0"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/text_wodeshezhi0"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:drawablePadding="6dp"
-                            android:text=""
-                            android:textColor="#646262"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </LinearLayout>
-
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:src="@drawable/youjiantou"
+                    android:layout_marginRight="10dp"
+                    />
+                <View
+                    android:id="@+id/view3"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="#f8f8f8"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/con_wodepaihangbang"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:visibility="visible"
+                app:layout_constraintTop_toBottomOf="@+id/con_wodefuli"
+                android:background="@color/white"
+                >
+                <TextView
+                    android:id="@+id/text_paihangbang"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="我的排行榜"
+                    android:drawableLeft="@drawable/pk"
+                    android:textColor="@color/hei"
+                    android:textSize="16sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:gravity="center"
+                    android:drawablePadding="5dp"
+                    />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:src="@drawable/youjiantou"
+                    android:layout_marginRight="10dp"
+                    />
+                <View
+                    android:id="@+id/view4"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="#f8f8f8"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/con_dizi"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:visibility="visible"
+                app:layout_constraintTop_toBottomOf="@+id/con_wodepaihangbang"
+                android:background="@color/white"
+                >
+                <TextView
+                    android:id="@+id/text_dizi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="收货地址"
+                    android:drawableLeft="@drawable/dizi"
+                    android:textColor="@color/hei"
+                    android:textSize="16sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:gravity="center"
+                    android:drawablePadding="5dp"
+                    />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:src="@drawable/youjiantou"
+                    android:layout_marginRight="10dp"
+                    />
+                <View
+                    android:id="@+id/view5"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="#f8f8f8"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/con_gonggao"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:visibility="visible"
+                app:layout_constraintTop_toBottomOf="@+id/con_dizi"
+                android:background="@color/white"
+                >
+                <TextView
+                    android:id="@+id/text_gonggao"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="公告"
+                    android:drawableLeft="@drawable/notice"
+                    android:textColor="@color/hei"
+                    android:textSize="16sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:gravity="center"
+                    android:drawablePadding="5dp"
+                    />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:src="@drawable/youjiantou"
+                    android:layout_marginRight="10dp"
+                    />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <View
-                android:id="@+id/v6"
-                android:layout_width="0dp"
-                android:layout_height="16dp"
-                android:background="#F1F1F1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/con_gongju" />
-
-            <androidx.constraintlayout.widget.Barrier
-                android:id="@+id/barrier"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:barrierDirection="left" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </ScrollView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
