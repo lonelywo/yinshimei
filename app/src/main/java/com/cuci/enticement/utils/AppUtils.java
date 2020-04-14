@@ -11,6 +11,10 @@ import android.view.accessibility.AccessibilityManager;
 
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.plate.common.LoginActivity;
+import com.mob.secverify.SecVerify;
+import com.mob.secverify.VerifyCallback;
+import com.mob.secverify.datatype.VerifyResult;
+import com.mob.secverify.exception.VerifyException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +32,8 @@ public class AppUtils {
         if (userInfo != null) {
             return true;
         }else {
-            context.startActivity(new Intent(context, LoginActivity.class));
+          //  context.startActivity(new Intent(context, LoginActivity.class));
+            yijian(context);
             return false;
         }
     }
@@ -186,4 +191,31 @@ public class AppUtils {
         return null;
     }
 
+
+    public static void yijian(Context context) {
+        SecVerify.verify(new VerifyCallback() {
+            @Override
+            public void onOtherLogin() {
+                // 用户点击“其他登录方式”，处理自己的逻辑
+                FLog.e("yijian:", "切换账号");
+                context.startActivity(new Intent(context, LoginActivity.class));
+            }
+
+            @Override
+            public void onUserCanceled() {
+                // 用户点击“关闭按钮”或“物理返回键”取消登录，处理自己的逻辑
+            }
+
+            @Override
+            public void onComplete(VerifyResult data) {
+                FLog.e("yijian:", data.toString());
+
+            }
+
+            @Override
+            public void onFailure(VerifyException e) {
+                //TODO处理失败的结果
+            }
+        });
+    }
 }
