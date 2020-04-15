@@ -587,12 +587,54 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/con_lipingzhongxing"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:visibility="visible"
+                app:layout_constraintTop_toBottomOf="@+id/con_wodefuli"
+                android:background="@color/white"
+                >
+                <TextView
+                    android:id="@+id/text_lipingzhongxing"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="礼品中心"
+                    android:drawableLeft="@drawable/receivegoods"
+                    android:textColor="@color/hei"
+                    android:textSize="16sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:gravity="center"
+                    android:drawablePadding="5dp"
+                    />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:src="@drawable/youjiantou"
+                    android:layout_marginRight="10dp"
+                    />
+                <View
+                    android:id="@+id/view4"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="#f8f8f8"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/con_wodepaihangbang"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:visibility="visible"
-                app:layout_constraintTop_toBottomOf="@+id/con_wodefuli"
+                app:layout_constraintTop_toBottomOf="@+id/con_lipingzhongxing"
                 android:background="@color/white"
                 >
                 <TextView
@@ -620,7 +662,7 @@
                     android:layout_marginRight="10dp"
                     />
                 <View
-                    android:id="@+id/view4"
+                    android:id="@+id/view5"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
                     android:background="#f8f8f8"
@@ -661,7 +703,7 @@
                     android:layout_marginRight="10dp"
                     />
                 <View
-                    android:id="@+id/view5"
+                    android:id="@+id/view6"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
                     android:background="#f8f8f8"

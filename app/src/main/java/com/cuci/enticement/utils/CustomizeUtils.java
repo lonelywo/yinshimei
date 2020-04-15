@@ -92,9 +92,9 @@ public class CustomizeUtils {
 
                 /** 登录按钮 */
                 // 登录按钮背景图资源ID，建议使用shape
-             //   .setLoginBtnImgId(R.drawable.sec_verify_demo_shape_rectangle)
+                .setLoginBtnImgId(R.drawable.sec_verify_demo_shape_rectangle)
                 // 登录按钮文字资源ID
-            //    .setLoginBtnTextId(R.string.sec_verify_demo_login)
+                .setLoginBtnTextId(R.string.sec_verify_demo_login)
                 // 登录按钮字体颜色资源ID
              //   .setLoginBtnTextColorId(R.color.sec_verify_demo_text_color_common_white)
                 //登录按钮字体大小
@@ -113,7 +113,7 @@ public class CustomizeUtils {
                 // 隐私协议复选框背景图资源ID，建议使用selector
               //  .setCheckboxImgId(R.drawable.sec_verify_demo_customized_checkbox_selector)
                 // 隐私协议复选框默认状态，默认为“选中”
-//				.setCheckboxDefaultState(true)
+				.setCheckboxDefaultState(true)
                 // 隐私协议字体颜色资源ID（自定义隐私协议的字体颜色也受该值影响）
 //				.setAgreementColorId(R.color.sec_verify_demo_main_color)
                 // 自定义隐私协议一文字资源ID
@@ -125,15 +125,15 @@ public class CustomizeUtils {
                 // 自定义隐私协议二文字资源ID
            //     .setCusAgreementNameId2(R.string.sec_verify_demo_customize_agreement_name_2)
                 // 自定义隐私协议二URL
-                .setCusAgreementUrl2("https://www.jianshu.com")
+           //     .setCusAgreementUrl2("https://www.jianshu.com")
 //				自定义隐私协议二颜色
          //       .setCusAgreementColor2(R.color.sec_verify_demo_main_color)
-                .setCusAgreementNameId3("自有服务策略")
-                .setCusAgreementUrl3("http://www.baidu.com")
+         //       .setCusAgreementNameId3("自有服务策略")
+         //       .setCusAgreementUrl3("http://www.baidu.com")
           //      .setCusAgreementColor3(R.color.sec_verify_demo_main_color)
-                .setAgreementTextAnd3("&")
+        //        .setAgreementTextAnd3("&")
                 //隐私协议是否左对齐，默认居中
-                .setAgreementGravityLeft(true)
+        //        .setAgreementGravityLeft(true)
                 //隐私协议其他文字颜色
 //				.setAgreementBaseTextColorId(R.color.sec_verify_demo_text_color_common_black)
                 //隐私协议 x轴偏移量，默认30dp
@@ -197,16 +197,16 @@ public class CustomizeUtils {
 			operatorText = "《中国电信认证服务条款》";
 			url = "https://e.189.cn/sdk/agreement/content.do?type=main&appKey=&hidetop=true&returnUrl=";
 		}
-		String ageementText = "同意"+operatorText+"及《自有隐私协议》和" +
-				"《自有服务策略》、《其他隐私协议》并授权秒验使用本机号码登录";
-		String cusPrivacy1 = "《自有隐私协议》";
-		String cusPrivacy2 = "《自有服务策略》";
-		String cusPrivacy3 = "《其他隐私协议》";
-		int baseColor = MobSDK.getContext().getResources().getColor(R.color.home_huang);
-		int privacyColor = Color.parseColor("#FFFE7A4E");
-		int cusPrivacyColor1 = Color.parseColor("#FF4E96FF");
-		int cusPrivacyColor2 = Color.parseColor("#FF4E96FF");
-		int cusPrivacyColor3 = Color.parseColor("#FFFE7A4E");
+		String ageementText = "同意"+operatorText+"及《用户服务协议》和" +
+				"《隐私政策》并授权秒验使用本机号码登录";
+		String cusPrivacy1 = "《用户服务协议》";
+		String cusPrivacy2 = "《隐私政策》";
+		String cusPrivacy3 = "";
+		int baseColor = MobSDK.getContext().getResources().getColor(R.color.hei);
+		int privacyColor = Color.parseColor("#FFE1AD73");
+		int cusPrivacyColor1 = Color.parseColor("#FFE1AD73");
+		int cusPrivacyColor2 = Color.parseColor("#FFE1AD73");
+		int cusPrivacyColor3 = Color.parseColor("#FFE1AD73");
 		SpannableString spanStr = new SpannableString(ageementText);
 		int privacyIndex = ageementText.indexOf(operatorText);
 		spanStr.setSpan(new ForegroundColorSpan(baseColor)
@@ -236,9 +236,9 @@ public class CustomizeUtils {
 
 				@Override
 				public void onClick(View widget) {
-					gotoAgreementPage("https://www.mob.com", null);
+					gotoAgreementPage("http://www.enticementchina.com/user_agreement.html", null);
 				}
-			}, privacy1Index, privacy1Index + "《自有隐私协议》".length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			}, privacy1Index, privacy1Index + "《用户服务协议》".length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 			//设置文字的前景色
 			spanStr.setSpan(new ForegroundColorSpan(cusPrivacyColor1), privacy1Index, privacy1Index + cusPrivacy1.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 		}
@@ -253,7 +253,7 @@ public class CustomizeUtils {
 
 				@Override
 				public void onClick(View widget) {
-					gotoAgreementPage("https://www.baidu.com", null);
+					gotoAgreementPage("http://web.enticementchina.com/appweb/user_privacy.html", null);
 				}
 			}, privacy2Index, privacy2Index + cusPrivacy2.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 			//设置文字的前景色

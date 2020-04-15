@@ -20,4 +20,5 @@
     <string name="bind_alias_error_connect_lost" translatable="false">绑定别名失败，网络错误</string>
     <string name="bind_alias_error_alias_invalid" translatable="false">绑定别名失败，别名无效</string>
     <string name="bind_alias_error_sn_invalid" translatable="false">绑定别名失败，sn无效</string>
+    <string name="sec_verify_demo_login" translatable="false">本机号码一键登录</string>
 </resources>

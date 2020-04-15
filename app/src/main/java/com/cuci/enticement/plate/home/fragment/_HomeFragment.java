@@ -41,6 +41,7 @@ import com.cuci.enticement.plate.home.adapter.ItemBannerViewBinder;
 import com.cuci.enticement.plate.home.adapter.ItemGoodsLongViewBinder;
 import com.cuci.enticement.plate.home.adapter.ItemLingQuanViewBinder;
 import com.cuci.enticement.plate.home.adapter.ItemQiYeViewBinder;
+import com.cuci.enticement.plate.home.adapter.ItemShareViewBinder;
 import com.cuci.enticement.plate.home.vm.HomeViewModel;
 import com.cuci.enticement.plate.mine.activity.SettingsActivity;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
@@ -82,7 +83,7 @@ import okhttp3.ResponseBody;
 /**
  * 首页外层Fragment
  */
-public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.OnBannerClickListener, OnRefreshLoadMoreListener, ItemLingQuanViewBinder.OnLingQuanClickListener,ItemQiYeViewBinder.OnQiYeClickListener {
+public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.OnBannerClickListener, OnRefreshLoadMoreListener, ItemLingQuanViewBinder.OnLingQuanClickListener,ItemQiYeViewBinder.OnQiYeClickListener ,ItemShareViewBinder.OnShareClickListener{
 
     private static final String TAG = _HomeFragment.class.getSimpleName();
     @BindView(R.id.rec_goods)
@@ -96,7 +97,7 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
     private SmartRefreshLayout mRefreshLayout;
     private MultiTypeAdapter mAdapter;
     private Items mItems;
-    private HomeGridItemDecoration mDecoration;
+    private HomeGridItemDecoration2 mDecoration;
     private GridLayoutManager mLayoutManager;
     private HomeListSpanSizeLookup mSizeLookup;
     private HomeViewModel mViewModel;
@@ -108,7 +109,7 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
     private boolean is_show_kj=false;
     private boolean is_show_qy=false;
     private int type=1;
-
+    private List<QyandYHJBean.DataBean.ShareBean> share;
 
 
 //    private LocalBroadcastManager mLocalBroadcastManager;
@@ -140,11 +141,11 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
         mRefreshLayout.setOnRefreshLoadMoreListener(this);
         mAdapter.register(ItemBanner.class, new ItemBannerViewBinder(this));
         mAdapter.register(QyandYHJBean.DataBean.CouponBean.class, new ItemLingQuanViewBinder(this));
-      //  mAdapter.register(QyandYHJBean.DataBean.CouponBean.class, new ItemLingQuanViewBinder(this));
+        mAdapter.register(QyandYHJBean.DataBean.ShareBean.class, new ItemShareViewBinder(this));
         mAdapter.register(GoodsItem.class, new ItemGoodsLongViewBinder(mActivity));
         mAdapter.register(QyandYHJBean.DataBean.GroupbuyBean.class, new ItemQiYeViewBinder(this));
-        mDecoration = new HomeGridItemDecoration(mActivity, 2, 6, true);
-        mDecoration.setHeaderCount(2);
+        mDecoration = new HomeGridItemDecoration2(mActivity, 2, 3, true);
+        mDecoration.setHeaderCount(4);
         mRecyclerView.addItemDecoration(mDecoration);
         mLayoutManager = new GridLayoutManager(mActivity, 2);
 
@@ -163,7 +164,8 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
                         return 1;
                     case 3:
                         return 2;
-
+                    case 4:
+                        return 2;
                 }
                 return 0;
             }
@@ -309,6 +311,7 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
                          couponBean.setAlias("pidan");
                          mItems.add(couponBean);
                      }
+                        mItems.addAll(share);
                         if (mUserInfo != null) {
                             mViewModel.getGeneralGoods("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), ""+AppUtils.getVersionCode(mActivity),Status.LOAD_REFRESH).observe(_HomeFragment.this, GoodsmObserver);
                         } else {
@@ -428,6 +431,7 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
             String b = body.string();
            QyandYHJBean mQyandYHJBean = new Gson().fromJson(b, QyandYHJBean.class);
             if (mQyandYHJBean.getCode() == 1) {
+                share = mQyandYHJBean.getData().getShare();
                 mViewModel.getBanner("2",""+AppUtils.getVersionCode(mActivity)).observe(this, mObserver);
                 if(mQyandYHJBean.getData().getCoupon_show()==1){
                     is_show_kj=true;
@@ -544,5 +548,11 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
             e.printStackTrace();
             FToast.error("数据错误");
         }
+    }
+
+
+    @Override
+    public void onShareClick(QyandYHJBean.DataBean.ShareBean DataBean) {
+
     }
 }

@@ -27,6 +27,7 @@ import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.bean.WxInfo;
 import com.cuci.enticement.event.LoginSucceedEvent;
+import com.cuci.enticement.event.ProgoodsEvent;
 import com.cuci.enticement.plate.common.vm.RegActivityViewModel;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.cuci.enticement.utils.AppUtils;
@@ -299,6 +300,8 @@ public class BindPhoneActivity extends BaseActivity {
             boolean save = SharedPrefUtils.save(userInfo, UserInfo.class);
             mSucceed = true;
             EventBus.getDefault().post(new LoginSucceedEvent());
+            //关闭详情
+            EventBus.getDefault().post(new ProgoodsEvent());
             if (save) {
                 FLog.e(TAG, "用户信息保存成功");
             } else {

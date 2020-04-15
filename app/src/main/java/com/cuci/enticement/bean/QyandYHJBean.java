@@ -55,6 +55,59 @@ public class QyandYHJBean implements Serializable {
         private GroupbuyBean groupbuy;
         private List<CouponBean> coupon;
 
+        public List<ShareBean> getShare() {
+            return share;
+        }
+
+        public void setShare(List<ShareBean> share) {
+            this.share = share;
+        }
+
+        private List<ShareBean> share;
+        public static class ShareBean {
+            public String getType() {
+                return type;
+            }
+
+            public void setType(String type) {
+                this.type = type;
+            }
+
+            public String getJump_id() {
+                return jump_id;
+            }
+
+            public void setJump_id(String jump_id) {
+                this.jump_id = jump_id;
+            }
+
+            public String getImgs() {
+                return imgs;
+            }
+
+            public void setImgs(String imgs) {
+                this.imgs = imgs;
+            }
+
+            public String getTitle() {
+                return title;
+            }
+
+            public void setTitle(String title) {
+                this.title = title;
+            }
+
+            /**
+             * alias : userlevel
+             * imgs : https://qiniu.cdn.enticementchina.com/09d10619edb99ae4/fe6bc8cd674f1ccd.png
+             * link : https://mp.weixin.qq.com/s/iMKtunXNA-HXpl0r44JOvQ
+             * vip_level : 1
+             */
+            private String type;
+            private String jump_id;
+            private String imgs;
+            private String title;
+        }
         public int getCoupon_show() {
             return coupon_show;
         }

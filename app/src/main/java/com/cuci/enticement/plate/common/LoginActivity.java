@@ -20,6 +20,7 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.cuci.enticement.BasicApp;
@@ -34,7 +35,9 @@ import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.bean.WxError;
 import com.cuci.enticement.bean.WxInfo;
 import com.cuci.enticement.bean.WxToken;
+import com.cuci.enticement.bean.YiJianLoginBean;
 import com.cuci.enticement.event.LoginSucceedEvent;
+import com.cuci.enticement.event.ProgoodsEvent;
 import com.cuci.enticement.plate.common.eventbus.CartEvent;
 import com.cuci.enticement.plate.common.popup.TipsPopupxieyi;
 import com.cuci.enticement.plate.common.popup.TipsPopupxieyi3;
@@ -47,6 +50,10 @@ import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.widget.ClearEditText;
 import com.google.gson.Gson;
 import com.lxj.xpopup.XPopup;
+import com.mob.secverify.SecVerify;
+import com.mob.secverify.VerifyCallback;
+import com.mob.secverify.datatype.VerifyResult;
+import com.mob.secverify.exception.VerifyException;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 
 import org.greenrobot.eventbus.EventBus;
@@ -164,6 +171,8 @@ public class LoginActivity extends BaseActivity {
     }
 
 
+
+
     @OnClick({R.id.tv_code, R.id.ok, R.id.text_zhuce, R.id.weixin, R.id.text_dibuwenzi1,R.id.text_dibuwenzi3, R.id.text_shoujihao})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -274,7 +283,8 @@ public class LoginActivity extends BaseActivity {
                         //eventbus  刷新视图  四个fragment重新载入
 
                         EventBus.getDefault().post(new LoginSucceedEvent());
-
+                        //关闭详情
+                        EventBus.getDefault().post(new ProgoodsEvent());
                         //刷新购物车数据
 
                         EventBus.getDefault().post(new CartEvent(CartEvent.REFRESH_CART_LIST));
@@ -486,6 +496,8 @@ public class LoginActivity extends BaseActivity {
             boolean save = SharedPrefUtils.save(userInfo, UserInfo.class);
             FToast.success("登录成功");
             EventBus.getDefault().post(new LoginSucceedEvent());
+            //关闭详情
+            EventBus.getDefault().post(new ProgoodsEvent());
             if (save) {
                 FLog.e(TAG, "用户信息保存成功");
             } else {

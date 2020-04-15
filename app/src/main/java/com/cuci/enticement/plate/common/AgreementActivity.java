@@ -80,7 +80,7 @@ public class AgreementActivity extends BaseActivity {
             e.printStackTrace();
 
         }
-
+        imageTop.setText(mShareBean.getTitle());
     }
 
     private String getHtmlData(String bodyHTML) {

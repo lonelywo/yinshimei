@@ -45,9 +45,9 @@ public class ItemGoodsLongViewBinder extends ItemViewBinder<GoodsItem, ItemGoods
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull GoodsItem item) {
         ImageLoader.loadPlaceholder(item.getLogo(), holder.imageHome);
-        holder.textHomeGoodsname.setText(item.getTitle());
-      /*  holder.textHomeMoney.setText("原价¥" + item.getInitial_price_market());
-        holder.textHomeMoneyVip.setText("会员价¥" + item.getInitial_price_selling());*/
+     /*   holder.textHomeGoodsname.setText(item.getTitle());
+      *//*  holder.textHomeMoney.setText("原价¥" + item.getInitial_price_market());
+        holder.textHomeMoneyVip.setText("会员价¥" + item.getInitial_price_selling());*//*
 
        if(item.getVip_mod()==1){
             String strMsg = "原价¥" +  MathExtend.moveone(item.getInitial_price_market());
@@ -59,7 +59,7 @@ public class ItemGoodsLongViewBinder extends ItemViewBinder<GoodsItem, ItemGoods
             holder.textHomeMoney.setText(Html.fromHtml(strMsg));
             String strMsg2 = "<font >"+"会员价¥" +"<big><big>"+ MathExtend.moveone(item.getInitial_price_selling())+"</big></big>"+"</font>";
             holder.textHomeMoneyVip.setText(Html.fromHtml(strMsg2));
-        }
+        }*/
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,11 +82,11 @@ public class ItemGoodsLongViewBinder extends ItemViewBinder<GoodsItem, ItemGoods
 
         @BindView(R.id.image_home)
         ImageView imageHome;
-        @BindView(R.id.text_home_goodsname)
+        /*@BindView(R.id.text_home_goodsname)
         TextView textHomeGoodsname;
         @BindView(R.id.text_home_money)
         TextView textHomeMoney;
-        @BindView(R.id.text_home_money_vip)
+        @BindView(R.id.text_home_money_vip)*/
         TextView textHomeMoneyVip;
         @BindView(R.id.card_view)
         CardView cardView;

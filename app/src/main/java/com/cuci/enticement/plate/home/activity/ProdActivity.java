@@ -251,8 +251,6 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                                 .show();
                     }
 
-                } else {
-                    finish();
                 }
             }
         });
@@ -279,8 +277,6 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                         FToast.error("联系客服失败，请退出重新登录");
                     }
 
-                } else {
-                    finish();
                 }
             }
         });
@@ -303,8 +299,6 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                                    .show();
                        }
 
-                } else {
-                    finish();
                 }
             }
         });
@@ -533,8 +527,6 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
 
                     }
 
-                } else {
-                    finish();
                 }
 
                 break;
@@ -556,8 +548,6 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                         FToast.warning("该商品暂未上架，非常抱歉");
                     }
 
-                } else {
-                    finish();
                 }
                 break;
             case R.id.iv_cart:
@@ -567,8 +557,6 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                     LocalBroadcastManager broadcastManager = getInstance(ProdActivity.this);
                     broadcastManager.sendBroadcast(new Intent(ACTION_GO_TO_CART));
 
-                } else {
-                    finish();
                 }
                 break;
 
@@ -770,7 +758,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
     //刷新isnew显示数据
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onClickProgoodsEvent(ProgoodsEvent event) {
-        mUserInfo = SharedPrefUtils.get(UserInfo.class);
+     /*   mUserInfo = SharedPrefUtils.get(UserInfo.class);
         if (mUserInfo != null) {
             mHomeViewModel.getHomeDetails("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), url,""+AppUtils.getVersionCode(this)).observe(this, mObserver);
         } else {
@@ -780,8 +768,8 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
         type = 1;
         if (mUserInfo != null) {
             mHomeViewModel.dataUserinfo("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(),""+AppUtils.getVersionCode(this)).observe(ProdActivity.this, mdataObserver);
-        }
-
+        }*/
+      finish();
 
     }
 

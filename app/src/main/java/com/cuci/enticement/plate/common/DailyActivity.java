@@ -63,6 +63,7 @@ public class DailyActivity extends BaseActivity {
         }
         data.add("未领取");
         data.add("已领取");
+        data.add("待结算");
         MainPagerAdapter adapter = new MainPagerAdapter(getSupportFragmentManager());
         String[] titles = new String[data.size()];
         for (int i = 0; i < data.size(); i++) {
@@ -71,6 +72,7 @@ public class DailyActivity extends BaseActivity {
         }
         adapter.addFragment(_ShareliwuFragment01.newInstance("0"));
         adapter.addFragment(_ShareliwuFragment01.newInstance("1"));
+        adapter.addFragment(_ShareliwuFragment01.newInstance("2"));
         mViewPager.setOffscreenPageLimit(data.size() - 1);
         mViewPager.setAdapter(adapter);
         mTabLayout.setViewPager(mViewPager, titles);

@@ -4,8 +4,11 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -38,17 +41,23 @@ import com.cuci.enticement.plate.mine.activity.KaQuanActivity;
 import com.cuci.enticement.plate.mine.activity.MyOrderActivity;
 import com.cuci.enticement.plate.mine.activity.YinshimeiActivity;
 import com.cuci.enticement.utils.AppUtils;
+import com.cuci.enticement.utils.BitmapUitls;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.ImageLoader;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.UtilsForClick;
 import com.cuci.enticement.utils.ViewUtils;
+import com.cuci.enticement.utils.WxShareUtils;
 import com.cuci.enticement.widget.BrandItemDecoration;
 import com.google.gson.Gson;
 import com.lxj.xpopup.XPopup;
+import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.opensdk.modelmsg.WXMiniProgramObject;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -114,6 +123,9 @@ public class PayOfterActivity extends BaseActivity implements ItemZhuanPanViewBi
     private PayOfterBean.DataBean.LotteryBean.RulesBean rulesBean;
     private boolean ischeck = true;
     private String ruleDescription="http://web.enticementchina.com/appweb/lotteryAgreement.html ";
+    private String cardImg;
+    private String goods_id;
+    private String title;
 
     @Override
     public int getLayoutId() {
@@ -148,11 +160,17 @@ public class PayOfterActivity extends BaseActivity implements ItemZhuanPanViewBi
 
 
         load();
+
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(PayOfterActivity.this, KaQuanActivity.class));
-                finish();
+                if(TextUtils.equals("马上查看",ok.getText())){
+                    startActivity(new Intent(PayOfterActivity.this, KaQuanActivity.class));
+                    finish();
+                }else if(TextUtils.equals("立即分享",ok.getText())){
+                    ShareXiaoChengnXu();
+                }
+
             }
         });
         tvHome.setOnClickListener(new View.OnClickListener() {
@@ -196,7 +214,36 @@ public class PayOfterActivity extends BaseActivity implements ItemZhuanPanViewBi
         });
 
     }
-
+    public void ShareXiaoChengnXu() {
+        BasicApp.getAppExecutors()
+                .networkIO()
+                .execute(() -> {
+                    try {
+                        WXMiniProgramObject miniProgramObj = new WXMiniProgramObject();
+                        miniProgramObj.webpageUrl = "https://test.enticementchina.com/pages/goods/detail?g=" + goods_id; // 兼容低版本的网页链接
+                        miniProgramObj.miniprogramType = WXMiniProgramObject.MINIPTOGRAM_TYPE_RELEASE;// 正式版:0，测试版:1，体验版:2
+                        miniProgramObj.userName = "gh_26859964eed3";     // 小程序原始id
+                        miniProgramObj.path = "pages/goods/detail?g=" + goods_id + "&p=" + mUserInfo.getPhone();
+                        //小程序页面路径；对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"
+                        // miniProgramObj.path = "";            //小程序页面路径；对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"
+                        WXMediaMessage msg = new WXMediaMessage(miniProgramObj);
+                        msg.title =title;                    // 小程序消息title
+                        msg.description = "因诗美，因你而美";               // 小程序消息desc
+                        Bitmap bmp = BitmapFactory.decodeStream(new URL(cardImg).openStream());
+                        Bitmap thumbBmp = BitmapUitls.drawWXMiniBitmap(bmp, 500, 400);
+                        //  Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, 500, 400, true);
+                        bmp.recycle();
+                        msg.thumbData = WxShareUtils.bmpToByteArray0(thumbBmp, true); // 小程序消息封面图片，小于128k
+                        SendMessageToWX.Req req = new SendMessageToWX.Req();
+                        req.transaction = String.valueOf(System.currentTimeMillis());
+                        req.message = msg;
+                        req.scene = SendMessageToWX.Req.WXSceneSession;  // 目前只支持会话
+                        BasicApp.getIWXAPI().sendReq(req);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+    }
     private void load() {
         if (BasicApp.Constant_IS_NEW == 0) {
             mViewModel.payofter(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "1", BasicApp.Constant_GOODS_ID, "" + AppUtils.getVersionCode(this)).observe(this, mObserver);
@@ -233,17 +280,9 @@ public class PayOfterActivity extends BaseActivity implements ItemZhuanPanViewBi
                 String desc = mPayOfterBean.getData().getDesc();
                 String replace = desc.replace("\\n", "\n");
 
-                if (mPayOfterBean.getData().getIs_coupon() == 1) {
-                    ImageLoader.loadPlaceholder(img, imgLogo);
-                    tv1.setText(replace);
-                    ViewUtils.showView(ok);
-                } else {
-                    ImageLoader.loadPlaceholder(img, imgLogo);
-                    tv1.setText(replace);
-                    ViewUtils.hideView(ok);
-                }
 
-                if (mPayOfterBean.getData().getIs_lottery() != 0) {
+
+                if (mPayOfterBean.getData().getIs_lottery() == 1) {
                     ViewUtils.showView(conChoujiang);
                     List<PayOfterBean.DataBean.LotteryBean.RulesBean> rules = mPayOfterBean.getData().getLottery().getRules();
                     rulesBean = new PayOfterBean.DataBean.LotteryBean.RulesBean();
@@ -267,6 +306,31 @@ public class PayOfterActivity extends BaseActivity implements ItemZhuanPanViewBi
                     mAdapter.notifyDataSetChanged();
                 } else {
                     ViewUtils.hideView(conChoujiang);
+                    if(mPayOfterBean.getData().getIs_share()==1){
+                         cardImg = mPayOfterBean.getData().getShareInfo().getCardImg();
+                         goods_id = mPayOfterBean.getData().getShareInfo().getGoods_id();
+                        String p_desc = mPayOfterBean.getData().getShareInfo().getP_desc();
+                        String p_img = mPayOfterBean.getData().getShareInfo().getP_img();
+                        String p_title = mPayOfterBean.getData().getShareInfo().getP_title();
+                         title = mPayOfterBean.getData().getShareInfo().getTitle();
+                        ImageLoader.loadPlaceholder(p_img, imgLogo);
+                        tv1.setText(p_title+"\n"+p_desc);
+                        ok.setText("立即分享");
+                        ViewUtils.showView(ok);
+
+                    }else {
+                        ViewUtils.hideView(ok);
+                        if (mPayOfterBean.getData().getIs_coupon() == 1) {
+                            ImageLoader.loadPlaceholder(img, imgLogo);
+                            tv1.setText(replace);
+                            ok.setText("马上查看");
+                            ViewUtils.showView(ok);
+                        } else {
+                            ImageLoader.loadPlaceholder(img, imgLogo);
+                            tv1.setText(replace);
+                            ViewUtils.hideView(ok);
+                        }
+                    }
                 }
 
 

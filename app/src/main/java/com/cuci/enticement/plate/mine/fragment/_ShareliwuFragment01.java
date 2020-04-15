@@ -418,7 +418,7 @@ public class _ShareliwuFragment01 extends BaseFragment implements OnRefreshLoadM
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onReceiveEventMessage(ReceiveEvent event) {
         if(event.getCode()==ReceiveEvent.REFRESH_LIST){
-            if(mtype.equals("0")||mtype.equals("1")){
+            if(mtype.equals("0")||mtype.equals("1")||mtype.equals("2")){
                 load();
             }
         }

@@ -51,12 +51,97 @@ public class PayOfterBean implements Serializable {
          */
 
         private int is_lottery;
+
+        public int getIs_share() {
+            return is_share;
+        }
+
+        public void setIs_share(int is_share) {
+            this.is_share = is_share;
+        }
+
+        private int is_share;
         private LotteryBean lottery;
         private int is_coupon;
         private String img;
         private String desc;
         private List<CouponsBean> coupons;
 
+        public ShareInfoBean getShareInfo() {
+            return shareInfo;
+        }
+
+        public void setShareInfo(ShareInfoBean shareInfo) {
+            this.shareInfo = shareInfo;
+        }
+
+        private ShareInfoBean shareInfo;
+
+
+        public static class ShareInfoBean {
+            public String getP_title() {
+                return p_title;
+            }
+
+            public void setP_title(String p_title) {
+                this.p_title = p_title;
+            }
+
+            public String getP_desc() {
+                return p_desc;
+            }
+
+            public void setP_desc(String p_desc) {
+                this.p_desc = p_desc;
+            }
+
+            public String getP_img() {
+                return p_img;
+            }
+
+            public void setP_img(String p_img) {
+                this.p_img = p_img;
+            }
+
+            public String getTitle() {
+                return title;
+            }
+
+            public void setTitle(String title) {
+                this.title = title;
+            }
+
+            public String getGoods_id() {
+                return goods_id;
+            }
+
+            public void setGoods_id(String goods_id) {
+                this.goods_id = goods_id;
+            }
+
+            public String getCardImg() {
+                return cardImg;
+            }
+
+            public void setCardImg(String cardImg) {
+                this.cardImg = cardImg;
+            }
+
+            /**
+             * nums : 3
+             * rules : [{"title":"5元优惠劵1000","img":"https://qiniu.cdn.enticementchina.com/5yuanyouhuiquan%402x.png"},{"title":"化妆棉","img":"https://qiniu.cdn.enticementchina.com/huazhuangmian%402x.png"}]
+             * m_lottery_id : 1
+             * ruleDescription : http://web.enticementchina.com/appweb/rule_lottery.html
+             */
+
+            private String p_title;
+            private String p_desc;
+            private String p_img;
+            private String title;
+            private String goods_id;
+            private String cardImg;
+
+        }
         public int getIs_lottery() {
             return is_lottery;
         }

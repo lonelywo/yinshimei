@@ -38,6 +38,7 @@ import com.cuci.enticement.plate.home.fragment._HomeFragment;
 import com.cuci.enticement.plate.mall.fragment._MallFragment;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.cuci.enticement.utils.AppUtils;
+import com.cuci.enticement.utils.CustomizeUtils;
 import com.cuci.enticement.utils.FLog;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.SharedPrefUtils;
@@ -45,6 +46,10 @@ import com.cuci.enticement.widget.BottomBarView;
 import com.cuci.enticement.widget.FitSystemWindowViewPager;
 import com.google.gson.Gson;
 import com.lxj.xpopup.XPopup;
+import com.mob.secverify.OperationCallback;
+import com.mob.secverify.SecVerify;
+import com.mob.secverify.exception.VerifyException;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -210,8 +215,14 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
        
         MainActivityPermissionsDispatcher.needsPermissionWithPermissionCheck(this);
 
-    }
+        customizeUi();
+        SecVerify.autoFinishOAuthPage(false);
 
+    }
+    private void customizeUi() {
+        SecVerify.setUiSettings(CustomizeUtils.customizeUi());
+        SecVerify.setLandUiSettings(null);
+    }
     private void initBottomLayout() {
 
         List<BottomBarView.Tab> tabs = new ArrayList<>();

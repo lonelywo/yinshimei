@@ -56,7 +56,6 @@ import com.cuci.enticement.plate.mine.activity.SettingsActivity;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.plate.mine.vm.OrderViewModel;
 import com.cuci.enticement.utils.AppUtils;
-import com.cuci.enticement.utils.CustomizeUtils;
 import com.cuci.enticement.utils.FLog;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.HttpUtils;
@@ -72,9 +71,6 @@ import com.hyphenate.helpdesk.callback.Callback;
 import com.hyphenate.helpdesk.easeui.util.IntentBuilder;
 import com.igexin.sdk.PushManager;
 import com.lxj.xpopup.XPopup;
-import com.mob.secverify.OperationCallback;
-import com.mob.secverify.SecVerify;
-import com.mob.secverify.exception.VerifyException;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -89,7 +85,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.ResponseBody;
 
 import static androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance;
-import static com.cuci.enticement.utils.CustomizeUtils.customizeUi;
 //import static com.superrtc.ContextUtils.getApplicationContext;
 
 
@@ -209,6 +204,12 @@ public class _MineFragment extends BaseFragment {
     TextView textGonggao;
     @BindView(R.id.con_gonggao)
     ConstraintLayout conGonggao;
+    @BindView(R.id.text_lipingzhongxing)
+    TextView textLipingzhongxing;
+    @BindView(R.id.con_lipingzhongxing)
+    ConstraintLayout conLipingzhongxing;
+    @BindView(R.id.view6)
+    View view6;
     private boolean mCouldChange = true;
     private LocalBroadcastManager mBroadcastManager;
     private UserInfo mUserInfo;
@@ -284,7 +285,7 @@ public class _MineFragment extends BaseFragment {
         textName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                customizeUi();
+
                 if (AppUtils.isAllowPermission(mActivity)) {
 
                 }
@@ -343,7 +344,7 @@ public class _MineFragment extends BaseFragment {
                 }
             }
         });
-        conWodefuli.setOnClickListener(new View.OnClickListener() {
+        conLipingzhongxing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (AppUtils.isAllowPermission(mActivity)) {
@@ -354,24 +355,9 @@ public class _MineFragment extends BaseFragment {
                 }
             }
         });
-        //  MobSDK.submitPolicyGrantResult(true, null);
-        //建议提前调用预登录接口，可以加快免密登录过程，提高用户体验
-        SecVerify.preVerify(new OperationCallback<Void>() {
-            @Override
-            public void onComplete(Void data) {
-                //TODO处理成功的结果
 
-            }
-            @Override
-            public void onFailure(VerifyException e) {
-                //TODO处理失败的结果
-            }
-        });
     }
-    private void customizeUi() {
-        SecVerify.setUiSettings(CustomizeUtils.customizeUi());
-        SecVerify.setLandUiSettings(null);
-    }
+
     private Observer<Status<ResponseBody>> mdataObserver = status -> {
 
         switch (status.status) {
@@ -657,7 +643,7 @@ public class _MineFragment extends BaseFragment {
         }
     }
 
-    @OnClick({R.id.text_quanbudingdan, R.id.con_wodeshouyi, R.id.con_wodemeifen, R.id.con_dizi, R.id.text_wodekefu})
+    @OnClick({R.id.text_quanbudingdan, R.id.con_wodeshouyi, R.id.con_wodemeifen, R.id.con_dizi, R.id.text_wodekefu, R.id.con_wodefuli})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.text_quanbudingdan:
@@ -688,13 +674,13 @@ public class _MineFragment extends BaseFragment {
                     mActivity.startActivity(intentProd);
                 }
                 break;
-           /* case R.id.text_yejiyuefan:
+            case R.id.con_wodefuli:
                 if (AppUtils.isAllowPermission(mActivity)) {
                     Intent intentProd = new Intent(mActivity, AchievementActivity.class);
                     intentProd.putExtra("Data", is_month);
                     mActivity.startActivity(intentProd);
                 }
-                break;*/
+                break;
             case R.id.text_wodekefu:
                 if (AppUtils.isAllowPermission(mActivity)) {
                     if (ChatClient.getInstance().isLoggedInBefore()) {
