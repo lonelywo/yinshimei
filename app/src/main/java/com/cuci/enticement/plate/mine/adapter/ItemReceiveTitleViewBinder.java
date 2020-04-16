@@ -18,7 +18,7 @@ public class ItemReceiveTitleViewBinder extends ItemViewBinder<ItemReceiveTitle,
     @NonNull
     @Override
     protected ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        View root = inflater.inflate(R.layout.rec_myorder_title, parent, false);
+        View root = inflater.inflate(R.layout.rec_lipingcenter_title, parent, false);
         return new ViewHolder(root);
     }
     @Override
@@ -40,6 +40,9 @@ public class ItemReceiveTitleViewBinder extends ItemViewBinder<ItemReceiveTitle,
            case "6":
                holder.textZhuangtai.setText("已取消");
                break;
+           default:
+               holder.textZhuangtai.setText("");
+            break;
        }
 
     }

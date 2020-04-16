@@ -69,7 +69,7 @@ public class AgreementActivity extends BaseActivity {
         }
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
         url = intent.getStringExtra("bannerData");
-        brief = intent.getStringExtra("brief");
+        brief = intent.getStringExtra("share_info");
         webContext.loadDataWithBaseURL(null,
                 getHtmlData(url), "text/html", "utf-8", null);
 

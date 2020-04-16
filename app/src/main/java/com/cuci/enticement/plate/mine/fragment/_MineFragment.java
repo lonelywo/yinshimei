@@ -433,7 +433,7 @@ public class _MineFragment extends BaseFragment {
                     textHuiyuan.setText("美粉");
                 } else if (mDataUserInfo.getData().getVip_level() == 2) {
                     textHuiyuan.setText("超级美粉");
-                    imgHeadwear.setVisibility(View.VISIBLE);
+                   // imgHeadwear.setVisibility(View.VISIBLE);
                 }
 
                 mUserInfo.setVip_level(mDataUserInfo.getData().getVip_level());
@@ -550,7 +550,7 @@ public class _MineFragment extends BaseFragment {
             ViewUtils.hideView(dot4Tv);
             //  ViewUtils.hideView(conYingchang);
 
-            imgHeadwear.setVisibility(View.GONE);
+         //   imgHeadwear.setVisibility(View.GONE);
             return;
         }
 

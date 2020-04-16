@@ -253,7 +253,7 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
             if (mEssayBean.getCode() == 1) {
                 Intent intentProd = new Intent(mActivity, AgreementActivity.class);
                 intentProd.putExtra("bannerData", mEssayBean.getData().getContent());
-                intentProd.putExtra("brief", mEssayBean.getData().getBrief());
+                intentProd.putExtra("share_info", mEssayBean.getData().getShare_info());
                 mActivity.startActivity(intentProd);
             } else {
                 FToast.error(mEssayBean.getInfo());
