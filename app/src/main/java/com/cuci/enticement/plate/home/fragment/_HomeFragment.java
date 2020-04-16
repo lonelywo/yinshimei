@@ -1,56 +1,62 @@
 package com.cuci.enticement.plate.home.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseFragment;
 import com.cuci.enticement.bean.BannerDataBean;
 import com.cuci.enticement.bean.BaseList;
-import com.cuci.enticement.bean.CommissiontxBean;
 import com.cuci.enticement.bean.EssayBean;
-import com.cuci.enticement.bean.GeTuibean;
 import com.cuci.enticement.bean.GeneralGoods;
 import com.cuci.enticement.bean.GoodsItem;
-import com.cuci.enticement.bean.HomeLingQuanBean;
 import com.cuci.enticement.bean.IsYhjLingBean;
 import com.cuci.enticement.bean.ItemBanner;
 import com.cuci.enticement.bean.QyandYHJBean;
+import com.cuci.enticement.bean.ShareHomeImgBean;
+import com.cuci.enticement.bean.ShareimgBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
-import com.cuci.enticement.event.CashEvent;
 import com.cuci.enticement.event.ClickMyEvent;
-import com.cuci.enticement.event.ProgoodsEvent;
 import com.cuci.enticement.plate.common.Agreement2Activity;
 import com.cuci.enticement.plate.common.AgreementActivity;
 import com.cuci.enticement.plate.common.MainActivity;
+import com.cuci.enticement.plate.common.popup.CenterShareAppPopup2;
 import com.cuci.enticement.plate.common.popup.TipsPopup_kaquan;
 import com.cuci.enticement.plate.home.activity.CenterLingQuanActivity;
 import com.cuci.enticement.plate.home.activity.ProdActivity;
 import com.cuci.enticement.plate.home.adapter.ItemBannerViewBinder;
 import com.cuci.enticement.plate.home.adapter.ItemGoodsLongViewBinder;
+import com.cuci.enticement.plate.home.adapter.ItemImageViewBinder;
 import com.cuci.enticement.plate.home.adapter.ItemLingQuanViewBinder;
 import com.cuci.enticement.plate.home.adapter.ItemQiYeViewBinder;
 import com.cuci.enticement.plate.home.adapter.ItemShareViewBinder;
 import com.cuci.enticement.plate.home.vm.HomeViewModel;
-import com.cuci.enticement.plate.mine.activity.SettingsActivity;
+import com.cuci.enticement.plate.mine.activity.PKActivity;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
-import com.cuci.enticement.utils.MathExtend;
+import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.SharedPrefUtils;
+import com.cuci.enticement.utils.ViewUtils;
 import com.cuci.enticement.widget.CustomRefreshHeader;
-import com.cuci.enticement.widget.HomeGridItemDecoration;
 import com.cuci.enticement.widget.HomeGridItemDecoration2;
 import com.cuci.enticement.widget.HomeListSpanSizeLookup;
 import com.google.gson.Gson;
@@ -66,16 +72,8 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.IOException;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
+import butterknife.OnClick;
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 import okhttp3.ResponseBody;
@@ -83,7 +81,7 @@ import okhttp3.ResponseBody;
 /**
  * 首页外层Fragment
  */
-public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.OnBannerClickListener, OnRefreshLoadMoreListener, ItemLingQuanViewBinder.OnLingQuanClickListener,ItemQiYeViewBinder.OnQiYeClickListener ,ItemShareViewBinder.OnShareClickListener{
+public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.OnBannerClickListener, OnRefreshLoadMoreListener, ItemLingQuanViewBinder.OnLingQuanClickListener, ItemQiYeViewBinder.OnQiYeClickListener, ItemShareViewBinder.OnShareClickListener, ItemImageViewBinder.OnItemClickListener{
 
     private static final String TAG = _HomeFragment.class.getSimpleName();
     @BindView(R.id.rec_goods)
@@ -92,6 +90,12 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
     SmartRefreshLayout refreshHome;
     @BindView(R.id.container)
     ConstraintLayout container;
+    @BindView(R.id.img_dingbu)
+    ImageView imgDingbu;
+    @BindView(R.id.view)
+    View view;
+    @BindView(R.id.con_dingbu)
+    ConstraintLayout conDingbu;
     private int mMinId = 1;
     private RecyclerView mRecyclerView;
     private SmartRefreshLayout mRefreshLayout;
@@ -106,10 +110,11 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
     private QyandYHJBean.DataBean.GroupbuyBean groupbuy;
     private QyandYHJBean.DataBean.CouponBean userlevel;
     private QyandYHJBean.DataBean.CouponBean userlevelno;
-    private boolean is_show_kj=false;
-    private boolean is_show_qy=false;
-    private int type=1;
+    private boolean is_show_kj = false;
+    private boolean is_show_qy = false;
+    private int type = 1;
     private List<QyandYHJBean.DataBean.ShareBean> share;
+    private ProgressDialog mProgressDialog;
 
 
 //    private LocalBroadcastManager mLocalBroadcastManager;
@@ -141,11 +146,12 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
         mRefreshLayout.setOnRefreshLoadMoreListener(this);
         mAdapter.register(ItemBanner.class, new ItemBannerViewBinder(this));
         mAdapter.register(QyandYHJBean.DataBean.CouponBean.class, new ItemLingQuanViewBinder(this));
-        mAdapter.register(QyandYHJBean.DataBean.ShareBean.class, new ItemShareViewBinder(this));
+      //  mAdapter.register(QyandYHJBean.DataBean.ShareBean.class, new ItemShareViewBinder(this));
+        mAdapter.register(QyandYHJBean.DataBean.class, new ItemImageViewBinder(this));
         mAdapter.register(GoodsItem.class, new ItemGoodsLongViewBinder(mActivity));
         mAdapter.register(QyandYHJBean.DataBean.GroupbuyBean.class, new ItemQiYeViewBinder(this));
-        mDecoration = new HomeGridItemDecoration2(mActivity, 2, 3, true);
-        mDecoration.setHeaderCount(4);
+        mDecoration = new HomeGridItemDecoration2(mActivity, 2, 6, true);
+        mDecoration.setHeaderCount(2);
         mRecyclerView.addItemDecoration(mDecoration);
         mLayoutManager = new GridLayoutManager(mActivity, 2);
 
@@ -155,13 +161,13 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
             @Override
             public int getSpanSize(int position) {
                 int itemViewType = mAdapter.getItemViewType(position);
-                switch (itemViewType){
+                switch (itemViewType) {
                     case 0:
                         return 2;
                     case 1:
                         return 2;
                     case 2:
-                        return 1;
+                        return 2;
                     case 3:
                         return 2;
                     case 4:
@@ -173,7 +179,37 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                switch (newState) {
+                    case RecyclerView.SCROLL_STATE_IDLE:
+                        //  Glide.with(BasicApp.getContext()).resumeRequests();
+                        if (mLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                            ViewUtils.hideView(conDingbu);
+                        }
+                        break;
+                    case RecyclerView.SCROLL_STATE_DRAGGING:
+                        //  Glide.with(BasicApp.getContext()).pauseRequests();
+                        break;
+                    case RecyclerView.SCROLL_STATE_SETTLING:
+                        //  Glide.with(BasicApp.getContext()).resumeRequests();
+                        break;
+                }
+            }
 
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy < 0) {
+                    ViewUtils.showView(conDingbu);
+                } else {
+                    ViewUtils.hideView(conDingbu);
+                }
+
+            }
+        });
     }
 
 
@@ -189,7 +225,6 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
         EventBus.getDefault().unregister(this);
 
     }
-
 
 
     private Observer<Status<ResponseBody>> essayObserver = status -> {
@@ -260,19 +295,21 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
         mRefreshLayout.finishLoadMore();
 
     }
+
     private void loadyhq() {
-        MineViewModel  mViewModel = new ViewModelProvider(this).get(MineViewModel.class);
+        MineViewModel mViewModel = new ViewModelProvider(this).get(MineViewModel.class);
         if (mUserInfo != null) {
-            mViewModel.isyhjdailing("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(),""+ AppUtils.getVersionCode(BasicApp.getContext())).observe(this, misyhjObserver);
+            mViewModel.isyhjdailing("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), "" + AppUtils.getVersionCode(BasicApp.getContext())).observe(this, misyhjObserver);
         } else {
-            mViewModel.isyhjdailing("2", "", "",""+ AppUtils.getVersionCode(BasicApp.getContext())).observe(this, misyhjObserver);
+            mViewModel.isyhjdailing("2", "", "", "" + AppUtils.getVersionCode(BasicApp.getContext())).observe(this, misyhjObserver);
         }
     }
+
     private void load() {
         if (mUserInfo != null) {
-            mViewModel.getyhjandqiye("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(),""+AppUtils.getVersionCode(mActivity)).observe(_HomeFragment.this, YhjandQymObserver);
+            mViewModel.getyhjandqiye("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), "" + AppUtils.getVersionCode(mActivity)).observe(_HomeFragment.this, YhjandQymObserver);
         } else {
-            mViewModel.getyhjandqiye("2", "", "",""+AppUtils.getVersionName(mActivity)).observe(_HomeFragment.this, YhjandQymObserver);
+            mViewModel.getyhjandqiye("2", "", "", "" + AppUtils.getVersionName(mActivity)).observe(_HomeFragment.this, YhjandQymObserver);
         }
 
     }
@@ -296,26 +333,28 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
                         ItemBanner itemBanner = new ItemBanner(items);
                         mItems.clear();
                         mItems.add(itemBanner);
-                     if(is_show_kj){
-                         if(mUserInfo!=null){
-                             if(mUserInfo.getVip_level()==0){
-                                 mItems.add(userlevelno);
-                             }else {
-                                 mItems.add(userlevel);
-                             }
-                         }else {
-                             mItems.add(userlevelno);
-                         }
-                     }else {
-                         QyandYHJBean.DataBean.CouponBean couponBean = new QyandYHJBean.DataBean.CouponBean();
-                         couponBean.setAlias("pidan");
-                         mItems.add(couponBean);
-                     }
-                        mItems.addAll(share);
-                        if (mUserInfo != null) {
-                            mViewModel.getGeneralGoods("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), ""+AppUtils.getVersionCode(mActivity),Status.LOAD_REFRESH).observe(_HomeFragment.this, GoodsmObserver);
+                        if (is_show_kj) {
+                            if (mUserInfo != null) {
+                                if (mUserInfo.getVip_level() == 0) {
+                                    mItems.add(userlevelno);
+                                } else {
+                                    mItems.add(userlevel);
+                                }
+                            } else {
+                                mItems.add(userlevelno);
+                            }
                         } else {
-                            mViewModel.getGeneralGoods("2", "", "",""+AppUtils.getVersionCode(mActivity), Status.LOAD_REFRESH).observe(_HomeFragment.this, GoodsmObserver);
+                            QyandYHJBean.DataBean.CouponBean couponBean = new QyandYHJBean.DataBean.CouponBean();
+                            couponBean.setAlias("pidan");
+                            mItems.add(couponBean);
+                        }
+                        QyandYHJBean.DataBean dataBean = new QyandYHJBean.DataBean();
+                        dataBean.setShare(share);
+                        mItems.add(dataBean);
+                        if (mUserInfo != null) {
+                            mViewModel.getGeneralGoods("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), "" + AppUtils.getVersionCode(mActivity), Status.LOAD_REFRESH).observe(_HomeFragment.this, GoodsmObserver);
+                        } else {
+                            mViewModel.getGeneralGoods("2", "", "", "" + AppUtils.getVersionCode(mActivity), Status.LOAD_REFRESH).observe(_HomeFragment.this, GoodsmObserver);
                         }
 
                     } else {
@@ -353,14 +392,14 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
                         mCanLoadMore = true;
                         if (status.loadType == Status.LOAD_REFRESH) {
                             mItems.addAll(list);
-                            if(is_show_qy){
+                            if (is_show_qy) {
                                 mItems.add(groupbuy);
-                            }else {
+                            } else {
                                 QyandYHJBean.DataBean.GroupbuyBean groupbuyBean = new QyandYHJBean.DataBean.GroupbuyBean();
                                 groupbuyBean.setAlias("pidan");
                                 mItems.add(groupbuyBean);
                             }
-                           // loadtype(type);
+                            // loadtype(type);
                             mAdapter.notifyDataSetChanged();
                             mRefreshLayout.finishRefresh();
                         } else {
@@ -402,15 +441,15 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
 
     @Override
     public void onLingQuanClick(QyandYHJBean.DataBean.CouponBean DataBean) {
-      if(AppUtils.isAllowPermission(mActivity)){
-          Intent intentProd1 = new Intent(mActivity, Agreement2Activity.class);
-          intentProd1.putExtra("url", DataBean.getLink()+"?mid="+mUserInfo.getId());
-          mActivity.startActivity(intentProd1);
-      }
-
+        if (AppUtils.isAllowPermission(mActivity)) {
+            Intent intentProd1 = new Intent(mActivity, Agreement2Activity.class);
+            intentProd1.putExtra("url", DataBean.getLink() + "?mid=" + mUserInfo.getId());
+            mActivity.startActivity(intentProd1);
+        }
 
 
     }
+
     private Observer<Status<ResponseBody>> YhjandQymObserver = status -> {
 
         switch (status.status) {
@@ -426,25 +465,26 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
                 break;
         }
     };
+
     private void opera(ResponseBody body) {
         try {
             String b = body.string();
-           QyandYHJBean mQyandYHJBean = new Gson().fromJson(b, QyandYHJBean.class);
+            QyandYHJBean mQyandYHJBean = new Gson().fromJson(b, QyandYHJBean.class);
             if (mQyandYHJBean.getCode() == 1) {
                 share = mQyandYHJBean.getData().getShare();
-                mViewModel.getBanner("2",""+AppUtils.getVersionCode(mActivity)).observe(this, mObserver);
-                if(mQyandYHJBean.getData().getCoupon_show()==1){
-                    is_show_kj=true;
+                mViewModel.getBanner("2", "" + AppUtils.getVersionCode(mActivity)).observe(this, mObserver);
+                if (mQyandYHJBean.getData().getCoupon_show() == 1) {
+                    is_show_kj = true;
                     userlevel = mQyandYHJBean.getData().getCoupon().get(0);
                     userlevelno = mQyandYHJBean.getData().getCoupon().get(1);
-                }else {
-                    is_show_kj=false;
+                } else {
+                    is_show_kj = false;
                 }
-                if(mQyandYHJBean.getData().getGroup_show()==1){
-                    is_show_qy=true;
+                if (mQyandYHJBean.getData().getGroup_show() == 1) {
+                    is_show_qy = true;
                     groupbuy = mQyandYHJBean.getData().getGroupbuy();
-                }else {
-                    is_show_qy=false;
+                } else {
+                    is_show_qy = false;
                 }
 
 
@@ -469,17 +509,18 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
     //切换此页面请求是否有券
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onClickMyEvent(ClickMyEvent event) {
-        if(event.getCode()== ClickMyEvent.CHECK_ITEM0){
-            MineViewModel  mViewModel = new ViewModelProvider(this).get(MineViewModel.class);
+        if (event.getCode() == ClickMyEvent.CHECK_ITEM0) {
+            MineViewModel mViewModel = new ViewModelProvider(this).get(MineViewModel.class);
             if (mUserInfo != null) {
-                mViewModel.isyhjdailing("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(),""+ AppUtils.getVersionCode(BasicApp.getContext())
+                mViewModel.isyhjdailing("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), "" + AppUtils.getVersionCode(BasicApp.getContext())
                 ).observe(this, misyhjObserver);
             } else {
-                mViewModel.isyhjdailing("2", "", "",""+ AppUtils.getVersionCode(BasicApp.getContext())).observe(this, misyhjObserver);
+                mViewModel.isyhjdailing("2", "", "", "" + AppUtils.getVersionCode(BasicApp.getContext())).observe(this, misyhjObserver);
             }
         }
 
     }
+
     private Observer<Status<ResponseBody>> misyhjObserver = status -> {
 
         switch (status.status) {
@@ -504,17 +545,17 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
             String b = body.string();
             IsYhjLingBean mIsYhjLingBean = new Gson().fromJson(b, IsYhjLingBean.class);
             if (mIsYhjLingBean.getCode() == 1) {
-                if(mIsYhjLingBean.getData().getIs_coupon()==1){
+                if (mIsYhjLingBean.getData().getIs_coupon() == 1) {
                     IsYhjLingBean.DataBean data = mIsYhjLingBean.getData();
-                    if(mIsYhjLingBean.getData().getType()==-1){
-                        if(SharedPrefUtils.getyhqtype()==0){
+                    if (mIsYhjLingBean.getData().getType() == -1) {
+                        if (SharedPrefUtils.getyhqtype() == 0) {
                             new XPopup.Builder(mActivity)
                                     .dismissOnTouchOutside(false)
                                     .dismissOnBackPressed(false)
-                                    .asCustom(new TipsPopup_kaquan(mActivity,data, new TipsPopup_kaquan.OnExitListener() {
+                                    .asCustom(new TipsPopup_kaquan(mActivity, data, new TipsPopup_kaquan.OnExitListener() {
                                         @Override
                                         public void onPositive() {
-                                            if(AppUtils.isAllowPermission(mActivity)){
+                                            if (AppUtils.isAllowPermission(mActivity)) {
 
                                             }
                                         }
@@ -522,14 +563,14 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
                                     .show();
                         }
                         SharedPrefUtils.saveyhqtype(1);
-                    }else {
+                    } else {
                         new XPopup.Builder(mActivity)
                                 .dismissOnTouchOutside(false)
                                 .dismissOnBackPressed(false)
-                                .asCustom(new TipsPopup_kaquan(mActivity,data, new TipsPopup_kaquan.OnExitListener() {
+                                .asCustom(new TipsPopup_kaquan(mActivity, data, new TipsPopup_kaquan.OnExitListener() {
                                     @Override
                                     public void onPositive() {
-                                        if(AppUtils.isAllowPermission(mActivity)){
+                                        if (AppUtils.isAllowPermission(mActivity)) {
                                             Intent intentRank = new Intent(MainActivity.ACTION_GO_TO_HOME);
                                             LocalBroadcastManager.getInstance(mActivity)
                                                     .sendBroadcast(intentRank);
@@ -553,6 +594,84 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
 
     @Override
     public void onShareClick(QyandYHJBean.DataBean.ShareBean DataBean) {
+        if (DataBean.getType() == 0) {
+            if (AppUtils.isAllowPermission(mActivity)) {
+                mViewModel.shareimg("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), DataBean.getJump_id(), "" + AppUtils.getVersionCode(mActivity)).observe(mActivity, mObservershare);
+                //ViewUtils.showView(progressBar);
+                mProgressDialog = ProgressDialog.show(mActivity, "正在生成海报", "请稍等...");
+            }
+        } else if (DataBean.getType() == 1) {
+            mViewModel.essay(DataBean.getJump_id(), "2", "" + AppUtils.getVersionCode(mActivity)).observe(this, essayObserver);
+        }
+    }
 
+    private Observer<Status<ResponseBody>> mObservershare = status -> {
+
+        switch (status.status) {
+            case Status.SUCCESS:
+                //ViewUtils.hideView(progressBar);
+                mProgressDialog.dismiss();
+                ResponseBody body = status.content;
+                opera3(body);
+                break;
+            case Status.ERROR:
+                // ViewUtils.hideView(progressBar);
+                mProgressDialog.dismiss();
+                FToast.error("网络错误");
+                break;
+            case Status.LOADING:
+
+                break;
+        }
+
+    };
+
+    private void opera3(ResponseBody body) {
+        try {
+            String b = body.string();
+            ShareHomeImgBean mMyTeamslBean = new Gson().fromJson(b, ShareHomeImgBean.class);
+            if (mMyTeamslBean.getCode() == 1) {
+                ShareHomeImgBean.DataBean data = mMyTeamslBean.getData();
+                //   bitmap1 = downloadImage(ProdActivity.this, poster);
+                //   bitmap2 = downloadImage(ProdActivity.this, qrcode);
+               /* new XPopup.Builder(mActivity)
+                        .dismissOnTouchOutside(false)
+                        .dismissOnBackPressed(false)
+                        .asCustom(new CenterShareAppPopup2(mActivity, mUserInfo, poster, qrcode))
+                        .show();*/
+                Intent intentProd = new Intent(mActivity, CenterLingQuanActivity.class);
+                intentProd.putExtra("Data", data);
+                mActivity.startActivity(intentProd);
+            } else if (mMyTeamslBean.getCode() == HttpUtils.CODE_INVALID) {
+                HttpUtils.Invalid(mActivity);
+                FToast.error(mMyTeamslBean.getInfo());
+            } else {
+                FToast.error(mMyTeamslBean.getInfo());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            FToast.error("数据错误");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @OnClick(R.id.con_dingbu)
+    public void onViewClicked() {
+        mRecyclerView.scrollToPosition(0);
+    }
+
+    @Override
+    public void onShare1Click(QyandYHJBean.DataBean.ShareBean bean) {
+        if (AppUtils.isAllowPermission(mActivity)) {
+            mViewModel.sharehaobao("2",  mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),"" + AppUtils.getVersionCode(mActivity)).observe(this, mObservershare);
+            //ViewUtils.showView(progressBar);
+            mProgressDialog = ProgressDialog.show(mActivity, "正在生成海报", "请稍等...");
+        }
+    }
+
+    @Override
+    public void onShare2Click(QyandYHJBean.DataBean.ShareBean bean) {
+        mViewModel.essay(bean.getJump_id(), "2", "" + AppUtils.getVersionCode(mActivity)).observe(this, essayObserver);
     }
 }

@@ -57,7 +57,7 @@ public class HomeGridItemDecoration2 extends RecyclerView.ItemDecoration {
                 outRect.top = spacing;
             }
             outRect.bottom = spacing;*/
-            outRect.set(spacing, spacing, spacing, spacing);
+            outRect.set(spacing, spacing, spacing, 0);
         } else {
             outRect.left = column * spacing / spanCount;
             outRect.right = spacing - (column + 1) * spacing / spanCount;

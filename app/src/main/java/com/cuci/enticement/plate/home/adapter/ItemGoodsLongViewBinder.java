@@ -82,14 +82,7 @@ public class ItemGoodsLongViewBinder extends ItemViewBinder<GoodsItem, ItemGoods
 
         @BindView(R.id.image_home)
         ImageView imageHome;
-        /*@BindView(R.id.text_home_goodsname)
-        TextView textHomeGoodsname;
-        @BindView(R.id.text_home_money)
-        TextView textHomeMoney;
-        @BindView(R.id.text_home_money_vip)*/
-        TextView textHomeMoneyVip;
-        @BindView(R.id.card_view)
-        CardView cardView;
+
 
         ViewHolder(View itemView) {
             super(itemView);

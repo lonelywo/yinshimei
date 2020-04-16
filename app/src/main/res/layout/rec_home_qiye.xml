@@ -16,7 +16,6 @@
        android:layout_height="100dp"
        android:src="@drawable/qiyetuangou"
        android:scaleType="centerCrop"
-       android:layout_marginLeft="3dp"
        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

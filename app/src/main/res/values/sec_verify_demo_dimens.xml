@@ -30,7 +30,7 @@
 	<!-- agreement size -->
 	<dimen name="sec_verify_demo_agreement_offset_x">50dp</dimen>
 	<dimen name="sec_verify_demo_agreement_offset_y">50dp</dimen>
-	<dimen name="sec_verify_demo_agreement_offset_bottom_y">70dp</dimen>
+	<dimen name="sec_verify_demo_agreement_offset_bottom_y">20dp</dimen>
 	<!-- slogan size -->
 	<dimen name="sec_verify_demo_slogan_offset_x">200dp</dimen>
 	<dimen name="sec_verify_demo_slogan_offset_y">180dp</dimen>

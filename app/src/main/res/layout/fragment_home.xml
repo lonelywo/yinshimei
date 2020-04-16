@@ -42,7 +42,37 @@
              app:srlTextSizeTitle="12sp"/>
      </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
+   <androidx.constraintlayout.widget.ConstraintLayout
+       android:id="@+id/con_dingbu"
+       android:layout_width="42dp"
+       android:layout_height="42dp"
+       android:layout_marginBottom="20dp"
+       android:layout_marginRight="20dp"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintBottom_toBottomOf="parent"
+       >
+      <View
+          android:id="@+id/view"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:background="@drawable/shape_home_dingbu_bg"
+          app:layout_constraintTop_toTopOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintBottom_toBottomOf="parent"
+          />
+  <ImageView
+      android:id="@+id/img_dingbu"
+      android:layout_width="14dp"
+      android:layout_height="25dp"
+      android:src="@drawable/dingbu"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
 
+      />
+   </androidx.constraintlayout.widget.ConstraintLayout>
   </androidx.constraintlayout.widget.ConstraintLayout>
 
 

@@ -65,11 +65,11 @@ public class QyandYHJBean implements Serializable {
 
         private List<ShareBean> share;
         public static class ShareBean {
-            public String getType() {
+            public int getType() {
                 return type;
             }
 
-            public void setType(String type) {
+            public void setType(int type) {
                 this.type = type;
             }
 
@@ -103,7 +103,7 @@ public class QyandYHJBean implements Serializable {
              * link : https://mp.weixin.qq.com/s/iMKtunXNA-HXpl0r44JOvQ
              * vip_level : 1
              */
-            private String type;
+            private int type;
             private String jump_id;
             private String imgs;
             private String title;

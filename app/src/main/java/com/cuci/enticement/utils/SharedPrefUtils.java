@@ -20,6 +20,7 @@ public class SharedPrefUtils {
     private static final String NAME_OBJECT = "object_data";
     private static final String NAME_STRING = "string_data";
     private static final String NAME_SETTINGS = "settings_data";
+    private static final String NAME_SETTINGS_QUHAO = "settings_quhao";
 
     private static final String STRING_IGNORE = "string_ignore";
     private static final String STRING_TAIL = "string_tail";
@@ -32,6 +33,7 @@ public class SharedPrefUtils {
     private static final String STRING_IS_TODAY = "string_is_today";
 
     private static final String SETTINGS_FIRST_TIME = "settings_first_time";
+    private static final String SETTINGS_QU_HAO = "settings_qu_hao";
     private static final String SETTINGS_FIRST_POPUP = "string_first_popup";
     private static final String SETTINGS_WECHAT_AUTH = "settings_wechat_auth";
     private static final String SETTINGS_IGNORE_VERSION = "settings_ignore_version";
@@ -156,7 +158,23 @@ public class SharedPrefUtils {
         SharedPreferences sp = BasicApp.getContext().getSharedPreferences(NAME_STRING, Context.MODE_PRIVATE);
         return sp.getString(STRING_WX_OPENID, "0YSM0YSM0");
     }
+    /**
+     * 保存是否取到号
+     */
+    public static void saveQuHao(boolean first) {
+        SharedPreferences sp = BasicApp.getContext().getSharedPreferences(NAME_SETTINGS_QUHAO, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean(SETTINGS_QU_HAO, first);
+        editor.apply();
+    }
 
+    /**
+     * 获取是否取到号
+     */
+    public static boolean getsaveQuHao() {
+        SharedPreferences sp = BasicApp.getContext().getSharedPreferences(NAME_SETTINGS_QUHAO, Context.MODE_PRIVATE);
+        return sp.getBoolean(SETTINGS_QU_HAO, false);
+    }
 
     /**
      * 保存是否第一次打开APP

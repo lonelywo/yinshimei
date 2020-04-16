@@ -58,120 +58,125 @@ public class AppUtils {
             mLoading = new XPopup.Builder(context)
                     .dismissOnTouchOutside(false)
                     .asLoading();
-            mLoading.show();
+
             //  MobSDK.submitPolicyGrantResult(true, null);
             //建议提前调用预登录接口，可以加快免密登录过程，提高用户体验
-            SecVerify.preVerify(new OperationCallback<Void>() {
+           /* SecVerify.preVerify(new OperationCallback<Void>() {
                 @Override
                 public void onComplete(Void data) {
-                    //TODO处理成功的结果
-
-                    SecVerify.OtherOAuthPageCallBack(new OAuthPageEventCallback() {
-                        @Override
-                        public void initCallback(OAuthPageEventResultCallback cb) {
-                            cb.pageOpenCallback(new OAuthPageEventCallback.PageOpenedCallback() {
-                                @Override
-                                public void handle() {
-                                    mLoading.dismiss();
-
-
-                                }
-                            });
-                            cb.loginBtnClickedCallback(new OAuthPageEventCallback.LoginBtnClickedCallback() {
-                                @Override
-                                public void handle() {
-
-                                }
-                            });
-                            cb.agreementPageClosedCallback(new OAuthPageEventCallback.AgreementPageClosedCallback() {
-                                @Override
-                                public void handle() {
-
-                                }
-                            });
-                            cb.agreementPageOpenedCallback(new OAuthPageEventCallback.AgreementClickedCallback() {
-                                @Override
-                                public void handle() {
-
-                                }
-                            });
-                            cb.cusAgreement1ClickedCallback(new OAuthPageEventCallback.CusAgreement1ClickedCallback() {
-                                @Override
-                                public void handle() {
-
-                                }
-                            });
-                            cb.cusAgreement2ClickedCallback(new OAuthPageEventCallback.CusAgreement2ClickedCallback() {
-                                @Override
-                                public void handle() {
-
-                                }
-                            });
-                            cb.pageCloseCallback(new OAuthPageEventCallback.PageClosedCallback() {
-                                @Override
-                                public void handle() {
-
-                                }
-                            });
-                            cb.checkboxStatusChangedCallback(new CheckboxStatusChangedCallback() {
-                                @Override
-                                public void handle(boolean b) {
-
-                                }
-                            });
-                        }
-                    });
-
-                    SecVerify.verify(new VerifyCallback() {
-                        @Override
-                        public void onOtherLogin() {
-                            // 用户点击“其他登录方式”，处理自己的逻辑
-                            FLog.e("yijian:", "切换账号");
-                            context.startActivity(new Intent(context, LoginActivity.class));
-                        }
-
-                        @Override
-                        public void onUserCanceled() {
-                            // 用户点击“关闭按钮”或“物理返回键”取消登录，处理自己的逻辑
-                            SecVerify.finishOAuthPage();
-                        }
-
-                        @Override
-                        public void onComplete(VerifyResult data) {
-
-                            FLog.e("yijian:", data.toString());
-                            String token = data.getToken();
-                            String opToken = data.getOpToken();
-                            String operator = data.getOperator();
-                            YiJianLoginBean loginBean = new YiJianLoginBean();
-                            loginBean.setType("2");
-                            loginBean.setFasttoken(data.getToken());
-                            loginBean.setOptoken(data.getOpToken());
-                            loginBean.setOperator(data.getOperator());
-                            String mloginBean = new Gson().toJson(loginBean);
-                            String data1 = RSAUtil.encryptByPublic(context, mloginBean);
-
-                            LoginViewModel mViewModel = new ViewModelProvider((ViewModelStoreOwner) context).get(LoginViewModel.class);
-                            mViewModel.login(data1).observe((LifecycleOwner) context, mObserver);
-                        }
-
-                        @Override
-                        public void onFailure(VerifyException e) {
-                            //TODO处理失败的结果
-
-                        }
-                    });
+                    //TODO处理成功的结果*/
+            if(SharedPrefUtils.getsaveQuHao()){
+             //   mLoading.show();
+                SecVerify.OtherOAuthPageCallBack(new OAuthPageEventCallback() {
+                    @Override
+                    public void initCallback(OAuthPageEventResultCallback cb) {
+                        cb.pageOpenCallback(new OAuthPageEventCallback.PageOpenedCallback() {
+                            @Override
+                            public void handle() {
+                              //  mLoading.dismiss();
 
 
+                            }
+                        });
+                        cb.loginBtnClickedCallback(new OAuthPageEventCallback.LoginBtnClickedCallback() {
+                            @Override
+                            public void handle() {
 
-                }
+                            }
+                        });
+                        cb.agreementPageClosedCallback(new OAuthPageEventCallback.AgreementPageClosedCallback() {
+                            @Override
+                            public void handle() {
+
+                            }
+                        });
+                        cb.agreementPageOpenedCallback(new OAuthPageEventCallback.AgreementClickedCallback() {
+                            @Override
+                            public void handle() {
+
+                            }
+                        });
+                        cb.cusAgreement1ClickedCallback(new OAuthPageEventCallback.CusAgreement1ClickedCallback() {
+                            @Override
+                            public void handle() {
+
+                            }
+                        });
+                        cb.cusAgreement2ClickedCallback(new OAuthPageEventCallback.CusAgreement2ClickedCallback() {
+                            @Override
+                            public void handle() {
+
+                            }
+                        });
+                        cb.pageCloseCallback(new OAuthPageEventCallback.PageClosedCallback() {
+                            @Override
+                            public void handle() {
+
+                            }
+                        });
+                        cb.checkboxStatusChangedCallback(new CheckboxStatusChangedCallback() {
+                            @Override
+                            public void handle(boolean b) {
+
+                            }
+                        });
+                    }
+                });
+
+                SecVerify.verify(new VerifyCallback() {
+                    @Override
+                    public void onOtherLogin() {
+                        // 用户点击“其他登录方式”，处理自己的逻辑
+                        FLog.e("yijian:", "切换账号");
+                        context.startActivity(new Intent(context, LoginActivity.class));
+                    }
+
+                    @Override
+                    public void onUserCanceled() {
+                        // 用户点击“关闭按钮”或“物理返回键”取消登录，处理自己的逻辑
+                        SecVerify.finishOAuthPage();
+                    }
+
+                    @Override
+                    public void onComplete(VerifyResult data) {
+
+                        FLog.e("yijian:", data.toString());
+                        String token = data.getToken();
+                        String opToken = data.getOpToken();
+                        String operator = data.getOperator();
+                        YiJianLoginBean loginBean = new YiJianLoginBean();
+                        loginBean.setType("2");
+                        loginBean.setFasttoken(data.getToken());
+                        loginBean.setOptoken(data.getOpToken());
+                        loginBean.setOperator(data.getOperator());
+                        String mloginBean = new Gson().toJson(loginBean);
+                        String data1 = RSAUtil.encryptByPublic(context, mloginBean);
+
+                        LoginViewModel mViewModel = new ViewModelProvider((ViewModelStoreOwner) context).get(LoginViewModel.class);
+                        mViewModel.login(data1).observe((LifecycleOwner) context, mObserver);
+                    }
+
+                    @Override
+                    public void onFailure(VerifyException e) {
+                        //TODO处理失败的结果
+                        context.startActivity(new Intent(context, LoginActivity.class));
+                    }
+                });
+
+            }else {
+                context.startActivity(new Intent(context, LoginActivity.class));
+            }
+
+
+
+            /*    }
                 @Override
                 public void onFailure(VerifyException e) {
                     //TODO处理失败的结果
                       mLoading.dismiss();
                       context.startActivity(new Intent(context, LoginActivity.class));
                 }
-            });
+            });*/
 
             return false;
         }

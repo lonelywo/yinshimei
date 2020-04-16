@@ -49,11 +49,12 @@
                     android:id="@+id/text_wodeshezhi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
                     android:layout_marginRight="20dp"
                     android:src="@drawable/setup"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="@+id/text_name"
+                    app:layout_constraintBottom_toBottomOf="@+id/text_name"
+                    />
 
 
                 <ImageView
@@ -83,25 +84,25 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:layout_marginTop="8dp"
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:text="请登录"
+                android:layout_marginTop="4dp"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 app:layout_constraintLeft_toRightOf="@+id/img_tuxiang"
-                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/text_wodeshezhi"
                 app:layout_constraintTop_toTopOf="@+id/img_tuxiang" />
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
                 android:background="@drawable/shape_nicheng"
                 android:gravity="center"
                 app:layout_constraintBottom_toBottomOf="@+id/img_tuxiang"
                 app:layout_constraintLeft_toLeftOf="@+id/text_name"
                 android:paddingLeft="@dimen/dp_10"
                 android:paddingRight="@dimen/dp_10"
+                android:layout_marginBottom="4dp"
                 >
 
                 <ImageView
@@ -281,7 +282,7 @@
                     android:layout_marginRight="10dp"
                     android:drawableRight="@drawable/youjiantou"
                     android:drawablePadding="6dp"
-                    android:text="我的消费"
+                    android:text="我的消费记录"
                     android:textColor="#7D7D7D"
                     android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="@+id/text_dingdan"
@@ -472,20 +473,28 @@
                 app:layout_constraintTop_toBottomOf="@+id/con_dingdan"
                 android:background="@color/white"
                 >
+                <ImageView
+                    android:id="@+id/img_tubiao1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:src="@drawable/wdtuandui"
+                    android:layout_marginLeft="10dp"
+                    />
                 <TextView
                     android:id="@+id/text_fuwu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:text="我的美粉"
-                    android:drawableLeft="@drawable/wdtuandui"
                     android:textColor="@color/hei"
                     android:textSize="16sp"
-                    app:layout_constraintLeft_toLeftOf="parent"
+                   app:layout_constraintLeft_toRightOf="@+id/img_tubiao1"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:gravity="center"
-                    android:drawablePadding="5dp"
                     />
                 <ImageView
                     android:layout_width="wrap_content"
@@ -501,7 +510,7 @@
                     android:layout_width="0dp"
                     android:layout_height="1dp"
                     android:background="#f8f8f8"
-                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintLeft_toLeftOf="@+id/text_fuwu"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -513,20 +522,28 @@
                 app:layout_constraintTop_toBottomOf="@+id/con_wodemeifen"
                 android:background="@color/white"
                 >
+                <ImageView
+                    android:id="@+id/img_tubiao2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:src="@drawable/tgyongjing"
+                    android:layout_marginLeft="10dp"
+                    />
                 <TextView
                     android:id="@+id/text_shouyi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:text="我的收益"
-                    android:drawableLeft="@drawable/tgyongjing"
                     android:textColor="@color/hei"
                     android:textSize="16sp"
-                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/img_tubiao2"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:gravity="center"
-                    android:drawablePadding="5dp"
                     />
                 <ImageView
                     android:layout_width="wrap_content"
@@ -542,7 +559,7 @@
                     android:layout_width="0dp"
                     android:layout_height="1dp"
                     android:background="#f8f8f8"
-                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintLeft_toLeftOf="@+id/text_shouyi"
                     app:layout_constraintRight_toRightOf="parent"
                    app:layout_constraintBottom_toBottomOf="parent"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -554,21 +571,30 @@
                 app:layout_constraintTop_toBottomOf="@+id/con_wodeshouyi"
                 android:background="@color/white"
                 >
+                <ImageView
+                    android:id="@+id/img_tubiao3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:src="@drawable/receivegoods"
+                    android:layout_marginLeft="10dp"
+                    />
                 <TextView
                     android:id="@+id/text_fuli"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:text="我的福利"
-                    android:drawableLeft="@drawable/receivegoods"
                     android:textColor="@color/hei"
                     android:textSize="16sp"
-                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/img_tubiao3"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:gravity="center"
-                    android:drawablePadding="5dp"
                     />
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -583,7 +609,7 @@
                     android:layout_width="0dp"
                     android:layout_height="1dp"
                     android:background="#f8f8f8"
-                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintLeft_toLeftOf="@+id/text_fuli"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -596,21 +622,30 @@
                 app:layout_constraintTop_toBottomOf="@+id/con_wodefuli"
                 android:background="@color/white"
                 >
+                <ImageView
+                    android:id="@+id/img_tubiao4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:src="@drawable/receivegoods"
+                    android:layout_marginLeft="10dp"
+                    />
                 <TextView
                     android:id="@+id/text_lipingzhongxing"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:text="礼品中心"
-                    android:drawableLeft="@drawable/receivegoods"
                     android:textColor="@color/hei"
                     android:textSize="16sp"
-                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/img_tubiao4"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:gravity="center"
-                    android:drawablePadding="5dp"
                     />
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -625,7 +660,7 @@
                     android:layout_width="0dp"
                     android:layout_height="1dp"
                     android:background="#f8f8f8"
-                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintLeft_toLeftOf="@+id/text_lipingzhongxing"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -637,20 +672,28 @@
                 app:layout_constraintTop_toBottomOf="@+id/con_lipingzhongxing"
                 android:background="@color/white"
                 >
+                <ImageView
+                    android:id="@+id/img_tubiao5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:src="@drawable/pk"
+                    android:layout_marginLeft="10dp"
+                    />
                 <TextView
                     android:id="@+id/text_paihangbang"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:text="我的排行榜"
-                    android:drawableLeft="@drawable/pk"
                     android:textColor="@color/hei"
                     android:textSize="16sp"
-                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/img_tubiao5"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:gravity="center"
-                    android:drawablePadding="5dp"
                     />
                 <ImageView
                     android:layout_width="wrap_content"
@@ -666,7 +709,7 @@
                     android:layout_width="0dp"
                     android:layout_height="1dp"
                     android:background="#f8f8f8"
-                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintLeft_toLeftOf="@+id/text_paihangbang"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -678,21 +721,30 @@
                 app:layout_constraintTop_toBottomOf="@+id/con_wodepaihangbang"
                 android:background="@color/white"
                 >
+                <ImageView
+                    android:id="@+id/img_tubiao6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:src="@drawable/dizi"
+                    android:layout_marginLeft="10dp"
+                    />
                 <TextView
                     android:id="@+id/text_dizi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:text="收货地址"
-                    android:drawableLeft="@drawable/dizi"
                     android:textColor="@color/hei"
                     android:textSize="16sp"
-                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/img_tubiao6"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:gravity="center"
-                    android:drawablePadding="5dp"
                     />
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -707,7 +759,7 @@
                     android:layout_width="0dp"
                     android:layout_height="1dp"
                     android:background="#f8f8f8"
-                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintLeft_toLeftOf="@+id/text_dizi"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>

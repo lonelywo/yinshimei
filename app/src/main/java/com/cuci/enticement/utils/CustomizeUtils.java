@@ -79,7 +79,7 @@ public class CustomizeUtils {
 //				.setNumberOffsetY(R.dimen.sec_verify_demo_number_field_offset_y)
                 /** 切换帐号 */
                 // 切换账号字体颜色资源ID
-                .setSwitchAccColorId(R.color.home_huang)
+                .setSwitchAccColorId(R.color.hei)
                 .setSwitchAccText( "其他方式登录")
                 //切换账号 字体大小
             //    .setSwitchAccTextSize(R.dimen.sec_verify_demo_text_size_s)
@@ -88,7 +88,7 @@ public class CustomizeUtils {
                 //切换账号 x轴偏移量
 //				.setSwitchAccOffsetX(R.dimen.sec_verify_demo_switch_acc_offset_x)
                 //切换账号 y轴偏移量
-//				.setSwitchAccOffsetY(R.dimen.sec_verify_demo_switch_acc_offset_y)
+				.setSwitchAccOffsetY(R.dimen.sec_verify_demo_switch_acc_offset_y)
 
                 /** 登录按钮 */
                 // 登录按钮背景图资源ID，建议使用shape
@@ -102,14 +102,14 @@ public class CustomizeUtils {
                 //登录按钮 width
 //				.setLoginBtnWidth(R.dimen.sec_verify_demo_login_btn_width)
                 //登录按钮 height
-//				.setLoginBtnHeight(R.dimen.sec_verify_demo_login_btn_height)
+				.setLoginBtnHeight(R.dimen.sec_verify_demo_login_btn_height)
                 //登录按钮 x轴偏移
 //				.setLoginBtnOffsetX(R.dimen.sec_verify_demo_login_btn_offset_x)
                 //登录按钮 y轴偏移
 //				.setLoginBtnOffsetY(R.dimen.sec_verify_demo_login_btn_offset_y)
                 /** 隐私协议 */
                 //是否隐藏复选框(设置此属性true时setCheckboxDefaultState不会生效)
-                .setCheckboxHidden(false)
+                .setCheckboxHidden(true)
                 // 隐私协议复选框背景图资源ID，建议使用selector
               //  .setCheckboxImgId(R.drawable.sec_verify_demo_customized_checkbox_selector)
                 // 隐私协议复选框默认状态，默认为“选中”
@@ -143,7 +143,7 @@ public class CustomizeUtils {
                 //隐私协议 y轴偏移量
 //				.setAgreementOffsetY(R.dimen.sec_verify_demo_agreement_offset_y)
                 //隐私协议 底部y轴偏移量
-//				.setAgreementOffsetBottomY(R.dimen.sec_verify_demo_agreement_offset_bottom_y)
+				.setAgreementOffsetBottomY(R.dimen.sec_verify_demo_agreement_offset_bottom_y)
                 /** slogan */
                 //slogan文字大小
           //      .setSloganTextSize(R.dimen.sec_verify_demo_text_size_xs)
@@ -159,6 +159,7 @@ public class CustomizeUtils {
                 .setImmersiveTheme(false)
                 //设置状态栏文字颜色为黑色，只在6.0以上生效
                 .setImmersiveStatusTextColorBlack(false)
+                .setSloganHidden(true)
                 //使用平移动画
 //				.setTranslateAnim(true)
            //     .setStartActivityTransitionAnim(R.anim.translate_in,R.anim.translate_out)
@@ -197,7 +198,7 @@ public class CustomizeUtils {
 			operatorText = "《中国电信认证服务条款》";
 			url = "https://e.189.cn/sdk/agreement/content.do?type=main&appKey=&hidetop=true&returnUrl=";
 		}
-		String ageementText = "同意"+operatorText+"及《用户服务协议》和" +
+		String ageementText = "登录即同意"+operatorText+"及《用户服务协议》和" +
 				"《隐私政策》并授权秒验使用本机号码登录";
 		String cusPrivacy1 = "《用户服务协议》";
 		String cusPrivacy2 = "《隐私政策》";

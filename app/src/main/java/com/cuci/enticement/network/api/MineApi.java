@@ -15,6 +15,10 @@ import retrofit2.http.Part;
 
 public interface MineApi {
 
+
+
+
+
     /**
      * 图片上传
      */

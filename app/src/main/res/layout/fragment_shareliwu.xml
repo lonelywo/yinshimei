@@ -12,7 +12,6 @@
         android:layout_height="0.5dp"
         android:background="@drawable/shape_login_edit_bottom_line"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="5dp"
         />
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
@@ -73,7 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:src="@drawable/wudingdan" />
+            android:src="@drawable/queshengye" />
 
         <TextView
             android:layout_width="wrap_content"

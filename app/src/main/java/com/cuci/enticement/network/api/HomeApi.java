@@ -11,6 +11,20 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 
 public interface HomeApi {
+
+
+
+    /**
+     * 首页分享海报
+     */
+    @FormUrlEncoded
+    @POST("store/api.member.center/shareExclusive")
+    Call<ResponseBody> sharehaobao(@Field("from_type") String from_type,
+                                   @Field("token") String token,
+                                   @Field("mid") String mid,
+                                   @Field("new_version") String new_version,
+                                   @Field("sign") String sign
+    );
     /**
      * 获取首页轮播图
      */

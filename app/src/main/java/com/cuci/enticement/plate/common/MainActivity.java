@@ -217,7 +217,20 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
 
         customizeUi();
         SecVerify.autoFinishOAuthPage(false);
-
+       //建议提前调用预登录接口，可以加快免密登录过程，提高用户体验
+        SecVerify.preVerify(new OperationCallback<Void>() {
+            @Override
+            public void onComplete(Void data) {
+                //TODO处理成功的结果
+                SharedPrefUtils.saveQuHao(true);
+            }
+            @Override
+            public void onFailure(VerifyException e) {
+                //TODO处理失败的结果
+               // startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                SharedPrefUtils.saveQuHao(false);
+            }
+        });
     }
     private void customizeUi() {
         SecVerify.setUiSettings(CustomizeUtils.customizeUi());
