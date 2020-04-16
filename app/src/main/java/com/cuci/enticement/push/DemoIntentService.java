@@ -84,8 +84,8 @@ public class DemoIntentService extends GTIntentService {
             Log.d(TAG, "receiver payload = " + data);
             try {
                 PushBean function = new Gson().fromJson(data, PushBean.class);
-               // addNotification(function.getTitle(),  function.getContent(), function);
-                if (function.getType()==1) {
+                addNotification(function.getTitle(),  function.getContent(), function);
+               /* if (function.getType()==1) {
                     Intent intentProd = new Intent(context, MainActivity.class);
                     intentProd.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     getApplication().startActivity(intentProd);
@@ -104,7 +104,7 @@ public class DemoIntentService extends GTIntentService {
                     Intent intentProd = new Intent(context, MyTeamActivity.class);
                     intentProd.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     getApplication().startActivity( intentProd);
-                }
+                }*/
             } catch (JsonSyntaxException e) {
                 FToast.error("数据有误");
             }
@@ -209,11 +209,11 @@ public class DemoIntentService extends GTIntentService {
 
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         Notification  notification = null;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+       /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel("2", "推送通知",
                     NotificationManager.IMPORTANCE_DEFAULT);
             manager.createNotificationChannel(notificationChannel);
-        }
+        }*/
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
           notification = new NotificationCompat.Builder(this,"2")

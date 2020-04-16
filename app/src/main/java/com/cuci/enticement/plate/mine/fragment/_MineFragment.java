@@ -872,6 +872,7 @@ public class _MineFragment extends BaseFragment {
     private void getCid() {
         String cid = PushManager.getInstance().getClientid(mActivity);
         Log.d(TAG, "当前应用的cid=" + cid);
+        Log.d(TAG, "当前用户的id=" + mUserInfo.getId());
         //提交个推cid
         mViewModel.getui("2", String.valueOf(mUserInfo.getId()), mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), cid, "" + AppUtils.getVersionCode(mActivity))
                 .observe(this, mCommitObserver);

@@ -20,6 +20,7 @@ import com.cuci.enticement.R;
 import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.bean.ClauseBean;
 import com.cuci.enticement.bean.GuoJiaBean;
+import com.cuci.enticement.bean.PushBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.TuiKuanWuLiuBean;
 import com.cuci.enticement.bean.Version;
@@ -34,8 +35,11 @@ import com.cuci.enticement.plate.common.popup.TipsPopupxieyi2;
 import com.cuci.enticement.plate.common.popup.UpdatePopup;
 import com.cuci.enticement.plate.common.popup.UpdateProgressPopup;
 import com.cuci.enticement.plate.common.vm.MainViewModel;
+import com.cuci.enticement.plate.home.activity.ProdActivity;
 import com.cuci.enticement.plate.home.fragment._HomeFragment;
 import com.cuci.enticement.plate.mall.fragment._MallFragment;
+import com.cuci.enticement.plate.mine.activity.MyTeamActivity;
+import com.cuci.enticement.plate.mine.activity.NoticeActivity;
 import com.cuci.enticement.plate.mine.fragment._MineFragment;
 import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.CustomizeUtils;
@@ -124,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
 
         String payload = getIntent().getStringExtra("payload");
         FLog.e("payload::::",payload);
-      /*  if(TextUtils.isEmpty(payload)){
+       /* if(!TextUtils.isEmpty(payload)){
             PushBean function = new Gson().fromJson(payload, PushBean.class);
             if (function.getType()==1) {
                 Intent intentProd = new Intent(this, MainActivity.class);

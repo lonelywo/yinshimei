@@ -21,17 +21,17 @@ public class GeTuiNotificationClickReceiver extends BroadcastReceiver {
         PushBean message = (PushBean) intent.getSerializableExtra("message");
         if (message != null) {
 
-            if (message.getType()==1) {
+            if (message.getType()==0) {
                 Log.d(TAG, "onReceiveGeTuiType1:");
                 Intent intentProd = new Intent(context, MainActivity.class);
                 startIntent( context,intentProd);
                 //切换首页
                 EventBus.getDefault().post(new CheckHomeEvent());
-            } else if (message.getType()==2) {
+            } else if (message.getType()==1) {
                 Intent intentProd = new Intent(context, ProdActivity.class);
                 intentProd.putExtra("bannerData", message.getId());
                 startIntent( context,intentProd);
-            }else if (message.getType()==3) {
+            }else if (message.getType()==2) {
                 Intent intentProd = new Intent(context, NoticeActivity.class);
                 startIntent( context,intentProd);
             }else if (message.getType()==4) {
