@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -20,6 +21,7 @@ import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.BitmapUitls;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.SharedPrefUtils;
+import com.cuci.enticement.utils.ViewUtils;
 import com.cuci.enticement.utils.WxShareUtils;
 import com.google.gson.Gson;
 import com.hp.hpl.sparta.xpath.ThisNodeTest;
@@ -72,7 +74,11 @@ public class AgreementActivity extends BaseActivity {
         brief = intent.getStringExtra("share_info");
         webContext.loadDataWithBaseURL(null,
                 getHtmlData(url), "text/html", "utf-8", null);
-
+        if(brief==null|| TextUtils.isEmpty(brief)){
+            ViewUtils.hideView(tvShare);
+            ViewUtils.hideView(imageTop);
+            return;
+        }
         try {
             mShareBean = new Gson().fromJson(brief, ShareBean.class);
 
@@ -80,6 +86,8 @@ public class AgreementActivity extends BaseActivity {
             e.printStackTrace();
 
         }
+        ViewUtils.showView(tvShare);
+        ViewUtils.showView(imageTop);
         imageTop.setText(mShareBean.getTitle());
     }
 
