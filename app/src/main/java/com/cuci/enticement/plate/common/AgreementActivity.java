@@ -17,8 +17,10 @@ import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.ShareBean;
 import com.cuci.enticement.bean.UserInfo;
+import com.cuci.enticement.event.ProgoodsEvent;
 import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.BitmapUitls;
+import com.cuci.enticement.utils.FLog;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.ViewUtils;
@@ -29,6 +31,10 @@ import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.opensdk.modelmsg.WXMiniProgramObject;
 import com.tencent.smtt.sdk.WebView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
 import java.net.URL;
@@ -64,6 +70,7 @@ public class AgreementActivity extends BaseActivity {
 
     @Override
     public void initViews(Bundle savedInstanceState) {
+        EventBus.getDefault().register(this);
         Intent intent = getIntent();
         if (intent == null) {
             FToast.error("数据错误");
@@ -81,14 +88,16 @@ public class AgreementActivity extends BaseActivity {
         }
         try {
             mShareBean = new Gson().fromJson(brief, ShareBean.class);
-
+            ViewUtils.showView(tvShare);
+            ViewUtils.showView(imageTop);
+            String title = mShareBean.getTitle();
+            FLog.e("title",title);
+            imageTop.setText(title);
         } catch (Exception e) {
             e.printStackTrace();
 
         }
-        ViewUtils.showView(tvShare);
-        ViewUtils.showView(imageTop);
-        imageTop.setText(mShareBean.getTitle());
+
     }
 
     private String getHtmlData(String bodyHTML) {
@@ -144,12 +153,17 @@ public class AgreementActivity extends BaseActivity {
         }
 
     }
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+    //刷新isnew显示数据
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onClickProgoodsEvent(ProgoodsEvent event) {
+
+        finish();
+
     }
 
 
