@@ -1,5 +1,7 @@
 package com.cuci.enticement.push;
 
+
+
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -9,21 +11,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
+
+import android.graphics.BitmapFactory;
 import android.os.Build;
-import android.text.TextUtils;
+
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
+import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
 import com.cuci.enticement.bean.PushBean;
+
 import com.cuci.enticement.event.CheckHomeEvent;
 import com.cuci.enticement.plate.common.MainActivity;
 import com.cuci.enticement.plate.home.activity.ProdActivity;
 import com.cuci.enticement.plate.mine.activity.MyTeamActivity;
 import com.cuci.enticement.plate.mine.activity.NoticeActivity;
-import com.cuci.enticement.utils.FLog;
 import com.cuci.enticement.utils.FToast;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -36,6 +40,7 @@ import com.igexin.sdk.message.GTNotificationMessage;
 import com.igexin.sdk.message.GTTransmitMessage;
 
 import org.greenrobot.eventbus.EventBus;
+
 
 /**
  * 继承 GTIntentService 接收来自个推的消息, 所有消息在线程中回调, 如果注册了该服务, 则务必要在 AndroidManifest中声明, 否则无法接受消息<br>
@@ -85,22 +90,32 @@ public class DemoIntentService extends GTIntentService {
             try {
                 PushBean function = new Gson().fromJson(data, PushBean.class);
                 addNotification(function.getTitle(),  function.getContent(), function);
-               /* if (function.getType()==1) {
+                /*if (function.getType()==0) {
                     Intent intentProd = new Intent(context, MainActivity.class);
                     intentProd.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     getApplication().startActivity(intentProd);
                     //切换首页
                     EventBus.getDefault().post(new CheckHomeEvent());
-                } else if (function.getType()==2) {
+                } else if (function.getType()==1) {
                     Intent intentProd = new Intent(context, ProdActivity.class);
                     intentProd.putExtra("bannerData", function.getId());
                     intentProd.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     getApplication().startActivity( intentProd);
-                }else if (function.getType()==3) {
+                }else if (function.getType()==2) {
                     Intent intentProd = new Intent(context, NoticeActivity.class);
                     intentProd.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     getApplication().startActivity( intentProd);
-                }else if (function.getType()==4) {
+                }else if (function.getType()==3) {
+                    Intent intentProd = new Intent(context, MyTeamActivity.class);
+                    intentProd.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    getApplication().startActivity( intentProd);
+                }
+                else if (function.getType()==4) {
+                    Intent intentProd = new Intent(context, MyTeamActivity.class);
+                    intentProd.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    getApplication().startActivity( intentProd);
+                }
+                else if (function.getType()==5) {
                     Intent intentProd = new Intent(context, MyTeamActivity.class);
                     intentProd.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     getApplication().startActivity( intentProd);
@@ -202,35 +217,34 @@ public class DemoIntentService extends GTIntentService {
         int requestCode = (int) System.currentTimeMillis();
 
         Intent broadcastIntent = new Intent(this, GeTuiNotificationClickReceiver.class);
-      //  broadcastIntent.setComponent(new ComponentName("com.cuci.enticement","com.cuci.enticement.push.GeTuiNotificationClickReceiver"));
+       // broadcastIntent.setComponent(new ComponentName("com.cuci.enticement","com.cuci.enticement.push.GeTuiNotificationClickReceiver"));
         broadcastIntent.putExtra("message", message);
         PendingIntent pendingIntent = PendingIntent.
                 getBroadcast(this, requestCode, broadcastIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         Notification  notification = null;
-       /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel("2", "推送通知",
-                    NotificationManager.IMPORTANCE_DEFAULT);
-            manager.createNotificationChannel(notificationChannel);
-        }*/
-
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel notificationChannel = new NotificationChannel("2", "推送通知",
+                    NotificationManager.IMPORTANCE_HIGH);
+            manager.createNotificationChannel(notificationChannel);
+
           notification = new NotificationCompat.Builder(this,"2")
          .setSmallIcon(R.drawable.push_small)
+                  .setLargeIcon(BitmapFactory.decodeResource(getResources(),
+                          R.drawable.push))
           .setWhen(System.currentTimeMillis())
            .setContentTitle(title)
           .setContentText(subtitle)
           .setContentIntent(pendingIntent)
                   .setAutoCancel(true)
-                 /* .setStyle(new NotificationCompat.BigTextStyle()
-                  .setBigContentTitle("哈哈哈哈哈哈")
-                  .bigText("就撒谎发还是分开后肯定会发生的接口方式的回复啥地方还是得合计罚款合适的机会当地噶是几个大花洒管好的大家大家爱好的哈就好打哈好大好大打卡机读卡接口的金卡和扩大和客户的刷卡")
-                  )*/
+
                   .build();
         }else{
         notification = new NotificationCompat.Builder(this)
             .setSmallIcon(R.drawable.push_small)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(),
+                        R.drawable.push))
           .setWhen(System.currentTimeMillis())
              .setContentTitle(title)
          .setContentText(subtitle)
@@ -239,8 +253,17 @@ public class DemoIntentService extends GTIntentService {
           .build();
         }
 
+
+         /* .setStyle(new NotificationCompat.BigTextStyle()
+                  .setBigContentTitle("哈哈哈哈哈哈")
+                  .bigText("就撒谎发还是分开后肯定会发生的接口方式的回复啥地方还是得合计罚款合适的机会当地噶是几个大花洒管好的大家大家爱好的哈就好打哈好大好大打卡机读卡接口的金卡和扩大和客户的刷卡")
+                  )*/
+
+
         /*builder.setLargeIcon( BitmapFactory.decodeResource
                 ( getResources (),R.drawable.push ));*/
+
+
         Log.d(TAG, "addNotification: .......................1");
         if (manager != null) {
             manager.notify(requestCode,notification);

@@ -56,11 +56,7 @@ public class DailyActivity extends BaseActivity {
 
     @Override
     public void initViews(Bundle savedInstanceState) {
-        Intent intent = getIntent();
-        if (intent == null) {
-            FToast.error("数据错误");
-            return;
-        }
+
         data.add("未领取");
         data.add("已领取");
         data.add("待结算");

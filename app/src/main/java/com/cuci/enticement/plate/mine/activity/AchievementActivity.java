@@ -98,11 +98,7 @@ public class AchievementActivity extends BaseActivity {
 
     @Override
     public void initViews(Bundle savedInstanceState) {
-        Intent intent = getIntent();
-        if (intent == null) {
-            FToast.error("数据错误");
-            return;
-        }
+
 
         mViewModel = new ViewModelProvider(this).get(MineViewModel.class);
         mUserInfo = SharedPrefUtils.get(UserInfo.class);

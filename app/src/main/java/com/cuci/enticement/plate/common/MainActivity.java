@@ -60,6 +60,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -128,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
 
         String payload = getIntent().getStringExtra("payload");
         FLog.e("payload::::",payload);
-       /* if(!TextUtils.isEmpty(payload)){
+        /*if(!TextUtils.isEmpty(payload)){
             PushBean function = new Gson().fromJson(payload, PushBean.class);
             if (function.getType()==1) {
                 Intent intentProd = new Intent(this, MainActivity.class);
@@ -235,6 +236,8 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
                 SharedPrefUtils.saveQuHao(false);
             }
         });
+
+        boolean b = NotificationManagerCompat.from(BasicApp.getContext()).areNotificationsEnabled();
     }
     private void customizeUi() {
         SecVerify.setUiSettings(CustomizeUtils.customizeUi());

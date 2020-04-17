@@ -41,7 +41,7 @@ public class Agreement2Activity extends BaseActivity {
 
     @Override
     public int getLayoutId() {
-        return R.layout.activity_agreement;
+        return R.layout.activity_agreement2;
     }
 
     @Override

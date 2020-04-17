@@ -26,7 +26,7 @@
           android:id="@+id/banner"
           android:layout_width="0dp"
           android:layout_height="0dp"
-          app:delay_time="5000"
+          app:delay_time="3000"
           app:image_scale_type="fit_xy"
           app:indicator_height="6dp"
           app:indicator_margin="3dp"
