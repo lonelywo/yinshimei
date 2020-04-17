@@ -22,6 +22,7 @@ import com.cuci.enticement.plate.common.AgreementActivity;
 import com.cuci.enticement.plate.common.DailyActivity;
 import com.cuci.enticement.plate.common.LauncherActivity;
 import com.cuci.enticement.plate.common.MainActivity;
+import com.cuci.enticement.plate.common.eventbus.EssayEvent;
 import com.cuci.enticement.plate.home.activity.ProdActivity;
 import com.cuci.enticement.plate.home.vm.HomeViewModel;
 import com.cuci.enticement.plate.mine.activity.AchievementActivity;
@@ -46,6 +47,7 @@ public class GeTuiNotificationClickReceiver extends BroadcastReceiver {
         PushBean message = (PushBean) intent.getSerializableExtra("message");
         if (message != null) {
             UserInfo  mUserInfo = SharedPrefUtils.get(UserInfo.class);
+
             if (message.getType()==0) {
                 Log.d(TAG, "onReceiveGeTuiType1:");
                 Intent intentProd = new Intent(context, MainActivity.class);
@@ -57,8 +59,9 @@ public class GeTuiNotificationClickReceiver extends BroadcastReceiver {
                 intentProd.putExtra("bannerData", message.getId());
                 startIntent( context,intentProd);
             }else if (message.getType()==2) {
-                HomeViewModel  mViewModel = new ViewModelProvider((ViewModelStoreOwner) context).get(HomeViewModel.class);
-                mViewModel.essay(message.getId(), "2", "" + AppUtils.getVersionCode(context)).observe((LifecycleOwner) context, essayObserver);
+                //跳转文章
+                EventBus.getDefault().post(new EssayEvent(message.getId()));
+
             }else if (message.getType()==3) {
                 Intent intentProd = new Intent(context, Agreement2Activity.class);
                 intentProd.putExtra("url", message.getId());
@@ -74,42 +77,9 @@ public class GeTuiNotificationClickReceiver extends BroadcastReceiver {
 
     }
 
-    private Observer<Status<ResponseBody>> essayObserver = status -> {
 
-        switch (status.status) {
-            case Status.SUCCESS:
 
-                ResponseBody body = status.content;
-                opera2(body);
-                break;
-            case Status.ERROR:
 
-                FToast.error("网络错误");
-                break;
-            case Status.LOADING:
-
-                break;
-        }
-
-    };
-
-    private void opera2(ResponseBody body) {
-        try {
-            String b = body.string();
-            EssayBean mEssayBean = new Gson().fromJson(b, EssayBean.class);
-            if (mEssayBean.getCode() == 1) {
-                Intent intentProd = new Intent(BasicApp.getContext(), AgreementActivity.class);
-                intentProd.putExtra("bannerData", mEssayBean.getData().getContent());
-                intentProd.putExtra("share_info", mEssayBean.getData().getShare_info());
-                startIntent( BasicApp.getContext(),intentProd);
-            } else {
-                FToast.error(mEssayBean.getInfo());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            FToast.error("数据错误");
-        }
-    }
 
 
    /* private void startIntent(Context context, Intent intent) {

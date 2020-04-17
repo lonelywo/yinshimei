@@ -51,12 +51,12 @@ public class ItemReceiveBottomViewBinder extends ItemViewBinder<ItemReceiveBotto
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull ItemReceiveBottom itemOrderBottom) {
         String status = itemOrderBottom.status;
-        if(TextUtils.equals(status,"0")){
-            //未领取
-            ViewUtils.hideView( holder.textWuliu);
-        }else {
+        if(TextUtils.equals(status,"1")){
             //已领取
             ViewUtils.showView( holder.textWuliu);
+        }else {
+            //未领取
+            ViewUtils.hideView( holder.textWuliu);
         }
         holder.textWuliu.setOnClickListener(v -> {
 

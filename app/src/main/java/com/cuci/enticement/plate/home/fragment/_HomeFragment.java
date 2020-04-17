@@ -38,6 +38,8 @@ import com.cuci.enticement.event.ClickMyEvent;
 import com.cuci.enticement.plate.common.Agreement2Activity;
 import com.cuci.enticement.plate.common.AgreementActivity;
 import com.cuci.enticement.plate.common.MainActivity;
+import com.cuci.enticement.plate.common.eventbus.CartEvent;
+import com.cuci.enticement.plate.common.eventbus.EssayEvent;
 import com.cuci.enticement.plate.common.popup.CenterShareAppPopup2;
 import com.cuci.enticement.plate.common.popup.TipsPopup_kaquan;
 import com.cuci.enticement.plate.home.activity.CenterLingQuanActivity;
@@ -674,4 +676,14 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
     public void onShare2Click(QyandYHJBean.DataBean.ShareBean bean) {
         mViewModel.essay(bean.getJump_id(), "2", "" + AppUtils.getVersionCode(mActivity)).observe(this, essayObserver);
     }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEssayEventMessage(EssayEvent event) {
+        String code = event.getCode();
+        mViewModel.essay(code, "2", "" + AppUtils.getVersionCode(mActivity)).observe(this, essayObserver);
+        }
+
+
+
 }
