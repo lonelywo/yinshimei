@@ -292,6 +292,7 @@
 
 
         <activity android:name=".plate.common.LauncherActivity"
+
             android:theme="@style/AppTheme.NoActionBarWithBackGround">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -339,7 +340,9 @@
         </service>
 
         <!--//注册-->
-        <receiver android:name=".push.GeTuiNotificationClickReceiver">
+        <receiver android:name=".push.GeTuiNotificationClickReceiver"
+            android:exported="true"
+            >
             <intent-filter>
                 <action android:name="cn.text"/>
             </intent-filter>

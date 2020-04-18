@@ -217,7 +217,7 @@ public class DemoIntentService extends GTIntentService {
         int requestCode = (int) System.currentTimeMillis();
 
         Intent broadcastIntent = new Intent(this, GeTuiNotificationClickReceiver.class);
-       // broadcastIntent.setComponent(new ComponentName("com.cuci.enticement","com.cuci.enticement.push.GeTuiNotificationClickReceiver"));
+        broadcastIntent.setComponent(new ComponentName("com.cuci.enticement","com.cuci.enticement.push.GeTuiNotificationClickReceiver"));
         broadcastIntent.putExtra("message", message);
         PendingIntent pendingIntent = PendingIntent.
                 getBroadcast(this, requestCode, broadcastIntent, PendingIntent.FLAG_UPDATE_CURRENT);
