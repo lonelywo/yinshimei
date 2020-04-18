@@ -6,7 +6,7 @@
     <!-- rectangle表示为矩形 -->
 
     <!-- 填充的颜色 -->
-    <solid android:color="#BF9964" />
+    <solid android:color="@color/home_huang" />
 
 
 
