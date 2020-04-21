@@ -51,7 +51,7 @@ public class ItemReceiveBottomViewBinder extends ItemViewBinder<ItemReceiveBotto
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull ItemReceiveBottom itemOrderBottom) {
         String status = itemOrderBottom.status;
-        if(TextUtils.equals(status,"1")){
+        if(TextUtils.equals(status,"4")||TextUtils.equals(status,"5")){
             //已领取
             ViewUtils.showView( holder.textWuliu);
         }else {

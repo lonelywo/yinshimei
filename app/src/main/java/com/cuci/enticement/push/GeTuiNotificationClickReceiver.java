@@ -46,10 +46,11 @@ public class GeTuiNotificationClickReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         PushBean message = (PushBean) intent.getSerializableExtra("message");
         if (message != null) {
+            int i=0;
             UserInfo  mUserInfo = SharedPrefUtils.get(UserInfo.class);
-
+            Log.d(TAG, "onReceiveGeTuiType1:"+i++);
             if (message.getType()==0) {
-                Log.d(TAG, "onReceiveGeTuiType1:");
+
                 Intent intentProd = new Intent(context, MainActivity.class);
                 startIntent( context,intentProd);
                 //切换首页

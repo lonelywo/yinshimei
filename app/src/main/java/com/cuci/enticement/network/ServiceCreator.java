@@ -17,8 +17,8 @@ public class ServiceCreator {
     private volatile static ServiceCreator mInstance;
     public static  int ConstantA = 0;
 
-    // private static final String BASE_URL = "https://test.enticementchina.com/";
-        private static final String BASE_URL = "https://app.enticementchina.com/";
+     private static final String BASE_URL = "https://test.enticementchina.com/";
+    //   private static final String BASE_URL = "https://app.enticementchina.com/";
 
     private final Retrofit mRetrofit;
 

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+       android:shape="rectangle">
+
+    android:shape="rectangle">
+    <!-- rectangle表示为矩形 -->
+
+
+
+    <gradient android:startColor="#F9DEC1"
+              android:centerColor="#EFCDA8"
+              android:endColor="#E5B47D"
+              />
+
+
+
+</shape>

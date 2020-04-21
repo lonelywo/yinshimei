@@ -210,6 +210,20 @@ public class _MineFragment extends BaseFragment {
     ConstraintLayout conLipingzhongxing;
     @BindView(R.id.view6)
     View view6;
+    @BindView(R.id.text_qiandao)
+    ImageView textQiandao;
+    @BindView(R.id.img_tubiao1)
+    ImageView imgTubiao1;
+    @BindView(R.id.img_tubiao2)
+    ImageView imgTubiao2;
+    @BindView(R.id.img_tubiao3)
+    ImageView imgTubiao3;
+    @BindView(R.id.img_tubiao4)
+    ImageView imgTubiao4;
+    @BindView(R.id.img_tubiao5)
+    ImageView imgTubiao5;
+    @BindView(R.id.img_tubiao6)
+    ImageView imgTubiao6;
     private boolean mCouldChange = true;
     private LocalBroadcastManager mBroadcastManager;
     private UserInfo mUserInfo;
@@ -344,6 +358,16 @@ public class _MineFragment extends BaseFragment {
                 }
             }
         });
+
+        textQiandao.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (AppUtils.isAllowPermission(mActivity)) {
+
+                }
+            }
+        });
+
         conLipingzhongxing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -433,7 +457,7 @@ public class _MineFragment extends BaseFragment {
                     textHuiyuan.setText("美粉");
                 } else if (mDataUserInfo.getData().getVip_level() == 2) {
                     textHuiyuan.setText("超级美粉");
-                   // imgHeadwear.setVisibility(View.VISIBLE);
+                    // imgHeadwear.setVisibility(View.VISIBLE);
                 }
 
                 mUserInfo.setVip_level(mDataUserInfo.getData().getVip_level());
@@ -550,7 +574,7 @@ public class _MineFragment extends BaseFragment {
             ViewUtils.hideView(dot4Tv);
             //  ViewUtils.hideView(conYingchang);
 
-         //   imgHeadwear.setVisibility(View.GONE);
+            //   imgHeadwear.setVisibility(View.GONE);
             return;
         }
 
