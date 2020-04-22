@@ -26,6 +26,7 @@ public class TuiAgreementActivity extends BaseActivity {
     @BindView(R.id.con_title)
     ConstraintLayout conTitle;
     private String url;
+    private String title;
 
     @Override
     public int getLayoutId() {
@@ -40,6 +41,8 @@ public class TuiAgreementActivity extends BaseActivity {
             return;
         }
         url = intent.getStringExtra("bannerData");
+        title = intent.getStringExtra("title");
+        imageTop.setText(title);
         webContext.loadUrl(url
         );
       /*  webContext.loadDataWithBaseURL(null,

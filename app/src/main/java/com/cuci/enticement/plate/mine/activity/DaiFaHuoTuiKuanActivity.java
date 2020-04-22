@@ -125,6 +125,7 @@ public class DaiFaHuoTuiKuanActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Intent intentProd = new Intent(DaiFaHuoTuiKuanActivity.this, TuiAgreementActivity.class);
+                intentProd.putExtra("title","退款协议");
                 intentProd.putExtra("bannerData", "http://web.enticementchina.com/appweb/refundAgreement.html");
                 startActivity(intentProd);
             }

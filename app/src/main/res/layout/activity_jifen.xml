@@ -43,6 +43,9 @@
             android:text="积分规则"
             android:textSize="14sp"
             android:layout_marginRight="10dp"
+            android:drawableLeft="@drawable/integralrules"
+            android:drawablePadding="@dimen/dp_6"
+            android:gravity="center"
             />
         <TextView
             android:id="@+id/tv_money"
@@ -69,7 +72,7 @@
             android:layout_marginTop="10dp"
             />
 
-        <android.support.constraint.Guideline
+        <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guidelinePercent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

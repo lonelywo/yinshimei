@@ -295,6 +295,7 @@ public class TuiKuanType1Activity extends BaseActivity implements ItemImgkuangVi
         @Override
         public void onClick(View widget) {
             Intent intentProd = new Intent(TuiKuanType1Activity.this, TuiAgreementActivity.class);
+            intentProd.putExtra("title","退款协议");
             intentProd.putExtra("bannerData", "http://web.enticementchina.com/appweb/refundAgreement.html");
             startActivity(intentProd);
         }

@@ -46,11 +46,13 @@ import com.cuci.enticement.plate.common.popup.TipsPopup;
 import com.cuci.enticement.plate.common.vm.MainViewModel;
 import com.cuci.enticement.plate.mine.activity.AchievementActivity;
 import com.cuci.enticement.plate.mine.activity.CommissionActivity;
+import com.cuci.enticement.plate.mine.activity.JiFenActivity;
 import com.cuci.enticement.plate.mine.activity.KaQuanActivity;
 import com.cuci.enticement.plate.mine.activity.MyOrderActivity;
 import com.cuci.enticement.plate.mine.activity.MyTeamActivity;
 import com.cuci.enticement.plate.mine.activity.NoticeActivity;
 import com.cuci.enticement.plate.mine.activity.PKActivity;
+import com.cuci.enticement.plate.mine.activity.QianDaoActivity;
 import com.cuci.enticement.plate.mine.activity.RecAddressActivity;
 import com.cuci.enticement.plate.mine.activity.SettingsActivity;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
@@ -354,7 +356,7 @@ public class _MineFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 if (AppUtils.isAllowPermission(mActivity)) {
-                    FToast.warning("敬请期待~");
+                    startActivity(new Intent(mActivity, JiFenActivity.class));
                 }
             }
         });
@@ -363,7 +365,7 @@ public class _MineFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 if (AppUtils.isAllowPermission(mActivity)) {
-
+                    startActivity(new Intent(mActivity, QianDaoActivity.class));
                 }
             }
         });

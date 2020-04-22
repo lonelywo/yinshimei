@@ -45,6 +45,12 @@ public class TimeUtils {
         return sdf.format(new Date(t));
     }
 
+    public static String getTimeWithSplit(long time) {
+      //  long t = Long.parseLong(time);
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd", Locale.CHINA);
+        return sdf.format(new Date(time));
+    }
+
     /**
      * 获取PendingIntent的ID
      *
