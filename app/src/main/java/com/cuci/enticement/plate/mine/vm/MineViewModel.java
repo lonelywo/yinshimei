@@ -6,8 +6,10 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.cuci.enticement.bean.Base;
+import com.cuci.enticement.bean.HomeDetailsBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.network.ServiceCreator;
+import com.cuci.enticement.network.api.HomeApi;
 import com.cuci.enticement.network.api.MineApi;
 import com.cuci.enticement.network.api.UserApi;
 import com.cuci.enticement.utils.SignUtils;
@@ -24,6 +26,38 @@ public class MineViewModel extends ViewModel {
     private ServiceCreator mCreator;
     public MineViewModel() {
         mCreator = ServiceCreator.getInstance();
+    }
+    /**
+     * 积分详情
+     * @param from_type
+     * @return
+     */
+
+    public MutableLiveData<Status<ResponseBody>> getJiFenDetails(String from_type, String mid, String token, String goods_id, String new_version) {
+        final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("from_type",from_type);
+        params.put("token",token);
+        params.put("mid",mid);
+        params.put("goods_id",goods_id);
+        params.put("new_version",new_version);
+        String signs = SignUtils.signParamRemoveNull(params);
+        mCreator.create(MineApi.class)
+                .getJiFenDetails(from_type, mid,token,goods_id,new_version,signs)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(@NonNull Call<ResponseBody> call,
+                                           @NonNull Response<ResponseBody> response) {
+                        liveData.setValue(Status.success(response.body()));
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<ResponseBody> call,
+                                          @NonNull Throwable t) {
+                        liveData.setValue(Status.error(null, t.getMessage() == null ? "网络错误" : t.getMessage()));
+                    }
+                });
+        return liveData;
     }
 
     /**

@@ -26,7 +26,7 @@ public class ItemJiFenGoodsListViewBinder extends ItemViewBinder<JiFenMallBean.D
 
     public interface OnProdClickListener {
 
-        void onProdClick(int id);
+        void onProdClick(JiFenMallBean.DataBean.ListBean item);
 
     }
 
@@ -52,7 +52,7 @@ public class ItemJiFenGoodsListViewBinder extends ItemViewBinder<JiFenMallBean.D
         holder.textHomeMoneyVip.setText(item.getPoints()+"积分");
         holder.itemView.setOnClickListener(position -> {
             if (mOnProdClickListener != null) {
-                mOnProdClickListener.onProdClick(adapterPosition);
+                mOnProdClickListener.onProdClick(item);
             }
         });
 

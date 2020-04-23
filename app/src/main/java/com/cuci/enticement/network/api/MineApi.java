@@ -1,5 +1,7 @@
 package com.cuci.enticement.network.api;
 
+import com.cuci.enticement.bean.HomeDetailsBean;
+
 import java.util.List;
 
 import okhttp3.MultipartBody;
@@ -15,6 +17,20 @@ import retrofit2.http.Part;
 
 public interface MineApi {
 
+
+    /**
+     * 获取商品详情
+     */
+    @FormUrlEncoded
+    @POST("store/api.member.points/goods")
+    Call<ResponseBody> getJiFenDetails(@Field("from_type") String from_type,
+                                         @Field("mid") String mid,
+                                         @Field("token") String token,
+                                         @Field("goods_id") String goods_id,
+                                         @Field("new_version") String new_version,
+                                         @Field("sign") String sign
+
+    );
     /**
      * 积分商城
      */

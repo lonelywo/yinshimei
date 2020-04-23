@@ -1,5 +1,6 @@
 package com.cuci.enticement.plate.mine.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -177,8 +178,10 @@ public class DuiHuanMallActivity extends BaseActivity implements OnRefreshLoadMo
     }
 
     @Override
-    public void onProdClick(int id) {
-
+    public void onProdClick(JiFenMallBean.DataBean.ListBean item) {
+        Intent intentProd = new Intent(this, JiFenProdActivity.class);
+        intentProd.putExtra("bannerData", ""+item.getId());
+        startActivity(intentProd);
     }
 
     @Override
