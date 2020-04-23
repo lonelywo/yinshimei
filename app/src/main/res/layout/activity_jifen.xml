@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/con_toubu"
         android:layout_width="match_parent"
@@ -51,7 +52,7 @@
             android:id="@+id/tv_money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="800"
+            tools:text="800"
             android:textSize="60sp"
             app:layout_constraintTop_toBottomOf="@+id/tv_wenzi"
             app:layout_constraintStart_toStartOf="parent"
@@ -135,22 +136,16 @@
       android:padding="@dimen/dp_10"
       android:textColor="@color/home_huang"
       />
-    <View
-        android:id="@+id/line"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/line_gray"
-        app:layout_constraintTop_toBottomOf="@+id/tv_biaoti"/>
     <com.classic.common.MultipleStatusView
         android:id="@+id/status_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:emptyView="@layout/custom_empty_view_shouhuodizi"
+        app:emptyView="@layout/custom_empty_view_kong"
         app:errorView="@layout/custom_error_view"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/line"
+        app:layout_constraintTop_toBottomOf="@+id/tv_biaoti"
         app:loadingView="@layout/custom_loading_view"
         app:noNetworkView="@layout/custom_no_network_view">
 
@@ -165,8 +160,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:overScrollMode="never"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
 
                 />
 

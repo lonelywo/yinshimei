@@ -26,7 +26,101 @@ public class MineViewModel extends ViewModel {
         mCreator = ServiceCreator.getInstance();
     }
 
+    /**
+     * 积分商城
+     * @param from_type
+     * @param page
+     * @return
+     */
+    public MutableLiveData<Status<ResponseBody>> JiFenShangChengList(String token,String mid,String from_type,String page,String page_size,String new_version,int loadType) {
 
+        final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
+        liveData.setValue(Status.loading(null));
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("from_type",from_type);
+        params.put("page",page);
+        params.put("token",token);
+        params.put("mid",mid);
+        params.put("page_size",page_size);
+        params.put("new_version",new_version);
+        String signs = SignUtils.signParam(params);
+        mCreator.create(MineApi.class)
+                .JiFenShangChengList(token,mid,from_type,page,page_size,new_version,signs)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(@NonNull Call<ResponseBody> call,
+                                           @NonNull Response<ResponseBody> response) {
+                        if (loadType == Status.LOAD_REFRESH) {
+                            liveData.setValue(Status.refreshSuccess(response.body()));
+                        } else {
+                            liveData.setValue(Status.moreSuccess(response.body()));
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<ResponseBody> call,
+                                          @NonNull Throwable t) {
+                        if (loadType == Status.LOAD_REFRESH) {
+                            liveData.setValue(Status.refreshError(null, t.getMessage() ==
+                                    null ? "加载失败" : t.getMessage()));
+                        } else {
+                            liveData.setValue(Status.moreError(null, t.getMessage() ==
+                                    null ? "加载失败" : t.getMessage()));
+                        }
+                    }
+                });
+        return liveData;
+
+    }
+
+    /**
+     * 积分明细
+     * @param from_type
+     * @param page
+     * @return
+     */
+    public MutableLiveData<Status<ResponseBody>> JiFenMingXiList(String token,String mid,String from_type,String page,String page_size,String new_version,int loadType) {
+
+        final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
+        liveData.setValue(Status.loading(null));
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("from_type",from_type);
+        params.put("page",page);
+        params.put("token",token);
+        params.put("mid",mid);
+        params.put("page_size",page_size);
+        params.put("new_version",new_version);
+        String signs = SignUtils.signParam(params);
+        mCreator.create(MineApi.class)
+                .JiFenMingXiList(token,mid,from_type,page,page_size,new_version,signs)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(@NonNull Call<ResponseBody> call,
+                                           @NonNull Response<ResponseBody> response) {
+                        if (loadType == Status.LOAD_REFRESH) {
+                            liveData.setValue(Status.refreshSuccess(response.body()));
+                        } else {
+                            liveData.setValue(Status.moreSuccess(response.body()));
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<ResponseBody> call,
+                                          @NonNull Throwable t) {
+                        if (loadType == Status.LOAD_REFRESH) {
+                            liveData.setValue(Status.refreshError(null, t.getMessage() ==
+                                    null ? "加载失败" : t.getMessage()));
+                        } else {
+                            liveData.setValue(Status.moreError(null, t.getMessage() ==
+                                    null ? "加载失败" : t.getMessage()));
+                        }
+                    }
+                });
+        return liveData;
+
+    }
 
     /**
      * 申请退款
