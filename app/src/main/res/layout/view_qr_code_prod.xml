@@ -7,46 +7,79 @@
     android:background="#FFFFFF">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/con_img"
+        android:id="@+id/con_img_share"
         android:layout_width="750px"
         android:layout_height="1334px"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@color/white"
+        android:visibility="visible"
         >
         <ImageView
-            android:id="@+id/img_tupian"
+            android:id="@+id/img_tupian_share"
             android:layout_width="750px"
-            android:layout_height="1334px"
+            android:layout_height="1100px"
             tools:src="@drawable/poster"
             android:scaleType="centerCrop"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             />
-        <TextView
-            android:id="@+id/text_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="皮蛋君"
-            android:textSize="30px"
-            android:textColor="@color/hei"
-            app:layout_constraintBottom_toBottomOf="@+id/img_tupian"
-            app:layout_constraintLeft_toLeftOf="@+id/img_tupian"
-            android:layout_marginBottom="160px"
-            android:layout_marginLeft="70px"
-            />
-        <ImageView
-            android:id="@+id/qrcode"
-            android:layout_width="155px"
-            android:layout_height="155px"
-            tools:src="@drawable/tuxiang"
-            app:layout_constraintBottom_toBottomOf="@+id/img_tupian"
-            app:layout_constraintRight_toRightOf="@+id/img_tupian"
-            android:scaleType="centerCrop"
-            android:layout_marginRight="57px"
-            android:layout_marginBottom="43px"
-            />
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@+id/img_tupian_share"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@color/white"
+            >
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/line_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.5"
+                />
+            <TextView
+                android:id="@+id/text_name_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="皮蛋君"
+                android:textSize="36px"
+                android:textColor="@color/hei"
+                app:layout_constraintBottom_toBottomOf="@+id/line_share"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginLeft="60px"
+                android:layout_marginBottom="10px"
+                />
+            <TextView
+                android:id="@+id/text_name_share1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="分享我的质感美学"
+                android:textSize="36px"
+                android:textColor="@color/hei"
+                app:layout_constraintTop_toTopOf="@+id/line_share"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginLeft="60px"
+                android:layout_marginTop="10px"
+                />
+
+            <ImageView
+                android:id="@+id/qrcode_share"
+                android:layout_width="155px"
+                android:layout_height="155px"
+                tools:src="@drawable/tuxiang"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:scaleType="centerCrop"
+                android:layout_marginRight="60px"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

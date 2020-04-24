@@ -168,7 +168,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
-            android:textColor="@color/orange"
+            android:textColor="@color/home_huang"
             android:textSize="14sp"
 
             />
@@ -450,7 +450,7 @@
             android:textSize="14sp"
             android:gravity="center"
             android:textColor="@color/colorWhite"
-            android:background="@color/orange"
+            android:background="@color/home_huang"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -474,7 +474,7 @@
             app:layout_constraintBottom_toBottomOf="@id/tv1"
             android:layout_marginLeft="4dp"
             android:textSize="12sp"
-            android:textColor="@color/orange"
+            android:textColor="@color/home_huang"
             android:text="¥"
             />
         <TextView
@@ -483,7 +483,7 @@
             android:layout_height="wrap_content"
             android:text="0"
             android:textSize="16sp"
-            android:textColor="@color/orange"
+            android:textColor="@color/home_huang"
             android:layout_marginLeft="1dp"
             app:layout_constraintBottom_toBottomOf="@id/tv1"
             app:layout_constraintStart_toEndOf="@+id/tv"

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.Guideline;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -56,6 +57,20 @@ public class BottomShareAppPopup2 extends BottomPopupView {
     LinearLayout llTupian;
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
+    @BindView(R.id.img_tupian_share)
+    ImageView imgTupianShare;
+    @BindView(R.id.text_name_share)
+    TextView textNameShare;
+    @BindView(R.id.text_name_share1)
+    TextView textNameShare1;
+    @BindView(R.id.qrcode_share)
+    ImageView qrcodeShare;
+    @BindView(R.id.con_img_share)
+    ConstraintLayout conImgShare;
+    @BindView(R.id.line)
+    Guideline line;
+    @BindView(R.id.text_name1)
+    TextView textName1;
     private UserInfo mUserInfo;
     private Bitmap bitmap;
     private String mposter;
@@ -80,8 +95,8 @@ public class BottomShareAppPopup2 extends BottomPopupView {
     protected void onCreate() {
         super.onCreate();
         ButterKnife.bind(this);
-      //  ViewUtils.showView(progressBar);
-       /* Glide.with(this)
+        ViewUtils.showView(progressBar);
+        Glide.with(this)
                 .load(mposter)
                 .placeholder(R.drawable.img_placeholder)
                 .listener(new RequestListener<Drawable>() {
@@ -100,10 +115,13 @@ public class BottomShareAppPopup2 extends BottomPopupView {
                 .into(imgTupian);
 
 
-        ImageLoader.loadPlaceholder(mqrcode, qrcode);*/
+        ImageLoader.loadPlaceholder(mqrcode, qrcode);
 
         textName.setText(mUserInfo.getNickname());
 
+        ImageLoader.loadPlaceholder(mqrcode, qrcodeShare);
+        ImageLoader.loadPlaceholder(mposter, imgTupianShare);
+        textNameShare.setText(mUserInfo.getNickname());
     }
 
     @OnClick({R.id.tv_share_wx, R.id.tv_share_moment,
@@ -112,7 +130,7 @@ public class BottomShareAppPopup2 extends BottomPopupView {
 
         switch (view.getId()) {
             case R.id.tv_share_wx:
-                bitmap = ImageUtils.getViewBitmap(conImg, 750, 1334);
+                bitmap = ImageUtils.getViewBitmap(conImgShare,750,1334);
                 if (bitmap == null) {
                     FToast.error("数据错误");
                     dismiss();
@@ -122,7 +140,7 @@ public class BottomShareAppPopup2 extends BottomPopupView {
                 dismiss();
                 break;
             case R.id.tv_share_moment:
-                bitmap = ImageUtils.getViewBitmap(conImg, 750, 1334);
+                bitmap = ImageUtils.getViewBitmap(conImgShare,750,1334);
                 if (bitmap == null) {
                     FToast.error("数据错误");
                     dismiss();
@@ -132,7 +150,7 @@ public class BottomShareAppPopup2 extends BottomPopupView {
                 dismiss();
                 break;
             case R.id.icon_share_save:
-                bitmap = ImageUtils.getViewBitmap(conImg, 750, 1334);
+                bitmap = ImageUtils.getViewBitmap(conImgShare,750,1334);
                 if (bitmap == null) {
                     FToast.error("数据错误");
                     dismiss();

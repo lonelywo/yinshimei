@@ -9,6 +9,19 @@ import retrofit2.http.POST;
 
 public interface OrderApi {
 
+
+    /**
+     * 积分兑换提交
+     */
+    @FormUrlEncoded
+    @POST("store/api.member.points/placeOrder")
+    Call<ResponseBody> getJiFenDuiHuanTiJiao(@Field("from_type") String fromType,@Field("token") String token,
+                                           @Field("mid") String mid,
+                                           @Field("rule") String rule,
+                                           @Field("address_id") String address_id,
+                                           @Field("new_version") String new_version,
+                                           @Field("sign") String signs);
+
     /**
      * 退款详情
      */

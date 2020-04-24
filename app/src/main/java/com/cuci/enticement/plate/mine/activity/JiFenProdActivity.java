@@ -2,6 +2,7 @@ package com.cuci.enticement.plate.mine.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -21,13 +22,16 @@ import com.cuci.enticement.bean.JiFenProBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.plate.common.GlideImageLoader;
+import com.cuci.enticement.plate.common.popup.WarningPopup;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.SharedPrefUtils;
+import com.cuci.enticement.utils.UtilsForClick;
 import com.cuci.enticement.widget.SmoothScrollview;
 import com.google.gson.Gson;
+import com.lxj.xpopup.XPopup;
 import com.tencent.smtt.sdk.WebView;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -75,7 +79,7 @@ public class JiFenProdActivity extends BaseActivity {
     ProgressBar progressBar;
 
     private String url;
-    private HomeDetailsBean.DataBean mProData;
+    private JiFenProBean.DataBean mProData;
     private MineViewModel mMineViewModel;
     private int status;
 
@@ -137,7 +141,7 @@ public class JiFenProdActivity extends BaseActivity {
                     String b = body.string();
                     JiFenProBean mJiFenProBean = new Gson().fromJson(b, JiFenProBean.class);
                     if (mJiFenProBean.getCode() == 1) {
-                        JiFenProBean.DataBean mProData = mJiFenProBean.getData();
+                        mProData = mJiFenProBean.getData();
                         final List<String> images = mProData.getImage();
                         banner.setImages(images);
                         banner.start();
@@ -176,8 +180,20 @@ public class JiFenProdActivity extends BaseActivity {
         ButterKnife.bind(this);
     }
 
-    @OnClick(R.id.image_back)
-    public void onViewClicked() {
-        finish();
+    @OnClick({R.id.image_back,R.id.text_buy})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.image_back:
+                finish();
+                break;
+            case R.id.text_buy:
+                if(mProData!=null){
+                    Intent intentProd = new Intent(this, DuiHuanDingDanQueRenActivity.class);
+                    intentProd.putExtra("intentInfo",mProData );
+                    startActivity(intentProd);
+                }
+
+                break;
+        }
     }
 }

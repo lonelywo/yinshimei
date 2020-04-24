@@ -39,7 +39,7 @@ public class JiFenProBean implements Serializable {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable{
         /**
          * id : 6876310413
          * title : 黑金蕾丝面膜-vip装

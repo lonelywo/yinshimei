@@ -30,13 +30,17 @@ public class QianDaoHouPopup extends CenterPopupView {
     TextView mContent;
     private Context mContext;
     private String mcontent;
+    private String mposter;
+    private String mqrcode;
 
-    public QianDaoHouPopup(@NonNull Context context,String content,
+    public QianDaoHouPopup(@NonNull Context context,String content,String poster,String qrcode,
                            OnQDHListener listener) {
         super(context);
         mContext = context;
         mQDHListener = listener;
         mcontent=content;
+        mposter=poster;
+        mqrcode=qrcode;
     }
 
     @Override
@@ -59,7 +63,7 @@ public class QianDaoHouPopup extends CenterPopupView {
                 new XPopup.Builder(mContext)
                         .dismissOnTouchOutside(false)
                         .dismissOnBackPressed(true)
-                        .asCustom(new BottomShareAppPopup2(mContext, mUserInfo, "", ""))
+                        .asCustom(new BottomShareAppPopup2(mContext, mUserInfo, mposter, mqrcode))
                         .show();
                 dismiss();
             }

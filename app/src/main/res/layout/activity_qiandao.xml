@@ -45,6 +45,7 @@
             android:src="@drawable/share_qiandao"
             android:textSize="14sp"
             android:layout_marginRight="10dp"
+            android:padding="5dp"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -132,6 +133,7 @@
            android:layout_marginLeft="10dp"
            />
        <TextView
+           android:id="@+id/tv_user_integral"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:text="80分"
@@ -195,19 +197,35 @@
               app:layout_constraintBottom_toBottomOf="@+id/line1"
               android:layout_margin="5dp"
               >
-              <TextView
-                  android:id="@+id/tv_jifen_1"
+              <androidx.constraintlayout.widget.ConstraintLayout
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:textColor="@color/home_huang"
-                  android:text="+1"
+                  app:layout_constraintTop_toTopOf="parent"
                   app:layout_constraintStart_toStartOf="parent"
                   app:layout_constraintEnd_toEndOf="parent"
-                  app:layout_constraintTop_toTopOf="parent"
-                  android:layout_marginTop="15dp"
-                  android:background="@drawable/shape_mine_jifen_status_num"
-                  android:gravity="center"
-                  />
+                  >
+                 <View
+                     android:id="@+id/view"
+                     android:layout_width="@dimen/dp_40"
+                     android:layout_height="@dimen/dp_40"
+                     app:layout_constraintTop_toTopOf="parent"
+                     android:background="@drawable/shape_mine_jifen_status_num"
+                     app:layout_constraintStart_toStartOf="parent"
+                     app:layout_constraintEnd_toEndOf="parent"
+                     android:layout_marginTop="15dp"
+                     />
+                  <ImageView
+                      android:id="@+id/tv_jifen_1"
+                      android:layout_width="19dp"
+                      android:layout_height="13dp"
+                      android:src="@drawable/finish"
+                      app:layout_constraintStart_toStartOf="@+id/view"
+                      app:layout_constraintEnd_toEndOf="@+id/view"
+                      app:layout_constraintTop_toTopOf="@+id/view"
+                      app:layout_constraintBottom_toBottomOf="@+id/view"
+                      />
+              </androidx.constraintlayout.widget.ConstraintLayout>
+
               <TextView
                   android:id="@+id/tv_time_1"
                   android:layout_width="wrap_content"
@@ -224,7 +242,7 @@
           <androidx.constraintlayout.widget.ConstraintLayout
               android:layout_width="0dp"
               android:layout_height="0dp"
-              android:background="@drawable/shape_qiandao_kapai_bg"
+              android:background="@drawable/shape_qiandao_kapai_bg1"
               app:layout_constraintStart_toStartOf="@+id/line2"
               app:layout_constraintEnd_toStartOf="@+id/line3"
               app:layout_constraintTop_toTopOf="parent"
@@ -249,7 +267,7 @@
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:text="明天"
-                  android:textColor="@color/home_huang"
+                  android:textColor="@color/white"
                   app:layout_constraintBottom_toBottomOf="parent"
                   app:layout_constraintStart_toStartOf="parent"
                   app:layout_constraintEnd_toEndOf="parent"

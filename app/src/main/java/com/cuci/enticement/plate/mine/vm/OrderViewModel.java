@@ -41,6 +41,44 @@ public class OrderViewModel extends ViewModel {
      * @param mid
      * @return
      */
+    public MutableLiveData<Status<ResponseBody>> getJiFenDuiHuanTiJiao(String token,String mid,String rule,String address_id,String new_version) {
+
+        final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();
+        data.setValue(Status.loading(null));
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("token",token);
+        params.put("mid",mid);
+        params.put("from_type","2");
+        params.put("rule",rule);
+        params.put("address_id",address_id);
+        params.put("new_version",new_version);
+        String sign = SignUtils.signParamRemoveNull(params);
+        mCreator.create(OrderApi.class)
+                .getJiFenDuiHuanTiJiao("2",token,mid,rule,address_id,new_version,sign)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(@NonNull Call<ResponseBody> call,
+                                           @NonNull Response<ResponseBody> response) {
+                        data.setValue(Status.success(response.body()));
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<ResponseBody> call,
+                                          @NonNull Throwable t) {
+                        data.setValue(Status.error(null, t.getMessage() == null ? "获取失败" : t.getMessage()));
+                    }
+                });
+        return data;
+    }
+
+
+    /**
+     * 退款详情
+     * @param token
+     * @param mid
+     * @return
+     */
     public MutableLiveData<Status<ResponseBody>> getTuiKuanXiangQing(String token,String mid,String refund_id,String item_id,String new_version) {
 
         final MutableLiveData<Status<ResponseBody>> data = new MutableLiveData<>();

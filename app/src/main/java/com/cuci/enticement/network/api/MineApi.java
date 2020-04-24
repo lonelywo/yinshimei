@@ -16,7 +16,17 @@ import retrofit2.http.Part;
 
 
 public interface MineApi {
-
+    /**
+     * 签到
+     */
+    @FormUrlEncoded
+    @POST("store/api.member.signin/registering")
+    Call<ResponseBody> qiandao(@Field("from_type") String from_type,
+                                     @Field("token") String token,
+                                     @Field("mid") String mid,
+                                     @Field("new_version") String new_version,
+                                     @Field("sign") String sign
+    );
 
     /**
      * 获取商品详情

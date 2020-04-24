@@ -182,7 +182,7 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
             switch (status.status) {
 
                 case Status.SUCCESS:
-                    dismissLoading();
+
                     AddressBean data = status.content;
                     List<AddressBean.DataBean.ListBean> list = data.getData().getList();
                     if (list == null||list.size()==0) {
@@ -238,7 +238,7 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
                     }
                     break;
                 case Status.ERROR:
-                    dismissLoading();
+
                     FToast.error(status.message);
                     if (status.loadType == Status.LOAD_MORE) {
                         mCanLoadMore = true;
@@ -248,7 +248,7 @@ public class RecAddressActivity extends BaseActivity implements OnRefreshLoadMor
                     }
                     break;
                 case Status.LOADING:
-                    showLoading();
+
                     break;
             }
         }

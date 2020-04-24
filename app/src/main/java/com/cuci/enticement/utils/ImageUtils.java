@@ -14,6 +14,8 @@ import android.util.Base64;
 import android.view.View;
 
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -86,6 +88,24 @@ public class ImageUtils {
         Bitmap bitmap=view.getDrawingCache();
 
         return bitmap;
+
+    }
+
+    public static Bitmap loadBitmapFromView(View view) {
+
+        int w = view.getWidth();
+
+        int h = view.getHeight();
+
+        Bitmap bmp =Bitmap.createBitmap(w,h,Bitmap.Config.ARGB_8888);
+
+        Canvas canvas =new Canvas(bmp);
+
+        view.layout(0,0,w,h);
+
+        view.draw(canvas);
+
+        return bmp;
 
     }
 

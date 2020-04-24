@@ -27,6 +27,41 @@ public class MineViewModel extends ViewModel {
     public MineViewModel() {
         mCreator = ServiceCreator.getInstance();
     }
+
+    /**
+     * 个人签到页面
+     * @param from_type
+     * @param new_version
+     * @return
+     */
+    public MutableLiveData<Status<ResponseBody>> qiandao(String from_type,String token,String mid,String new_version) {
+
+        final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
+        liveData.setValue(Status.loading(null));
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("from_type",from_type);
+        params.put("token",token);
+        params.put("mid",mid);
+        params.put("new_version",new_version);
+        String signs = SignUtils.signParam(params);
+        mCreator.create(MineApi.class)
+                .qiandao(from_type,token,mid,new_version,signs)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(@NonNull Call<ResponseBody> call,
+                                           @NonNull Response<ResponseBody> response) {
+                        liveData.setValue(Status.success(response.body()));
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<ResponseBody> call,
+                                          @NonNull Throwable t) {
+                        liveData.setValue(Status.error(null, t.getMessage() == null ? "网络错误" : t.getMessage()));
+                    }
+                });
+        return liveData;
+
+    }
     /**
      * 积分详情
      * @param from_type

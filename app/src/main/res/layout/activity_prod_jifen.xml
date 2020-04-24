@@ -135,7 +135,7 @@
 <LinearLayout
     android:id="@+id/ll_dibu"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="54dp"
     android:orientation="horizontal"
     app:layout_constraintLeft_toLeftOf="parent"
     app:layout_constraintRight_toRightOf="parent"
@@ -149,6 +149,7 @@
       android:layout_weight="1"
       android:textColor="#ffffff"
       android:text="立即兑换"
+      android:textSize="16sp"
       android:gravity="center"
       android:background="@color/home_huang"
       android:padding="15dp"

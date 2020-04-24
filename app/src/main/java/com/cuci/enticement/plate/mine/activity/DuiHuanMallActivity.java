@@ -66,7 +66,7 @@ public class DuiHuanMallActivity extends BaseActivity implements OnRefreshLoadMo
     private int page = 1;
     @Override
     public int getLayoutId() {
-        return R.layout.activity_duihuanjilu;
+        return R.layout.activity_duihuanmall;
     }
 
     @Override
