@@ -16,6 +16,18 @@ import retrofit2.http.Part;
 
 
 public interface MineApi {
+
+    /**
+     * 分享海报得积分
+     */
+    @FormUrlEncoded
+    @POST("store/api.member.signin/signingetintegral")
+    Call<ResponseBody> sharehaibao(@Field("from_type") String from_type,
+                               @Field("token") String token,
+                               @Field("mid") String mid,
+                               @Field("new_version") String new_version,
+                               @Field("sign") String sign
+    );
     /**
      * 签到
      */

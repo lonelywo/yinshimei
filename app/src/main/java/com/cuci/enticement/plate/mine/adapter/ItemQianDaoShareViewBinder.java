@@ -57,6 +57,9 @@ public class ItemQianDaoShareViewBinder extends ItemViewBinder<QianDaoBean.DataB
                   public void onClick(View view) {
                       if (mOnProdClickListener != null) {
                           mOnProdClickListener.onProdClick(item);
+                          holder.textMoney.setBackground(BasicApp.getContext().getResources().getDrawable(R.drawable.shape_qiandao_share_anniu_bg1));
+                          holder.textMoney.setTextColor(BasicApp.getContext().getResources().getColor(R.color.white));
+                          holder.textMoney.setText("已完成");
                       }
                   }
               });
@@ -74,6 +77,7 @@ public class ItemQianDaoShareViewBinder extends ItemViewBinder<QianDaoBean.DataB
 
         }else {
             holder.textMoney.setBackground(BasicApp.getContext().getResources().getDrawable(R.drawable.shape_qiandao_share_anniu_bg1));
+            holder.textMoney.setTextColor(BasicApp.getContext().getResources().getColor(R.color.white));
             holder.textMoney.setText("已完成");
         }
 /*

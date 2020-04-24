@@ -95,7 +95,7 @@ public class BottomShareAppPopup2 extends BottomPopupView {
     protected void onCreate() {
         super.onCreate();
         ButterKnife.bind(this);
-        ViewUtils.showView(progressBar);
+      /*  ViewUtils.showView(progressBar);
         Glide.with(this)
                 .load(mposter)
                 .placeholder(R.drawable.img_placeholder)
@@ -112,11 +112,10 @@ public class BottomShareAppPopup2 extends BottomPopupView {
                         return false;
                     }
                 })
-                .into(imgTupian);
+                .into(imgTupian);*/
 
-
+        ImageLoader.loadPlaceholder(mposter, imgTupian);
         ImageLoader.loadPlaceholder(mqrcode, qrcode);
-
         textName.setText(mUserInfo.getNickname());
 
         ImageLoader.loadPlaceholder(mqrcode, qrcodeShare);

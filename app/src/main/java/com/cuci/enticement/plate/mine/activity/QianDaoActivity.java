@@ -25,6 +25,7 @@ import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.CommissionmxBean;
 import com.cuci.enticement.bean.QianDaoBean;
+import com.cuci.enticement.bean.QianDaoShareImgBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.event.CashEvent;
@@ -191,6 +192,7 @@ public class QianDaoActivity extends BaseActivity implements ItemQianDaoShareVie
     }
 
     private void load() {
+        showLoading();
         mViewModel.qiandao("2", mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "" + AppUtils.getVersionCode(this))
                 .observe(this, mObserver);
     }
@@ -202,6 +204,7 @@ public class QianDaoActivity extends BaseActivity implements ItemQianDaoShareVie
             case Status.LOADING:
                 break;
             case Status.SUCCESS:
+                dismissLoading();
                 ResponseBody body = status.content;
                 try {
                     String b = body.string();
@@ -249,7 +252,7 @@ public class QianDaoActivity extends BaseActivity implements ItemQianDaoShareVie
 
                 break;
             case Status.ERROR:
-
+                dismissLoading();
                 FToast.error("网络错误");
                 break;
         }
@@ -307,7 +310,43 @@ public class QianDaoActivity extends BaseActivity implements ItemQianDaoShareVie
             return;
         }
         WxShareUtils.shareImageToWX(WxShareUtils.WX_SCENE_TIME_LINE, bitmap);
+        mViewModel.sharehaibao("2", mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "" + AppUtils.getVersionCode(this))
+                .observe(this, mshareObserver);
     }
+
+    private Observer<Status<ResponseBody>> mshareObserver = status -> {
+        switch (status.status) {
+            case Status.LOADING:
+                break;
+            case Status.SUCCESS:
+                ResponseBody body = status.content;
+                try {
+                    String b = body.string();
+                    QianDaoShareImgBean mQianDaoBean = new Gson().fromJson(b, QianDaoShareImgBean.class);
+                    if (mQianDaoBean.getCode() == 1) {
+                       FToast.success(mQianDaoBean.getInfo());
+                    } else if (mQianDaoBean.getCode() == HttpUtils.CODE_INVALID) {
+                        HttpUtils.Invalid(this);
+                        finish();
+                        FToast.error(mQianDaoBean.getInfo());
+                    } else {
+                        FToast.error(mQianDaoBean.getInfo());
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                break;
+            case Status.ERROR:
+
+                FToast.error("网络错误");
+                break;
+        }
+
+
+    };
+
 
     @Override
     public void onProdClick2(QianDaoBean.DataBean.SigninTaskBean item) {
