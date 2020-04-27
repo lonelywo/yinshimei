@@ -85,6 +85,7 @@ public class DataUserInfo implements Serializable {
          * daily_activity : 1
          * daily_activity_url : http://web.enticementchina.com/update.html?akey=
          * menu : {"gift":0}
+         * is_signin:0 签到
          */
 
         private int id;
@@ -130,6 +131,15 @@ public class DataUserInfo implements Serializable {
         private String daily_activity_url;
         private MenuBean menu;
 
+        public int getIs_signin() {
+            return is_signin;
+        }
+
+        public void setIs_signin(int is_signin) {
+            this.is_signin = is_signin;
+        }
+
+        private int is_signin;
         public int getId() {
             return id;
         }

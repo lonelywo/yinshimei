@@ -27,6 +27,93 @@ public class MineViewModel extends ViewModel {
     public MineViewModel() {
         mCreator = ServiceCreator.getInstance();
     }
+
+    /**
+     * 获取积分订单详情
+     * @param from_type
+     * @param new_version
+     * @return
+     */
+    public MutableLiveData<Status<ResponseBody>> jifenxiangqing(String from_type,String token,String mid,String order_no,String new_version) {
+
+        final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
+        liveData.setValue(Status.loading(null));
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("from_type",from_type);
+        params.put("token",token);
+        params.put("mid",mid);
+        params.put("order_no",order_no);
+        params.put("new_version",new_version);
+        String signs = SignUtils.signParam(params);
+        mCreator.create(MineApi.class)
+                .jifenxiangqing(from_type,token,mid,order_no,new_version,signs)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(@NonNull Call<ResponseBody> call,
+                                           @NonNull Response<ResponseBody> response) {
+                        liveData.setValue(Status.success(response.body()));
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<ResponseBody> call,
+                                          @NonNull Throwable t) {
+                        liveData.setValue(Status.error(null, t.getMessage() == null ? "网络错误" : t.getMessage()));
+                    }
+                });
+        return liveData;
+
+    }
+
+
+    /**
+     * 积分订单列表
+     * @param from_type
+     * @param page
+     * @return
+     */
+    public MutableLiveData<Status<ResponseBody>> JiFenOrderList(String token,String mid,String from_type,String status,String page,String page_size,String new_version,int loadType) {
+
+        final MutableLiveData<Status<ResponseBody>> liveData = new MutableLiveData<>();
+        liveData.setValue(Status.loading(null));
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("from_type",from_type);
+        params.put("page",page);
+        params.put("token",token);
+        params.put("mid",mid);
+        params.put("page_size",page_size);
+        params.put("status",status);
+        params.put("new_version",new_version);
+        String signs = SignUtils.signParamRemoveNull(params);
+        mCreator.create(MineApi.class)
+                .JiFenOrderList(token,mid,from_type,status,page,page_size,new_version,signs)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(@NonNull Call<ResponseBody> call,
+                                           @NonNull Response<ResponseBody> response) {
+                        if (loadType == Status.LOAD_REFRESH) {
+                            liveData.setValue(Status.refreshSuccess(response.body()));
+                        } else {
+                            liveData.setValue(Status.moreSuccess(response.body()));
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<ResponseBody> call,
+                                          @NonNull Throwable t) {
+                        if (loadType == Status.LOAD_REFRESH) {
+                            liveData.setValue(Status.refreshError(null, t.getMessage() ==
+                                    null ? "加载失败" : t.getMessage()));
+                        } else {
+                            liveData.setValue(Status.moreError(null, t.getMessage() ==
+                                    null ? "加载失败" : t.getMessage()));
+                        }
+                    }
+                });
+        return liveData;
+
+    }
+
     /**
      * 分享海报得积分
      * @param from_type

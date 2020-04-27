@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colorWhite"
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ll_toubu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"
+        >
+    <TextView
+        android:id="@+id/text_shijizhifu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="总价"
+        android:textSize="14sp"
+        android:textColor="@color/hei"
+        app:layout_constraintEnd_toStartOf="@+id/text_heji"
+        android:baselineAlignBottom="true"
+        app:layout_constraintBaseline_toBaselineOf="@+id/text_heji"
+        android:layout_marginRight="10dp"
+        />
+    <TextView
+        android:id="@+id/text_heji"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textSize="14sp"
+        android:textColor="@color/home_huang"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/text_quxiao_express"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_sibian_bai_bg6"
+        app:layout_constraintEnd_toStartOf="@+id/text_zhifu_rebuy_queren"
+        app:layout_constraintTop_toBottomOf="@+id/ll_toubu"
+        app:layout_constraintBottom_toTopOf="@+id/line_bottom"
+        android:text="查看物流"
+        android:padding="5dp"
+        android:layout_marginRight="10dp"
+        android:textSize="14sp"
+        />
+    <TextView
+        android:id="@+id/text_zhifu_rebuy_queren"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="立即支付"
+        android:textColor="@color/colorWhite"
+        android:padding="5dp"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_toubu"
+        app:layout_constraintBottom_toTopOf="@+id/line_bottom"
+        android:background="@drawable/shape_order_zhifu"
+        android:visibility="gone"
+        android:layout_marginEnd="10dp"
+
+        />
+    <View
+        android:id="@+id/line_bottom"
+        android:layout_width="0dp"
+        android:layout_height="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_toubu"
+        android:background="@drawable/shape_myorder_line"
+        android:layout_marginTop="56dp"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+

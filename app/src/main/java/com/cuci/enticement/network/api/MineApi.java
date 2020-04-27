@@ -18,6 +18,36 @@ import retrofit2.http.Part;
 public interface MineApi {
 
     /**
+     * 获取积分订单详情
+     */
+    @FormUrlEncoded
+    @POST("store/api.member.points/order")
+    Call<ResponseBody> jifenxiangqing(@Field("from_type") String from_type,
+                                   @Field("token") String token,
+                                   @Field("mid") String mid,
+                                   @Field("order_no") String order_no,
+                                   @Field("new_version") String new_version,
+                                   @Field("sign") String sign
+    );
+
+
+    /**
+     * 积分订单列表
+     */
+    @FormUrlEncoded
+    @POST("store/api.member.points/orderList")
+    Call<ResponseBody> JiFenOrderList(
+            @Field("token") String token,
+            @Field("mid") String mid,
+            @Field("from_type") String from_type,
+            @Field("status") String status,
+            @Field("page") String page,
+            @Field("page_size") String page_size,
+            @Field("new_version") String new_version,
+            @Field("sign") String sign
+    );
+
+    /**
      * 分享海报得积分
      */
     @FormUrlEncoded

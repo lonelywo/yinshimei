@@ -158,8 +158,6 @@ public class _MineFragment extends BaseFragment {
     TextView dot1Hx;
     @BindView(R.id.wodekefu_ll)
     ConstraintLayout wodekefuLl;
-    @BindView(R.id.text_wodeshezhi)
-    ImageView textWodeshezhi;
     @BindView(R.id.img_headwear)
     ImageView imgHeadwear;
     @BindView(R.id.view2)
@@ -213,7 +211,7 @@ public class _MineFragment extends BaseFragment {
     @BindView(R.id.view6)
     View view6;
     @BindView(R.id.text_qiandao)
-    ImageView textQiandao;
+    TextView textQiandao;
     @BindView(R.id.img_tubiao1)
     ImageView imgTubiao1;
     @BindView(R.id.img_tubiao2)
@@ -226,6 +224,20 @@ public class _MineFragment extends BaseFragment {
     ImageView imgTubiao5;
     @BindView(R.id.img_tubiao6)
     ImageView imgTubiao6;
+    @BindView(R.id.img_tubiao7)
+    ImageView imgTubiao7;
+    @BindView(R.id.view7)
+    View view7;
+    @BindView(R.id.img_tubiao8)
+    ImageView imgTubiao8;
+    @BindView(R.id.text_gongga8)
+    TextView textGongga8;
+    @BindView(R.id.con_set)
+    ConstraintLayout conSet;
+    @BindView(R.id.dot1_qiandao)
+    TextView dot1Qiandao;
+    @BindView(R.id.text_liping_dot)
+    TextView textLipingDot;
     private boolean mCouldChange = true;
     private LocalBroadcastManager mBroadcastManager;
     private UserInfo mUserInfo;
@@ -317,7 +329,7 @@ public class _MineFragment extends BaseFragment {
                 }
             }
         });
-        textWodeshezhi.setOnClickListener(new View.OnClickListener() {
+        conSet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (AppUtils.isAllowPermission(mActivity)) {
@@ -432,6 +444,20 @@ public class _MineFragment extends BaseFragment {
 
                 daily_activity_url = mDataUserInfo.getData().getDaily_activity_url();
 
+                if (gift == 1) {
+                    ViewUtils.showView(textLipingDot);
+                } else {
+                    ViewUtils.hideView(textLipingDot);
+                }
+                //签到
+                int is_signin = mDataUserInfo.getData().getIs_signin();
+                if (is_signin == 0) {
+                    ViewUtils.showView(dot1Qiandao);
+                    textQiandao.setText("签到");
+                } else {
+                    ViewUtils.hideView(dot1Qiandao);
+                    textQiandao.setText("已签到");
+                }
 
                /* if (daily_activity == 1) {
                     ViewUtils.showView(goodsLl);
@@ -510,12 +536,7 @@ public class _MineFragment extends BaseFragment {
                     ViewUtils.showView(dot3Tv);
                     dot3Tv.setText(String.valueOf(ordertotal.get_$4()));
                 }
-                   /* if (ordertotal.get_$5() == 0) {
-                        ViewUtils.hideView(dot4Tv);
-                    } else {
-                        ViewUtils.showView(dot4Tv);
-                        dot4Tv.setText(String.valueOf(ordertotal.get_$5()));
-                    }*/
+
             } else if (mDataUserInfo.getCode() == HttpUtils.CODE_INVALID) {
                 HttpUtils.Invalid(mActivity);
                 FToast.error(mDataUserInfo.getInfo());

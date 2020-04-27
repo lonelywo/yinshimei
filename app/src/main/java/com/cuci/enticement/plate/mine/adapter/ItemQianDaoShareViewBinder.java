@@ -22,7 +22,10 @@ import me.drakeet.multitype.ItemViewBinder;
 
 public class ItemQianDaoShareViewBinder extends ItemViewBinder<QianDaoBean.DataBean.SigninTaskBean, ItemQianDaoShareViewBinder.ViewHolder> {
 
-
+    private boolean ischeck=true;
+    public void setIscheck(){
+        ischeck=false;
+    }
     public interface OnProdClickListener {
        //分享朋友圈
         void onProdClick(QianDaoBean.DataBean.SigninTaskBean item);

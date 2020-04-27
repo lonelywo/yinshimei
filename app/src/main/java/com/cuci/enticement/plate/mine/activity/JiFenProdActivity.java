@@ -191,6 +191,7 @@ public class JiFenProdActivity extends BaseActivity {
                     Intent intentProd = new Intent(this, DuiHuanDingDanQueRenActivity.class);
                     intentProd.putExtra("intentInfo",mProData );
                     startActivity(intentProd);
+                    finish();
                 }
 
                 break;

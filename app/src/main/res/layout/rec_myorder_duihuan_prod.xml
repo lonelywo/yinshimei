@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorWhite"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+
+   <androidx.constraintlayout.widget.ConstraintLayout
+       android:id="@+id/con_buju"
+       android:layout_width="0dp"
+       android:layout_height="wrap_content"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       android:padding="10dp"
+       >
+      <ImageView
+          android:id="@+id/img_tupian"
+          android:layout_width="100dp"
+          android:layout_height="100dp"
+          tools:src="@mipmap/ic_launcher"
+          app:layout_constraintTop_toTopOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          android:scaleType="centerCrop"
+          />
+         <TextView
+             android:id="@+id/text_biaoti"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="新零售礼包A方案"
+             android:textColor="@color/hei"
+             android:textSize="13sp"
+             app:layout_constraintStart_toEndOf="@+id/img_tupian"
+             app:layout_constraintTop_toTopOf="parent"
+             android:layout_marginStart="6dp"
+             android:layout_marginTop="20dp"
+             />
+
+       <TextView
+           android:id="@+id/text_neirong"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"
+           tools:text="油纸*10，标贴*10，手提袋*10油纸"
+           android:maxLines="3"
+           android:ellipsize="end"
+           android:textSize="12sp"
+           android:textColor="#626262"
+           app:layout_constraintLeft_toLeftOf="@+id/text_biaoti"
+           app:layout_constraintBottom_toBottomOf="@id/img_tupian"
+           app:layout_constraintRight_toLeftOf="@+id/text_qian"
+           android:layout_marginBottom="20dp"
+           />
+
+          <TextView
+              android:id="@+id/text_qian"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              tools:text="3600"
+              android:textSize="13sp"
+              android:layout_marginStart="1dp"
+              android:textColor="@color/hei"
+              app:layout_constraintTop_toTopOf="@+id/text_biaoti"
+              app:layout_constraintEnd_toEndOf="parent"
+              />
+
+       <TextView
+           android:id="@+id/text_num"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           tools:text="x1"
+           android:textSize="12sp"
+           android:textColor="#626262"
+           app:layout_constraintBottom_toBottomOf="@+id/text_neirong"
+           app:layout_constraintEnd_toEndOf="parent"
+           />
+     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@drawable/shape_myorder_line"
+        app:layout_constraintTop_toBottomOf="@+id/con_buju"
+        />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+

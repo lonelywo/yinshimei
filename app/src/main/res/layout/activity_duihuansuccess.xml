@@ -61,8 +61,8 @@
          app:layout_constraintEnd_toEndOf="parent"
          android:layout_marginTop="42dp"
          />
-    <android.support.constraint.Guideline
-        android:id="@+id/guidelinePercent"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/line"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -76,7 +76,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/shape_jifen_chenggong_anniu_bg"
         app:layout_constraintTop_toBottomOf="@+id/tv_wenzi"
-        app:layout_constraintEnd_toStartOf="@+id/guidelinePercent"
+        app:layout_constraintEnd_toStartOf="@+id/line"
         android:text="返回首页"
         android:textSize="14sp"
         android:paddingLeft="20dp"
@@ -94,7 +94,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/shape_jifen_chenggong_anniu_bg2"
         app:layout_constraintTop_toBottomOf="@+id/tv_wenzi"
-        app:layout_constraintStart_toEndOf="@+id/guidelinePercent"
+        app:layout_constraintStart_toEndOf="@+id/line"
         android:text="查看订单"
         android:textSize="14sp"
         android:paddingLeft="20dp"

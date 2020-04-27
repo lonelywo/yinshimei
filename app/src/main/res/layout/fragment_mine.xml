@@ -45,31 +45,38 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:background="#E1AD73"
                 >
-
-                <ImageView
+                <TextView
+                    android:id="@+id/dot1_qiandao"
+                    android:layout_width="6dp"
+                    android:layout_height="6dp"
+                    android:background="@drawable/shape_mine_hx_status_num"
+                    android:gravity="center"
+                    android:text=""
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toTopOf="@+id/text_qiandao"
+                    app:layout_constraintStart_toStartOf="@+id/text_qiandao"
+                    android:layout_marginLeft="18dp"
+                    />
+                <TextView
                     android:id="@+id/text_qiandao"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:src="@drawable/qiandao"
-                    app:layout_constraintRight_toLeftOf="@+id/text_wodeshezhi"
-                    app:layout_constraintTop_toTopOf="@+id/text_name"
-                    app:layout_constraintBottom_toBottomOf="@+id/text_name"
-                    />
-
-
-                <ImageView
-                    android:id="@+id/text_wodeshezhi"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"
-                    android:src="@drawable/setup"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/text_name"
                     app:layout_constraintBottom_toBottomOf="@+id/text_name"
+                    android:text="签到"
+                    android:textSize="14sp"
+                    android:textColor="@color/white"
+                    android:drawableLeft="@drawable/qiandao"
+                    android:drawablePadding="@dimen/dp_6"
+                    android:gravity="center"
+                    android:background="@drawable/shape_mine_qiandao_bg"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="8dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
                     />
-
-
                 <ImageView
                 android:id="@+id/img_headwear"
                 android:layout_width="wrap_content"
@@ -343,8 +350,6 @@
                             android:text="待付款"
                             android:textColor="@color/hei"
                             app:layout_constraintBottom_toBottomOf="parent"
-
-
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -452,8 +457,6 @@
                             android:text="退款/售后"
                             android:textColor="@color/hei"
                             app:layout_constraintBottom_toBottomOf="parent"
-
-
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -580,7 +583,7 @@
                 android:id="@+id/con_wodefuli"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/con_wodeshouyi"
                 android:background="@color/white"
                 >
@@ -657,6 +660,23 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:gravity="center"
+                    />
+                <TextView
+                    android:id="@+id/text_liping_dot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="领礼品"
+                    android:textColor="@color/white"
+                    android:textSize="10sp"
+                    android:background="@drawable/shape_mine_liping_dot_bg"
+                    app:layout_constraintLeft_toRightOf="@+id/text_lipingzhongxing"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:gravity="center"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:visibility="gone"
                     />
 
                 <ImageView
@@ -782,11 +802,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:visibility="visible"
-                app:layout_constraintTop_toBottomOf="@+id/con_wodepaihangbang"
+                app:layout_constraintTop_toBottomOf="@+id/con_dizi"
                 android:background="@color/white"
                 >
                 <ImageView
-                    android:id="@+id/img_tubiao6"
+                    android:id="@+id/img_tubiao7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toTopOf="parent"
@@ -803,12 +823,62 @@
                     android:text="公告"
                     android:textColor="@color/hei"
                     android:textSize="16sp"
-                    app:layout_constraintLeft_toRightOf="@+id/img_tubiao6"
+                    app:layout_constraintLeft_toRightOf="@+id/img_tubiao7"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:gravity="center"
                     />
 
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:src="@drawable/youjiantou"
+                    android:layout_marginRight="10dp"
+                    />
+                <View
+                    android:id="@+id/view7"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="#f8f8f8"
+                    app:layout_constraintLeft_toLeftOf="@+id/text_gonggao"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/con_set"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:visibility="visible"
+                app:layout_constraintTop_toBottomOf="@+id/con_gonggao"
+                android:background="@color/white"
+                >
+                <ImageView
+                    android:id="@+id/img_tubiao8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:src="@drawable/setup"
+                    android:layout_marginLeft="10dp"
+                    />
+                <TextView
+                    android:id="@+id/text_gongga8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="设置"
+                    android:textColor="@color/hei"
+                    android:textSize="16sp"
+                    app:layout_constraintLeft_toRightOf="@+id/img_tubiao8"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:gravity="center"
+                    />
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

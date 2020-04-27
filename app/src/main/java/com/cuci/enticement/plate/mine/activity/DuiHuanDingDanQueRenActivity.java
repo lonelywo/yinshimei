@@ -261,8 +261,8 @@ public class DuiHuanDingDanQueRenActivity extends BaseActivity {
                     String result = body.string();
                     JiFenDuiHuanSubmitBean mJiFenDuiHuanSubmitBean = new Gson().fromJson(result, JiFenDuiHuanSubmitBean.class);
                     if (mJiFenDuiHuanSubmitBean.getCode() == 1) {
-                        Intent intentProd = new Intent(this, DuiHuanSuccessActivity.class);
-                        intentProd.putExtra("bannerData", "");
+                        Intent intentProd = new Intent(DuiHuanDingDanQueRenActivity.this, DuiHuanSuccessActivity.class);
+                      //  intentProd.putExtra("bannerData", "");
                         startActivity(intentProd);
                         finish();
                         FToast.success(mJiFenDuiHuanSubmitBean.getInfo());

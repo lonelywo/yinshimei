@@ -40,6 +40,11 @@
             >
         </activity>
         <activity
+            android:name=".plate.mine.activity.DuiHuanJiLuDetailsActivity"
+            android:screenOrientation="portrait"
+            >
+        </activity>
+        <activity
             android:name=".plate.mine.activity.GouldActivity"
             android:screenOrientation="portrait"
             >

@@ -4,10 +4,11 @@ import java.io.Serializable;
 
 public class JiFenDuiHuanSubmitBean implements Serializable {
 
+
     /**
      * code : 1
      * info : ok
-     * data : {"mid":60000000,"order_no":123123123,"status":3,"points":1000}
+     * data : {"mid":"52202","order_no":"2268799139659","status":3,"points":400}
      */
 
     private int code;
@@ -38,32 +39,32 @@ public class JiFenDuiHuanSubmitBean implements Serializable {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable{
         /**
-         * mid : 60000000
-         * order_no : 123123123
+         * mid : 52202
+         * order_no : 2268799139659
          * status : 3
-         * points : 1000
+         * points : 400
          */
 
-        private int mid;
-        private int order_no;
+        private String mid;
+        private String order_no;
         private int status;
         private int points;
 
-        public int getMid() {
+        public String getMid() {
             return mid;
         }
 
-        public void setMid(int mid) {
+        public void setMid(String mid) {
             this.mid = mid;
         }
 
-        public int getOrder_no() {
+        public String getOrder_no() {
             return order_no;
         }
 
-        public void setOrder_no(int order_no) {
+        public void setOrder_no(String order_no) {
             this.order_no = order_no;
         }
 

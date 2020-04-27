@@ -44,6 +44,7 @@ public class QianDaoBean implements Serializable {
         /**
          * even_day : 1
          * today_integral : 0
+         * is_signin
          * user_integral : 247
          * integral_next : [1,2,3,4,5,6,7]
          * signin_task : [{"type":1,"is_finish":0,"img":"http://qiniu.cdn.enticementchina.com/moments.png","title":"分享海报至朋友圈","get_integral":"5"},{"type":2,"is_finish":0,"img":"http://qiniu.cdn.enticementchina.com/expenditure.png","title":"商城下单消费赚积分","get_integral":"N"}]
@@ -52,6 +53,16 @@ public class QianDaoBean implements Serializable {
 
         private int even_day;
         private int today_integral;
+
+        public int getIs_signin() {
+            return is_signin;
+        }
+
+        public void setIs_signin(int is_signin) {
+            this.is_signin = is_signin;
+        }
+
+        private int is_signin;
         private int user_integral;
         private ShareInfoBean share_info;
         private List<Integer> integral_next;
@@ -110,11 +121,31 @@ public class QianDaoBean implements Serializable {
              * qrcode : https://qiniu.cdn.enticementchina.com/6fa1826c366ede04/b75b132271d29306.jpg
              * poster : https://qiniu.cdn.enticementchina.com/picturesign.jpg
              * mini_share_pic : https://qiniu.cdn.enticementchina.com/logo.png
+             *
              */
 
             private String qrcode;
             private String poster;
             private String mini_share_pic;
+
+            public String getNickname() {
+                return nickname;
+            }
+
+            public void setNickname(String nickname) {
+                this.nickname = nickname;
+            }
+
+            public String getSlogan() {
+                return slogan;
+            }
+
+            public void setSlogan(String slogan) {
+                this.slogan = slogan;
+            }
+
+            private String nickname;
+            private String slogan;
 
             public String getQrcode() {
                 return qrcode;

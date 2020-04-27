@@ -21,6 +21,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.R;
+import com.cuci.enticement.bean.QianDaoBean;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.FileUtils;
@@ -73,17 +74,14 @@ public class BottomShareAppPopup2 extends BottomPopupView {
     TextView textName1;
     private UserInfo mUserInfo;
     private Bitmap bitmap;
-    private String mposter;
-    private String mqrcode;
+    QianDaoBean.DataBean.ShareInfoBean mshare_info;
     private Context mContext;
 
-    public BottomShareAppPopup2(@NonNull Context context, UserInfo userInfo, String poster, String qrcode) {
+    public BottomShareAppPopup2(@NonNull Context context, UserInfo userInfo,  QianDaoBean.DataBean.ShareInfoBean share_info) {
         super(context);
         mContext = context;
         mUserInfo = userInfo;
-        mposter = poster;
-        mqrcode = qrcode;
-
+        mshare_info = share_info;
     }
 
     @Override
@@ -95,10 +93,11 @@ public class BottomShareAppPopup2 extends BottomPopupView {
     protected void onCreate() {
         super.onCreate();
         ButterKnife.bind(this);
-      /*  ViewUtils.showView(progressBar);
+        ViewUtils.showView(progressBar);
         Glide.with(this)
-                .load(mposter)
-                .placeholder(R.drawable.img_placeholder)
+                .load(mshare_info.getPoster())
+                .placeholder(R.drawable.poster)
+                .dontAnimate()//解决第一次加载不显示bug
                 .listener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
@@ -109,18 +108,37 @@ public class BottomShareAppPopup2 extends BottomPopupView {
                     @Override
                     public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                         ViewUtils.hideView(progressBar);
+                        imgTupian.setImageDrawable(resource);
                         return false;
                     }
                 })
-                .into(imgTupian);*/
+                .into(imgTupian);
+      //  ImageLoader.loadPlaceholder(mposter, imgTupian);
+        ImageLoader.loadPlaceholder(mshare_info.getQrcode(), qrcode);
+        textName.setText(mshare_info.getNickname());
+        textName1.setText(mshare_info.getSlogan());
 
-        ImageLoader.loadPlaceholder(mposter, imgTupian);
-        ImageLoader.loadPlaceholder(mqrcode, qrcode);
-        textName.setText(mUserInfo.getNickname());
 
-        ImageLoader.loadPlaceholder(mqrcode, qrcodeShare);
-        ImageLoader.loadPlaceholder(mposter, imgTupianShare);
-        textNameShare.setText(mUserInfo.getNickname());
+        Glide.with(this)
+                .load(mshare_info.getPoster())
+                .placeholder(R.drawable.poster)
+                .dontAnimate()//解决第一次加载不显示bug
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        imgTupianShare.setImageDrawable(resource);
+                        return false;
+                    }
+                })
+                .into(imgTupianShare);
+        ImageLoader.loadPlaceholder(mshare_info.getQrcode(), qrcodeShare);
+        textNameShare.setText(mshare_info.getNickname());
+        textNameShare1.setText(mshare_info.getSlogan());
     }
 
     @OnClick({R.id.tv_share_wx, R.id.tv_share_moment,

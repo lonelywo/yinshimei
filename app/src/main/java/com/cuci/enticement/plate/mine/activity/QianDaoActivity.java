@@ -30,6 +30,7 @@ import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.event.CashEvent;
 import com.cuci.enticement.event.DownShareImgEvent;
+import com.cuci.enticement.event.IsnewEvent;
 import com.cuci.enticement.plate.common.MainActivity;
 import com.cuci.enticement.plate.common.popup.BottomShareAppPopup2;
 import com.cuci.enticement.plate.common.popup.QianDaoHouPopup;
@@ -139,7 +140,8 @@ public class QianDaoActivity extends BaseActivity implements ItemQianDaoShareVie
     private String poster;
     private String qrcode;
     private QrCodeProdView mQrCodeProdView;
-
+    private ItemQianDaoShareViewBinder itemQianDaoShareViewBinder;
+    private QianDaoBean.DataBean.ShareInfoBean share_info;
     @Override
     public int getLayoutId() {
         return R.layout.activity_qiandao;
@@ -163,7 +165,8 @@ public class QianDaoActivity extends BaseActivity implements ItemQianDaoShareVie
         mItems = new Items();
         mAdapter.setItems(mItems);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        mAdapter.register(QianDaoBean.DataBean.SigninTaskBean.class, new ItemQianDaoShareViewBinder(this));
+        itemQianDaoShareViewBinder = new ItemQianDaoShareViewBinder(this);
+        mAdapter.register(QianDaoBean.DataBean.SigninTaskBean.class, itemQianDaoShareViewBinder);
       /*  CartItemDecoration mDecoration = new CartItemDecoration(this, 4);
         recyclerView.addItemDecoration(mDecoration);*/
         mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -223,21 +226,23 @@ public class QianDaoActivity extends BaseActivity implements ItemQianDaoShareVie
                         mItems.addAll(signin_task);
                         mAdapter.notifyDataSetChanged();
                         int today_integral = mQianDaoBean.getData().getToday_integral();
-                         poster = mQianDaoBean.getData().getShare_info().getPoster();
-                         qrcode = mQianDaoBean.getData().getShare_info().getQrcode();
-                        mQrCodeProdView.setDesc(mUserInfo.getNickname());
-                        mQrCodeProdView.setImageMain(poster);
-                        mQrCodeProdView.setImageQrCode(qrcode);
-                        if(today_integral==1){
+                        int is_signin = mQianDaoBean.getData().getIs_signin();
+                        share_info = mQianDaoBean.getData().getShare_info();
+                        mQrCodeProdView.setDesc(share_info.getNickname());
+                        mQrCodeProdView.setImageMain(share_info.getPoster());
+                        mQrCodeProdView.setImageQrCode(share_info.getQrcode());
+                        if(is_signin==0){
                             new XPopup.Builder(this)
                                     .dismissOnTouchOutside(false)
                                     .dismissOnBackPressed(false)
-                                    .asCustom(new QianDaoHouPopup(this, "积分+"+mQianDaoBean.getData().getIntegral_next().get(0),poster,qrcode,
+                                    .asCustom(new QianDaoHouPopup(this, "积分+"+today_integral,share_info,
                                             () -> {
 
                                             }))
                                     .show();
                         }
+                        //刷新签到
+                        EventBus.getDefault().post(new IsnewEvent());
                     } else if (mQianDaoBean.getCode() == HttpUtils.CODE_INVALID) {
                         HttpUtils.Invalid(this);
                         finish();
@@ -276,7 +281,7 @@ public class QianDaoActivity extends BaseActivity implements ItemQianDaoShareVie
 
 
 
-    @OnClick({R.id.img_back, R.id.tv_share, R.id.tv_qiandao_guize,R.id.tv_shangcheng})
+    @OnClick({R.id.img_back, R.id.tv_share, R.id.tv_qiandao_guize,R.id.tv_shangcheng,R.id.tv_user_integral})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -286,17 +291,20 @@ public class QianDaoActivity extends BaseActivity implements ItemQianDaoShareVie
                 new XPopup.Builder(this)
                         .dismissOnTouchOutside(false)
                         .dismissOnBackPressed(true)
-                        .asCustom(new BottomShareAppPopup2(this, mUserInfo, poster, qrcode))
+                        .asCustom(new BottomShareAppPopup2(this, mUserInfo, share_info))
                         .show();
                 break;
             case R.id.tv_qiandao_guize:
                 Intent intentProd = new Intent(this, TuiAgreementActivity.class);
                 intentProd.putExtra("title", "签到规则");
-                intentProd.putExtra("bannerData", "https://web.enticementchina.com/appweb/integral_rule.html");
+                intentProd.putExtra("bannerData", "https://web.enticementchina.com/appweb/signin_rule.html");
                 startActivity(intentProd);
                 break;
             case R.id.tv_shangcheng:
                 startActivity(new Intent(this, DuiHuanMallActivity.class));
+                break;
+            case R.id.tv_user_integral:
+                startActivity(new Intent(this, JiFenActivity.class));
                 break;
         }
     }
@@ -304,12 +312,7 @@ public class QianDaoActivity extends BaseActivity implements ItemQianDaoShareVie
     @Override
     public void onProdClick(QianDaoBean.DataBean.SigninTaskBean item) {
 
-        Bitmap bitmap = ImageUtils.getViewBitmap(mQrCodeProdView,750,1334);
-        if (bitmap == null) {
-            FToast.error("数据错误");
-            return;
-        }
-        WxShareUtils.shareImageToWX(WxShareUtils.WX_SCENE_TIME_LINE, bitmap);
+
         mViewModel.sharehaibao("2", mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "" + AppUtils.getVersionCode(this))
                 .observe(this, mshareObserver);
     }
@@ -324,7 +327,13 @@ public class QianDaoActivity extends BaseActivity implements ItemQianDaoShareVie
                     String b = body.string();
                     QianDaoShareImgBean mQianDaoBean = new Gson().fromJson(b, QianDaoShareImgBean.class);
                     if (mQianDaoBean.getCode() == 1) {
-                       FToast.success(mQianDaoBean.getInfo());
+                  //     FToast.success(mQianDaoBean.getInfo());
+                        Bitmap bitmap = ImageUtils.getViewBitmap(mQrCodeProdView,750,1334);
+                        if (bitmap == null) {
+                            FToast.error("数据错误");
+                            return;
+                        }
+                        WxShareUtils.shareImageToWX(WxShareUtils.WX_SCENE_TIME_LINE, bitmap);
                     } else if (mQianDaoBean.getCode() == HttpUtils.CODE_INVALID) {
                         HttpUtils.Invalid(this);
                         finish();

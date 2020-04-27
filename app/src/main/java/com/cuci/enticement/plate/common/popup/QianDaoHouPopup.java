@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.cuci.enticement.R;
+import com.cuci.enticement.bean.QianDaoBean;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.bean.Version;
 import com.cuci.enticement.plate.common.LauncherActivity;
@@ -30,17 +31,15 @@ public class QianDaoHouPopup extends CenterPopupView {
     TextView mContent;
     private Context mContext;
     private String mcontent;
-    private String mposter;
-    private String mqrcode;
+    QianDaoBean.DataBean.ShareInfoBean mshare_info;
 
-    public QianDaoHouPopup(@NonNull Context context,String content,String poster,String qrcode,
+    public QianDaoHouPopup(@NonNull Context context,String content,QianDaoBean.DataBean.ShareInfoBean share_info,
                            OnQDHListener listener) {
         super(context);
         mContext = context;
         mQDHListener = listener;
         mcontent=content;
-        mposter=poster;
-        mqrcode=qrcode;
+        mshare_info=share_info;
     }
 
     @Override
@@ -63,7 +62,7 @@ public class QianDaoHouPopup extends CenterPopupView {
                 new XPopup.Builder(mContext)
                         .dismissOnTouchOutside(false)
                         .dismissOnBackPressed(true)
-                        .asCustom(new BottomShareAppPopup2(mContext, mUserInfo, mposter, mqrcode))
+                        .asCustom(new BottomShareAppPopup2(mContext, mUserInfo, mshare_info))
                         .show();
                 dismiss();
             }
