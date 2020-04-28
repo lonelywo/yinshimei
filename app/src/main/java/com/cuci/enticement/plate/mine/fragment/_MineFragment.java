@@ -238,6 +238,8 @@ public class _MineFragment extends BaseFragment {
     TextView dot1Qiandao;
     @BindView(R.id.text_liping_dot)
     TextView textLipingDot;
+    @BindView(R.id.con_wodedingdan)
+    ConstraintLayout conWodedingdan;
     private boolean mCouldChange = true;
     private LocalBroadcastManager mBroadcastManager;
     private UserInfo mUserInfo;
@@ -690,10 +692,10 @@ public class _MineFragment extends BaseFragment {
         }
     }
 
-    @OnClick({R.id.text_quanbudingdan, R.id.con_wodeshouyi, R.id.con_wodemeifen, R.id.con_dizi, R.id.text_wodekefu, R.id.con_wodefuli})
+    @OnClick({R.id.con_wodedingdan, R.id.con_wodeshouyi, R.id.con_wodemeifen, R.id.con_dizi, R.id.text_wodekefu, R.id.con_wodefuli})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.text_quanbudingdan:
+            case R.id.con_wodedingdan:
                 if (AppUtils.isAllowPermission(mActivity)) {
                     Intent intentProd = new Intent(mActivity, MyOrderActivity.class);
                     intentProd.putExtra("Data", "");

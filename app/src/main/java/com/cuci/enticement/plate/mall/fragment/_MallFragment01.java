@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
@@ -60,7 +61,7 @@ public class _MallFragment01 extends BaseFragment implements OnRefreshLoadMoreLi
     @BindView(R.id.refresh_layout)
     SmartRefreshLayout mRefreshLayout;
     @BindView(R.id.image_top)
-    ImageView mIvTop;
+    ConstraintLayout mIvTop;
     private GridItemDecoration mDecoration;
     private GridLayoutManager mLayoutManager;
     private int total;

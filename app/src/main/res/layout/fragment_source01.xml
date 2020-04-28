@@ -35,17 +35,48 @@
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
-    <ImageView
+    <!--<ImageView
         android:id="@+id/image_top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/icon_top"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="ContentDescription"
-        />
+        />-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/image_top"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone"
+        >
+        <View
+            android:id="@+id/view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_home_dingbu_bg"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+        <ImageView
+            android:id="@+id/img_dingbu"
+            android:layout_width="14dp"
+            android:layout_height="25dp"
+            android:src="@drawable/dingbu"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
 
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <LinearLayout
@@ -59,22 +90,35 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:paddingBottom="200dp"
+        >
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
             android:src="@drawable/queshengye" />
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:gravity="center_horizontal"
             android:lineSpacingExtra="6dp"
-            android:text="啊哦，您还没有相关订单"/>
-
+            android:text="您还没有订单,快去选购吧~"/>
+         <TextView
+             android:id="@+id/tv_go"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="去逛逛"
+             android:textSize="16sp"
+             android:textColor="@color/white"
+             android:background="@drawable/shape_pro_yhq_anniu"
+             android:gravity="center"
+             android:layout_marginTop="26dp"
+             android:paddingLeft="20dp"
+             android:paddingRight="20dp"
+             android:paddingTop="2dp"
+             android:paddingBottom="2dp"
+             />
     </LinearLayout>
 
 

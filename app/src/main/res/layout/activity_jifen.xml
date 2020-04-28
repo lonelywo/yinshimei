@@ -47,12 +47,13 @@
             android:drawableLeft="@drawable/integralrules"
             android:drawablePadding="@dimen/dp_6"
             android:gravity="center"
+            android:includeFontPadding="false"
             />
         <TextView
             android:id="@+id/tv_money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="800"
+            android:text="0"
             android:textSize="60sp"
             app:layout_constraintTop_toBottomOf="@+id/tv_wenzi"
             app:layout_constraintStart_toStartOf="parent"

@@ -14,14 +14,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.alipay.sdk.app.PayTask;
 import com.cuci.enticement.BasicApp;
 import com.cuci.enticement.Constant;
@@ -42,6 +45,7 @@ import com.cuci.enticement.event.IsnewEvent;
 import com.cuci.enticement.plate.cart.activity.LogisticsActivity;
 import com.cuci.enticement.plate.cart.activity.OrderDetailsActivity;
 import com.cuci.enticement.plate.cart.activity.PayOfterActivity;
+import com.cuci.enticement.plate.common.MainActivity;
 import com.cuci.enticement.plate.common.eventbus.OrderEvent;
 import com.cuci.enticement.plate.common.popup.PayBottom2TopProdPopup;
 import com.cuci.enticement.plate.common.popup.TipsPopup;
@@ -65,13 +69,16 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import butterknife.BindView;
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
@@ -81,36 +88,41 @@ import okhttp3.ResponseBody;
  * 首页外层Fragment
  */
 public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreListener, ItemProdViewBinder.OnProdClickListener
-, ItemBottomViewBinder.OnItemClickListener ,ItemTitleViewBinder.OnProdTitleClickListener{
+        , ItemBottomViewBinder.OnItemClickListener, ItemTitleViewBinder.OnProdTitleClickListener {
 
     private static final String TAG = _OrderFragment01.class.getSimpleName();
     private static final int SDK_PAY_FLAG = 1;
+    @BindView(R.id.view)
+    View view;
+    @BindView(R.id.img_dingbu)
+    ImageView imgDingbu;
+    @BindView(R.id.tv_go)
+    TextView tvGo;
     private boolean mCanLoadMore = true;
     private OrderViewModel mViewModel;
-    private int page=1;
+    private int page = 1;
     private String mtype;
-    private final String PAGE_SIZE="20";
+    private final String PAGE_SIZE = "20";
 
 
     //默认支付宝
-    private int mPayType=2;
+    private int mPayType = 2;
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @BindView(R.id.refresh_layout)
     SmartRefreshLayout mRefreshLayout;
     @BindView(R.id.image_top)
-    ImageView mIvTop;
+    ConstraintLayout mIvTop;
 
     @BindView(R.id.empty_view)
     LinearLayout mEmptyLayout;
 
 
-
     private LinearLayoutManager mLayoutManager;
     private MultiTypeAdapter mAdapter;
     private Items mItems;
-    private  List<AllOrderList.DataBean.ListBeanX> mDatas=new ArrayList<>();
-    private  UserInfo mUserInfo;
+    private List<AllOrderList.DataBean.ListBeanX> mDatas = new ArrayList<>();
+    private UserInfo mUserInfo;
 
     public static _OrderFragment01 newInstance(String type) {
         Bundle args = new Bundle();
@@ -119,9 +131,10 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
         fragment.setArguments(args);
         return fragment;
     }
+
     @Override
     protected void onLazyLoad() {
-       load();
+        load();
     }
 
     @Override
@@ -129,9 +142,6 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
         return R.layout.fragment_source01;
 
     }
-
-
-
 
 
     @SuppressLint("HandlerLeak")
@@ -158,7 +168,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                         //刷新is_new
                         EventBus.getDefault().post(new IsnewEvent());
                         //切换全部订单
-                       // EventBus.getDefault().post(new OrderEvent(OrderEvent.INTENT_MY_ORDER));
+                        // EventBus.getDefault().post(new OrderEvent(OrderEvent.INTENT_MY_ORDER));
                         //跳转支付成功页面
                         startActivity(new Intent(mActivity, PayOfterActivity.class));
 
@@ -185,16 +195,13 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
     };
 
 
-
-
-
     @Override
     protected void initViews(LayoutInflater inflater, View view, ViewGroup container, Bundle savedInstanceState) {
         Bundle bundle = getArguments();
         mtype = bundle.getString("type");
 
-        mUserInfo= SharedPrefUtils.get(UserInfo.class);
-        if(mUserInfo==null){
+        mUserInfo = SharedPrefUtils.get(UserInfo.class);
+        if (mUserInfo == null) {
             return;
         }
 
@@ -206,12 +213,12 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
         mRefreshLayout.setEnableFooterFollowWhenNoMoreData(true);
         mRefreshLayout.setOnRefreshLoadMoreListener(this);
 
-       // mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        // mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
 
         mAdapter = new MultiTypeAdapter();
         mItems = new Items();
         mAdapter.setItems(mItems);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         //注册布局
         mAdapter.register(ItemOrderTitle.class, new ItemTitleViewBinder(this));
@@ -226,16 +233,22 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
         OrderItemTopDecoration mDecoration = new OrderItemTopDecoration(mActivity, 4);
         mRecyclerView.addItemDecoration(mDecoration);
         mRecyclerView.setAdapter(mAdapter);
+        tvGo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentRank = new Intent(MainActivity.ACTION_GO_TO_HOME);
+                LocalBroadcastManager.getInstance(mActivity)
+                        .sendBroadcast(intentRank);
+                startActivity(new Intent(mActivity, MainActivity.class));
+                mActivity.finish();
+            }
+        });
     }
 
     private void load() {
-        String token = mUserInfo.getToken();
-        int id = mUserInfo.getId();
-        mViewModel.getOrderList(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"1",mtype,"",""+ AppUtils.getVersionCode(BasicApp.getContext()),Status.LOAD_REFRESH)
+        mViewModel.getOrderList(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "1", mtype, "", "" + AppUtils.getVersionCode(BasicApp.getContext()), Status.LOAD_REFRESH)
                 .observe(this, mObserver);
     }
-
-
 
 
     private Observer<Status<ResponseBody>> mObserver = status -> {
@@ -245,9 +258,9 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                 ResponseBody content = status.content;
                 try {
                     String result = content.string();
-                    if(mtype.equals("2")){
+                    if (mtype.equals("2")) {
 
-                        Log.d("east", ": "+result);
+                        Log.d("east", ": " + result);
                     }
                     AllOrderList allOrderList = new Gson().fromJson(result, AllOrderList.class);
 
@@ -255,10 +268,10 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                         AllOrderList.DataBean data = allOrderList.getData();
                         List<AllOrderList.DataBean.ListBeanX> item = data.getList();
 
-                        if (item == null ) {
+                        if (item == null) {
                             if (status.loadType == Status.LOAD_REFRESH) {
 
-                                    ViewUtils.showView(mEmptyLayout);
+                                ViewUtils.showView(mEmptyLayout);
 
                                 mRefreshLayout.finishRefresh();
                             } else {
@@ -269,7 +282,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                             return;
                         }
 
-                        page = data.getPage().getCurrent()+1;
+                        page = data.getPage().getCurrent() + 1;
                         mCanLoadMore = true;
 
                         if (status.loadType == Status.LOAD_REFRESH) {
@@ -302,7 +315,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                             mRefreshLayout.finishLoadMore();
                         }
 
-                    }else if(allOrderList.getCode() == HttpUtils.CODE_INVALID){
+                    } else if (allOrderList.getCode() == HttpUtils.CODE_INVALID) {
                         HttpUtils.Invalid(mActivity);
                         mActivity.finish();
                         FToast.error(allOrderList.getInfo());
@@ -319,7 +332,6 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
 
 
                 //  OrderList bean = status.content;
@@ -344,35 +356,34 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
     };
 
 
-
     /**
      * 添加订单item
+     *
      * @param item
      */
     private void addOrderItem(List<AllOrderList.DataBean.ListBeanX> item) {
 
 
-
-        for (int i = 0; i <item.size() ; i++) {
+        for (int i = 0; i < item.size(); i++) {
             AllOrderList.DataBean.ListBeanX orderBean = item.get(i);
-            int cur=mItems.size();
-            ItemOrderTitle itemOrderTitle = new ItemOrderTitle(String.valueOf(orderBean.getOrder_no()), orderBean.getStatus(),cur,orderBean.getRefund_state());
+            int cur = mItems.size();
+            ItemOrderTitle itemOrderTitle = new ItemOrderTitle(String.valueOf(orderBean.getOrder_no()), orderBean.getStatus(), cur, orderBean.getRefund_state());
             mItems.add(itemOrderTitle);
             List<OrderGoods> goodsBeanList = orderBean.getList();
             mItems.addAll(goodsBeanList);
-            int curBottom=mItems.size();
+            int curBottom = mItems.size();
             ItemOrderBottom itemOrderBottom = new ItemOrderBottom();
-            itemOrderBottom.status=orderBean.getStatus();
-            itemOrderBottom.orderNum=String.valueOf(orderBean.getOrder_no());
-            itemOrderBottom.totalMoney=orderBean.getPrice_total();
-            itemOrderBottom.goodsMoney=orderBean.getPrice_goods();
-            itemOrderBottom.expressMoney=orderBean.getPrice_express();
-            itemOrderBottom.expressNo=orderBean.getExpress_send_no();
-            itemOrderBottom.express_company_title=orderBean.getExpress_company_title();
-            itemOrderBottom.expressCode=orderBean.getExpress_company_code();
-            itemOrderBottom.num=orderBean.getGoods_count();
-            itemOrderBottom.bottomcur=curBottom;
-            itemOrderBottom.topCur=cur;
+            itemOrderBottom.status = orderBean.getStatus();
+            itemOrderBottom.orderNum = String.valueOf(orderBean.getOrder_no());
+            itemOrderBottom.totalMoney = orderBean.getPrice_total();
+            itemOrderBottom.goodsMoney = orderBean.getPrice_goods();
+            itemOrderBottom.expressMoney = orderBean.getPrice_express();
+            itemOrderBottom.expressNo = orderBean.getExpress_send_no();
+            itemOrderBottom.express_company_title = orderBean.getExpress_company_title();
+            itemOrderBottom.expressCode = orderBean.getExpress_company_code();
+            itemOrderBottom.num = orderBean.getGoods_count();
+            itemOrderBottom.bottomcur = curBottom;
+            itemOrderBottom.topCur = cur;
             mItems.add(itemOrderBottom);
         }
 
@@ -380,11 +391,11 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-        if(mCanLoadMore=true){
+        if (mCanLoadMore = true) {
             mCanLoadMore = false;
-            mViewModel.getOrderList(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),String.valueOf(page),mtype,"",""+ AppUtils.getVersionCode(BasicApp.getContext()),Status.LOAD_MORE).observe(this, mObserver);
+            mViewModel.getOrderList(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), String.valueOf(page), mtype, "", "" + AppUtils.getVersionCode(BasicApp.getContext()), Status.LOAD_MORE).observe(this, mObserver);
 
-        }else {
+        } else {
             mRefreshLayout.finishLoadMore();
         }
 
@@ -397,10 +408,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
     }
 
 
-
-
-
-    private ItemOrderBottom  mCancelItem;
+    private ItemOrderBottom mCancelItem;
 
     @Override
     public void onReBuy(ItemOrderBottom itemOrderBottom) {
@@ -409,6 +417,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
 
     /**
      * 取消订单
+     *
      * @param itemOrderBottom
      */
     @Override
@@ -419,23 +428,20 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                 .asCustom(new TipsPopup(mActivity,
                         "您确定要取消订单吗？", "取消", "确定", () -> {
                     String orderNum = itemOrderBottom.orderNum;
-                    mCancelItem=itemOrderBottom;
-                    mViewModel.orderCancel(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),orderNum,""+ AppUtils.getVersionCode(BasicApp.getContext())).observe(this, mCancelObserver);
+                    mCancelItem = itemOrderBottom;
+                    mViewModel.orderCancel(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), orderNum, "" + AppUtils.getVersionCode(BasicApp.getContext())).observe(this, mCancelObserver);
 
 
                 }))
                 .show();
 
 
-
-
     }
-
-
 
 
     /**
      * 立即支付
+     *
      * @param itemOrderBottom
      */
     @Override
@@ -445,26 +451,23 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
         new XPopup.Builder(mActivity)
                 .dismissOnTouchOutside(true)
                 .dismissOnBackPressed(true)
-                .asCustom(new PayBottom2TopProdPopup(mActivity,itemOrderBottom.totalMoney,type -> {
+                .asCustom(new PayBottom2TopProdPopup(mActivity, itemOrderBottom.totalMoney, type -> {
 
-                    mPayType=type;
-                    mViewModel.getOrderPay(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),
-                            String.valueOf(itemOrderBottom.orderNum),String.valueOf(type),""+ AppUtils.getVersionCode(BasicApp.getContext()))
-                            .observe(this,mPayObserver);
+                    mPayType = type;
+                    mViewModel.getOrderPay(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),
+                            String.valueOf(itemOrderBottom.orderNum), String.valueOf(type), "" + AppUtils.getVersionCode(BasicApp.getContext()))
+                            .observe(this, mPayObserver);
 
 
                 }))
                 .show();
 
 
-
-
-
-
     }
 
     /**
      * 确认收货
+     *
      * @param itemOrderBottom
      */
     @Override
@@ -474,9 +477,9 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                 .dismissOnTouchOutside(false)
                 .asCustom(new TipsPopup(mActivity,
                         "您确定要收货吗？", "取消", "确定", () -> {
-                    mViewModel.orderConfirm(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),
-                            itemOrderBottom.orderNum,""+ AppUtils.getVersionCode(BasicApp.getContext()))
-                            .observe(this,mConfirmObserver);
+                    mViewModel.orderConfirm(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),
+                            itemOrderBottom.orderNum, "" + AppUtils.getVersionCode(BasicApp.getContext()))
+                            .observe(this, mConfirmObserver);
                 }))
                 .show();
     }
@@ -484,14 +487,15 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
 
     /**
      * 查看物流
+     *
      * @param itemOrderBottom
      */
     @Override
     public void onViewLogistics(ItemOrderBottom itemOrderBottom) {
         Intent intent = new Intent(mActivity, LogisticsActivity.class);
-        intent.putExtra("express_no",itemOrderBottom.expressNo);
-        intent.putExtra("express_code",itemOrderBottom.expressCode);
-        intent.putExtra("express_company_title",itemOrderBottom.express_company_title);
+        intent.putExtra("express_no", itemOrderBottom.expressNo);
+        intent.putExtra("express_code", itemOrderBottom.expressCode);
+        intent.putExtra("express_company_title", itemOrderBottom.express_company_title);
         startActivity(intent);
     }
 
@@ -502,17 +506,16 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onOrderEventMessage(OrderEvent event) {
-        if(event.getCode()==OrderEvent.CANCEL_ORDER){
-            if(mtype.equals("")||mtype.equals("2")||mtype.equals("3")){
-               load();
+        if (event.getCode() == OrderEvent.CANCEL_ORDER) {
+            if (mtype.equals("") || mtype.equals("2") || mtype.equals("3")) {
+                load();
             }
-        }else if(event.getCode()==OrderEvent.REFRESH_OUTSIDE){
+        } else if (event.getCode() == OrderEvent.REFRESH_OUTSIDE) {
             mRefreshLayout.autoRefresh();
         }
 
 
     }
-
 
 
     @Override
@@ -541,7 +544,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                     String result = body.string();
                     OrderConfirm orderConfirm = new Gson().fromJson(result, OrderConfirm.class);
 
-                    if(orderConfirm.getCode()==1){
+                    if (orderConfirm.getCode() == 1) {
 
 
                         //刷新外层
@@ -558,14 +561,13 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
 
                         FToast.success(orderConfirm.getInfo());
 
-                    }else if(orderConfirm.getCode()==HttpUtils.CODE_INVALID){
+                    } else if (orderConfirm.getCode() == HttpUtils.CODE_INVALID) {
                         HttpUtils.Invalid(mActivity);
                         mActivity.finish();
                         FToast.error(orderConfirm.getInfo());
-                    }else {
+                    } else {
                         FToast.error(orderConfirm.getInfo());
                     }
-
 
 
                 } catch (IOException e) {
@@ -585,7 +587,6 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
     };
 
 
-
     private Observer<Status<ResponseBody>> mCancelObserver = status -> {
         switch (status.status) {
             case Status.SUCCESS:
@@ -593,8 +594,8 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                 try {
                     String result = content.string();
                     OrderCancel orderCancel = new Gson().fromJson(result, OrderCancel.class);
-                    if(orderCancel.getCode()==1){
-                        if(mtype.equals("")||mtype.equals("2")||mtype.equals("3")){
+                    if (orderCancel.getCode() == 1) {
+                        if (mtype.equals("") || mtype.equals("2") || mtype.equals("3")) {
                             //待支付或者待发货页面  局部删除
                          /*  int count= mCancelItem.bottomcur-mCancelItem.topCur+1;
                             Items items = new Items();
@@ -604,20 +605,20 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                             mItems.removeAll(items);
                             mAdapter.notifyItemRangeRemoved(mCancelItem.topCur,count);*/
 
-                           // mAdapter.notifyItemRemoved();
+                            // mAdapter.notifyItemRemoved();
 
                             EventBus.getDefault().post(new OrderEvent(OrderEvent.CANCEL_ORDER));
 
                             /* mViewModel.getOrderList(mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"1",mtype,"",Status.LOAD_REFRESH)
                                 .observe(this, mObserver);*/
-                        }else {
+                        } else {
                             //全部页面  局部刷新
                             ItemOrderTitle titleBean = (ItemOrderTitle) mItems.get(mCancelItem.topCur);
                             titleBean.setStatus(0);
                             ItemOrderBottom bottomBean = (ItemOrderBottom) mItems.get(mCancelItem.bottomcur);
-                            bottomBean.status=0;
-                            mAdapter.notifyItemChanged(mCancelItem.topCur,titleBean);
-                            mAdapter.notifyItemChanged(mCancelItem.bottomcur,bottomBean);
+                            bottomBean.status = 0;
+                            mAdapter.notifyItemChanged(mCancelItem.topCur, titleBean);
+                            mAdapter.notifyItemChanged(mCancelItem.bottomcur, bottomBean);
                         }
 
                         //刷新状态
@@ -630,11 +631,11 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
 
 
                         FToast.success(orderCancel.getInfo());
-                    }else if(orderCancel.getCode()==HttpUtils.CODE_INVALID){
+                    } else if (orderCancel.getCode() == HttpUtils.CODE_INVALID) {
                         HttpUtils.Invalid(mActivity);
                         mActivity.finish();
                         FToast.error(orderCancel.getInfo());
-                    }else {
+                    } else {
                         FToast.error("订单取消失败");
                     }
                 } catch (IOException e) {
@@ -659,34 +660,22 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
     };
 
 
-
-
-
-
     @Override
     public void onProdClick(OrderGoods item) {
         Intent intent = new Intent(mActivity, OrderDetailsActivity.class);
-        int curOrder=0;
+        int curOrder = 0;
         for (int i = 0; i < mDatas.size(); i++) {
             long order_no = mDatas.get(i).getOrder_no();
-            if(order_no==item.getOrder_no()){
-                curOrder=i;
+            if (order_no == item.getOrder_no()) {
+                curOrder = i;
                 break;
             }
         }
         AllOrderList.DataBean.ListBeanX orderBean = mDatas.get(curOrder);
 
-        intent.putExtra("intentInfo",orderBean);
+        intent.putExtra("intentInfo", orderBean);
         startActivity(intent);
     }
-
-
-
-
-
-
-
-
 
 
     /**
@@ -699,19 +688,19 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                 try {
                     String result = body.string();
 
-                    if(mPayType==2){
+                    if (mPayType == 2) {
                         ZFBBean orderPay = new Gson().fromJson(result, ZFBBean.class);
-                        if(orderPay.getCode()==1){
+                        if (orderPay.getCode() == 1) {
 
                             sendReq2ZFB(orderPay.getData());
 
-                        }else {
+                        } else {
                             FToast.error(orderPay.getInfo());
                         }
 
-                    }else if(mPayType==1){
+                    } else if (mPayType == 1) {
                         OrderPay orderPay = new Gson().fromJson(result, OrderPay.class);
-                        if(orderPay.getCode()==1){
+                        if (orderPay.getCode() == 1) {
                             OrderPay.DataBean data = orderPay.getData();
                             String appid = data.getAppid();
                             String prepayid = data.getPrepayid();
@@ -732,21 +721,16 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                             wxPayBean.setPackageX(packageX);
                             sendReq2WX(wxPayBean);
 
-                        }else if(orderPay.getCode()==HttpUtils.CODE_INVALID){
+                        } else if (orderPay.getCode() == HttpUtils.CODE_INVALID) {
                             HttpUtils.Invalid(mActivity);
                             mActivity.finish();
                             FToast.error(orderPay.getInfo());
-                        }else {
+                        } else {
                             FToast.error(orderPay.getInfo());
                         }
 
 
-
-
-
-
                     }
-
 
 
                 } catch (IOException e) {
@@ -764,7 +748,6 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
                 break;
         }
     };
-
 
 
     /**
@@ -795,6 +778,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
             }
         }).start();
     }
+
     /**
      * 调支付的方法
      * <p>
@@ -803,7 +787,7 @@ public class _OrderFragment01 extends BaseFragment implements OnRefreshLoadMoreL
      * @param wxPayBean
      */
     //这个WxPayBean以后台返回为准,这里是我手动拿接口文档里生成的
-    private  void sendReq2WX(WxPayBean wxPayBean) {
+    private void sendReq2WX(WxPayBean wxPayBean) {
 
         //这里的appid，替换成自己的即可
         IWXAPI api = WXAPIFactory.createWXAPI(BasicApp.getContext(), Constant.WX_APP_ID);

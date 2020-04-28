@@ -60,7 +60,7 @@ public class QianDaoHouPopup extends CenterPopupView {
             public void run() {
                 //延迟再启动
                 new XPopup.Builder(mContext)
-                        .dismissOnTouchOutside(false)
+                        .dismissOnTouchOutside(true)
                         .dismissOnBackPressed(true)
                         .asCustom(new BottomShareAppPopup2(mContext, mUserInfo, mshare_info))
                         .show();

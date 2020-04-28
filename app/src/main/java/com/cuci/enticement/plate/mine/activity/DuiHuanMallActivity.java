@@ -2,6 +2,7 @@ package com.cuci.enticement.plate.mine.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,6 +27,7 @@ import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.SharedPrefUtils;
+import com.cuci.enticement.utils.ViewUtils;
 import com.cuci.enticement.widget.CustomRefreshHeader;
 import com.cuci.enticement.widget.GridItemDecoration;
 import com.google.gson.Gson;
@@ -56,6 +58,8 @@ public class DuiHuanMallActivity extends BaseActivity implements OnRefreshLoadMo
     SmartRefreshLayout refreshLayout;
     @BindView(R.id.status_view)
     MultipleStatusView statusView;
+    @BindView(R.id.image_top)
+    ConstraintLayout mIvTop;
     private UserInfo mUserInfo;
     private MultiTypeAdapter mAdapter;
     private MineViewModel mViewModel;
@@ -73,7 +77,7 @@ public class DuiHuanMallActivity extends BaseActivity implements OnRefreshLoadMo
     public void initViews(Bundle savedInstanceState) {
         mUserInfo = SharedPrefUtils.get(UserInfo.class);
         mViewModel = new ViewModelProvider(this).get(MineViewModel.class);
-        refreshLayout.setEnableRefresh(false);
+       // refreshLayout.setEnableRefresh(false);
         CustomRefreshHeader header = new CustomRefreshHeader(this);
         header.setBackground(0xFFF3F4F6);
         //mRefreshLayout.setRefreshHeader(header);
@@ -90,6 +94,42 @@ public class DuiHuanMallActivity extends BaseActivity implements OnRefreshLoadMo
         recyclerView.addItemDecoration(mDecoration);
         recyclerView.setAdapter(mAdapter);
         load();
+        mIvTop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                recyclerView.smoothScrollToPosition(0);
+            }
+        });
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                switch (newState) {
+                    case RecyclerView.SCROLL_STATE_IDLE:
+                        if (mLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                            ViewUtils.hideView(mIvTop);
+                        }
+                        break;
+                    case RecyclerView.SCROLL_STATE_DRAGGING:
+
+                        break;
+                    case RecyclerView.SCROLL_STATE_SETTLING:
+
+                        break;
+                }
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy < 0) {
+                    ViewUtils.showView(mIvTop);
+                } else {
+                    ViewUtils.hideView(mIvTop);
+                }
+
+            }
+        });
     }
 
     private void load() {

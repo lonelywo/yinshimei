@@ -61,7 +61,7 @@ public class YuLanActivity extends BaseActivity implements OnRefreshLoadMoreList
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @BindView(R.id.image_top)
-    ImageView mIvTop;
+    ConstraintLayout mIvTop;
     @BindView(R.id.refresh_layout)
     SmartRefreshLayout mRefreshLayout;
     private final String PAGE_SIZE="30";

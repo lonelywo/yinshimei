@@ -64,7 +64,7 @@ public class QrCodeProdView extends FrameLayout {
 
     public void setImageMain(String url) {
 
-        try {
+       /* try {
             Bitmap bitmap = Glide.with(BasicApp.getContext())
                     .asBitmap()
                     .load(url)
@@ -75,10 +75,11 @@ public class QrCodeProdView extends FrameLayout {
         } catch (Exception e) {
             Log.d(TAG, "图片下载失败");
             imgTupianShare.setImageResource(R.drawable.poster);
-        }
+        }*/
 
-      /* Glide.with(BasicApp.getContext())
+       Glide.with(BasicApp.getContext())
                 .load(url)
+                .placeholder(R.drawable.poster)
                 .listener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
@@ -93,7 +94,7 @@ public class QrCodeProdView extends FrameLayout {
                         return false;
                     }
                 })
-                .into(imgTupianShare);*/
+                .into(imgTupianShare);
      //   ImageLoader.loadNoPlaceholder(url, imgTupianShare);
     }
 

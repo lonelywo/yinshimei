@@ -19,7 +19,7 @@
         <ImageView
             android:id="@+id/img_tupian_share"
             android:layout_width="750px"
-            android:layout_height="1100px"
+            android:layout_height="1070px"
             tools:src="@drawable/poster"
             android:scaleType="centerCrop"
             app:layout_constraintTop_toTopOf="parent"
@@ -48,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="皮蛋君"
-                android:textSize="36px"
+                android:textSize="28px"
                 android:textColor="@color/hei"
                 app:layout_constraintBottom_toBottomOf="@+id/line_share"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -60,8 +60,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="分享我的质感美学"
-                android:textSize="36px"
-                android:textColor="@color/hei"
+                android:textSize="28px"
+                android:textColor="#444"
                 app:layout_constraintTop_toTopOf="@+id/line_share"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginLeft="60px"
@@ -78,6 +78,15 @@
                 app:layout_constraintRight_toRightOf="parent"
                 android:scaleType="centerCrop"
                 android:layout_marginRight="60px"
+                />
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0.5dp"
+                app:layout_constraintStart_toStartOf="@+id/text_name_share1"
+                app:layout_constraintEnd_toEndOf="@+id/qrcode_share"
+                android:background="#BABABA"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="20px"
                 />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

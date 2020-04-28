@@ -64,9 +64,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:overScrollMode="never"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-
                 />
 
             <com.scwang.smartrefresh.layout.footer.ClassicsFooter
@@ -108,7 +105,7 @@
             android:layout_marginTop="16dp"
             android:gravity="center_horizontal"
             android:lineSpacingExtra="6dp"
-            android:text="啊哦，您还没有相关订单"/>
+            android:text="啊哦，您还没有兑换记录"/>
 
     </LinearLayout>
 

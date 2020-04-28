@@ -33,7 +33,7 @@
         android:paddingEnd="24dp"
         android:paddingBottom="6dp"
         android:text="点击刷新"
-        android:textColor="#FE2D64"
+        android:textColor="@color/red"
         android:textSize="16sp"/>
 
 </LinearLayout>

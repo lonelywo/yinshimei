@@ -11,15 +11,12 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:src="@drawable/queshengye"/>
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:gravity="center_horizontal"
         android:lineSpacingExtra="6dp"
-        android:text="啊哦，您的购物车空空如也"/>
+        android:text="购物车空空如也~"/>
 
 </LinearLayout>
