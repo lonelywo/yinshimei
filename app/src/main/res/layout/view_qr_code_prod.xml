@@ -61,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:text="分享我的质感美学"
                 android:textSize="28px"
-                android:textColor="#444"
+                android:textColor="@color/hei"
                 app:layout_constraintTop_toTopOf="@+id/line_share"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginLeft="60px"
