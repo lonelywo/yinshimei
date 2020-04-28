@@ -44,7 +44,7 @@
         android:id="@+id/status_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:emptyView="@layout/custom_empty_view_shouhuodizi"
+        app:emptyView="@layout/custom_empty_view_order"
         app:errorView="@layout/custom_error_view"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
