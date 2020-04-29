@@ -72,12 +72,16 @@ public class BottomShareAppPopup2 extends BottomPopupView {
     Guideline line;
     @BindView(R.id.text_name1)
     TextView textName1;
+    @BindView(R.id.line_share)
+    Guideline lineShare;
+    @BindView(R.id.con_yy)
+    ConstraintLayout conYy;
     private UserInfo mUserInfo;
     private Bitmap bitmap;
     QianDaoBean.DataBean.ShareInfoBean mshare_info;
     private Context mContext;
 
-    public BottomShareAppPopup2(@NonNull Context context, UserInfo userInfo,  QianDaoBean.DataBean.ShareInfoBean share_info) {
+    public BottomShareAppPopup2(@NonNull Context context, UserInfo userInfo, QianDaoBean.DataBean.ShareInfoBean share_info) {
         super(context);
         mContext = context;
         mUserInfo = userInfo;
@@ -113,7 +117,7 @@ public class BottomShareAppPopup2 extends BottomPopupView {
                     }
                 })
                 .into(imgTupian);
-      //  ImageLoader.loadPlaceholder(mposter, imgTupian);
+        //  ImageLoader.loadPlaceholder(mposter, imgTupian);
         ImageLoader.loadPlaceholder(mshare_info.getQrcode(), qrcode);
         textName.setText(mshare_info.getNickname());
         textName1.setText(mshare_info.getSlogan());
@@ -147,7 +151,7 @@ public class BottomShareAppPopup2 extends BottomPopupView {
 
         switch (view.getId()) {
             case R.id.tv_share_wx:
-                bitmap = ImageUtils.getViewBitmap(conImgShare,750,1334);
+                bitmap = ImageUtils.getViewBitmap(conImgShare, 750, 1334);
                 if (bitmap == null) {
                     FToast.error("数据错误");
                     dismiss();
@@ -157,7 +161,7 @@ public class BottomShareAppPopup2 extends BottomPopupView {
                 dismiss();
                 break;
             case R.id.tv_share_moment:
-                bitmap = ImageUtils.getViewBitmap(conImgShare,750,1334);
+                bitmap = ImageUtils.getViewBitmap(conImgShare, 750, 1334);
                 if (bitmap == null) {
                     FToast.error("数据错误");
                     dismiss();
@@ -167,7 +171,7 @@ public class BottomShareAppPopup2 extends BottomPopupView {
                 dismiss();
                 break;
             case R.id.icon_share_save:
-                bitmap = ImageUtils.getViewBitmap(conImgShare,750,1334);
+                bitmap = ImageUtils.getViewBitmap(conImgShare, 750, 1334);
                 if (bitmap == null) {
                     FToast.error("数据错误");
                     dismiss();
@@ -180,7 +184,9 @@ public class BottomShareAppPopup2 extends BottomPopupView {
                 }
                 dismiss();
                 break;
-
+           /* case R.id.con_yy:
+               // dismiss();
+                break;*/
         }
     }
 }
