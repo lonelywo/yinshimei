@@ -463,13 +463,14 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
                     .dismissOnBackPressed(false)
                     .asCustom(new UpdatePopup(this, version,
                             () -> {
-                                if (mData != null) {
+                               /* if (mData != null) {
                                     new XPopup.Builder(this)
                                             .dismissOnBackPressed(false)
                                             .dismissOnTouchOutside(false)
                                             .asCustom(new UpdateProgressPopup(this, mData))
                                             .show();
-                                }
+                                }*/
+                               FToast.warning("请前往应用商店下载最新版本");
                             }))
                     .show();
         }
