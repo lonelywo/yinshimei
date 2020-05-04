@@ -146,7 +146,7 @@ public class BottomShareAppPopup2 extends BottomPopupView {
     }
 
     @OnClick({R.id.tv_share_wx, R.id.tv_share_moment,
-            R.id.icon_share_save})
+            R.id.icon_share_save, R.id.con_yy})
     public void onViewClick(View view) {
 
         switch (view.getId()) {
@@ -184,9 +184,9 @@ public class BottomShareAppPopup2 extends BottomPopupView {
                 }
                 dismiss();
                 break;
-           /* case R.id.con_yy:
-               // dismiss();
-                break;*/
+            case R.id.con_yy:
+                dismiss();
+                break;
         }
     }
 }

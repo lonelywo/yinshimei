@@ -194,7 +194,17 @@
         android:padding="20dp"
         android:background="@color/white"
         >
-
+        <TextView
+            android:id="@+id/icon_share_save"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/save_img"
+            android:drawablePadding="6dp"
+            android:gravity="center_horizontal"
+            android:text="保存"
+            android:textColor="#666666"
+            android:textSize="12sp"/>
         <TextView
             android:id="@+id/tv_share_wx"
             android:layout_width="0dp"
@@ -218,17 +228,7 @@
             android:text="朋友圈"
             android:textColor="#666666"
             android:textSize="12sp"/>
-        <TextView
-            android:id="@+id/icon_share_save"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableTop="@drawable/save_img"
-            android:drawablePadding="6dp"
-            android:gravity="center_horizontal"
-            android:text="保存"
-            android:textColor="#666666"
-            android:textSize="12sp"/>
+
     </LinearLayout>
      <ProgressBar
          android:id="@+id/progress_bar"

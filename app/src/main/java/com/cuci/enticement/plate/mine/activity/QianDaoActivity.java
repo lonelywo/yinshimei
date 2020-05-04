@@ -339,7 +339,13 @@ public class QianDaoActivity extends BaseActivity implements ItemQianDaoShareVie
                         finish();
                         FToast.error(mQianDaoBean.getInfo());
                     } else {
-                        FToast.error(mQianDaoBean.getInfo());
+                   //     FToast.error(mQianDaoBean.getInfo());
+                        Bitmap bitmap = ImageUtils.getViewBitmap(mQrCodeProdView,750,1334);
+                        if (bitmap == null) {
+                            FToast.error("数据错误");
+                            return;
+                        }
+                        WxShareUtils.shareImageToWX(WxShareUtils.WX_SCENE_TIME_LINE, bitmap);
                     }
 
                 } catch (IOException e) {
