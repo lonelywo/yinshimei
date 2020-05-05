@@ -163,13 +163,13 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
         mFragments = new ArrayList<>();
 
         mFragments.add(new _HomeFragment());
-        mFragments.add(new _MallFragment());
+      //  mFragments.add(new _MallFragment());
         mFragments.add(new _CartFragment());
         mFragments.add(new _MineFragment());
 
         mPagerAdapter = new MainPagerAdapter(getSupportFragmentManager(), mFragments);
 
-        mViewPager.setOffscreenPageLimit(3);
+        mViewPager.setOffscreenPageLimit(2);
         mViewPager.setAdapter(mPagerAdapter);
         initBottomLayout();
         mBottomLayout.setOnTabClickListener(position -> mViewPager.setCurrentItem(position));
@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
             @Override
             public void onPageSelected(int position) {
                 mBottomLayout.setSelected(position);
-                if (position == 3) {
+                if (position == 2) {
                     EventBus.getDefault().post(new ClickMyEvent(ClickMyEvent.CHECK_ITEM3));
                 }
                 if (position == 0) {
@@ -251,23 +251,23 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
                 R.drawable.home_huang,
                 R.drawable.home_hui, false, getString(R.string.tab_home));
 
-        BottomBarView.Tab tab2 = new BottomBarView.Tab(
+       /* BottomBarView.Tab tab2 = new BottomBarView.Tab(
                 R.drawable.mall_huang,
-                R.drawable.mall_hui, false, getString(R.string.tab_material));
+                R.drawable.mall_hui, false, getString(R.string.tab_material));*/
 
 
-        BottomBarView.Tab tab3 = new BottomBarView.Tab(
+        BottomBarView.Tab tab2 = new BottomBarView.Tab(
                 R.drawable.cart_huang,
                 R.drawable.cart_hui, false, getString(R.string.tab_find));
 
-        BottomBarView.Tab tab4 = new BottomBarView.Tab(
+        BottomBarView.Tab tab3 = new BottomBarView.Tab(
                 R.drawable.mine_huang,
                 R.drawable.mine_hui, false, getString(R.string.tab_mine));
 
         tabs.add(tab1);
+      //  tabs.add(tab2);
         tabs.add(tab2);
         tabs.add(tab3);
-        tabs.add(tab4);
 
 
         mBottomLayout.setTabs(tabs);
@@ -285,14 +285,14 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
                     case ACTION_GO_TO_HOME:
                         mBottomLayout.setSelected(0);
                         break;
-                    case ACTION_GO_TO_MATERIAL:
+                 /*   case ACTION_GO_TO_MATERIAL:
+                        mBottomLayout.setSelected(1);
+                        break;*/
+                    case ACTION_GO_TO_CART:
                         mBottomLayout.setSelected(1);
                         break;
-                    case ACTION_GO_TO_CART:
-                        mBottomLayout.setSelected(2);
-                        break;
                     case ACTION_GO_TO_MINE:
-                        mBottomLayout.setSelected(3);
+                        mBottomLayout.setSelected(2);
                         break;
                     case ACTION_SHOW_POPUP:
                         //显示红包弹窗

@@ -74,6 +74,9 @@ public class GeTuiNotificationClickReceiver extends BroadcastReceiver {
                     Intent intentProd = new Intent(context, DailyActivity.class);
                     startIntent( context,intentProd);
             }
+            else if (message.getType()==6) {
+
+            }
         }
 
     }

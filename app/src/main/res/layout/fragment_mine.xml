@@ -585,7 +585,7 @@
                 android:id="@+id/con_wodefuli"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/con_wodeshouyi"
                 android:background="@color/white"
                 >
@@ -703,7 +703,7 @@
                 android:id="@+id/con_wodepaihangbang"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/con_lipingzhongxing"
                 android:background="@color/white"
                 >
