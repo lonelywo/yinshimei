@@ -99,7 +99,7 @@ public class BottomShareAppPopup2 extends BottomPopupView {
         ButterKnife.bind(this);
         ViewUtils.showView(progressBar);
         Glide.with(this)
-                .load(mshare_info.getPoster())
+                .load(mshare_info.getPoster().get(0))
                 .placeholder(R.drawable.poster)
                 .dontAnimate()//解决第一次加载不显示bug
                 .listener(new RequestListener<Drawable>() {
@@ -124,7 +124,7 @@ public class BottomShareAppPopup2 extends BottomPopupView {
 
 
         Glide.with(this)
-                .load(mshare_info.getPoster())
+                .load(mshare_info.getPoster().get(0))
                 .placeholder(R.drawable.poster)
                 .dontAnimate()//解决第一次加载不显示bug
                 .listener(new RequestListener<Drawable>() {

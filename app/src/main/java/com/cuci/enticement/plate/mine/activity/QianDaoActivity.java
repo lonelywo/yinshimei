@@ -228,7 +228,7 @@ public class QianDaoActivity extends BaseActivity implements ItemQianDaoShareVie
                         int is_signin = mQianDaoBean.getData().getIs_signin();
                         share_info = mQianDaoBean.getData().getShare_info();
                         mQrCodeProdView.setDesc(share_info.getNickname());
-                        mQrCodeProdView.setImageMain(share_info.getPoster());
+                        mQrCodeProdView.setImageMain(share_info.getPoster().get(0));
                         mQrCodeProdView.setImageQrCode(share_info.getQrcode());
                         if (is_signin == 0) {
                             new XPopup.Builder(this)

@@ -9,7 +9,7 @@ public class QianDaoBean implements Serializable {
     /**
      * code : 1
      * info : 成功
-     * data : {"even_day":1,"today_integral":0,"user_integral":247,"integral_next":[1,2,3,4,5,6,7],"signin_task":[{"type":1,"is_finish":0,"img":"http://qiniu.cdn.enticementchina.com/moments.png","title":"分享海报至朋友圈","get_integral":"5"},{"type":2,"is_finish":0,"img":"http://qiniu.cdn.enticementchina.com/expenditure.png","title":"商城下单消费赚积分","get_integral":"N"}],"share_info":{"qrcode":"https://qiniu.cdn.enticementchina.com/6fa1826c366ede04/b75b132271d29306.jpg","poster":"https://qiniu.cdn.enticementchina.com/picturesign.jpg","mini_share_pic":"https://qiniu.cdn.enticementchina.com/logo.png"}}
+     * data : {"even_day":1,"today_integral":1,"is_signin":1,"user_integral":22703,"integral_next":[1,2,3,4,5,6,7],"signin_task":[{"type":1,"is_finish":1,"img":"http://qiniu.cdn.enticementchina.com/moments.png","title":"分享海报至朋友圈","get_integral":"5"},{"type":2,"is_finish":0,"img":"http://qiniu.cdn.enticementchina.com/expenditure.png","title":"商城下单消费赚积分","get_integral":"N"}],"share_info":{"goods_id":6856280800,"qrcode":"https://qiniu.cdn.enticementchina.com/8e7cc638cdaff784/26590142de61a357.jpg","poster":["https://qiniu.cdn.enticementchina.com/6259a5b6ec898a4b/3a0ef2800051dc4a.jpg"],"mini_share_pic":"https://qiniu.cdn.enticementchina.com/25683cd62fafe7ad/d43eb5210f8515ec.png","nickname":"我是皮蛋君","slogan":"分享我的质感美学"}}
      */
 
     private int code;
@@ -40,28 +40,19 @@ public class QianDaoBean implements Serializable {
         this.data = data;
     }
 
-    public static class DataBean implements Serializable {
+    public static class DataBean implements Serializable{
         /**
          * even_day : 1
-         * today_integral : 0
-         * is_signin
-         * user_integral : 247
+         * today_integral : 1
+         * is_signin : 1
+         * user_integral : 22703
          * integral_next : [1,2,3,4,5,6,7]
-         * signin_task : [{"type":1,"is_finish":0,"img":"http://qiniu.cdn.enticementchina.com/moments.png","title":"分享海报至朋友圈","get_integral":"5"},{"type":2,"is_finish":0,"img":"http://qiniu.cdn.enticementchina.com/expenditure.png","title":"商城下单消费赚积分","get_integral":"N"}]
-         * share_info : {"qrcode":"https://qiniu.cdn.enticementchina.com/6fa1826c366ede04/b75b132271d29306.jpg","poster":"https://qiniu.cdn.enticementchina.com/picturesign.jpg","mini_share_pic":"https://qiniu.cdn.enticementchina.com/logo.png"}
+         * signin_task : [{"type":1,"is_finish":1,"img":"http://qiniu.cdn.enticementchina.com/moments.png","title":"分享海报至朋友圈","get_integral":"5"},{"type":2,"is_finish":0,"img":"http://qiniu.cdn.enticementchina.com/expenditure.png","title":"商城下单消费赚积分","get_integral":"N"}]
+         * share_info : {"goods_id":6856280800,"qrcode":"https://qiniu.cdn.enticementchina.com/8e7cc638cdaff784/26590142de61a357.jpg","poster":["https://qiniu.cdn.enticementchina.com/6259a5b6ec898a4b/3a0ef2800051dc4a.jpg"],"mini_share_pic":"https://qiniu.cdn.enticementchina.com/25683cd62fafe7ad/d43eb5210f8515ec.png","nickname":"我是皮蛋君","slogan":"分享我的质感美学"}
          */
 
         private int even_day;
         private int today_integral;
-
-        public int getIs_signin() {
-            return is_signin;
-        }
-
-        public void setIs_signin(int is_signin) {
-            this.is_signin = is_signin;
-        }
-
         private int is_signin;
         private int user_integral;
         private ShareInfoBean share_info;
@@ -82,6 +73,14 @@ public class QianDaoBean implements Serializable {
 
         public void setToday_integral(int today_integral) {
             this.today_integral = today_integral;
+        }
+
+        public int getIs_signin() {
+            return is_signin;
+        }
+
+        public void setIs_signin(int is_signin) {
+            this.is_signin = is_signin;
         }
 
         public int getUser_integral() {
@@ -118,15 +117,44 @@ public class QianDaoBean implements Serializable {
 
         public static class ShareInfoBean implements Serializable{
             /**
-             * qrcode : https://qiniu.cdn.enticementchina.com/6fa1826c366ede04/b75b132271d29306.jpg
-             * poster : https://qiniu.cdn.enticementchina.com/picturesign.jpg
-             * mini_share_pic : https://qiniu.cdn.enticementchina.com/logo.png
-             *
+             * goods_id : 6856280800
+             * qrcode : https://qiniu.cdn.enticementchina.com/8e7cc638cdaff784/26590142de61a357.jpg
+             * poster : ["https://qiniu.cdn.enticementchina.com/6259a5b6ec898a4b/3a0ef2800051dc4a.jpg"]
+             * mini_share_pic : https://qiniu.cdn.enticementchina.com/25683cd62fafe7ad/d43eb5210f8515ec.png
+             * nickname : 我是皮蛋君
+             * slogan : 分享我的质感美学
              */
 
+            private long goods_id;
             private String qrcode;
-            private String poster;
             private String mini_share_pic;
+            private String nickname;
+            private String slogan;
+            private List<String> poster;
+
+            public long getGoods_id() {
+                return goods_id;
+            }
+
+            public void setGoods_id(long goods_id) {
+                this.goods_id = goods_id;
+            }
+
+            public String getQrcode() {
+                return qrcode;
+            }
+
+            public void setQrcode(String qrcode) {
+                this.qrcode = qrcode;
+            }
+
+            public String getMini_share_pic() {
+                return mini_share_pic;
+            }
+
+            public void setMini_share_pic(String mini_share_pic) {
+                this.mini_share_pic = mini_share_pic;
+            }
 
             public String getNickname() {
                 return nickname;
@@ -144,38 +172,19 @@ public class QianDaoBean implements Serializable {
                 this.slogan = slogan;
             }
 
-            private String nickname;
-            private String slogan;
-
-            public String getQrcode() {
-                return qrcode;
-            }
-
-            public void setQrcode(String qrcode) {
-                this.qrcode = qrcode;
-            }
-
-            public String getPoster() {
+            public List<String> getPoster() {
                 return poster;
             }
 
-            public void setPoster(String poster) {
+            public void setPoster(List<String> poster) {
                 this.poster = poster;
-            }
-
-            public String getMini_share_pic() {
-                return mini_share_pic;
-            }
-
-            public void setMini_share_pic(String mini_share_pic) {
-                this.mini_share_pic = mini_share_pic;
             }
         }
 
         public static class SigninTaskBean implements Serializable{
             /**
              * type : 1
-             * is_finish : 0
+             * is_finish : 1
              * img : http://qiniu.cdn.enticementchina.com/moments.png
              * title : 分享海报至朋友圈
              * get_integral : 5
