@@ -327,16 +327,16 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
     //退出登录
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onLogoutEvent(LoginOutEvent event) {
-        if (mPagerAdapter.getCount() == 4) {
+        if (mPagerAdapter.getCount() == 3) {
 
             mFragments.clear();
             mFragments.add(new _HomeFragment());
-            mFragments.add(new _MallFragment());
+          //  mFragments.add(new _MallFragment());
             mFragments.add(new _CartFragment());
             mFragments.add(new _MineFragment());
             mViewPager.setAdapter(mPagerAdapter);
-            mViewPager.setOffscreenPageLimit(3);
-            mViewPager.setCurrentItem(3);
+            mViewPager.setOffscreenPageLimit(2);
+            mViewPager.setCurrentItem(2);
         }
     }
 
@@ -344,16 +344,16 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onLoginEvent(LoginSucceedEvent event) {
 
-        if (mPagerAdapter.getCount() == 4) {
+        if (mPagerAdapter.getCount() == 3) {
 
             mFragments.clear();
             mFragments.add(new _HomeFragment());
-            mFragments.add(new _MallFragment());
+           // mFragments.add(new _MallFragment());
             mFragments.add(new _CartFragment());
             mFragments.add(new _MineFragment());
             mViewPager.setAdapter(mPagerAdapter);
-            mViewPager.setOffscreenPageLimit(3);
-            mViewPager.setCurrentItem(3);
+            mViewPager.setOffscreenPageLimit(2);
+            mViewPager.setCurrentItem(2);
         }
 
     }

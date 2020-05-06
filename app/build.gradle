@@ -190,4 +190,7 @@ dependencies {
     implementation 'com.amap.api:search:latest.integration'
     //流式布局标签
     implementation 'com.hyman:flowlayout-lib:1.1.2'
+    //tantan
+    implementation ('lin.jerrylin0322.reswipecard:reswipecard:1.0.1') {
+        exclude module:'recyclerview-v7' }
 }

@@ -29,6 +29,7 @@ import com.cuci.enticement.event.DownShareImgEvent;
 import com.cuci.enticement.event.IsnewEvent;
 import com.cuci.enticement.plate.common.MainActivity;
 import com.cuci.enticement.plate.common.popup.BottomShareAppPopup2;
+import com.cuci.enticement.plate.common.popup.BottomShareAppPopup3;
 import com.cuci.enticement.plate.common.popup.QianDaoHouPopup;
 import com.cuci.enticement.plate.mine.adapter.ItemQianDaoShareViewBinder;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
@@ -38,6 +39,7 @@ import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.ImageUtils;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.TimeUtils;
+import com.cuci.enticement.utils.UtilsForClick;
 import com.cuci.enticement.utils.WxShareUtils;
 import com.cuci.enticement.widget.QrCodeProdView;
 import com.cuci.enticement.widget.SmoothScrollview;
@@ -228,6 +230,7 @@ public class QianDaoActivity extends BaseActivity implements ItemQianDaoShareVie
                         int is_signin = mQianDaoBean.getData().getIs_signin();
                         share_info = mQianDaoBean.getData().getShare_info();
                         mQrCodeProdView.setDesc(share_info.getNickname());
+                        mQrCodeProdView.setDesc1(share_info.getSlogan());
                         mQrCodeProdView.setImageMain(share_info.getPoster().get(0));
                         mQrCodeProdView.setImageQrCode(share_info.getQrcode());
                         if (is_signin == 0) {
@@ -305,11 +308,14 @@ public class QianDaoActivity extends BaseActivity implements ItemQianDaoShareVie
                 startActivity(new Intent(this, JiFenActivity.class));
                 break;
             case R.id.con_zuotian:
-                new XPopup.Builder(this)
-                        .dismissOnTouchOutside(true)
-                        .dismissOnBackPressed(true)
-                        .asCustom(new BottomShareAppPopup2(this, mUserInfo, share_info))
-                        .show();
+                if (UtilsForClick.isFastClick()){
+                    new XPopup.Builder(this)
+                            .dismissOnTouchOutside(true)
+                            .dismissOnBackPressed(true)
+                            .asCustom(new BottomShareAppPopup3(this, mUserInfo, share_info))
+                            .show();
+                }
+
                 break;
         }
     }

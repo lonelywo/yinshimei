@@ -42,6 +42,7 @@ public class QrCodeProdView extends FrameLayout {
     private ImageView qrcodeShare;
 
     private TextView textNameShare;
+    private TextView text_name_share1;
 
 
     public QrCodeProdView(@NonNull Context context) {
@@ -60,6 +61,7 @@ public class QrCodeProdView extends FrameLayout {
         qrcodeShare = findViewById(R.id.qrcode_share);
 
         textNameShare = findViewById(R.id.text_name_share);
+        text_name_share1 = findViewById(R.id.text_name_share1);
     }
 
     public void setImageMain(String url) {
@@ -103,7 +105,9 @@ public class QrCodeProdView extends FrameLayout {
         textNameShare.setText(s);
     }
 
-
+    public void setDesc1(String s) {
+        text_name_share1.setText(s);
+    }
     public void setImageQrCode(String url) {
 
        /* try {
