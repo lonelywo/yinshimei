@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/shape_jifen_bg"
+        android:background="@color/home_huang"
         >
         <ImageView
             android:id="@+id/img_back"
@@ -71,7 +71,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@drawable/shape_jifen_bg"
+        android:background="@color/home_huang"
         >
 
         <TextView

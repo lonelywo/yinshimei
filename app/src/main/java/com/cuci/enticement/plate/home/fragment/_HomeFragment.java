@@ -59,6 +59,7 @@ import com.cuci.enticement.utils.HttpUtils;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.ViewUtils;
 import com.cuci.enticement.widget.CustomRefreshHeader;
+import com.cuci.enticement.widget.HomeGridItemDecoration;
 import com.cuci.enticement.widget.HomeGridItemDecoration2;
 import com.cuci.enticement.widget.HomeListSpanSizeLookup;
 import com.google.gson.Gson;
@@ -103,7 +104,7 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
     private SmartRefreshLayout mRefreshLayout;
     private MultiTypeAdapter mAdapter;
     private Items mItems;
-    private HomeGridItemDecoration2 mDecoration;
+    private HomeGridItemDecoration mDecoration;
     private GridLayoutManager mLayoutManager;
     private HomeListSpanSizeLookup mSizeLookup;
     private HomeViewModel mViewModel;
@@ -152,8 +153,8 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
         mAdapter.register(QyandYHJBean.DataBean.class, new ItemImageViewBinder(this));
         mAdapter.register(GoodsItem.class, new ItemGoodsLongViewBinder(mActivity));
         mAdapter.register(QyandYHJBean.DataBean.GroupbuyBean.class, new ItemQiYeViewBinder(this));
-        mDecoration = new HomeGridItemDecoration2(mActivity, 2, 6, true);
-        mDecoration.setHeaderCount(2);
+        mDecoration = new HomeGridItemDecoration(mActivity, 2, 6, true);
+        mDecoration.setHeaderCount(3);
         mRecyclerView.addItemDecoration(mDecoration);
         mLayoutManager = new GridLayoutManager(mActivity, 2);
 
@@ -171,7 +172,7 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
                     case 2:
                         return 2;
                     case 3:
-                        return 2;
+                        return 1;
                     case 4:
                         return 2;
                 }
