@@ -3,6 +3,7 @@ package com.cuci.enticement.plate.home.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.cuci.enticement.bean.GoodsItem;
 import com.cuci.enticement.plate.home.activity.ProdActivity;
 import com.cuci.enticement.utils.ImageLoader;
 import com.cuci.enticement.utils.MathExtend;
+import com.cuci.enticement.utils.UtilFonts;
 import com.cuci.enticement.utils.UtilsForClick;
 
 import butterknife.BindView;
@@ -45,18 +47,20 @@ public class ItemGoodsLongViewBinder extends ItemViewBinder<GoodsItem, ItemGoods
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull GoodsItem item) {
         ImageLoader.loadPlaceholder(item.getLogo(), holder.imageHome);
         holder.textHomeGoodsname.setText(item.getTitle());
-        holder.textHomeMoney.setText("原价¥" + item.getInitial_price_market());
-        holder.textHomeMoneyVip.setText("会员价¥" + item.getInitial_price_selling());
-
+      /*  holder.textHomeMoney.setText("原价¥" + item.getInitial_price_market());
+        holder.textHomeMoneyVip.setText("会员价¥" + item.getInitial_price_selling());*/
+        Typeface set = UtilFonts.set("fonts/DINPro-Regular.ttf");
+        holder.textHomeMoney.setTypeface(set);
+        holder.textHomeMoneyVip.setTypeface(set);
         if (item.getVip_mod() == 1) {
-            String strMsg = "原价¥" + MathExtend.moveone(item.getInitial_price_market());
+            String strMsg = "原价¥ " + MathExtend.moveone(item.getInitial_price_market());
             holder.textHomeMoney.setText(Html.fromHtml(strMsg));
-            String strMsg2 = "<font >" + item.getPricename() + "¥" + "<big><big>" + MathExtend.moveone(item.getInitial_price_selling()) + "</big></big>" + "</font>";
+            String strMsg2 = "<font >" + item.getPricename() + "¥ " + "<big><big>" + MathExtend.moveone(item.getInitial_price_selling()) + "</big></big>" + "</font>";
             holder.textHomeMoneyVip.setText(Html.fromHtml(strMsg2));
         } else {
-            String strMsg = "原价¥" + MathExtend.moveone(item.getInitial_price_market());
+            String strMsg = "原价¥ " + MathExtend.moveone(item.getInitial_price_market());
             holder.textHomeMoney.setText(Html.fromHtml(strMsg));
-            String strMsg2 = "<font >" + "会员价¥" + "<big><big>" + MathExtend.moveone(item.getInitial_price_selling()) + "</big></big>" + "</font>";
+            String strMsg2 = "<font >" + "会员价¥ " + "<big><big>" + MathExtend.moveone(item.getInitial_price_selling()) + "</big></big>" + "</font>";
             holder.textHomeMoneyVip.setText(Html.fromHtml(strMsg2));
         }
 
