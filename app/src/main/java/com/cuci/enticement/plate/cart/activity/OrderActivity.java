@@ -175,9 +175,9 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
     private int is_new;
     private int number;
     private String rule;
-    //有无优惠卷
+    //有无优惠券
     private int type = 0;
-    //优惠卷
+    //优惠券
     private String moveone_amount="0";
     //总价
     private String totalMoney="0";
@@ -187,7 +187,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
     private String id_yhq;
     //商品集合
     private List<OrderGoods> items;
-    //可使用优惠卷集合
+    //可使用优惠券集合
     private ArrayList<KaQuanListBean.DataBean.ListBean> list ;
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
@@ -307,7 +307,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
         MainViewModel mMainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
         mMainViewModel.getVersion("2",""+ AppUtils.getVersionCode(this)).observe(this, mUpdateObserver);
 
-       //可使用优惠卷
+       //可使用优惠券
         MineViewModel mMineViewModel = new ViewModelProvider(this).get(MineViewModel.class);
         mMineViewModel.kaquanlist(mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "2", "1", "", "0",""+ AppUtils.getVersionCode(this), Status.LOAD_REFRESH)
                 .observe(OrderActivity.this, mkaquanObserver);
@@ -939,7 +939,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
             KaQuanListBean mKaQuanListBean = new Gson().fromJson(b, KaQuanListBean.class);
             List<KaQuanListBean.DataBean.ListBean>   mcheckitems = mKaQuanListBean.getData().getList();
             if (mcheckitems == null || mcheckitems.size() == 0) {
-                textYouhuiset.setText("暂无可使用优惠卷");
+                textYouhuiset.setText("暂无可使用优惠券");
                 type=0;
                 return;
             }
@@ -978,7 +978,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                    }
                 }
                 if(list.size()==0){
-                    textYouhuiset.setText("暂无可使用优惠卷");
+                    textYouhuiset.setText("暂无可使用优惠券");
                     type=0;
                     return;
                 }

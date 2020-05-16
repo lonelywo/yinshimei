@@ -842,7 +842,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                 //   bitmap2 = downloadImage(ProdActivity.this, qrcode);
                 new XPopup.Builder(ProdActivity.this)
                         .dismissOnTouchOutside(false)
-                        .dismissOnBackPressed(false)
+                        .dismissOnBackPressed(true)
                         .asCustom(new CenterShareAppPopup2(ProdActivity.this, mUserInfo, poster, qrcode))
                         .show();
             }else if(mMyTeamslBean.getCode() == HttpUtils.CODE_INVALID){
