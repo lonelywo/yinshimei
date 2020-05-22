@@ -133,6 +133,8 @@ public class QianDaoActivity extends BaseActivity implements ItemQianDaoShareVie
     ImageView tvJifen1;
     @BindView(R.id.con_zuotian)
     ConstraintLayout conZuotian;
+    @BindView(R.id.text_qiandao)
+    TextView textQiandao;
     private UserInfo mUserInfo;
     private MineViewModel mViewModel;
     private LinearLayoutManager mLayoutManager;
@@ -282,7 +284,7 @@ public class QianDaoActivity extends BaseActivity implements ItemQianDaoShareVie
     }
 
 
-    @OnClick({R.id.img_back, R.id.tv_share, R.id.tv_qiandao_guize, R.id.tv_shangcheng, R.id.tv_user_integral,R.id.con_zuotian})
+    @OnClick({R.id.img_back, R.id.tv_share, R.id.tv_qiandao_guize, R.id.tv_shangcheng, R.id.tv_user_integral, R.id.con_zuotian, R.id.text_qiandao})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -308,14 +310,14 @@ public class QianDaoActivity extends BaseActivity implements ItemQianDaoShareVie
                 startActivity(new Intent(this, JiFenActivity.class));
                 break;
             case R.id.con_zuotian:
-                if (UtilsForClick.isFastClick()){
+            case R.id.text_qiandao:
+                if (UtilsForClick.isFastClick()) {
                     new XPopup.Builder(this)
                             .dismissOnTouchOutside(true)
                             .dismissOnBackPressed(true)
                             .asCustom(new BottomShareAppPopup3(this, mUserInfo, share_info))
                             .show();
                 }
-
                 break;
         }
     }
@@ -326,6 +328,7 @@ public class QianDaoActivity extends BaseActivity implements ItemQianDaoShareVie
 
         mViewModel.sharehaibao("2", mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "" + AppUtils.getVersionCode(this))
                 .observe(this, mshareObserver);
+        load();
     }
 
     private Observer<Status<ResponseBody>> mshareObserver = status -> {

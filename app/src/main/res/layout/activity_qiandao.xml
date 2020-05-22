@@ -48,7 +48,22 @@
             android:padding="5dp"
             android:visibility="gone"
             />
-
+        <TextView
+            android:id="@+id/tv_qiandao_guize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="签到规则"
+            android:textSize="14sp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textColor="@color/white"
+            android:layout_marginRight="10dp"
+            android:drawableLeft="@drawable/integralrules"
+            android:drawablePadding="@dimen/dp_6"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
     <com.cuci.enticement.widget.SmoothScrollview
         android:id="@+id/scroll_details"
@@ -99,22 +114,7 @@
             android:textColor="@color/white"
             android:layout_marginTop="10dp"
             />
-        <TextView
-            android:id="@+id/tv_qiandao_guize"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="签到规则"
-            android:textSize="14sp"
-            app:layout_constraintTop_toBottomOf="@+id/tv_money"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:textColor="@color/white"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
-            android:drawableLeft="@drawable/integralrules"
-            android:drawablePadding="@dimen/dp_6"
-            android:gravity="center"
-            android:includeFontPadding="false"
-            />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
    <androidx.constraintlayout.widget.ConstraintLayout
@@ -148,6 +148,25 @@
            android:drawableRight="@drawable/jiantou_huang"
            android:gravity="center"
            android:drawablePadding="@dimen/dp_6"
+           />
+       <TextView
+           android:id="@+id/text_qiandao"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintTop_toTopOf="@+id/tv_user_integral"
+           app:layout_constraintBottom_toBottomOf="@+id/tv_user_integral"
+           android:text="分享"
+           android:textSize="14sp"
+           android:textColor="@color/home_huang"
+           android:drawableLeft="@drawable/share_qd"
+           android:drawablePadding="3dp"
+           android:gravity="center"
+           android:background="@drawable/shape_qiandao_share_bg"
+           android:paddingRight="10dp"
+           android:paddingLeft="8dp"
+           android:paddingTop="2dp"
+           android:paddingBottom="2dp"
            />
       <androidx.constraintlayout.widget.ConstraintLayout
           android:id="@+id/con_kapai"

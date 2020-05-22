@@ -36,7 +36,7 @@ public class BottomBarView extends LinearLayout {
     public BottomBarView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setOrientation(HORIZONTAL);
-        MARGIN_TOP_BOTTOM = DimensionUtils.dp2px(context, 6);
+        MARGIN_TOP_BOTTOM = DimensionUtils.dp2px(context, 12);
         MID_HEIGHT = DimensionUtils.dp2px(context, 56);
     }
 
@@ -57,7 +57,8 @@ public class BottomBarView extends LinearLayout {
                 layoutParams = new LayoutParams(0, LayoutParams.MATCH_PARENT, 1);
             }
 
-            layoutParams.setMargins(0, MARGIN_TOP_BOTTOM, 0, MARGIN_TOP_BOTTOM);
+          //  layoutParams.setMargins(0, MARGIN_TOP_BOTTOM, 0, MARGIN_TOP_BOTTOM);
+            layoutParams.setMargins(0, MARGIN_TOP_BOTTOM, 0, 0);
             imageView.setLayoutParams(layoutParams);
             imageView.setContentDescription(tab.desc);
 

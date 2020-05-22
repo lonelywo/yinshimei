@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -31,16 +30,13 @@ import com.cuci.enticement.bean.IsYhjLingBean;
 import com.cuci.enticement.bean.ItemBanner;
 import com.cuci.enticement.bean.QyandYHJBean;
 import com.cuci.enticement.bean.ShareHomeImgBean;
-import com.cuci.enticement.bean.ShareimgBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
 import com.cuci.enticement.event.ClickMyEvent;
 import com.cuci.enticement.plate.common.Agreement2Activity;
 import com.cuci.enticement.plate.common.AgreementActivity;
 import com.cuci.enticement.plate.common.MainActivity;
-import com.cuci.enticement.plate.common.eventbus.CartEvent;
 import com.cuci.enticement.plate.common.eventbus.EssayEvent;
-import com.cuci.enticement.plate.common.popup.CenterShareAppPopup2;
 import com.cuci.enticement.plate.common.popup.TipsPopup_kaquan;
 import com.cuci.enticement.plate.home.activity.CenterLingQuanActivity;
 import com.cuci.enticement.plate.home.activity.ProdActivity;
@@ -51,7 +47,6 @@ import com.cuci.enticement.plate.home.adapter.ItemLingQuanViewBinder;
 import com.cuci.enticement.plate.home.adapter.ItemQiYeViewBinder;
 import com.cuci.enticement.plate.home.adapter.ItemShareViewBinder;
 import com.cuci.enticement.plate.home.vm.HomeViewModel;
-import com.cuci.enticement.plate.mine.activity.PKActivity;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
@@ -60,7 +55,6 @@ import com.cuci.enticement.utils.SharedPrefUtils;
 import com.cuci.enticement.utils.ViewUtils;
 import com.cuci.enticement.widget.CustomRefreshHeader;
 import com.cuci.enticement.widget.HomeGridItemDecoration;
-import com.cuci.enticement.widget.HomeGridItemDecoration2;
 import com.cuci.enticement.widget.HomeListSpanSizeLookup;
 import com.google.gson.Gson;
 import com.lxj.xpopup.XPopup;
@@ -84,7 +78,7 @@ import okhttp3.ResponseBody;
 /**
  * 首页外层Fragment
  */
-public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.OnBannerClickListener, OnRefreshLoadMoreListener, ItemLingQuanViewBinder.OnLingQuanClickListener, ItemQiYeViewBinder.OnQiYeClickListener, ItemShareViewBinder.OnShareClickListener, ItemImageViewBinder.OnItemClickListener{
+public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.OnBannerClickListener, OnRefreshLoadMoreListener, ItemLingQuanViewBinder.OnLingQuanClickListener, ItemQiYeViewBinder.OnQiYeClickListener, ItemShareViewBinder.OnShareClickListener, ItemImageViewBinder.OnItemClickListener {
 
     private static final String TAG = _HomeFragment.class.getSimpleName();
     @BindView(R.id.rec_goods)
@@ -99,6 +93,8 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
     View view;
     @BindView(R.id.con_dingbu)
     ConstraintLayout conDingbu;
+    @BindView(R.id.flot)
+    ImageView flot;
     private int mMinId = 1;
     private RecyclerView mRecyclerView;
     private SmartRefreshLayout mRefreshLayout;
@@ -149,7 +145,7 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
         mRefreshLayout.setOnRefreshLoadMoreListener(this);
         mAdapter.register(ItemBanner.class, new ItemBannerViewBinder(this));
         mAdapter.register(QyandYHJBean.DataBean.CouponBean.class, new ItemLingQuanViewBinder(this));
-      //  mAdapter.register(QyandYHJBean.DataBean.ShareBean.class, new ItemShareViewBinder(this));
+        //  mAdapter.register(QyandYHJBean.DataBean.ShareBean.class, new ItemShareViewBinder(this));
         mAdapter.register(QyandYHJBean.DataBean.class, new ItemImageViewBinder(this));
         mAdapter.register(GoodsItem.class, new ItemGoodsLongViewBinder(mActivity));
         mAdapter.register(QyandYHJBean.DataBean.GroupbuyBean.class, new ItemQiYeViewBinder(this));
@@ -210,6 +206,12 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
                 } else {
                     ViewUtils.hideView(conDingbu);
                 }
+
+            }
+        });
+        flot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
             }
         });
@@ -667,7 +669,7 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
     @Override
     public void onShare1Click(QyandYHJBean.DataBean.ShareBean bean) {
         if (AppUtils.isAllowPermission(mActivity)) {
-            mViewModel.sharehaobao("2",  mUserInfo.getToken(), String.valueOf(mUserInfo.getId()),"" + AppUtils.getVersionCode(mActivity)).observe(this, mObservershare);
+            mViewModel.sharehaobao("2", mUserInfo.getToken(), String.valueOf(mUserInfo.getId()), "" + AppUtils.getVersionCode(mActivity)).observe(this, mObservershare);
             //ViewUtils.showView(progressBar);
             mProgressDialog = ProgressDialog.show(mActivity, "正在生成海报", "请稍等...");
         }
@@ -683,8 +685,7 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
     public void onEssayEventMessage(EssayEvent event) {
         String code = event.getCode();
         mViewModel.essay(code, "2", "" + AppUtils.getVersionCode(mActivity)).observe(this, essayObserver);
-        }
-
+    }
 
 
 }

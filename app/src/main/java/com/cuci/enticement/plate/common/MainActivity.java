@@ -30,6 +30,7 @@ import com.cuci.enticement.event.LoginOutEvent;
 import com.cuci.enticement.event.LoginSucceedEvent;
 import com.cuci.enticement.plate.cart.fragment._CartFragment;
 import com.cuci.enticement.plate.common.adapter.MainPagerAdapter;
+import com.cuci.enticement.plate.common.popup.JGPYPopup;
 import com.cuci.enticement.plate.common.popup.TipsPopupxieyi;
 import com.cuci.enticement.plate.common.popup.TipsPopupxieyi2;
 import com.cuci.enticement.plate.common.popup.UpdatePopup;
@@ -238,6 +239,15 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
         });
 
         boolean b = NotificationManagerCompat.from(BasicApp.getContext()).areNotificationsEnabled();
+        //交个朋友活动
+        new XPopup.Builder(this)
+                .dismissOnTouchOutside(false)
+                .dismissOnBackPressed(false)
+                .asCustom(new JGPYPopup(this,
+                        () -> {
+
+                        }))
+                .show();
     }
     private void customizeUi() {
         SecVerify.setUiSettings(CustomizeUtils.customizeUi());
@@ -474,6 +484,8 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
                             }))
                     .show();
         }
+
+
     }
 
 
