@@ -47,7 +47,7 @@
        android:layout_width="42dp"
        android:layout_height="42dp"
        android:layout_marginBottom="20dp"
-       android:layout_marginRight="20dp"
+       android:layout_marginRight="6dp"
        app:layout_constraintEnd_toEndOf="parent"
        app:layout_constraintBottom_toBottomOf="parent"
        >
@@ -81,9 +81,9 @@
           android:src="@drawable/flot"
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintEnd_toEndOf="parent"
-          android:layout_marginBottom="123dp"
-          android:layout_marginRight="20dp"
+          android:layout_marginRight="6dp"
           android:scaleType="centerCrop"
+          android:layout_marginBottom="200dp"
           />
 
   </androidx.constraintlayout.widget.ConstraintLayout>

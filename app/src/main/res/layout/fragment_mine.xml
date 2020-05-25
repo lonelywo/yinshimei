@@ -179,7 +179,7 @@
 
 
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                  <!--  <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/wodekajuan_ll"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -211,7 +211,7 @@
                             app:layout_constraintEnd_toEndOf="@+id/text_wodekajuan"
                             app:layout_constraintTop_toTopOf="@+id/text_wodekajuan" />
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/wodekefu_ll"
@@ -483,12 +483,81 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/con_wodemeifen"
+                android:id="@+id/con_kaquan"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"
                 android:visibility="visible"
                 app:layout_constraintTop_toBottomOf="@+id/con_dingdan"
+                android:background="@color/white"
+                >
+                <ImageView
+                    android:id="@+id/img_tubiao0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:src="@drawable/kaquan"
+                    android:layout_marginLeft="10dp"
+                    />
+                <TextView
+                    android:id="@+id/text_kaquan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="代金券"
+                    android:textColor="@color/hei"
+                    android:textSize="16sp"
+                    app:layout_constraintLeft_toRightOf="@+id/img_tubiao0"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:gravity="center"
+                    />
+                <TextView
+                    android:id="@+id/dot1_kajuan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="new"
+                    android:textColor="@color/white"
+                    android:textSize="10sp"
+                    android:background="@drawable/shape_mine_liping_dot_bg"
+                    app:layout_constraintLeft_toRightOf="@+id/text_kaquan"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:gravity="center"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:visibility="gone"
+                    />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:src="@drawable/youjiantou"
+                    android:layout_marginRight="10dp"
+                    />
+                <View
+                    android:id="@+id/view0"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="#f8f8f8"
+                    app:layout_constraintLeft_toLeftOf="@+id/text_kaquan"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/con_wodemeifen"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+
+                android:visibility="visible"
+                app:layout_constraintTop_toBottomOf="@+id/con_kaquan"
                 android:background="@color/white"
                 >
                 <ImageView
@@ -845,7 +914,7 @@
                     android:gravity="center"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     />
                 <ImageView
                     android:layout_width="wrap_content"

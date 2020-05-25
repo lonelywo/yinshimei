@@ -18,6 +18,7 @@ import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.NoticeListBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
+import com.cuci.enticement.event.IsnewEvent;
 import com.cuci.enticement.plate.mine.adapter.ItemNoticeListViewBinder;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.AppUtils;
@@ -29,6 +30,9 @@ import com.google.gson.Gson;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.IOException;
 import java.util.List;
 import butterknife.BindView;
@@ -146,6 +150,8 @@ public class NoticeActivity extends BaseActivity implements OnRefreshLoadMoreLis
                 return;
             }
             if (mNoticeListBean.getCode() == 1) {
+                //刷新公告
+                EventBus.getDefault().post(new IsnewEvent());
                 page = mNoticeListBean.getData().getPage().getCurrent() + 1;
                 mCanLoadMore = true;
                 if (status.loadType == Status.LOAD_REFRESH) {

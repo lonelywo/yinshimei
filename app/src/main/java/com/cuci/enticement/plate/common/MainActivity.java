@@ -245,7 +245,9 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
                 .dismissOnBackPressed(false)
                 .asCustom(new JGPYPopup(this,
                         () -> {
-
+                            Intent intentProd = new Intent(this, ProdActivity.class);
+                            intentProd.putExtra("bannerData", "6903904070");
+                            startActivity(intentProd);
                         }))
                 .show();
     }

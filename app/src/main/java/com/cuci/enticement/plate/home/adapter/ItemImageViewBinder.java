@@ -33,7 +33,7 @@ public class ItemImageViewBinder extends ItemViewBinder<QyandYHJBean.DataBean, I
 
         void onShare2Click(QyandYHJBean.DataBean.ShareBean bean);
 
-
+        void onShare3Click(QyandYHJBean.DataBean.ShareBean bean);
     }
 
     private ItemImageViewBinder.OnItemClickListener mOnItemClickListener;
@@ -58,7 +58,9 @@ public class ItemImageViewBinder extends ItemViewBinder<QyandYHJBean.DataBean, I
                 ImageLoader.loadPlaceholder(shareBean.getImgs(), holder.imgOnclick1);
             } else if (i == 1) {
                 ImageLoader.loadPlaceholder(shareBean.getImgs(), holder.imgOnclick2);
-        }
+        } else if (i == 2) {
+                ImageLoader.loadPlaceholder(shareBean.getImgs(), holder.imgOnclick3);
+            }
         }
         holder.imgOnclick1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,7 +81,15 @@ public class ItemImageViewBinder extends ItemViewBinder<QyandYHJBean.DataBean, I
 
             }
         });
+        holder.imgOnclick3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mOnItemClickListener != null) {
+                    mOnItemClickListener.onShare3Click(share.get(2));
+                }
 
+            }
+        });
 
     }
 
@@ -89,7 +99,8 @@ public class ItemImageViewBinder extends ItemViewBinder<QyandYHJBean.DataBean, I
         ImageView imgOnclick1;
         @BindView(R.id.img_onclick2)
         ImageView imgOnclick2;
-
+        @BindView(R.id.img_onclick3)
+        ImageView imgOnclick3;
         ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

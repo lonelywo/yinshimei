@@ -21,11 +21,11 @@
       <ImageView
           android:id="@+id/img_tupian"
           android:layout_width="100dp"
-          android:layout_height="100dp"
+          android:layout_height="120dp"
           tools:src="@mipmap/ic_launcher"
           app:layout_constraintTop_toTopOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          android:scaleType="centerCrop"
+          android:scaleType="fitXY"
           />
          <TextView
              android:id="@+id/text_biaoti"

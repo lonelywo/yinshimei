@@ -9,7 +9,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cuci.enticement.BasicApp;
@@ -53,13 +52,15 @@ public class BottomShareAppPopup3 extends BottomPopupView {
     LinearLayout llTupian;
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
+    @BindView(R.id.view_check)
+    View viewCheck;
     private UserInfo mUserInfo;
     private Bitmap bitmap;
     QianDaoBean.DataBean.ShareInfoBean mshare_info;
     private Context mContext;
     private ReItemTouchHelper mReItemTouchHelper;
     private QrCodeProdView mQrCodeProdView;
-    private int i=0;
+    private int i = 0;
 
     public BottomShareAppPopup3(@NonNull Context context, UserInfo userInfo, QianDaoBean.DataBean.ShareInfoBean share_info) {
         super(context);
@@ -80,7 +81,7 @@ public class BottomShareAppPopup3 extends BottomPopupView {
         mQrCodeProdView = new QrCodeProdView(BasicApp.getContext());
         mQrCodeProdView.setDesc(mshare_info.getNickname());
         mQrCodeProdView.setDesc1(mshare_info.getSlogan());
-        mQrCodeProdView.setImageMain(mshare_info.getPoster().get(i%7));
+        mQrCodeProdView.setImageMain(mshare_info.getPoster().get(i % 7));
         mQrCodeProdView.setImageQrCode(mshare_info.getQrcode());
         List<CardBean> list = CardMaker.initCards(mshare_info);
         CardSetting setting = new CardSetting();
@@ -109,7 +110,7 @@ public class BottomShareAppPopup3 extends BottomPopupView {
                 mQrCodeProdView = new QrCodeProdView(BasicApp.getContext());
                 mQrCodeProdView.setDesc(mshare_info.getNickname());
                 mQrCodeProdView.setDesc1(mshare_info.getSlogan());
-                mQrCodeProdView.setImageMain(mshare_info.getPoster().get(i%7));
+                mQrCodeProdView.setImageMain(mshare_info.getPoster().get(i % 7));
                 mQrCodeProdView.setImageQrCode(mshare_info.getQrcode());
                 switch (direction) {
                     case ReItemTouchHelper.DOWN:
@@ -129,7 +130,7 @@ public class BottomShareAppPopup3 extends BottomPopupView {
 
             @Override
             public void onSwipedClear() {
-              FToast.success(""+(i++));
+                FToast.success("" + (i++));
             }
         });
         CardTouchHelperCallback helperCallback = new CardTouchHelperCallback(mRecyclerView, list, setting);
@@ -142,7 +143,7 @@ public class BottomShareAppPopup3 extends BottomPopupView {
     }
 
     @OnClick({R.id.tv_share_wx, R.id.tv_share_moment,
-            R.id.icon_share_save})
+            R.id.icon_share_save, R.id.view_check})
     public void onViewClick(View view) {
 
         switch (view.getId()) {
@@ -180,7 +181,9 @@ public class BottomShareAppPopup3 extends BottomPopupView {
                 }
                 dismiss();
                 break;
-
+            case R.id.view_check:
+                dismiss();
+                break;
 
         }
     }

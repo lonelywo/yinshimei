@@ -164,12 +164,8 @@ public class _MineFragment extends BaseFragment {
     View view2;
     @BindView(R.id.con_dingdan)
     ConstraintLayout conDingdan;
-    @BindView(R.id.text_wodekajuan)
-    TextView textWodekajuan;
     @BindView(R.id.dot1_kajuan)
     TextView dot1Kajuan;
-    @BindView(R.id.wodekajuan_ll)
-    ConstraintLayout wodekajuanLl;
     @BindView(R.id.text_jifen)
     TextView textJifen;
     @BindView(R.id.jifen_ll)
@@ -240,6 +236,16 @@ public class _MineFragment extends BaseFragment {
     TextView textLipingDot;
     @BindView(R.id.con_wodedingdan)
     ConstraintLayout conWodedingdan;
+    @BindView(R.id.img_tubiao0)
+    ImageView imgTubiao0;
+    @BindView(R.id.text_kaquan)
+    TextView textKaquan;
+    @BindView(R.id.view0)
+    View view0;
+    @BindView(R.id.con_kaquan)
+    ConstraintLayout conKaquan;
+    @BindView(R.id.text_gonggao_dot)
+    TextView textGonggaoDot;
     private boolean mCouldChange = true;
     private LocalBroadcastManager mBroadcastManager;
     private UserInfo mUserInfo;
@@ -350,7 +356,7 @@ public class _MineFragment extends BaseFragment {
 
             }
         });
-        textWodekajuan.setOnClickListener(new View.OnClickListener() {
+        conKaquan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (AppUtils.isAllowPermission(mActivity)) {
@@ -504,7 +510,7 @@ public class _MineFragment extends BaseFragment {
                 }
                 is_month = mDataUserInfo.getData().getIs_month();
                 if (mDataUserInfo.getData().getIs_month() == 1) {
-                    new XPopup.Builder(mActivity)
+                   /* new XPopup.Builder(mActivity)
                             .dismissOnBackPressed(false)
                             .dismissOnTouchOutside(false)
                             .asCustom(new TipsPopup(mActivity,
@@ -513,7 +519,7 @@ public class _MineFragment extends BaseFragment {
                                 intentProd.putExtra("Data", is_month);
                                 mActivity.startActivity(intentProd);
                             }))
-                            .show();
+                            .show();*/
                 }
 
                 DataUserInfo.DataBean.OrdertotalBean ordertotal = mDataUserInfo.getData().getOrdertotal();

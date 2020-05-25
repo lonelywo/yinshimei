@@ -107,6 +107,16 @@ public class QyandYHJBean implements Serializable {
             private String jump_id;
             private String imgs;
             private String title;
+
+            public String getGood_id() {
+                return good_id;
+            }
+
+            public void setGood_id(String good_id) {
+                this.good_id = good_id;
+            }
+
+            private String good_id;
         }
         public int getCoupon_show() {
             return coupon_show;

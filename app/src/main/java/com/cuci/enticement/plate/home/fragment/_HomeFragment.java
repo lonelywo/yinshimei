@@ -47,6 +47,8 @@ import com.cuci.enticement.plate.home.adapter.ItemLingQuanViewBinder;
 import com.cuci.enticement.plate.home.adapter.ItemQiYeViewBinder;
 import com.cuci.enticement.plate.home.adapter.ItemShareViewBinder;
 import com.cuci.enticement.plate.home.vm.HomeViewModel;
+import com.cuci.enticement.plate.mine.activity.KaQuanActivity;
+import com.cuci.enticement.plate.mine.activity.QianDaoActivity;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
@@ -212,7 +214,9 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
         flot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intentProd = new Intent(mActivity, ProdActivity.class);
+                intentProd.putExtra("bannerData", "6903904070");
+                mActivity.startActivity(intentProd);
             }
         });
     }
@@ -677,7 +681,20 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
 
     @Override
     public void onShare2Click(QyandYHJBean.DataBean.ShareBean bean) {
-        mViewModel.essay(bean.getJump_id(), "2", "" + AppUtils.getVersionCode(mActivity)).observe(this, essayObserver);
+        int type = bean.getType();
+        if(type==1){
+            mViewModel.essay(bean.getJump_id(), "2", "" + AppUtils.getVersionCode(mActivity)).observe(this, essayObserver);
+        }else if(type==3){
+            startActivity(new Intent(mActivity, QianDaoActivity.class));
+        }
+
+    }
+
+    @Override
+    public void onShare3Click(QyandYHJBean.DataBean.ShareBean bean) {
+        Intent intentProd = new Intent(mActivity, ProdActivity.class);
+        intentProd.putExtra("bannerData", bean.getGood_id());
+        mActivity.startActivity(intentProd);
     }
 
 

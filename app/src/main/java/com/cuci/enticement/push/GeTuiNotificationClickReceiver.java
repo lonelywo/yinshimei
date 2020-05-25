@@ -26,6 +26,7 @@ import com.cuci.enticement.plate.common.eventbus.EssayEvent;
 import com.cuci.enticement.plate.home.activity.ProdActivity;
 import com.cuci.enticement.plate.home.vm.HomeViewModel;
 import com.cuci.enticement.plate.mine.activity.AchievementActivity;
+import com.cuci.enticement.plate.mine.activity.KaQuanActivity;
 import com.cuci.enticement.plate.mine.activity.MyTeamActivity;
 import com.cuci.enticement.plate.mine.activity.NoticeActivity;
 import com.cuci.enticement.utils.AppUtils;
@@ -75,7 +76,8 @@ public class GeTuiNotificationClickReceiver extends BroadcastReceiver {
                     startIntent( context,intentProd);
             }
             else if (message.getType()==6) {
-
+                Intent intentProd = new Intent(context, KaQuanActivity.class);
+                startIntent( context,intentProd);
             }
         }
 
