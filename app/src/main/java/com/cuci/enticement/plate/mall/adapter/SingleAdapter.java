@@ -60,7 +60,7 @@ public class SingleAdapter extends RecyclerView.Adapter {
             }else {
                 String amount = listBean.getCoupon().getAmount();
                 String moveone_amount = MathExtend.moveone(amount);
-                viewHolder.mTvName.setText("省"+moveone_amount+"元，"+listBean.getCoupon().getAmount_desc()+"优惠券");
+                viewHolder.mTvName.setText("省"+moveone_amount+"元，"+listBean.getCoupon().getAmount_desc());
             }
 
             if (selected == position) {

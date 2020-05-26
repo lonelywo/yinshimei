@@ -685,16 +685,18 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
         if(type==1){
             mViewModel.essay(bean.getJump_id(), "2", "" + AppUtils.getVersionCode(mActivity)).observe(this, essayObserver);
         }else if(type==3){
-            startActivity(new Intent(mActivity, QianDaoActivity.class));
+            if (AppUtils.isAllowPermission(mActivity)) {
+                startActivity(new Intent(mActivity, QianDaoActivity.class));
+            }
         }
 
     }
 
     @Override
     public void onShare3Click(QyandYHJBean.DataBean.ShareBean bean) {
-        Intent intentProd = new Intent(mActivity, ProdActivity.class);
-        intentProd.putExtra("bannerData", bean.getGood_id());
-        mActivity.startActivity(intentProd);
+            Intent intentProd = new Intent(mActivity, ProdActivity.class);
+            intentProd.putExtra("bannerData", bean.getGood_id());
+            mActivity.startActivity(intentProd);
     }
 
 

@@ -339,7 +339,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                                        String amount = item.getCoupon().getAmount();
                                        moveone_amount = MathExtend.moveone(amount);
                                        id_yhq = item.getId();
-                                                   textYouhuiset.setText( "省"+moveone_amount+"元，"+item.getCoupon().getAmount_desc()+"优惠券");
+                                                   textYouhuiset.setText( "省"+moveone_amount+"元，"+item.getCoupon().getAmount_desc());
                                                    textYouhuimoney.setText("-¥"+moveone_amount);
                                        //计算总价
                                        String totalMoney1 = MathExtend.addnum(mInfo.getPrice_goods(), express_price);
