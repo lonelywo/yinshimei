@@ -167,7 +167,7 @@ public class PayOfterActivity extends BaseActivity implements ItemZhuanPanViewBi
                 if(TextUtils.equals("马上查看",ok.getText())){
                     startActivity(new Intent(PayOfterActivity.this, KaQuanActivity.class));
                     finish();
-                }else if(TextUtils.equals("立即分享",ok.getText())){
+                }else if(TextUtils.equals("邀请更多好友赚佣金",ok.getText())){
                     ShareXiaoChengnXu();
                 }
 
@@ -315,7 +315,7 @@ public class PayOfterActivity extends BaseActivity implements ItemZhuanPanViewBi
                          title = mPayOfterBean.getData().getShareInfo().getTitle();
                         ImageLoader.loadPlaceholder(p_img, imgLogo);
                         tv1.setText(p_title+"\n"+p_desc);
-                        ok.setText("立即分享");
+                        ok.setText("邀请更多好友赚佣金");
                         ViewUtils.showView(ok);
 
                     }else {

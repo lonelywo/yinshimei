@@ -13,12 +13,16 @@ import com.cuci.enticement.base.BaseActivity;
 import com.cuci.enticement.bean.NoticeRecBean;
 import com.cuci.enticement.bean.Status;
 import com.cuci.enticement.bean.UserInfo;
+import com.cuci.enticement.event.IsnewEvent;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.AppUtils;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.SharedPrefUtils;
 import com.google.gson.Gson;
 import com.tencent.smtt.sdk.WebView;
+
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.IOException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -90,6 +94,8 @@ public class NoticeRecActivity extends BaseActivity {
                 return;
             }
             if (mNoticeRecBean.getCode() == 1) {
+                //刷新公告
+                EventBus.getDefault().post(new IsnewEvent());
                 String htmlContent = mNoticeRecBean.getData().getContent();
                 webDetails.loadDataWithBaseURL(null,
                         getHtmlData(htmlContent), "text/html", "utf-8", null);
