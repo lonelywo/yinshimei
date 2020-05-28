@@ -151,12 +151,13 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
                 }
             });
         }
+        if(TextUtils.equals(mItem.getId(),"6904121452")){
         HomeDetailsBean.DataBean.SpecsBean specsBean = specs.get(0);
         List<HomeDetailsBean.DataBean.SpecsBean.ListBean> list = specsBean.getList();
         textFenzu.setText(specsBean.getName());
         addview(radioGroup, list);
-        mSpec = specsBean.getName() + ":" + list.get(0).getName();
-        selectedTv.setText(list.get(0).getName());
+        mSpec = specsBean.getName() + ":" + list.get(2).getName();
+        selectedTv.setText(list.get(2).getName());
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
@@ -182,6 +183,39 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
         addspec();
         ImageLoader.loadPlaceholder(mItem.getLogo(), imgTuxiang);
         stockTv.setText("库存" + mItem.getNumber_stock() + "件");
+        }else {
+            HomeDetailsBean.DataBean.SpecsBean specsBean = specs.get(0);
+            List<HomeDetailsBean.DataBean.SpecsBean.ListBean> list = specsBean.getList();
+            textFenzu.setText(specsBean.getName());
+            addview(radioGroup, list);
+            mSpec = specsBean.getName() + ":" + list.get(0).getName();
+            selectedTv.setText(list.get(0).getName());
+            radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                    for (int j = 0; j < radioGroup.getChildCount(); j++) {
+                        int id = radioGroup.getChildAt(j).getId();
+                        if (id == i) {
+                            selectedTv.setText(list.get(j).getName());
+                            mSpec = specsBean.getName() + ":" + list.get(j).getName();
+                            mID = id;
+                            addspec();
+                            break;
+                        }
+                    }
+                }
+            });
+            // this.setFinishOnTouchOutside(true);
+            imgGuanbi.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dismiss();
+                }
+            });
+            addspec();
+            ImageLoader.loadPlaceholder(mItem.getLogo(), imgTuxiang);
+            stockTv.setText("库存" + mItem.getNumber_stock() + "件");
+        }
     }
     public void addspec(){
         if (TextUtils.isEmpty(mSpec2)) {
@@ -232,10 +266,18 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
             setRaidBtnAttribute(button, sku.getName(), index);
 
             radiogroup.addView(button);
-            if (i == 0) {
+            if(TextUtils.equals(mItem.getId(),"6904121452")){
+                if (i == 2) {
 
-                button.setChecked(true);
+                    button.setChecked(true);
+                }
+            }else {
+                if (i == 0) {
+
+                    button.setChecked(true);
+                }
             }
+
 
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
             button.setPadding(20, 10, 20, 10);

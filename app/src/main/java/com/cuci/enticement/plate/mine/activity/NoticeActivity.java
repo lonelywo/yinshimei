@@ -150,7 +150,8 @@ public class NoticeActivity extends BaseActivity implements OnRefreshLoadMoreLis
                 return;
             }
             if (mNoticeListBean.getCode() == 1) {
-
+                //刷新公告
+                EventBus.getDefault().post(new IsnewEvent());
                 page = mNoticeListBean.getData().getPage().getCurrent() + 1;
                 mCanLoadMore = true;
                 if (status.loadType == Status.LOAD_REFRESH) {

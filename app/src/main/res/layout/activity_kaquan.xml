@@ -29,7 +29,7 @@
             android:id="@+id/text_biaoti"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="我的卡券"
+            android:text="我的代金券"
             android:textColor="@color/hei"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"

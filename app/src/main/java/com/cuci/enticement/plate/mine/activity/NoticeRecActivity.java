@@ -94,8 +94,7 @@ public class NoticeRecActivity extends BaseActivity {
                 return;
             }
             if (mNoticeRecBean.getCode() == 1) {
-                //刷新公告
-                EventBus.getDefault().post(new IsnewEvent());
+
                 String htmlContent = mNoticeRecBean.getData().getContent();
                 webDetails.loadDataWithBaseURL(null,
                         getHtmlData(htmlContent), "text/html", "utf-8", null);

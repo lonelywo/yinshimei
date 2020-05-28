@@ -110,7 +110,7 @@ public class BottomShareAppPopup3 extends BottomPopupView {
                 mQrCodeProdView = new QrCodeProdView(BasicApp.getContext());
                 mQrCodeProdView.setDesc(mshare_info.getNickname());
                 mQrCodeProdView.setDesc1(mshare_info.getSlogan());
-                mQrCodeProdView.setImageMain(mshare_info.getPoster().get(i % 7));
+                mQrCodeProdView.setImageMain(mshare_info.getPoster().get(i % list.size()));
                 mQrCodeProdView.setImageQrCode(mshare_info.getQrcode());
                 switch (direction) {
                     case ReItemTouchHelper.DOWN:
