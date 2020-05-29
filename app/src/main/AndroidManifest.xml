@@ -37,85 +37,85 @@
         <activity
             android:name=".plate.home.activity.ProdActivity"
             android:screenOrientation="portrait"
-            >
+            tools:ignore="LockedOrientationActivity">
         </activity>
         <activity
             android:name=".plate.mine.activity.DuiHuanJiLuDetailsActivity"
             android:screenOrientation="portrait"
-            >
+            tools:ignore="LockedOrientationActivity">
         </activity>
         <activity
             android:name=".plate.mine.activity.GouldActivity"
             android:screenOrientation="portrait"
-            >
+            tools:ignore="LockedOrientationActivity">
         </activity>
         <activity
             android:name=".plate.mine.activity.DuiHuanJiLuActivity"
             android:screenOrientation="portrait"
-            >
+            tools:ignore="LockedOrientationActivity">
         </activity>
         <activity
             android:name=".plate.mine.activity.DuiHuanSuccessActivity"
             android:screenOrientation="portrait"
-            >
+            tools:ignore="LockedOrientationActivity">
         </activity>
         <activity
             android:name=".plate.mine.activity.DuiHuanDingDanQueRenActivity"
             android:screenOrientation="portrait"
-            >
+            tools:ignore="LockedOrientationActivity">
         </activity>
         <activity
             android:name=".plate.mine.activity.JiFenProdActivity"
             android:screenOrientation="portrait"
-            >
+            tools:ignore="LockedOrientationActivity">
         </activity>
         <activity
             android:name=".plate.mine.activity.DuiHuanMallActivity"
             android:screenOrientation="portrait"
-            >
+            tools:ignore="LockedOrientationActivity">
         </activity>
         <activity
             android:name=".plate.mine.activity.JiFenActivity"
             android:screenOrientation="portrait"
-            >
+            tools:ignore="LockedOrientationActivity">
         </activity>
         <activity
             android:name=".plate.mine.activity.QianDaoActivity"
             android:screenOrientation="portrait"
-            >
+            tools:ignore="LockedOrientationActivity">
         </activity>
         <activity
             android:name=".plate.mine.activity.DaiFaHuoTuiKuanActivity"
             android:screenOrientation="portrait"
-            >
+            tools:ignore="LockedOrientationActivity">
         </activity>
 
         <activity
             android:name=".plate.cart.activity.AftermarketActivity"
             android:screenOrientation="portrait"
-            >
+            tools:ignore="LockedOrientationActivity">
         </activity>
         <activity
             android:name=".plate.mine.activity.TuiKuanType1Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
-            >
+            tools:ignore="LockedOrientationActivity">
         </activity>
         <activity
             android:name=".plate.mine.activity.ImgActivity"
             android:screenOrientation="portrait"
-            >
+            tools:ignore="LockedOrientationActivity">
         </activity>
         <activity
             android:name=".plate.cart.activity.ZhuanPanActivity"
             android:screenOrientation="portrait"
-            >
+            tools:ignore="LockedOrientationActivity">
         </activity>
         <activity
             android:name=".plate.cart.activity.TuiKuanDetailsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
-            >
+            tools:ignore="LockedOrientationActivity">
         </activity>
 
 
@@ -123,209 +123,208 @@
             android:name=".plate.mine.activity.TuiKuanType2Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
-            >
+            tools:ignore="LockedOrientationActivity">
         </activity>
         <activity
             android:name=".plate.mine.activity.TuiAgreementActivity"
             android:screenOrientation="portrait"
-            >
+            tools:ignore="LockedOrientationActivity">
         </activity>
         <activity
             android:name=".plate.common.AgreementActivity"
             android:screenOrientation="portrait"
-            >
+            tools:ignore="LockedOrientationActivity">
         </activity>
         <activity
             android:name=".plate.mine.activity.KaQuanActivity"
             android:screenOrientation="portrait"
-            >
+            tools:ignore="LockedOrientationActivity">
         </activity>
         <activity
             android:name=".plate.common.Agreement2Activity"
             android:screenOrientation="portrait"
-            >
+            tools:ignore="LockedOrientationActivity">
         </activity>
         <activity
             android:name=".plate.common.OpenScreenActivity"
             android:screenOrientation="portrait"
-            >
+            tools:ignore="LockedOrientationActivity">
         </activity>
         <activity
             android:name=".plate.cart.activity.PayOfterActivity"
             android:screenOrientation="portrait"
-            >
+            tools:ignore="LockedOrientationActivity">
         </activity>
         <activity
             android:name=".plate.common.DailyActivity"
             android:screenOrientation="portrait"
-            >
+            tools:ignore="LockedOrientationActivity">
         </activity>
         <activity
             android:name=".plate.mine.activity.BindTuiJinActivity"
             android:screenOrientation="portrait"
-            >
+            tools:ignore="LockedOrientationActivity">
         </activity>
         <activity
             android:name=".plate.mine.activity.TuiTypeActivity"
             android:screenOrientation="portrait"
-            >
+            tools:ignore="LockedOrientationActivity">
         </activity>
         <activity
             android:name=".plate.home.activity.CenterLingQuanActivity"
             android:screenOrientation="portrait"
-            >
+            tools:ignore="LockedOrientationActivity">
         </activity>
         <activity
         android:name=".plate.mine.activity.NoticeActivity"
         android:screenOrientation="portrait"
-        >
+            tools:ignore="LockedOrientationActivity">
         </activity>
         <activity
             android:name=".plate.mine.activity.NoticeRecActivity"
             android:screenOrientation="portrait"
-            >
+            tools:ignore="LockedOrientationActivity">
         </activity>
 
         <activity
             android:name=".plate.mine.activity.TuiDetailsNOActivity"
             android:screenOrientation="portrait"
-            >
+            tools:ignore="LockedOrientationActivity">
         </activity>
         <activity
             android:name=".plate.mine.activity.TuiDetailsYesActivity"
             android:screenOrientation="portrait"
-            >
+            tools:ignore="LockedOrientationActivity">
         </activity>
         <activity
             android:name=".plate.mine.activity.TuiLogisticsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
-            >
+            tools:ignore="LockedOrientationActivity">
         </activity>
 
         <activity
             android:name=".plate.mine.activity.ApplyTuiActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
-            >
+            tools:ignore="LockedOrientationActivity">
         </activity>
         <activity android:name=".plate.mine.activity.MyOrderActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleTask"
-            >
+            tools:ignore="LockedOrientationActivity">
         </activity>
         <activity android:name=".plate.common.LoginActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleTask"
-            >
+            tools:ignore="LockedOrientationActivity">
 
         </activity>
         <activity android:name=".plate.common.RegisterActivity"
             android:screenOrientation="portrait"
-            >
+            tools:ignore="LockedOrientationActivity">
 
         </activity>
         <activity android:name=".plate.cart.activity.OrderActivity"
             android:screenOrientation="portrait"
-
-            >
-
+            tools:ignore="LockedOrientationActivity">
         </activity>
         <activity android:name=".plate.cart.activity.OrderDetailsActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleTask"
-            >
+            tools:ignore="LockedOrientationActivity">
 
         </activity>
         <activity android:name=".plate.mine.activity.ZengAddressActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"
-            >
+            tools:ignore="LockedOrientationActivity">
 
         </activity>
         <activity android:name=".plate.mine.activity.PKActivity"
             android:screenOrientation="portrait"
-            >
+            tools:ignore="LockedOrientationActivity">
 
         </activity>
         <activity android:name=".plate.common.BindPhoneActivity"
             android:screenOrientation="portrait"
-            >
+            tools:ignore="LockedOrientationActivity">
 
         </activity>
         <activity android:name=".plate.mine.activity.CommissionActivity"
             android:screenOrientation="portrait"
-            >
+            tools:ignore="LockedOrientationActivity">
 
         </activity>
         <activity android:name=".plate.mine.activity.MyTeamActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleTask"
-            >
+            tools:ignore="LockedOrientationActivity">
 
         </activity>
         <activity android:name=".plate.mine.activity.AchievementActivity"
             android:screenOrientation="portrait"
-            >
+            tools:ignore="LockedOrientationActivity">
 
         </activity>
         <activity android:name=".plate.mine.activity.KeFuActivity"
             android:screenOrientation="portrait"
-            >
+            tools:ignore="LockedOrientationActivity">
 
         </activity>
         <activity android:name=".plate.mine.activity.CashActivity"
             android:screenOrientation="portrait"
-            >
+            tools:ignore="LockedOrientationActivity">
 
         </activity>
         <activity android:name=".plate.mine.activity.CashMXActivity"
             android:screenOrientation="portrait"
-            >
+            tools:ignore="LockedOrientationActivity">
 
         </activity>
         <activity android:name=".plate.mine.activity.RecAddressActivity"
             android:screenOrientation="portrait"
-            >
+            tools:ignore="LockedOrientationActivity">
 
         </activity>
         <activity android:name=".plate.mine.activity.MyTeamTwoActivity"
             android:screenOrientation="portrait"
-            >
+            tools:ignore="LockedOrientationActivity">
 
         </activity>
         <activity android:name=".plate.mall.activity.YuLanActivity"
             android:screenOrientation="portrait"
-           />
+            tools:ignore="LockedOrientationActivity" />
         <activity android:name=".plate.mine.activity.YinshimeiActivity"
           android:screenOrientation="portrait"
-          />
+            tools:ignore="LockedOrientationActivity" />
         <activity android:name=".plate.mine.activity.InfoActivity"
           android:screenOrientation="portrait"
-          />
+            tools:ignore="LockedOrientationActivity" />
 
         <activity android:name=".plate.mine.activity.NickModifyActivity"
           android:screenOrientation="portrait"
-          />
+            tools:ignore="LockedOrientationActivity" />
 
         <activity android:name=".plate.mine.activity.SettingsActivity"
           android:screenOrientation="portrait"
             android:launchMode="singleTask"
-          />
+            tools:ignore="LockedOrientationActivity" />
 
         <activity android:name=".plate.cart.activity.LogisticsActivity"
             android:screenOrientation="portrait"
-            >
+            tools:ignore="LockedOrientationActivity">
         </activity>
         <activity android:name=".plate.common.HuanBindActivity"
             android:screenOrientation="portrait"
-            >
+            tools:ignore="LockedOrientationActivity">
         </activity>
         <activity
             android:name=".plate.common.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            tools:ignore="LockedOrientationActivity" />
 
 
 
