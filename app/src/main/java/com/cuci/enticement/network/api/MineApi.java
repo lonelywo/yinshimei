@@ -226,21 +226,9 @@ public interface MineApi {
                               @Field("sign") String sign
     );
 
+
     /**
      * 获取团队统计列表
-     */
-    @FormUrlEncoded
-    @POST("store/api.member.team/getps")
-    Call<ResponseBody> hqteamtj(@Field("token") String token,
-                                @Field("mid") String mid,
-                                @Field("from_type") String from_type,
-                                @Field("nickname") String nickname,
-                                @Field("page") String page,
-                                @Field("new_version") String new_version,
-                                @Field("sign") String sign
-    );
-    /**
-     * 获取隔代团队统计列表
      */
     @FormUrlEncoded
     @POST("store/api.member.team/getps")
