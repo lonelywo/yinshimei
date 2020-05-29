@@ -228,7 +228,7 @@ public class DuiHuanMallActivity extends BaseActivity implements OnRefreshLoadMo
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
         if (mCanLoadMore) {
             mCanLoadMore = false;
-            mViewModel.JiFenMingXiList( mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"2", ""+page,"20",""+ AppUtils.getVersionCode(this), Status.LOAD_MORE)
+            mViewModel.JiFenShangChengList( mUserInfo.getToken(),String.valueOf(mUserInfo.getId()),"2", ""+page,"20",""+ AppUtils.getVersionCode(this), Status.LOAD_MORE)
                     .observe(this, mObserver);
         } else {
             refreshLayout.finishLoadMore();

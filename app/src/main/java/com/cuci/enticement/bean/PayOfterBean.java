@@ -48,6 +48,7 @@ public class PayOfterBean implements Serializable {
          * coupons : [{"title":"购物赠送券","limit_amount":100,"amount":5,"startstime":"2020-02-26 18:44:30","endtime":"2020-02-26 20:44:30"},{"title":"购物赠送券-2","limit_amount":200,"amount":15,"startstime":"2020-02-26 18:44:30","endtime":"2020-02-26 20:44:30"}]
          * img : https://lanhu.oss-cn-beijing.aliyuncs.com/pscd3cf5fd4096be0f-40ba-4272-bab1-85c0e84fe916
          * desc : 恭喜您获得优惠券2张 请移步到我的卡券中心查看
+         * gave_coupon活动面膜弹框状态
          */
 
         private int is_lottery;
@@ -60,6 +61,15 @@ public class PayOfterBean implements Serializable {
             this.is_share = is_share;
         }
 
+        public boolean isGave_coupon() {
+            return gave_coupon;
+        }
+
+        public void setGave_coupon(boolean gave_coupon) {
+            this.gave_coupon = gave_coupon;
+        }
+
+        private boolean gave_coupon;
         private int is_share;
         private LotteryBean lottery;
         private int is_coupon;

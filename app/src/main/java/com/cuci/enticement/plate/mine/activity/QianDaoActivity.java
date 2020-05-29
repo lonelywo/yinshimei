@@ -30,6 +30,7 @@ import com.cuci.enticement.event.IsnewEvent;
 import com.cuci.enticement.plate.common.MainActivity;
 import com.cuci.enticement.plate.common.popup.BottomShareAppPopup2;
 import com.cuci.enticement.plate.common.popup.BottomShareAppPopup3;
+import com.cuci.enticement.plate.common.popup.JGPY_Pay_Popup;
 import com.cuci.enticement.plate.common.popup.QianDaoHouPopup;
 import com.cuci.enticement.plate.mine.adapter.ItemQianDaoShareViewBinder;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;

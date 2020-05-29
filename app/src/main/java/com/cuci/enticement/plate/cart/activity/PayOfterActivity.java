@@ -35,8 +35,11 @@ import com.cuci.enticement.network.ServiceCreator;
 import com.cuci.enticement.plate.cart.adapter.ItemZhuanPanViewBinder;
 import com.cuci.enticement.plate.cart.vm.CartViewModel;
 import com.cuci.enticement.plate.common.MainActivity;
+import com.cuci.enticement.plate.common.popup.JGPYPopup;
+import com.cuci.enticement.plate.common.popup.JGPY_Pay_Popup;
 import com.cuci.enticement.plate.common.popup.LuckDrawTipsPopup;
 import com.cuci.enticement.plate.common.popup.TipsPopupxieyi1;
+import com.cuci.enticement.plate.home.activity.ProdActivity;
 import com.cuci.enticement.plate.mine.activity.KaQuanActivity;
 import com.cuci.enticement.plate.mine.activity.MyOrderActivity;
 import com.cuci.enticement.plate.mine.activity.YinshimeiActivity;
@@ -276,6 +279,21 @@ public class PayOfterActivity extends BaseActivity implements ItemZhuanPanViewBi
             String b = body.string();
             PayOfterBean mPayOfterBean = new Gson().fromJson(b, PayOfterBean.class);
             if (mPayOfterBean.getCode() == 1) {
+               if (mPayOfterBean.getData().isGave_coupon()){
+                   //交个朋友活动
+                   new XPopup.Builder(this)
+                           .dismissOnTouchOutside(false)
+                           .dismissOnBackPressed(false)
+                           .asCustom(new JGPY_Pay_Popup(this,
+                                   () -> {
+                                       Intent intentProd = new Intent(this, KaQuanActivity.class);
+                                       startActivity(intentProd);
+                                       finish();
+                                   }))
+                           .show();
+               }
+
+
                 String img = mPayOfterBean.getData().getImg();
                 String desc = mPayOfterBean.getData().getDesc();
                 String replace = desc.replace("\\n", "\n");
