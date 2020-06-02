@@ -181,6 +181,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
     private String total;
     private String goodsPrice;
 
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_prod;
@@ -389,7 +390,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                 if(SharedPrefUtils.getisnew()==0&&mProData.getVip_mod()==0||SharedPrefUtils.getisnew()==1&&mProData.getVip_mod()==1){
                      goodsPrice = MathExtend.multiply(mprice_market, String.valueOf(mNum));
                 }else {
-                     goodsPrice = MathExtend.multiply(mprice_sell, String.valueOf(mNum));
+                    goodsPrice = MathExtend.multiply(mprice_sell, String.valueOf(mNum));
                 }
               //  String goodsPrice = MathExtend.multiply(mprice_sell, String.valueOf(mNum));
                 cartIntentInfo.setPrice_goods(goodsPrice);

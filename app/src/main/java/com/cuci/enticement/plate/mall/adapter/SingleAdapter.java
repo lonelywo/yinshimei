@@ -56,7 +56,7 @@ public class SingleAdapter extends RecyclerView.Adapter {
             KaQuanListBean.DataBean.ListBean listBean = datas.get(position);
 
             if(TextUtils.equals(listBean.getUsed_at(),"未知")){
-                viewHolder.mTvName.setText("不使用优惠券");
+                viewHolder.mTvName.setText("不使用代金券");
             }else {
                 String amount = listBean.getCoupon().getAmount();
                 String moveone_amount = MathExtend.moveone(amount);

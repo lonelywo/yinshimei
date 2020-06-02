@@ -176,6 +176,11 @@
             tools:ignore="LockedOrientationActivity">
         </activity>
         <activity
+            android:name=".plate.home.activity.CenterLingQuanActivity2"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
+        </activity>
+        <activity
         android:name=".plate.mine.activity.NoticeActivity"
         android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity">

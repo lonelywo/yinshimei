@@ -3,6 +3,7 @@ package com.cuci.enticement.plate.home.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -46,10 +47,12 @@ public class ItemGoodsLongViewBinder extends ItemViewBinder<GoodsItem, ItemGoods
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull GoodsItem item) {
         ImageLoader.loadPlaceholder(item.getLogo(), holder.imageHome);
-    /*    holder.textHomeGoodsname.setText(item.getTitle());
-      *//*  holder.textHomeMoney.setText("原价¥" + item.getInitial_price_market());
-        holder.textHomeMoneyVip.setText("会员价¥" + item.getInitial_price_selling());*//*
-        Typeface set = UtilFonts.set("fonts/DINPro-Regular.ttf");
+        holder.textHomeGoodsname.setText(item.getTitle());
+        holder.textHomeMoney.setText("¥ "+MathExtend.moveone(item.getInitial_price_market()));
+        holder.textHomeMoneyVip.setText("¥ "+MathExtend.moveone(item.getInitial_price_selling()));
+        // 中间加横线 ， 添加Paint.ANTI_ALIAS_FLAG是线会变得清晰去掉锯齿
+        holder.textHomeMoney.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG );
+      /*  Typeface set = UtilFonts.set("fonts/DINPro-Regular.ttf");
         holder.textHomeMoney.setTypeface(set);
         holder.textHomeMoneyVip.setTypeface(set);
         if (item.getVip_mod() == 1) {
@@ -85,12 +88,12 @@ public class ItemGoodsLongViewBinder extends ItemViewBinder<GoodsItem, ItemGoods
 
         @BindView(R.id.image_home)
         ImageView imageHome;
-       /* @BindView(R.id.text_home_goodsname)
+        @BindView(R.id.text_home_goodsname)
         TextView textHomeGoodsname;
         @BindView(R.id.text_home_money)
         TextView textHomeMoney;
         @BindView(R.id.text_home_money_vip)
-        TextView textHomeMoneyVip;*/
+        TextView textHomeMoneyVip;
         @BindView(R.id.card_view)
         CardView cardView;
 

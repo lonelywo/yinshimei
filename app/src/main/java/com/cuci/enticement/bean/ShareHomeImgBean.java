@@ -48,6 +48,16 @@ public class ShareHomeImgBean implements Serializable {
 
         private String mid;
         private String nickname;
+
+        public String getSlogan() {
+            return slogan;
+        }
+
+        public void setSlogan(String slogan) {
+            this.slogan = slogan;
+        }
+
+        private String slogan;
         private List<GoodsListBean> goods_list;
 
         public String getMid() {

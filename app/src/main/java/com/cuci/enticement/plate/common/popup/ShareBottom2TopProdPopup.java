@@ -100,6 +100,8 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
     private String price_sell;
     private String price_market;
     private String spec = null;
+    private int purchase_limit_number=0;
+
     public ShareBottom2TopProdPopup(@NonNull Context context, HomeDetailsBean.DataBean item, int code, OnCommitClickListener OnCommitClickListener) {
         super(context);
         mContext = context;
@@ -151,7 +153,7 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
                 }
             });
         }
-        if(TextUtils.equals(mItem.getId(),"6904121452")){
+        if(TextUtils.equals(mItem.getId(),"6903904070")){
         HomeDetailsBean.DataBean.SpecsBean specsBean = specs.get(0);
         List<HomeDetailsBean.DataBean.SpecsBean.ListBean> list = specsBean.getList();
         textFenzu.setText(specsBean.getName());
@@ -167,6 +169,9 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
                         selectedTv.setText(list.get(j).getName());
                         mSpec = specsBean.getName() + ":" + list.get(j).getName();
                         mID = id;
+                        purchase_limit_number = mItem.getList().get(i).getPurchase_limit_number();
+                        mCount=1;
+                        textShuzi.setText(String.valueOf(mCount));
                         addspec();
                         break;
                     }
@@ -199,6 +204,9 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
                             selectedTv.setText(list.get(j).getName());
                             mSpec = specsBean.getName() + ":" + list.get(j).getName();
                             mID = id;
+                            purchase_limit_number = mItem.getList().get(i).getPurchase_limit_number();
+                            mCount=1;
+                            textShuzi.setText(String.valueOf(mCount));
                             addspec();
                             break;
                         }
@@ -266,7 +274,7 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
             setRaidBtnAttribute(button, sku.getName(), index);
 
             radiogroup.addView(button);
-            if(TextUtils.equals(mItem.getId(),"6904121452")){
+            if(TextUtils.equals(mItem.getId(),"6903904070")){
                 if (i == 2) {
 
                     button.setChecked(true);
@@ -337,14 +345,14 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_jia:
-               /* if(SharedPrefUtils.getisnew()==0&&mItem.getVip_mod()==1){
-                    FToast.warning("新用户体验价只能购买一支哦");
+                if(mCount>=purchase_limit_number){
+                    FToast.warning("不能再多了");
                 }else {
                     mCount++;
                     textShuzi.setText(String.valueOf(mCount));
-                }*/
-                mCount++;
-                textShuzi.setText(String.valueOf(mCount));
+                }
+               /* mCount++;
+                textShuzi.setText(String.valueOf(mCount));*/
 
                 break;
             case R.id.img_jian:

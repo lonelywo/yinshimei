@@ -320,14 +320,14 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
             public void onClick(View view) {
                if(type==1){
                    new XPopup.Builder(OrderActivity.this)
-                           .dismissOnBackPressed(false)
+                           .dismissOnBackPressed(true)
                            .dismissOnTouchOutside(false)
                            .asCustom(new CheckKaQuanTipsPopup(OrderActivity.this, list, new CheckKaQuanTipsPopup.OnExitListener() {
 
                                @Override
                                public void onCommit(KaQuanListBean.DataBean.ListBean item) {
                                    if(TextUtils.equals(item.getUsed_at(),"未知")){
-                                       textYouhuiset.setText( "不使用优惠券");
+                                       textYouhuiset.setText( "不使用代金券");
                                        textYouhuimoney.setText("-¥0");
                                        moveone_amount="0";
                                        //计算总价
@@ -939,7 +939,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
             KaQuanListBean mKaQuanListBean = new Gson().fromJson(b, KaQuanListBean.class);
             List<KaQuanListBean.DataBean.ListBean>   mcheckitems = mKaQuanListBean.getData().getList();
             if (mcheckitems == null || mcheckitems.size() == 0) {
-                textYouhuiset.setText("暂无可使用优惠券");
+                textYouhuiset.setText("暂无可使用代金券");
                 type=0;
                 return;
             }
@@ -978,7 +978,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                    }
                 }
                 if(list.size()==0){
-                    textYouhuiset.setText("暂无可使用优惠券");
+                    textYouhuiset.setText("暂无可使用代金券");
                     type=0;
                     return;
                 }
@@ -986,7 +986,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                 KaQuanListBean.DataBean.ListBean listBean = new KaQuanListBean.DataBean.ListBean();
                 listBean.setUsed_at("未知");
                 list.add(listBean);
-                textYouhuiset.setText("点击选择优惠券");
+                textYouhuiset.setText("点击选择代金券");
                 type=1;
 
             }else if(mKaQuanListBean.getCode() == HttpUtils.CODE_INVALID){

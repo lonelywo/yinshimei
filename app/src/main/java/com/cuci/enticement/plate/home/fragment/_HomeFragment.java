@@ -39,6 +39,7 @@ import com.cuci.enticement.plate.common.MainActivity;
 import com.cuci.enticement.plate.common.eventbus.EssayEvent;
 import com.cuci.enticement.plate.common.popup.TipsPopup_kaquan;
 import com.cuci.enticement.plate.home.activity.CenterLingQuanActivity;
+import com.cuci.enticement.plate.home.activity.CenterLingQuanActivity2;
 import com.cuci.enticement.plate.home.activity.ProdActivity;
 import com.cuci.enticement.plate.home.adapter.ItemBannerViewBinder;
 import com.cuci.enticement.plate.home.adapter.ItemGoodsLongViewBinder;
@@ -641,14 +642,7 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
             ShareHomeImgBean mMyTeamslBean = new Gson().fromJson(b, ShareHomeImgBean.class);
             if (mMyTeamslBean.getCode() == 1) {
                 ShareHomeImgBean.DataBean data = mMyTeamslBean.getData();
-                //   bitmap1 = downloadImage(ProdActivity.this, poster);
-                //   bitmap2 = downloadImage(ProdActivity.this, qrcode);
-               /* new XPopup.Builder(mActivity)
-                        .dismissOnTouchOutside(false)
-                        .dismissOnBackPressed(false)
-                        .asCustom(new CenterShareAppPopup2(mActivity, mUserInfo, poster, qrcode))
-                        .show();*/
-                Intent intentProd = new Intent(mActivity, CenterLingQuanActivity.class);
+                Intent intentProd = new Intent(mActivity, CenterLingQuanActivity2.class);
                 intentProd.putExtra("Data", data);
                 mActivity.startActivity(intentProd);
             } else if (mMyTeamslBean.getCode() == HttpUtils.CODE_INVALID) {

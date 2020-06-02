@@ -404,6 +404,8 @@ public class HomeDetailsBean {
              * number_virtual : 19
              * status : 1
              * create_at : 2019-01-22 17:45:36
+             * purchase_limit_number
+             * max_purchase_limit_price
              */
 
             private long id;
@@ -416,6 +418,27 @@ public class HomeDetailsBean {
             private int number_virtual;
             private int status;
             private String create_at;
+
+            public int getPurchase_limit_number() {
+                return purchase_limit_number;
+            }
+
+            public void setPurchase_limit_number(int purchase_limit_number) {
+                this.purchase_limit_number = purchase_limit_number;
+            }
+
+            public String getMax_purchase_limit_price() {
+                return max_purchase_limit_price;
+            }
+
+            public void setMax_purchase_limit_price(String max_purchase_limit_price) {
+                this.max_purchase_limit_price = max_purchase_limit_price;
+            }
+
+            //限制数量
+            private int purchase_limit_number;
+            //限制规格最大金额
+            private String max_purchase_limit_price;
 
             public long getId() {
                 return id;
