@@ -42,6 +42,7 @@ public class HomeDetailsBean {
     public static class DataBean {
         /**
          * id : 4
+         * xiangou_number
          * title : 这也是普通商品
          * logo : https://ssl.cdn.cuci.cc/0d0d68399f244efd/033e4f7ce3cdfae2.png
          * cate_id : 1
@@ -68,6 +69,17 @@ public class HomeDetailsBean {
         }
 
         private int status;
+
+        public int getXiangou_number() {
+            return xiangou_number;
+        }
+
+        public void setXiangou_number(int xiangou_number) {
+            this.xiangou_number = xiangou_number;
+        }
+
+        //活动商品每月限购
+        private int xiangou_number;
         private String title;
         private String logo;
 

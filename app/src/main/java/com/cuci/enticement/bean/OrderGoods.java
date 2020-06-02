@@ -23,6 +23,26 @@ public class OrderGoods implements Serializable {
     private int goods_num;
     private int stock;
 
+    public int getPurchase_limit_number() {
+        return purchase_limit_number;
+    }
+
+    public void setPurchase_limit_number(int purchase_limit_number) {
+        this.purchase_limit_number = purchase_limit_number;
+    }
+
+    public String getMax_purchase_limit_price() {
+        return max_purchase_limit_price;
+    }
+
+    public void setMax_purchase_limit_price(String max_purchase_limit_price) {
+        this.max_purchase_limit_price = max_purchase_limit_price;
+    }
+
+    //活动商品限制添加
+    private int purchase_limit_number;
+    private String max_purchase_limit_price;
+
 
 
     private int id;
