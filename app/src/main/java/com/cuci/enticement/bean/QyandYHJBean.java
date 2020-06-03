@@ -42,14 +42,24 @@ public class QyandYHJBean implements Serializable {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable{
+
+        public boolean isHome_pop_ups() {
+            return home_pop_ups;
+        }
+
+        public void setHome_pop_ups(boolean home_pop_ups) {
+            this.home_pop_ups = home_pop_ups;
+        }
+
         /**
          * coupon_show : 1
          * group_show : 1
          * coupon : [{"alias":"userlevel","imgs":"https://qiniu.cdn.enticementchina.com/09d10619edb99ae4/fe6bc8cd674f1ccd.png","link":"https://mp.weixin.qq.com/s/iMKtunXNA-HXpl0r44JOvQ","vip_level":1},{"alias":"userlevelno","imgs":"https://qiniu.cdn.enticementchina.com/be0f220cd670264d/65f96d7a1643605b.png","link":"http://www.enticementchina.com/","vip_level":0}]
          * groupbuy : {"alias":"groupbuy","imgs":"https://qiniu.cdn.enticementchina.com/b4b1b0eac651ffd2/18d7e3b963d02c7f.png","link":"http://web.enticementchina.com/appweb/fan_description.html"}
          */
-
+       //活动弹窗开启
+        private boolean home_pop_ups;
         private int coupon_show;
         private int group_show;
         private GroupbuyBean groupbuy;
@@ -150,7 +160,7 @@ public class QyandYHJBean implements Serializable {
             this.coupon = coupon;
         }
 
-        public static class GroupbuyBean {
+        public static class GroupbuyBean implements Serializable{
             /**
              * alias : groupbuy
              * imgs : https://qiniu.cdn.enticementchina.com/b4b1b0eac651ffd2/18d7e3b963d02c7f.png
@@ -186,7 +196,7 @@ public class QyandYHJBean implements Serializable {
             }
         }
 
-        public static class CouponBean {
+        public static class CouponBean implements Serializable{
             /**
              * alias : userlevel
              * imgs : https://qiniu.cdn.enticementchina.com/09d10619edb99ae4/fe6bc8cd674f1ccd.png

@@ -78,6 +78,8 @@ public class CheckKaQuanTipsPopup extends BottomPopupView implements SingleAdapt
                 if (mOnExitListener != null) {
                     if (item != null) {
                         mOnExitListener.onCommit(item);
+                    }else {
+                        mOnExitListener.onCommit(datas.get(0));
                     }
                 }
                 dismiss();

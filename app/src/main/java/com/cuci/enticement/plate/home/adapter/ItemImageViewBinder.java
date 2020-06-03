@@ -34,6 +34,8 @@ public class ItemImageViewBinder extends ItemViewBinder<QyandYHJBean.DataBean, I
         void onShare2Click(QyandYHJBean.DataBean.ShareBean bean);
 
         void onShare3Click(QyandYHJBean.DataBean.ShareBean bean);
+
+        void onShare4Click(QyandYHJBean.DataBean.ShareBean bean);
     }
 
     private ItemImageViewBinder.OnItemClickListener mOnItemClickListener;
@@ -60,6 +62,8 @@ public class ItemImageViewBinder extends ItemViewBinder<QyandYHJBean.DataBean, I
                 ImageLoader.loadPlaceholder(shareBean.getImgs(), holder.imgOnclick2);
         } else if (i == 2) {
                 ImageLoader.loadPlaceholder(shareBean.getImgs(), holder.imgOnclick3);
+            }else if (i == 3) {
+                ImageLoader.loadPlaceholder(shareBean.getImgs(), holder.imgOnclick4);
             }
         }
         holder.imgOnclick1.setOnClickListener(new View.OnClickListener() {
@@ -90,7 +94,15 @@ public class ItemImageViewBinder extends ItemViewBinder<QyandYHJBean.DataBean, I
 
             }
         });
+        holder.imgOnclick4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mOnItemClickListener != null) {
+                    mOnItemClickListener.onShare4Click(share.get(3));
+                }
 
+            }
+        });
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -101,6 +113,8 @@ public class ItemImageViewBinder extends ItemViewBinder<QyandYHJBean.DataBean, I
         ImageView imgOnclick2;
         @BindView(R.id.img_onclick3)
         ImageView imgOnclick3;
+        @BindView(R.id.img_onclick4)
+        ImageView imgOnclick4;
         ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

@@ -21,7 +21,7 @@ public class SharedPrefUtils {
     private static final String NAME_STRING = "string_data";
     private static final String NAME_SETTINGS = "settings_data";
     private static final String NAME_SETTINGS_QUHAO = "settings_quhao";
-
+    private static final String NAME_ISOPEN = "settings_isopen";
     private static final String STRING_IGNORE = "string_ignore";
     private static final String STRING_TAIL = "string_tail";
     private static final String STRING_WX_OPENID = "string_wx_openid";
@@ -33,6 +33,7 @@ public class SharedPrefUtils {
     private static final String STRING_IS_TODAY = "string_is_today";
 
     private static final String SETTINGS_FIRST_TIME = "settings_first_time";
+    private static final String SETTINGS_FIRST_ISOPEN = "settings_first_isopen";
     private static final String SETTINGS_QU_HAO = "settings_qu_hao";
     private static final String SETTINGS_FIRST_POPUP = "string_first_popup";
     private static final String SETTINGS_WECHAT_AUTH = "settings_wechat_auth";
@@ -598,5 +599,21 @@ public class SharedPrefUtils {
         return sp.getInt("showHxCode", 0);
     }
 
+    /**
+     * 保存是否首页活动弹框
+     */
+    public static void saveisRefresh(boolean first) {
+        SharedPreferences sp = BasicApp.getContext().getSharedPreferences(NAME_ISOPEN, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean(SETTINGS_FIRST_ISOPEN, first);
+        editor.apply();
+    }
 
+    /**
+     * 获取是否首页活动弹框
+     */
+    public static boolean getisRefresh() {
+        SharedPreferences sp = BasicApp.getContext().getSharedPreferences(NAME_ISOPEN, Context.MODE_PRIVATE);
+        return sp.getBoolean(SETTINGS_FIRST_ISOPEN, true);
+    }
 }

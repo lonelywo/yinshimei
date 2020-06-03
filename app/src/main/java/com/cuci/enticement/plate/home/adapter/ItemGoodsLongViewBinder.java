@@ -47,7 +47,15 @@ public class ItemGoodsLongViewBinder extends ItemViewBinder<GoodsItem, ItemGoods
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull GoodsItem item) {
         ImageLoader.loadPlaceholder(item.getLogo(), holder.imageHome);
-        holder.textHomeGoodsname.setText(item.getTitle());
+        int position =holder.getAdapterPosition();
+        String title = item.getTitle();
+        boolean ishava = title.contains("【顺丰包邮】");
+        if(ishava){
+            holder.textHomeGoodsname.setText( title.substring(6));
+        }else {
+            holder.textHomeGoodsname.setText(title);
+        }
+
         holder.textHomeMoney.setText("¥ "+MathExtend.moveone(item.getInitial_price_market()));
         holder.textHomeMoneyVip.setText("¥ "+MathExtend.moveone(item.getInitial_price_selling()));
         // 中间加横线 ， 添加Paint.ANTI_ALIAS_FLAG是线会变得清晰去掉锯齿

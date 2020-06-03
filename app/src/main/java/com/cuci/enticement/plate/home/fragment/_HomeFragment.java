@@ -37,6 +37,7 @@ import com.cuci.enticement.plate.common.Agreement2Activity;
 import com.cuci.enticement.plate.common.AgreementActivity;
 import com.cuci.enticement.plate.common.MainActivity;
 import com.cuci.enticement.plate.common.eventbus.EssayEvent;
+import com.cuci.enticement.plate.common.popup.JGPYPopup;
 import com.cuci.enticement.plate.common.popup.TipsPopup_kaquan;
 import com.cuci.enticement.plate.home.activity.CenterLingQuanActivity;
 import com.cuci.enticement.plate.home.activity.CenterLingQuanActivity2;
@@ -117,9 +118,6 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
     private int type = 1;
     private List<QyandYHJBean.DataBean.ShareBean> share;
     private ProgressDialog mProgressDialog;
-
-
-//    private LocalBroadcastManager mLocalBroadcastManager;
 
     @Override
     protected void onLazyLoad() {
@@ -481,6 +479,21 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
             String b = body.string();
             QyandYHJBean mQyandYHJBean = new Gson().fromJson(b, QyandYHJBean.class);
             if (mQyandYHJBean.getCode() == 1) {
+                boolean home_pop_ups = mQyandYHJBean.getData().isHome_pop_ups();
+                if(home_pop_ups&&SharedPrefUtils.getisRefresh()){
+                    SharedPrefUtils.saveisRefresh(false);
+                    //交个朋友活动
+                    new XPopup.Builder(mActivity)
+                            .dismissOnTouchOutside(false)
+                            .dismissOnBackPressed(false)
+                            .asCustom(new JGPYPopup(mActivity,
+                                    () -> {
+                                        Intent intentProd = new Intent(mActivity, ProdActivity.class);
+                                        intentProd.putExtra("bannerData", "6904121452");
+                                        startActivity(intentProd);
+                                    }))
+                            .show();
+                }
                 share = mQyandYHJBean.getData().getShare();
                 mViewModel.getBanner("2", "" + AppUtils.getVersionCode(mActivity)).observe(this, mObserver);
                 if (mQyandYHJBean.getData().getCoupon_show() == 1) {
@@ -691,6 +704,13 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
             Intent intentProd = new Intent(mActivity, ProdActivity.class);
             intentProd.putExtra("bannerData", bean.getGood_id());
             mActivity.startActivity(intentProd);
+    }
+
+    @Override
+    public void onShare4Click(QyandYHJBean.DataBean.ShareBean bean) {
+        Intent intentProd = new Intent(mActivity, ProdActivity.class);
+        intentProd.putExtra("bannerData", bean.getGood_id());
+        mActivity.startActivity(intentProd);
     }
 
 

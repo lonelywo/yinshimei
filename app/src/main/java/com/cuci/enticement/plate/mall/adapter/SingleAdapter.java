@@ -25,7 +25,7 @@ public class SingleAdapter extends RecyclerView.Adapter {
 
     private List<KaQuanListBean.DataBean.ListBean> datas;
 
-    private int selected = -1;
+    private int selected = 0;
 
     public SingleAdapter(List<KaQuanListBean.DataBean.ListBean> datas) {
         this.datas = datas;

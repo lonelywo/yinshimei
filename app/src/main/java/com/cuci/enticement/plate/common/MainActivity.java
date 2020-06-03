@@ -239,17 +239,7 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
         });
 
         boolean b = NotificationManagerCompat.from(BasicApp.getContext()).areNotificationsEnabled();
-        //交个朋友活动
-        new XPopup.Builder(this)
-                .dismissOnTouchOutside(false)
-                .dismissOnBackPressed(false)
-                .asCustom(new JGPYPopup(this,
-                        () -> {
-                            Intent intentProd = new Intent(this, ProdActivity.class);
-                            intentProd.putExtra("bannerData", "6904121452");
-                            startActivity(intentProd);
-                        }))
-                .show();
+
     }
     private void customizeUi() {
         SecVerify.setUiSettings(CustomizeUtils.customizeUi());
@@ -324,6 +314,7 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
             mExitTime = currentTime;
             return;
         }
+        SharedPrefUtils.saveisRefresh(true);
         super.onBackPressed();
     }
 
