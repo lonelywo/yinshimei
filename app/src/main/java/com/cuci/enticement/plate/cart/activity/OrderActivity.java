@@ -189,6 +189,8 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
     private List<OrderGoods> items;
     //可使用优惠券集合
     private ArrayList<KaQuanListBean.DataBean.ListBean> list ;
+    //不可使用优惠券集合
+    private ArrayList<KaQuanListBean.DataBean.ListBean> list1 ;
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         @SuppressWarnings("unused")
@@ -946,6 +948,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
             if (mKaQuanListBean.getCode() == 1) {
                 List<KaQuanListBean.DataBean.ListBean>   checkitems = mKaQuanListBean.getData().getList();
               list = new ArrayList<KaQuanListBean.DataBean.ListBean>();
+                list1 = new ArrayList<KaQuanListBean.DataBean.ListBean>();
             //普通卷
                 for (int i = 0; i <checkitems.size() ; i++) {
                    if(TextUtils.isEmpty(checkitems.get(i).getCoupon().getUse_goods())){
@@ -955,6 +958,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                            String total = MathExtend.multiply(items.get(j).getGoods_price_selling(), String.valueOf(items.get(j).getGoods_num()));
                            double totals = Double.parseDouble(total);
                            if(items.get(j).getIs_join()==1&&totals>=total_man){
+                               checkitems.get(i).setIsshow(true);
                                list.add(checkitems.get(i));
                                break;
                            }
@@ -971,6 +975,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                            double totals = Double.parseDouble(total);
                            boolean contains = strings.contains(items.get(j).getGoods_id());
                            if(contains&&totals>=total_man){
+                               checkitems.get(i).setIsshow(true);
                                list.add(checkitems.get(i));
                                break;
                            }

@@ -206,6 +206,15 @@ public class KaQuanListBean implements Parcelable {
             private String date_range;
             private CouponBean coupon;
 
+            public boolean isIsshow() {
+                return isshow;
+            }
+
+            public void setIsshow(boolean isshow) {
+                this.isshow = isshow;
+            }
+           //显示按钮
+            private boolean isshow=false;
             public Boolean getIscheck() {
                 return ischeck;
             }

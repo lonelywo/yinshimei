@@ -69,7 +69,7 @@ public class SingleAdapter extends RecyclerView.Adapter {
                 viewHolder.mCheckBox.setImageResource(R.drawable.noxuanzhong);
             }
             if (mOnItemClickLitener != null) {
-                    viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    viewHolder.mCheckBox.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
 
