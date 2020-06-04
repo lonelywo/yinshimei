@@ -7,8 +7,6 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 
 import com.cuci.enticement.R;
-import com.cuci.enticement.utils.SharedPrefUtils;
-import com.cuci.enticement.utils.ViewUtils;
 import com.lxj.xpopup.core.CenterPopupView;
 
 import butterknife.BindView;
@@ -22,6 +20,10 @@ public class JGPYPopup extends CenterPopupView {
     ImageView top;
     @BindView(R.id.close)
     ImageView close;
+    @BindView(R.id.img_jgpy1)
+    ImageView imgJgpy1;
+    @BindView(R.id.img_jgpy2)
+    ImageView imgJgpy2;
     private Context mContext;
 
 
@@ -42,12 +44,18 @@ public class JGPYPopup extends CenterPopupView {
         ButterKnife.bind(this);
     }
 
-    @OnClick({R.id.top, R.id.close})
+    @OnClick({ R.id.close,R.id.img_jgpy1, R.id.img_jgpy2})
     public void onViewClick(View view) {
         switch (view.getId()) {
-            case R.id.top:
+            case R.id.img_jgpy1:
                 if (mOnUpdateListener != null) {
-                    mOnUpdateListener.updateNow();
+                    mOnUpdateListener.updateNow1();
+                }
+                dismiss();
+                break;
+            case R.id.img_jgpy2:
+                if (mOnUpdateListener != null) {
+                    mOnUpdateListener.updateNow2();
                 }
                 dismiss();
                 break;
@@ -59,8 +67,10 @@ public class JGPYPopup extends CenterPopupView {
 
     private OnUpdateListener mOnUpdateListener;
 
+
     public interface OnUpdateListener {
-        void updateNow();
+        void updateNow1();
+        void updateNow2();
     }
 
 }

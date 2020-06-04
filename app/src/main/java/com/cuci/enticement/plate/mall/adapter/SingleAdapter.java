@@ -1,5 +1,7 @@
 package com.cuci.enticement.plate.mall.adapter;
 
+import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,7 @@ import com.cuci.enticement.bean.KaQuanListBean;
 import com.cuci.enticement.utils.FToast;
 import com.cuci.enticement.utils.MathExtend;
 import com.cuci.enticement.utils.UtilsForClick;
+import com.cuci.enticement.utils.ViewUtils;
 
 import java.util.List;
 
@@ -49,18 +52,32 @@ public class SingleAdapter extends RecyclerView.Adapter {
         return new SingleViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof SingleViewHolder) {
             final SingleViewHolder viewHolder = (SingleViewHolder) holder;
             KaQuanListBean.DataBean.ListBean listBean = datas.get(position);
 
-            if(TextUtils.equals(listBean.getUsed_at(),"未知")){
-                viewHolder.mTvName.setText("不使用代金券");
+            if(listBean.isIsshow()){
+                if(TextUtils.equals(listBean.getUsed_at(),"未知")){
+                    viewHolder.mTvName.setText("不使用代金券");
+                    viewHolder.mTvName.setTextColor(Color.parseColor("#333333"));
+                }else {
+                    String amount = listBean.getCoupon().getAmount();
+                    String moveone_amount = MathExtend.moveone(amount);
+                    viewHolder.mTvName.setText("省"+moveone_amount+"元，"+listBean.getCoupon().getAmount_desc());
+                    viewHolder.mTvName.setTextColor(Color.parseColor("#333333"));
+                }
+                ViewUtils.showView(viewHolder.mCheckBox);
+                viewHolder.con_fangshi1.setEnabled(true);
             }else {
                 String amount = listBean.getCoupon().getAmount();
                 String moveone_amount = MathExtend.moveone(amount);
-                viewHolder.mTvName.setText("省"+moveone_amount+"元，"+listBean.getCoupon().getAmount_desc());
+                viewHolder.mTvName.setText("省"+moveone_amount+"元，"+listBean.getCoupon().getAmount_desc()+"(不可用)");
+                viewHolder.mTvName.setTextColor(Color.parseColor("#666666"));
+                ViewUtils.hideView(viewHolder.mCheckBox);
+                viewHolder.con_fangshi1.setEnabled(false);
             }
 
             if (selected == position) {
@@ -69,7 +86,7 @@ public class SingleAdapter extends RecyclerView.Adapter {
                 viewHolder.mCheckBox.setImageResource(R.drawable.noxuanzhong);
             }
             if (mOnItemClickLitener != null) {
-                    viewHolder.mCheckBox.setOnClickListener(new View.OnClickListener() {
+                    viewHolder.con_fangshi1.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
 
@@ -92,11 +109,13 @@ public class SingleAdapter extends RecyclerView.Adapter {
     class SingleViewHolder extends RecyclerView.ViewHolder {
         TextView mTvName;
         ImageView mCheckBox;
+        ConstraintLayout con_fangshi1;
 
         public SingleViewHolder(View itemView) {
             super(itemView);
             mTvName = (TextView) itemView.findViewById(R.id.text_name);
             mCheckBox = (ImageView) itemView.findViewById(R.id.img_check);
+            con_fangshi1 = (ConstraintLayout) itemView.findViewById(R.id.con_fangshi1);
         }
     }
 

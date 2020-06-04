@@ -40,6 +40,30 @@ public class HomeDetailsBean {
     }
 
     public static class DataBean {
+        public String getTitle_desc() {
+            return title_desc;
+        }
+
+        public void setTitle_desc(String title_desc) {
+            this.title_desc = title_desc;
+        }
+
+        public String getHuodong_desc() {
+            return huodong_desc;
+        }
+
+        public void setHuodong_desc(String huodong_desc) {
+            this.huodong_desc = huodong_desc;
+        }
+
+        public String getDelisting_desc() {
+            return delisting_desc;
+        }
+
+        public void setDelisting_desc(String delisting_desc) {
+            this.delisting_desc = delisting_desc;
+        }
+
         /**
          * id : 4
          * xiangou_number
@@ -57,7 +81,12 @@ public class HomeDetailsBean {
          * lists : [[{"name":"白色","check":true,"group":"颜色","span":3,"show":true,"key":"颜色::白色;;尺寸::大","virtual":19,"market":"22.00","selling":"11.00","status":true},{"name":"大","check":true,"group":"尺寸","span":1,"show":true}],[{"name":"白色","check":true,"group":"颜色","span":2,"show":false,"key":"颜色::白色;;尺寸::中","virtual":19,"market":"33.00","selling":"12.00","status":true},{"name":"中","check":true,"group":"尺寸","span":1,"show":true}],[{"name":"白色","check":true,"group":"颜色","span":1,"show":false,"key":"颜色::白色;;尺寸::小","virtual":19,"market":"44.00","selling":"13.00","status":true},{"name":"小","check":true,"group":"尺寸","span":1,"show":true}],[{"name":"黑色","check":true,"group":"颜色","span":3,"show":true,"key":"颜色::黑色;;尺寸::大","virtual":19,"market":"55.00","selling":"10.00","status":true},{"name":"大","check":true,"group":"尺寸","span":1,"show":true}],[{"name":"黑色","check":true,"group":"颜色","span":2,"show":false,"key":"颜色::黑色;;尺寸::中","virtual":19,"market":"66.00","selling":"17.00","status":true},{"name":"中","check":true,"group":"尺寸","span":1,"show":true}],[{"name":"黑色","check":true,"group":"颜色","span":1,"show":false,"key":"颜色::黑色;;尺寸::小","virtual":19,"market":"88.00","selling":"9.00","status":false},{"name":"小","check":true,"group":"尺寸","span":1,"show":true}]]
          * list : [{"id":5,"goods_id":4,"goods_spec":"颜色::白色;;尺寸::大","price_market":"22.00","price_selling":"11.00","number_sales":2,"number_stock":100,"number_virtual":19,"status":1,"create_at":"2019-01-22 17:45:36"},{"id":6,"goods_id":4,"goods_spec":"颜色::白色;;尺寸::中","price_market":"33.00","price_selling":"12.00","number_sales":1,"number_stock":110,"number_virtual":19,"status":1,"create_at":"2019-01-22 17:45:37"},{"id":7,"goods_id":4,"goods_spec":"颜色::白色;;尺寸::小","price_market":"44.00","price_selling":"13.00","number_sales":1,"number_stock":100,"number_virtual":19,"status":1,"create_at":"2019-01-22 17:45:37"},{"id":8,"goods_id":4,"goods_spec":"颜色::黑色;;尺寸::大","price_market":"55.00","price_selling":"10.00","number_sales":0,"number_stock":100,"number_virtual":19,"status":1,"create_at":"2019-01-22 17:45:37"},{"id":9,"goods_id":4,"goods_spec":"颜色::黑色;;尺寸::中","price_market":"66.00","price_selling":"17.00","number_sales":0,"number_stock":0,"number_virtual":19,"status":1,"create_at":"2019-01-22 17:45:37"},{"id":10,"goods_id":4,"goods_spec":"颜色::黑色;;尺寸::小","price_market":"88.00","price_selling":"9.00","number_sales":0,"number_stock":0,"number_virtual":19,"status":0,"create_at":"2019-01-22 17:45:37"}]
          */
-
+        //活动商品描述
+        private String  title_desc;
+        //活动描述
+        private String huodong_desc;
+        //下架商品描述
+        private String delisting_desc;
         private String id;
 
         public int getStatus() {

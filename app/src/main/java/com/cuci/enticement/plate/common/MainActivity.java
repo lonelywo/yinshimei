@@ -210,8 +210,7 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
 
         //检测APP更新
         mViewModel.getVersion("2",""+AppUtils.getVersionCode(this)).observe(this, mUpdateObserver);
-        //隐私政策
-        mViewModel.clause("2",""+ AppUtils.getVersionCode(BasicApp.getContext())).observe(this, clauseObserver);
+
         //打印设备信息
         FLog.e("设备信息",GetDeviceID());
 
@@ -565,58 +564,7 @@ public class MainActivity extends AppCompatActivity implements TipsPopupxieyi.On
         return "设备类型："+android.os.Build.MODEL;
 
     }
-    private Observer<Status<ResponseBody>> clauseObserver = status -> {
 
-        switch (status.status) {
-            case Status.SUCCESS:
-                ResponseBody body = status.content;
-                opera2(body);
-                break;
-            case Status.ERROR:
-
-                FToast.error("网络错误");
-                break;
-            case Status.LOADING:
-
-                break;
-        }
-
-
-    };
-
-    private void opera2(ResponseBody body) {
-        try {
-            String b = body.string();
-            ClauseBean mClauseBean = new Gson().fromJson(b, ClauseBean.class);
-            if (mClauseBean.getCode() == 1) {
-                String title = mClauseBean.getData().getTitle();
-                String url = mClauseBean.getData().getUrl();
-                if (SharedPrefUtils.getFirstTime()) {
-                    new XPopup.Builder(this)
-                            .dismissOnBackPressed(false)
-                            .dismissOnTouchOutside(false)
-                            .asCustom(new TipsPopupxieyi2(this,
-                                    url, title,  new TipsPopupxieyi2.OnExitListener() {
-                                @Override
-                                public void onPositive1() {
-                                 finish();
-                                }
-
-                                @Override
-                                public void onPositive2() {
-                                    SharedPrefUtils.saveFirstTime(false);
-                                }
-                            }))
-                            .show();
-                }
-            } else {
-                FToast.error(mClauseBean.getInfo());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            FToast.error("数据错误");
-        }
-    }
     //切换首页
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onCheckHomeEvent(CheckHomeEvent event) {

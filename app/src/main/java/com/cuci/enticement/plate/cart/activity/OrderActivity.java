@@ -191,6 +191,8 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
     private ArrayList<KaQuanListBean.DataBean.ListBean> list ;
     //不可使用优惠券集合
     private ArrayList<KaQuanListBean.DataBean.ListBean> list1 ;
+    //总优惠券集合
+    private ArrayList<KaQuanListBean.DataBean.ListBean> list_all ;
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         @SuppressWarnings("unused")
@@ -321,10 +323,13 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
             @Override
             public void onClick(View view) {
                if(type==1){
+                   list_all = new ArrayList<KaQuanListBean.DataBean.ListBean>();
+                   list_all.addAll(list);
+                   list_all.addAll(list1);
                    new XPopup.Builder(OrderActivity.this)
                            .dismissOnBackPressed(true)
                            .dismissOnTouchOutside(false)
-                           .asCustom(new CheckKaQuanTipsPopup(OrderActivity.this, list, new CheckKaQuanTipsPopup.OnExitListener() {
+                           .asCustom(new CheckKaQuanTipsPopup(OrderActivity.this, list_all, new CheckKaQuanTipsPopup.OnExitListener() {
 
                                @Override
                                public void onCommit(KaQuanListBean.DataBean.ListBean item) {
@@ -961,6 +966,10 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                                checkitems.get(i).setIsshow(true);
                                list.add(checkitems.get(i));
                                break;
+                           }else {
+                               checkitems.get(i).setIsshow(false);
+                               list1.add(checkitems.get(i));
+                               break;
                            }
                        }
                    }else {
@@ -978,6 +987,10 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                                checkitems.get(i).setIsshow(true);
                                list.add(checkitems.get(i));
                                break;
+                           }else {
+                               checkitems.get(i).setIsshow(false);
+                               list1.add(checkitems.get(i));
+                               break;
                            }
                        }
                    }
@@ -990,6 +1003,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                    //装载完
                 KaQuanListBean.DataBean.ListBean listBean = new KaQuanListBean.DataBean.ListBean();
                 listBean.setUsed_at("未知");
+                listBean.setIsshow(true);
                 list.add(listBean);
                 textYouhuiset.setText("点击选择代金券");
                 type=1;

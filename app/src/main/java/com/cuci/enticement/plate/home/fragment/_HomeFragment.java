@@ -23,6 +23,7 @@ import com.cuci.enticement.R;
 import com.cuci.enticement.base.BaseFragment;
 import com.cuci.enticement.bean.BannerDataBean;
 import com.cuci.enticement.bean.BaseList;
+import com.cuci.enticement.bean.ClauseBean;
 import com.cuci.enticement.bean.EssayBean;
 import com.cuci.enticement.bean.GeneralGoods;
 import com.cuci.enticement.bean.GoodsItem;
@@ -39,6 +40,8 @@ import com.cuci.enticement.plate.common.MainActivity;
 import com.cuci.enticement.plate.common.eventbus.EssayEvent;
 import com.cuci.enticement.plate.common.popup.JGPYPopup;
 import com.cuci.enticement.plate.common.popup.TipsPopup_kaquan;
+import com.cuci.enticement.plate.common.popup.TipsPopupxieyi2;
+import com.cuci.enticement.plate.common.vm.MainViewModel;
 import com.cuci.enticement.plate.home.activity.CenterLingQuanActivity;
 import com.cuci.enticement.plate.home.activity.CenterLingQuanActivity2;
 import com.cuci.enticement.plate.home.activity.ProdActivity;
@@ -479,18 +482,29 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
             String b = body.string();
             QyandYHJBean mQyandYHJBean = new Gson().fromJson(b, QyandYHJBean.class);
             if (mQyandYHJBean.getCode() == 1) {
+                //隐私政策
+                MainViewModel mViewModelhome = new ViewModelProvider(this).get(MainViewModel.class);
+                mViewModelhome.clause("2",""+ AppUtils.getVersionCode(BasicApp.getContext())).observe(this, clauseObserver);
                 boolean home_pop_ups = mQyandYHJBean.getData().isHome_pop_ups();
                 if(home_pop_ups&&SharedPrefUtils.getisRefresh()){
                     SharedPrefUtils.saveisRefresh(false);
                     //交个朋友活动
                     new XPopup.Builder(mActivity)
                             .dismissOnTouchOutside(false)
-                            .dismissOnBackPressed(false)
-                            .asCustom(new JGPYPopup(mActivity,
-                                    () -> {
-                                        Intent intentProd = new Intent(mActivity, ProdActivity.class);
-                                        intentProd.putExtra("bannerData", "6904121452");
-                                        startActivity(intentProd);
+                            .dismissOnBackPressed(true)
+                            .asCustom(new JGPYPopup(mActivity, new JGPYPopup.OnUpdateListener() {
+                                @Override
+                                public void updateNow1() {
+                                    Intent intentProd = new Intent(mActivity, ProdActivity.class);
+                                    intentProd.putExtra("bannerData", "6903904070");
+                                    startActivity(intentProd);
+                                }
+                                @Override
+                                public void updateNow2() {
+                                    Intent intentProd = new Intent(mActivity, ProdActivity.class);
+                                    intentProd.putExtra("bannerData", "6910958020");
+                                    startActivity(intentProd);
+                                }
                                     }))
                             .show();
                 }
@@ -720,5 +734,56 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
         mViewModel.essay(code, "2", "" + AppUtils.getVersionCode(mActivity)).observe(this, essayObserver);
     }
 
+    private Observer<Status<ResponseBody>> clauseObserver = status -> {
 
+        switch (status.status) {
+            case Status.SUCCESS:
+                ResponseBody body = status.content;
+                opera0(body);
+                break;
+            case Status.ERROR:
+
+                FToast.error("网络错误");
+                break;
+            case Status.LOADING:
+
+                break;
+        }
+
+
+    };
+
+    private void opera0(ResponseBody body) {
+        try {
+            String b = body.string();
+            ClauseBean mClauseBean = new Gson().fromJson(b, ClauseBean.class);
+            if (mClauseBean.getCode() == 1) {
+                String title = mClauseBean.getData().getTitle();
+                String url = mClauseBean.getData().getUrl();
+                if (SharedPrefUtils.getFirstTime()) {
+                    new XPopup.Builder(mActivity)
+                            .dismissOnBackPressed(false)
+                            .dismissOnTouchOutside(false)
+                            .asCustom(new TipsPopupxieyi2(mActivity,
+                                    url, title,  new TipsPopupxieyi2.OnExitListener() {
+                                @Override
+                                public void onPositive1() {
+                                    mActivity.finish();
+                                }
+
+                                @Override
+                                public void onPositive2() {
+                                    SharedPrefUtils.saveFirstTime(false);
+                                }
+                            }))
+                            .show();
+                }
+            } else {
+                FToast.error(mClauseBean.getInfo());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            FToast.error("数据错误");
+        }
+    }
 }

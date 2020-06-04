@@ -9,7 +9,7 @@
     <ImageView
         android:id="@+id/top"
         android:layout_width="260dp"
-        android:layout_height="420dp"
+        android:layout_height="364dp"
         android:src="@drawable/jgpy"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,15 +27,26 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="106dp"
         />
-
+    <ImageView
+        android:id="@+id/img_jgpy2"
+        android:layout_width="234dp"
+        android:layout_height="96dp"
+        android:src="@drawable/jgpy2"
+        app:layout_constraintTop_toBottomOf="@+id/img_jgpy1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"
+        />
     <ImageView
         android:id="@+id/close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/icon_close_transparent"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/guanbi"
         app:layout_constraintEnd_toEndOf="@+id/top"
-        app:layout_constraintStart_toStartOf="@+id/top"
-        app:layout_constraintTop_toBottomOf="@+id/top"/>
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="5dp"
+      />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
