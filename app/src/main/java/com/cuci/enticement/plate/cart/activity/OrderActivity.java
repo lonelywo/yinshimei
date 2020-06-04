@@ -176,7 +176,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
     private int number;
     private String rule;
     //有无优惠券
-    private int type = 0;
+    private int type = 1;
     //优惠券
     private String moveone_amount="0";
     //总价
@@ -192,7 +192,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
     //不可使用优惠券集合
     private ArrayList<KaQuanListBean.DataBean.ListBean> list1 ;
     //总优惠券集合
-    private ArrayList<KaQuanListBean.DataBean.ListBean> list_all ;
+    private ArrayList<KaQuanListBean.DataBean.ListBean> list_all  = new ArrayList<KaQuanListBean.DataBean.ListBean>(); ;
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         @SuppressWarnings("unused")
@@ -323,7 +323,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
             @Override
             public void onClick(View view) {
                if(type==1){
-                   list_all = new ArrayList<KaQuanListBean.DataBean.ListBean>();
+                   list_all.clear();
                    list_all.addAll(list);
                    list_all.addAll(list1);
                    new XPopup.Builder(OrderActivity.this)
@@ -952,7 +952,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
             }
             if (mKaQuanListBean.getCode() == 1) {
                 List<KaQuanListBean.DataBean.ListBean>   checkitems = mKaQuanListBean.getData().getList();
-              list = new ArrayList<KaQuanListBean.DataBean.ListBean>();
+                list = new ArrayList<KaQuanListBean.DataBean.ListBean>();
                 list1 = new ArrayList<KaQuanListBean.DataBean.ListBean>();
             //普通卷
                 for (int i = 0; i <checkitems.size() ; i++) {
@@ -995,18 +995,18 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
                        }
                    }
                 }
-                if(list.size()==0){
+               /* if(list.size()==0){
                     textYouhuiset.setText("暂无可使用代金券");
                     type=0;
                     return;
-                }
+                }*/
                    //装载完
                 KaQuanListBean.DataBean.ListBean listBean = new KaQuanListBean.DataBean.ListBean();
                 listBean.setUsed_at("未知");
                 listBean.setIsshow(true);
                 list.add(listBean);
                 textYouhuiset.setText("点击选择代金券");
-                type=1;
+              //  type=1;
 
             }else if(mKaQuanListBean.getCode() == HttpUtils.CODE_INVALID){
                 HttpUtils.Invalid(this);

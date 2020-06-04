@@ -350,7 +350,7 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
         switch (view.getId()) {
             case R.id.img_jia:
                 if (purchase_limit_number == 1) {
-                    FToast.warning("此商品请直接购买对应规格");
+                    FToast.warning("该商品请直接按规格购买");
                 } else {
                     mCount++;
                     textShuzi.setText(String.valueOf(mCount));

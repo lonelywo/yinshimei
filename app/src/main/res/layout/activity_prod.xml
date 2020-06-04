@@ -89,7 +89,8 @@
           android:id="@+id/home_detail_goodsname_little"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
-          app:layout_constraintLeft_toLeftOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintRight_toLeftOf="@+id/img_share"
           tools:text="深层补水，修护肌肤，舒缓镇静，被誉为面膜界的爱马仕"
           android:textSize="10sp"
@@ -314,7 +315,7 @@
               />
           <TextView
               android:id="@+id/tv_huodong_ms"
-              android:layout_width="wrap_content"
+              android:layout_width="0dp"
               android:layout_height="wrap_content"
               app:layout_constraintTop_toTopOf="parent"
               app:layout_constraintBottom_toBottomOf="parent"
@@ -322,7 +323,9 @@
               android:textSize="13sp"
               android:textColor="#666666"
               android:layout_marginLeft="10dp"
-              app:layout_constraintLeft_toRightOf="@+id/tv_youli"
+              android:layout_marginRight="10dp"
+             app:layout_constraintStart_toEndOf="@+id/tv_youli"
+              app:layout_constraintEnd_toEndOf="parent"
               android:includeFontPadding="false"
               />
       </androidx.constraintlayout.widget.ConstraintLayout>
@@ -342,7 +345,7 @@
              app:layout_constraintStart_toStartOf="parent"
              app:layout_constraintTop_toTopOf="parent"
              app:layout_constraintBottom_toBottomOf="parent"
-             android:text="宠粉大礼包优惠券"
+             android:text="宠粉大礼包代金券"
              android:padding="15dp"
              app:layout_constraintEnd_toStartOf="@+id/tv_lingquan"
              />

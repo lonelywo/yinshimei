@@ -543,7 +543,7 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                         } else {
                             String strMsg = "<font color=\"#e1ad73\">" + "会员价¥" + "<big><big>" + MathExtend.moveone(mProData.getInitial_price_selling()) + "</big></big>" + "</font>";
                             textJiageVip.setText(Html.fromHtml(strMsg));
-                            text_jiage.setText(MathExtend.moveone(mProData.getInitial_price_market()));
+                            text_jiage.setText("¥"+MathExtend.moveone(mProData.getInitial_price_market()));
                             // 中间加横线 ， 添加Paint.ANTI_ALIAS_FLAG是线会变得清晰去掉锯齿
                             text_jiage.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
                         }
