@@ -124,8 +124,16 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
     protected void onCreate() {
         super.onCreate();
         ButterKnife.bind(this);
+        if(mItem.getXiangou_number()>0){
+            textShuliangXiangou.setText("(每月限购"+mItem.getXiangou_number()+mItem.getXiangou_unit()+")");
+            ViewUtils.showView(textShuliangXiangou);
 
-        textShuliangXiangou.setText("(每月限购"+mItem.getXiangou_number()+"盒/瓶)");
+        }else {
+            textShuliangXiangou.setText("(每月限购"+mItem.getXiangou_number()+mItem.getXiangou_unit()+")");
+            ViewUtils.hideView(textShuliangXiangou);
+
+        }
+
         ViewGroup.LayoutParams layoutParams = mContainer.getLayoutParams();
         layoutParams.width = mScreenWidth;
         mContainer.setLayoutParams(layoutParams);

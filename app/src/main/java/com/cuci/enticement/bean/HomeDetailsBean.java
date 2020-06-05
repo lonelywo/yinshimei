@@ -87,6 +87,27 @@ public class HomeDetailsBean {
         private String huodong_desc;
         //下架商品描述
         private String delisting_desc;
+
+        public String getXiangou_unit() {
+            return xiangou_unit;
+        }
+
+        public void setXiangou_unit(String xiangou_unit) {
+            this.xiangou_unit = xiangou_unit;
+        }
+
+        //限购瓶盒
+        private String  xiangou_unit;
+        public String getWarning() {
+            return warning;
+        }
+
+        public void setWarning(String warning) {
+            this.warning = warning;
+        }
+
+        //下架警告
+        private String warning;
         private String id;
 
         public int getStatus() {

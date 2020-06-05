@@ -555,17 +555,17 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/con_xiajiabuju"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#FAF8DD"
+        android:layout_height="60dp"
+        android:background="#d9c2a8"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:visibility="gone"
+        android:visibility="visible"
     >
         <TextView
             android:id="@+id/text_xiajia"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="@color/home_huang"
+            android:textColor="#c81623"
             tools:text="该商品暂未上架，非常抱歉"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

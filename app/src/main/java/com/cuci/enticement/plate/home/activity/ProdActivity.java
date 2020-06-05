@@ -512,10 +512,17 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                         }
 
                         if (status == 1) {
-                            ViewUtils.hideView(conXiajiabuju);
-                            ViewUtils.showView(llDibu);
+                            if (TextUtils.isEmpty(mProData.getWarning())){
+                                ViewUtils.hideView(conXiajiabuju);
+                                ViewUtils.showView(llDibu);
+                            }else {
+                                FToast.warning(mProData.getWarning());
+                                ViewUtils.showView(conXiajiabuju);
+                                textXiajia.setText(mProData.getDelisting_desc());
+                                ViewUtils.hideView(llDibu);
+                            }
                         } else {
-                            FToast.warning(mProData.getDelisting_desc());
+
                             ViewUtils.showView(conXiajiabuju);
                             textXiajia.setText(mProData.getDelisting_desc());
                             ViewUtils.hideView(llDibu);

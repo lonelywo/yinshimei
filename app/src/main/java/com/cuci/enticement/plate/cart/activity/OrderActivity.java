@@ -946,7 +946,7 @@ public class OrderActivity extends BaseActivity implements ItemYuProdViewBinder.
             KaQuanListBean mKaQuanListBean = new Gson().fromJson(b, KaQuanListBean.class);
             List<KaQuanListBean.DataBean.ListBean>   mcheckitems = mKaQuanListBean.getData().getList();
             if (mcheckitems == null || mcheckitems.size() == 0) {
-                textYouhuiset.setText("暂无可使用代金券");
+                textYouhuiset.setText("暂无代金券");
                 type=0;
                 return;
             }
