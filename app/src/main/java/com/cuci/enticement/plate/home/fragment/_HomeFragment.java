@@ -496,13 +496,13 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
                                 @Override
                                 public void updateNow1() {
                                     Intent intentProd = new Intent(mActivity, ProdActivity.class);
-                                    intentProd.putExtra("bannerData", "6903904070");
+                                    intentProd.putExtra("bannerData", "6904121452");
                                     startActivity(intentProd);
                                 }
                                 @Override
                                 public void updateNow2() {
                                     Intent intentProd = new Intent(mActivity, ProdActivity.class);
-                                    intentProd.putExtra("bannerData", "6910958020");
+                                    intentProd.putExtra("bannerData", "6913234542");
                                     startActivity(intentProd);
                                 }
                                     }))

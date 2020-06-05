@@ -567,6 +567,7 @@
             android:layout_weight="1"
             android:textColor="#c81623"
             tools:text="该商品暂未上架，非常抱歉"
+            android:textSize="18sp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"

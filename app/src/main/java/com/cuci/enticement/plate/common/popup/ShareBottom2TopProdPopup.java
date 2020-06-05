@@ -163,7 +163,7 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
                 }
             });
         }
-        if (TextUtils.equals(mItem.getId(), "6903904070") || TextUtils.equals(mItem.getId(), "6910958020")) {
+        if (TextUtils.equals(mItem.getId(), "6913234542") || TextUtils.equals(mItem.getId(), "6904121452")) {
             purchase_limit_number = 1;
             HomeDetailsBean.DataBean.SpecsBean specsBean = specs.get(0);
             List<HomeDetailsBean.DataBean.SpecsBean.ListBean> list = specsBean.getList();
@@ -286,7 +286,7 @@ public class ShareBottom2TopProdPopup extends BottomPopupView {
             setRaidBtnAttribute(button, sku.getName(), index);
 
             radiogroup.addView(button);
-            if (TextUtils.equals(mItem.getId(), "6903904070") || TextUtils.equals(mItem.getId(), "6910958020")) {
+            if (TextUtils.equals(mItem.getId(), "6913234542") || TextUtils.equals(mItem.getId(), "6904121452")) {
                 if (i == skuList.size()-1) {
 
                     button.setChecked(true);

@@ -24,6 +24,9 @@ import com.cuci.enticement.utils.MathExtend;
 import com.cuci.enticement.utils.UtilFonts;
 import com.cuci.enticement.utils.UtilsForClick;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.drakeet.multitype.ItemViewBinder;
@@ -50,11 +53,26 @@ public class ItemGoodsLongViewBinder extends ItemViewBinder<GoodsItem, ItemGoods
         int position =holder.getAdapterPosition();
         String title = item.getTitle();
         boolean ishava = title.contains("【顺丰包邮】");
-        if(ishava){
+       /* if(ishava){
             holder.textHomeGoodsname.setText( title.substring(6));
         }else {
             holder.textHomeGoodsname.setText(title);
+        }*/
+
+        // 除了字母数字下划线之外的字符为非法字符
+        Pattern pattern = Pattern.compile("['【'].*?['】']");
+        // 指定设置非法字符
+        String str = title;
+        Matcher matcher = pattern.matcher(str);
+        StringBuffer buffer = new StringBuffer();
+        // 如果找到非法字符
+        while (matcher.find()) {
+            // 如果里面包含非法字符如冒号双引号等，那么就把他们消去，并把非法字符前面的字符放到缓冲区
+            matcher.appendReplacement(buffer, "");
         }
+        // 将剩余的合法部分添加到缓冲区
+        matcher.appendTail(buffer);
+        holder.textHomeGoodsname.setText(buffer.toString());
 
         holder.textHomeMoney.setText("¥ "+MathExtend.moveone(item.getInitial_price_market()));
         holder.textHomeMoneyVip.setText("¥ "+MathExtend.moveone(item.getInitial_price_selling()));
