@@ -2,6 +2,7 @@ package com.cuci.enticement.plate.home.adapter;
 
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +15,15 @@ import com.cuci.enticement.plate.common.GlideImageLoader;
 import com.cuci.enticement.plate.mine.activity.SettingsActivity;
 import com.cuci.enticement.utils.UtilsForClick;
 import com.youth.banner.Banner;
+
 import com.youth.banner.BannerConfig;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.exifinterface.media.ExifInterface;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
@@ -68,6 +72,9 @@ public class ItemBannerViewBinder extends ItemViewBinder<ItemBanner, ItemBannerV
             holder.mBanner.setImages(images);
             holder.mBanner.start();
         }
+
+
+
 
         holder.mBanner.setOnBannerListener(position -> {
             if (mOnBannerClickListener != null) {

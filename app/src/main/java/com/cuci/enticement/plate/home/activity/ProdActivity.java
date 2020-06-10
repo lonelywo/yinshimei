@@ -521,6 +521,8 @@ public class ProdActivity extends BaseActivity implements ShareBottom2TopProdPop
                                 textXiajia.setText(mProData.getDelisting_desc());
                                 ViewUtils.hideView(llDibu);
                             }
+
+
                         } else {
 
                             ViewUtils.showView(conXiajiabuju);

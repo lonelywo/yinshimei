@@ -42,7 +42,6 @@ import com.cuci.enticement.plate.common.popup.JGPYPopup;
 import com.cuci.enticement.plate.common.popup.TipsPopup_kaquan;
 import com.cuci.enticement.plate.common.popup.TipsPopupxieyi2;
 import com.cuci.enticement.plate.common.vm.MainViewModel;
-import com.cuci.enticement.plate.home.activity.CenterLingQuanActivity;
 import com.cuci.enticement.plate.home.activity.CenterLingQuanActivity2;
 import com.cuci.enticement.plate.home.activity.ProdActivity;
 import com.cuci.enticement.plate.home.adapter.ItemBannerViewBinder;
@@ -52,7 +51,6 @@ import com.cuci.enticement.plate.home.adapter.ItemLingQuanViewBinder;
 import com.cuci.enticement.plate.home.adapter.ItemQiYeViewBinder;
 import com.cuci.enticement.plate.home.adapter.ItemShareViewBinder;
 import com.cuci.enticement.plate.home.vm.HomeViewModel;
-import com.cuci.enticement.plate.mine.activity.KaQuanActivity;
 import com.cuci.enticement.plate.mine.activity.QianDaoActivity;
 import com.cuci.enticement.plate.mine.vm.MineViewModel;
 import com.cuci.enticement.utils.AppUtils;
@@ -68,6 +66,8 @@ import com.lxj.xpopup.XPopup;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+import com.sprylab.android.widget.TextureVideoView;
+import com.tencent.smtt.sdk.WebView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -102,6 +102,7 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
     ConstraintLayout conDingbu;
     @BindView(R.id.flot)
     ImageView flot;
+
     private int mMinId = 1;
     private RecyclerView mRecyclerView;
     private SmartRefreshLayout mRefreshLayout;
@@ -291,6 +292,7 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
                 intentProd1.putExtra("url", bannerDataBean.getLink());
                 mActivity.startActivity(intentProd1);
                 break;
+
         }
 
     }
@@ -484,9 +486,9 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
             if (mQyandYHJBean.getCode() == 1) {
                 //隐私政策
                 MainViewModel mViewModelhome = new ViewModelProvider(this).get(MainViewModel.class);
-                mViewModelhome.clause("2",""+ AppUtils.getVersionCode(BasicApp.getContext())).observe(this, clauseObserver);
+                mViewModelhome.clause("2", "" + AppUtils.getVersionCode(BasicApp.getContext())).observe(this, clauseObserver);
                 boolean home_pop_ups = mQyandYHJBean.getData().isHome_pop_ups();
-                if(home_pop_ups&&SharedPrefUtils.getisRefresh()){
+                if (home_pop_ups && SharedPrefUtils.getisRefresh()) {
                     SharedPrefUtils.saveisRefresh(false);
                     //交个朋友活动
                     new XPopup.Builder(mActivity)
@@ -499,13 +501,14 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
                                     intentProd.putExtra("bannerData", "6904121452");
                                     startActivity(intentProd);
                                 }
+
                                 @Override
                                 public void updateNow2() {
                                     Intent intentProd = new Intent(mActivity, ProdActivity.class);
                                     intentProd.putExtra("bannerData", "6913234542");
                                     startActivity(intentProd);
                                 }
-                                    }))
+                            }))
                             .show();
                 }
                 share = mQyandYHJBean.getData().getShare();
@@ -703,9 +706,9 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
     @Override
     public void onShare2Click(QyandYHJBean.DataBean.ShareBean bean) {
         int type = bean.getType();
-        if(type==1){
+        if (type == 1) {
             mViewModel.essay(bean.getJump_id(), "2", "" + AppUtils.getVersionCode(mActivity)).observe(this, essayObserver);
-        }else if(type==3){
+        } else if (type == 3) {
             if (AppUtils.isAllowPermission(mActivity)) {
                 startActivity(new Intent(mActivity, QianDaoActivity.class));
             }
@@ -715,9 +718,9 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
 
     @Override
     public void onShare3Click(QyandYHJBean.DataBean.ShareBean bean) {
-            Intent intentProd = new Intent(mActivity, ProdActivity.class);
-            intentProd.putExtra("bannerData", bean.getGood_id());
-            mActivity.startActivity(intentProd);
+        Intent intentProd = new Intent(mActivity, ProdActivity.class);
+        intentProd.putExtra("bannerData", bean.getGood_id());
+        mActivity.startActivity(intentProd);
     }
 
     @Override
@@ -765,7 +768,7 @@ public class _HomeFragment extends BaseFragment implements ItemBannerViewBinder.
                             .dismissOnBackPressed(false)
                             .dismissOnTouchOutside(false)
                             .asCustom(new TipsPopupxieyi2(mActivity,
-                                    url, title,  new TipsPopupxieyi2.OnExitListener() {
+                                    url, title, new TipsPopupxieyi2.OnExitListener() {
                                 @Override
                                 public void onPositive1() {
                                     mActivity.finish();
